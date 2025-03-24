@@ -1,0 +1,13 @@
+.container {
+    color: #2a639f;
+    width: 50px;
+    padding: 2px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+
+    &:hover {
+        background-color: #e3effd;
+    }
+}

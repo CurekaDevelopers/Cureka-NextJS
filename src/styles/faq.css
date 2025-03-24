@@ -1,0 +1,168 @@
+.faq-heading {
+  color: #344251;
+
+  font: normal 400 28px / normal Rubik-regular;
+
+  padding: 30px 35px 0px 0px;
+
+  margin-bottom: 30px;
+}
+
+#faq .card {
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fafbfd;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  margin-bottom: 22px;
+}
+
+#faq .card-header {
+  background-color: #fff;
+
+  color: #344251;
+
+  font: normal 400 20px / normal Rubik-regular;
+
+  border-bottom: 0px;
+}
+
+#faq .card-body {
+  color: #6c6c85;
+
+  font: normal 400 14px / normal Rubik-regular;
+}
+
+.card-header .btn:focus {
+  box-shadow: none;
+
+  outline: 0;
+}
+
+#faq .btn.collapsible-link {
+  padding: 0px;
+
+  text-decoration: none;
+
+  max-width: 275px;
+
+  @media (min-width: 992px) {
+    max-width: 100%;
+  }
+}
+
+/* #faqaccord .accordion-button .collapsed::after {
+
+  content: '\f0dd';
+
+  float: right !important;
+
+  color: #000000;
+
+  font-family: FontAwesome6;
+
+  font-size: 20px;
+
+  padding-right: 8px;
+
+  position: absolute;
+
+  right:0;
+
+  @media(min-width: 992px) {
+
+    padding-right: 18px;
+
+  }
+
+}
+
+#faqaccord .accordion-button:not(.collapsed)::after {
+
+  content: '\f0de';
+
+  float: right !important;
+
+  color: #000000;
+
+  font-family: FontAwesome6;
+
+  font-size: 20px;
+
+  padding-right: 8px;
+
+  position: absolute;
+
+  right:0;
+
+  @media(min-width: 992px) {
+
+    padding-right: 18px;
+
+  }
+
+} */
+
+.btn:focus,
+.btn:hover {
+  box-shadow: none;
+}
+
+/* custom faqs css */
+#faqaccord .accordion-button:focus {
+  outline: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background-color: white !important;
+}
+
+.accordion-button {
+  background-color: white !important;
+}
+
+.accordion-item {
+  margin-bottom: 22px;
+  border-radius: 6px !important;
+  border: 1px solid #bcc9d7 !important;
+  background: #fafbfd;
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+  /* padding: 0px 20px 0px 20px !important; */
+}
+/* .accordion-body {
+  padding: 0px 20px 20px !important;
+} */
+#faqaccord.accordion {
+  border: 1px solid #fff !important;
+}
+.custom-accordion-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.custom-accordion-header h4 {
+  margin: 0;
+}
+
+.arrow-icon {
+  font-size: 0.9rem; /* Smaller size for subtle look */
+  color: #888; /* Lighter color */
+  transition: transform 0.3s ease;
+}
+
+.arrow-icon.open {
+  transform: rotate(180deg); /* Rotate the arrow when open */
+}
+
+.details-para {
+  margin: 0;
+  padding: 1rem;
+  color: #555;
+}

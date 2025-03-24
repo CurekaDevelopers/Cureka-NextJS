@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nextjscureka-dev-70235-authRole",
+      "UnauthRoleArn": "arn:aws:iam::992382581033:role/amplify-nextjscureka-dev-70235-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::992382581033:role/amplify-nextjscureka-dev-70235-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-nextjscureka-dev-70235-deployment",
+      "UnauthRoleName": "amplify-nextjscureka-dev-70235-unauthRole",
+      "StackName": "amplify-nextjscureka-dev-70235",
+      "StackId": "arn:aws:cloudformation:ap-south-1:992382581033:stack/amplify-nextjscureka-dev-70235/df7ffd10-04c9-11f0-b9cd-06cf04e43c89",
+      "AmplifyAppId": "d3ah8f8kuyc1o3"
+    },
+    "categories": {
+      "hosting": {
+        "S3AndCloudFront": {}
+      }
+    }
+  }
+}

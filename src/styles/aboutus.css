@@ -1,0 +1,308 @@
+.abouus-heading {
+  position: absolute;
+
+  top: 50%;
+
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+
+.ban-heading {
+  color: #231f20;
+
+  font: normal 400 28px / normal Rubik-regular;
+
+  padding-top: 15px;
+
+  @media (min-width: 992px) {
+    font: normal 400 42px / normal Rubik-regular;
+
+    padding-top: 0px;
+  }
+}
+
+.aboutus-para {
+  color: #263238;
+
+  font: normal 400 10px / normal Rubik-regular;
+
+  max-width: 680px;
+  margin-bottom: 15px;
+
+  @media (min-width: 992px) {
+    font: normal 400 14px/19px Rubik-regular;
+  }
+}
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .ban-heading {
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+  }
+  .aboutus-para {
+    font: normal 400 12px / normal Rubik-regular;
+    text-align: justify;
+  }
+}
+.aboutus {
+  margin-top: 50px;
+
+  margin-bottom: 40px;
+}
+
+.cureka-about {
+  color: #231f20;
+
+  font: normal 500 40px / normal Rubik-regular;
+
+  margin-bottom: 13px;
+}
+
+.cureka-para {
+  color: #6b6c86;
+
+  font: normal 400 14px/19px Rubik-regular;
+
+  margin-bottom: 24px;
+
+  max-width: 515px;
+}
+
+.left-space {
+  @media (min-width: 992px) {
+    padding-left: 5px !important;
+
+    padding-right: 5px !important;
+  }
+}
+
+.product-num {
+  color: #004a98;
+
+  font: normal 500 32px / normal Rubik-medium;
+
+  margin-bottom: 4px;
+
+  text-align: center;
+}
+
+.product-details {
+  color: #6b6c86;
+
+  font: normal 400 16px / normal Rubik-regular;
+}
+
+.register-color {
+  color: #e75204;
+}
+
+.deliver-color {
+  color: #0f8901;
+}
+
+.right-border {
+  border-right: 0px;
+
+  @media (min-width: 992px) {
+    border-right: 2px solid #bcc9d7;
+  }
+}
+
+.ourvalues {
+  background: #004a98;
+
+  padding-top: 75px;
+
+  padding-bottom: 75px;
+}
+
+.values-heading {
+  color: #fff;
+
+  font: normal 500 28px / normal Rubik-medium;
+}
+
+.values-para {
+  color: #fff;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  max-width: 680px;
+}
+
+.ourteam {
+  margin-top: 50px;
+
+  margin-bottom: 50px;
+}
+
+.client-name {
+  color: #231f20;
+
+  font: normal 500 18px / normal Rubik-medium;
+
+  margin-top: 10px;
+
+  margin-bottom: 5px;
+
+  text-align: center;
+}
+
+.client-desig {
+  color: #6b6c86;
+
+  font: normal 400 14px/19px Rubik-regular;
+
+  text-align: center;
+}
+
+.client {
+  padding-left: 45px;
+
+  padding-right: 45px;
+}
+
+.milestone-heading {
+  color: #231f20;
+
+  font: normal 500 22px / normal Rubik-medium;
+
+  max-width: 289px;
+}
+
+.milestone-para {
+  color: #6b6c86;
+
+  font: normal 400 14px/19px Rubik-regular;
+
+  max-width: 531px;
+}
+
+.progress {
+  border-bottom: 4px solid #bcc9d7;
+
+  height: 5px !important;
+
+  margin-bottom: 56px;
+
+  overflow: unset !important;
+
+  background-color: transparent !important;
+
+  border-radius: 0 !important;
+}
+
+.horizontal-border.progress-bar {
+  border-bottom: 4px solid #e75204;
+
+  width: 80px;
+
+  background-color: transparent;
+
+  overflow: hidden;
+}
+
+.milestone-year {
+  color: #6c6c85;
+
+  font: normal 400 12px/19px Rubik-regular;
+
+  text-align: center;
+
+  @media (min-width: 992px) {
+    font: normal 400 16px/19px Rubik-regular;
+  }
+}
+
+.milestone-year.active {
+  color: #000;
+
+  font: normal 400 12px/19px Rubik-regular;
+
+  text-align: center;
+
+  @media (min-width: 992px) {
+    font: normal 400 16px/19px Rubik-regular;
+  }
+}
+
+.celebrate {
+  margin-bottom: 40px;
+
+  @media (min-width: 992px) {
+    margin-bottom: 78px;
+  }
+}
+
+.video-wrapper {
+  position: relative;
+
+  cursor: pointer;
+}
+
+.video-circle {
+  position: absolute;
+
+  left: 50%;
+
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border: 1px solid #fff;
+
+  border-radius: 50%;
+
+  width: 100px;
+
+  height: 100px;
+}
+
+.video-play {
+  background-color: transparent;
+
+  width: 0;
+
+  height: 34px;
+
+  border-style: solid;
+
+  border-width: 19px 0 19px 35px;
+
+  border-color: transparent transparent transparent #fff;
+
+  position: absolute;
+
+  left: 55%;
+
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.range {
+  color: #231f20;
+
+  font: normal 500 40px / normal Rubik-medium;
+
+  margin-top: 50px;
+
+  margin-bottom: 30px;
+}
+
+.products-para {
+  color: #6b6c86;
+
+  font: normal 400 14px / normal Rubik-regular;
+}
+
+.products-para-color {
+  color: #e75204;
+}
+
+.products-summary {
+  max-width: 1080px;
+
+  margin-bottom: 82px;
+}

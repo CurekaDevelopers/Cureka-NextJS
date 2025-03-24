@@ -1,0 +1,266 @@
+#costumModal .modal-header .close,
+#loginModal .modal-header .close {
+  margin: 0px;
+
+  /* background: url('../public/images/circle'); */
+
+  background-repeat: no-repeat;
+
+  background-position: 100% 100%;
+
+  font-size: 30px;
+
+  text-shadow: 0 1px 0 #fff;
+
+  opacity: unset;
+}
+
+.email-phone,
+.password,
+.units {
+  color: #231f20;
+
+  font: normal 400 14px/26px Rubik-regular;
+
+  text-transform: capitalize;
+
+  margin-bottom: 9px;
+}
+
+#email-phone.form-control,
+#registerModal .form-control,
+#regModal .form-control {
+  color: #8b959f;
+
+  font: normal 400 12px/26px Rubik-regular;
+
+  /* max-width: 440px; */
+
+  min-height: 55px;
+
+  padding-left: 23px;
+}
+
+#email-phone.form-control:focus,
+#forgotpassword .form-control:focus {
+  color: #8b959f;
+
+  font: normal 400 12px/26px Rubik-regular;
+
+  padding-left: 23px;
+}
+
+.signin-btn {
+  max-width: 105px;
+
+  background: #e75204;
+
+  padding: 8px 25px;
+
+  max-width: 440px;
+
+  margin-bottom: 23px;
+
+  color: #fff;
+
+  font: normal 400 14px/26px Rubik-regular;
+}
+
+.sms-update {
+  color: #8b959f;
+
+  font: normal 400 12px/17px Rubik-regular;
+  width: 380px;
+}
+
+.signin-btn:hover,
+.signin-btn:focus {
+  color: #fff;
+
+  outline: 0;
+
+  box-shadow: none;
+}
+
+.account {
+  color: #6a6a6a;
+
+  font: normal 400 16px / normal DMSans-Regular;
+}
+
+.signup {
+  color: #1b2767;
+
+  font: normal 500 16px / normal DMSans-medium;
+
+  text-decoration: none;
+}
+
+.signup:hover {
+  text-decoration: underline;
+}
+
+.right_slidemodal-slider.modal-dialog {
+  position: fixed;
+  margin: auto 0px;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: translate3d(0%, 0, 0);
+  -ms-transform: translate3d(0%, 0, 0);
+  -o-transform: translate3d(0%, 0, 0);
+  transform: translate3d(0%, 0, 0);
+
+  @media (min-width: 992px) {
+    width: 730px;
+    margin: auto;
+  }
+}
+
+.come-from-modal.left .modal-content,
+.right_slidemodal-slider .modal-content {
+  overflow-y: auto;
+  border-radius: 0px;
+  height: 100%;
+}
+
+.come-from-modal.left .modal-body,
+.right_slidemodal-slider.modal-body {
+  padding: 15px 15px 80px;
+}
+
+.right_slidemodal-slider.modal-dialog {
+  right: 0px;
+  -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+  -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+  -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+  transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.right_slidemodal-slider.modal-dialog {
+  right: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#costumModal .modal-dialog,
+#loginModal.modal-dialog {
+  @media (min-width: 992px) {
+    max-width: 600px;
+  }
+}
+
+#costumModal .modal-content,
+#loginModal .modal-content {
+  border: none;
+  border-radius: 2px;
+  height: 100%;
+  box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22),
+    0 25px 55px 0 rgba(0, 0, 0, 0.21);
+}
+
+#costumModal .modal-header,
+#loginModal .modal-header {
+  border-bottom: 0;
+
+  justify-content: end !important;
+
+  padding: 0 1rem;
+}
+
+#costumModal .modal-body,
+#loginModal .modal-body {
+  border-bottom: 0;
+  padding: 50px 26px 10px 26px;
+  max-width: 900px;
+}
+
+#costumModal .modal-footer,
+#loginModal .modal-footer {
+  border-top: 0;
+  padding: 0px 26px 26px 26px;
+}
+
+.signinterms {
+  color: #8b959f;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  max-width: 322px;
+
+  padding-left: 23px;
+
+  padding-right: 23px;
+
+  margin-top: 100px;
+}
+
+.signinconditions {
+  color: #344251;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  text-decoration: underline !important;
+}
+
+.signincondition {
+  color: #344251;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  text-decoration: underline !important;
+}
+.signinconditions:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.register {
+  color: #344251;
+
+  font: normal 500 24px / normal Rubik-medium;
+
+  text-align: center;
+
+  margin-bottom: 31px;
+}
+
+.welcomecureka {
+  color: #344251;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 13px;
+}
+
+.otp {
+  color: #8b959f;
+
+  font: normal 400 12px/17px Rubik-regular;
+
+  max-width: 223px;
+
+  margin-bottom: 13px;
+}
+
+.resendotp {
+  color: #344251;
+
+  font: normal 400 12px / normal Rubik-regular;
+
+  text-decoration: underline;
+}
+.accounts {
+  margin-top: -50px;
+}
+.accounts:hover {
+  color: #e75204 !important;
+}
+
+#loginModal .modal-header .btn-close {
+  padding: 50px 20px;
+  color: #000;
+}
+
+#loginModal .modal-header .btn-close:focus {
+  box-shadow: none !important;
+}
