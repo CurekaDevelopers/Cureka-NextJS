@@ -33,7 +33,7 @@ export const pagePaths = {
   adminArticalType: "/admin/ArticalTypeManagementPage",
   adminPreferenceType:
     "/admin/CategoriesManagementPage/PreferenceTypeManagementPage",
-  adminStandardSize: "/admin/standard-size/:id",
+  adminStandardSize: "/admin/AdminCreateStandardArticalPage/:id",
   adminUserManagement: "/admin/UsersManagementPage",
   adminBrandManagement: "/admin/BrandsManagementPage",
   adminProductManagement: "/admin/ProductManagement",
@@ -60,7 +60,7 @@ export const pagePaths = {
   adminEditArticalType: "/admin/artical-type/edit/:id",
   adminCreatePreferenceType:
     "/admin/CategoriesManagementPage/AdminCreatePreferencePage",
-  adminCreateStandardArticalType: "/admin/standard-artical-type/add/:id",
+  adminCreateStandardArticalType: "/admin/AdminCreateStandardArticalPage/:id",
   adminEditStandardArticalType:
     "/admin/standard-artical-type/edit/:id/:standardEdit",
   adminCreateSubSubCategoryEdit:

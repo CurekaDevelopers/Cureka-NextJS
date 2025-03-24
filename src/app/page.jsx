@@ -323,6 +323,14 @@ export default function Home() {
     <>
       <Helmet>
         <title>Online Store for Skin, Hair & Nutrition Products - Cureka</title>
+
+        {/* Favicon */}
+        <link
+          rel="icon"
+          href="https://www.cureka.com/wp-content/uploads/2020/11/fav.png"
+        />
+
+        {/* Meta Tags */}
         <meta
           name="description"
           content="Cureka is one of India's leading online stores for hair, skin, nutrition products, and healthcare devices. We have a wide range of products."
@@ -334,11 +342,12 @@ export default function Home() {
           property="og:description"
           content="Cureka is one of India's leading online stores for hair, skin, nutrition products, and healthcare devices. We have a wide range of products."
         />
-        <link rel="canonical" href="https://frontend.cureka.com/" />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/src/assets/images/logo.svg"
+          content="https://www.cureka.com/wp-content/uploads/2020/11/fav.png"
         />
+
+        {/* Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="frontend.cureka.com" />
         <meta name="twitter:title" content="Cureka" />
@@ -348,8 +357,13 @@ export default function Home() {
         />
         <meta
           name="twitter:image"
-          content="https://frontend.cureka.com/src/assets/images/logo.svg"
+          content="https://www.cureka.com/wp-content/uploads/2020/11/fav.png"
         />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://frontend.cureka.com/" />
+
+        {/* Google Site Verification */}
         <meta
           name="google-site-verification"
           content="djHgsaJq6QVFahLziLd9Od49uk9jIOIYezy82TdXa7E"
@@ -359,7 +373,7 @@ export default function Home() {
           content="459NGAuu2htZPpDYUTS1stIyl5ZDhg8TgfZ1zz3z5Pw"
         />
 
-        {/* Google Analytics script */}
+        {/* Google Analytics Script */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-TG8R4ZPTTZ"
@@ -367,11 +381,11 @@ export default function Home() {
         <script
           dangerouslySetInnerHTML={{
             __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-TG8R4ZPTTZ', {'send_page_view': false });
-          `,
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-TG8R4ZPTTZ', { 'send_page_view': false });
+      `,
           }}
         />
 
@@ -1240,7 +1254,6 @@ export default function Home() {
                       href={`/blogs/${blog.url}`}
                       key={blog.id}
                       className="text-decoration-none banner-container"
-                      // href="blogdetails"
                     >
                       <div className="blog-img">
                         <img
@@ -1250,7 +1263,6 @@ export default function Home() {
                           className="img-fluid"
                           alt="blog1"
                         />
-
                         <div>
                           <div className="blog-card pb-0">
                             <div className="d-flex">
@@ -1264,11 +1276,8 @@ export default function Home() {
                                 className="mr-2"
                                 size="lg"
                               />
-
                               <p className="user mb-0">Admin</p>
-
                               <div className="left-border"></div>
-
                               <FontAwesomeIcon
                                 style={{
                                   color: "gray",
@@ -1279,16 +1288,13 @@ export default function Home() {
                                 className="mr-2"
                                 size="lg"
                               />
-
                               <p className="user mb-0">
                                 {dayjs(blog.blog_date).format("DD MMMM, YYYY")}
                               </p>
                             </div>
-                            <a className="text-decoration-none">
-                              <h4 className="blog-heading text-left">
-                                {blog.title}
-                              </h4>
-                            </a>
+                            <h4 className="blog-heading text-left">
+                              {blog.title}
+                            </h4>
                           </div>
                         </div>
                       </div>

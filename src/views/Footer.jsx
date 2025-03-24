@@ -34,6 +34,14 @@ import newphonepe from "../public/images/newphonepe.svg";
 import newrupay from "../public/images/newrupay.svg";
 import newvisa from "../public/images/newvisa.svg";
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMapMarkerAlt,
+  faPhone,
+  faEnvelope,
+  faClock,
+} from "@fortawesome/free-solid-svg-icons";
+
 export default function Footer() {
   const navigate = useRouter();
   const dispatch = useDispatch();
@@ -111,12 +119,17 @@ export default function Footer() {
 
                   <div className="support">For Support & Order Inquiries</div>
                   <div className="d-flex">
-                    <img
+                    {/* <img
                       className="mr-3 icon-map"
                       src={map}
                       width="10px"
                       height="11px"
                       alt="map"
+                    /> */}
+                    <FontAwesomeIcon
+                      icon={faMapMarkerAlt}
+                      className="bg-orange-200 p-2 rounded-full text-xl mb-4 mr-2"
+                      style={{ color: "#ff6347" }} // For tomato red color
                     />
 
                     <p className="address text-left">
@@ -126,26 +139,36 @@ export default function Footer() {
                   </div>
 
                   <div className="d-flex">
-                    <img
+                    {/* <img
                       className="mr-3 icon-map"
                       src={phone}
                       width="12px"
                       height="12px"
                       alt="phone"
+                    /> */}
+                    <FontAwesomeIcon
+                      icon={faPhone}
+                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
+                      style={{ color: "#ff6347" }}
                     />
 
-                    <a className="address" href="tel:+91 9655928004">
+                    <a className="address mr-3" href="tel:+91 9655928004">
                       Call us at: +91 96559 28004
                     </a>
                   </div>
 
                   <div className="d-flex">
-                    <img
+                    {/* <img
                       className="mr-3 icon-map"
                       src={envelope}
                       width="12px"
                       height="12px"
                       alt="envelope"
+                    /> */}
+                    <FontAwesomeIcon
+                      icon={faEnvelope}
+                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
+                      style={{ color: "#ff6347" }}
                     />
                     <a href="mailto:care@cureka.com" className="address">
                       Email: care@cureka.com
@@ -153,12 +176,17 @@ export default function Footer() {
                   </div>
 
                   <div className="d-flex">
-                    <img
+                    {/* <img
                       className="mr-3 icon-map"
                       src={clock}
                       width="12px"
                       height="12px"
                       alt="clock"
+                    /> */}
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
+                      style={{ color: "#ff6347" }}
                     />
 
                     <p className="address">Mon to Sat - 10:00 AM to 6:00 PM</p>
@@ -316,7 +344,7 @@ export default function Footer() {
                           <input
                             type="email"
                             id="new_email"
-                            className="form-control"
+                            className="form-control p-2 "
                             placeholder="Enter Your Email Id"
                             name="new_email"
                             value={formik.values.new_email}
@@ -332,7 +360,7 @@ export default function Footer() {
                           ) : null}
                         </div>
 
-                        <div className="send">
+                        <div className="send mt-3">
                           <button
                             type="submit"
                             className="send-btn border-0 p-0"

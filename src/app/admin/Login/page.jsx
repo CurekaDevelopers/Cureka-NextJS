@@ -54,7 +54,7 @@ const Login = () => {
         dispatch(setUserRoles(roles));
 
         toast.success("Login Successful");
-        router.push("/admin/Login");
+        router.push("/admin/DashboardPage");
       } else {
         toast.error("Invalid credentials");
       }

@@ -649,10 +649,10 @@ export default function Header({ showCategoryNavbar = true }) {
                   <li>
                     <div className="cart-icon iconspace">
                       <div className="text-links d-lg-flex d-flex-column align-items-center">
-                        <li className="nav-item">
+                        <li className="nav-item gap-2">
                           <a className="nav-link" href={pagePaths.offers}>
                             <Image
-                              className="img-fluid mr-2 d-lg-block d-none"
+                              className="img-fluid mr-4  d-lg-block d-none"
                               src={badgePercent}
                               width={20}
                               height={20}
@@ -737,7 +737,7 @@ export default function Header({ showCategoryNavbar = true }) {
                           </Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className="nav-item mb-3">
                           <div id="helpdesk">
                             <DropdownButton title="Help Desk">
                               <div className="d-flex">
