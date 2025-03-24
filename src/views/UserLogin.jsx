@@ -249,9 +249,12 @@ const UserLogin = ({ handleCloseLoginModel }) => {
                         <>
                           {/* Toggle Between Email/Password and Mobile Number */}
                           {!useMobileLogin ? (
-                            <div className="field">
-                              <label className="email-phone" htmlFor="email">
-                                Enter Email ID or Username
+                            <div className="field ">
+                              <label
+                                className="email-phone mt-5"
+                                htmlFor="email"
+                              >
+                                Enter Email or Username
                               </label>
                               <input
                                 type="text"
@@ -264,7 +267,7 @@ const UserLogin = ({ handleCloseLoginModel }) => {
                                 required
                               />
                               <label
-                                className="email-password"
+                                className="email-password mt-2"
                                 htmlFor="password"
                               >
                                 Enter Password
@@ -320,7 +323,7 @@ const UserLogin = ({ handleCloseLoginModel }) => {
                             {useMobileLogin ? "Login with Email & Password" : "Login with Mobile OTP"}
                           </button> */}
                           <div>
-                            <p>
+                            <p className="mt-3">
                               {useMobileLogin
                                 ? " Already have an account?"
                                 : "Or"}
@@ -363,7 +366,7 @@ const UserLogin = ({ handleCloseLoginModel }) => {
                         </div>
                       )}
 
-                      <div className="field margin_0 mt-4">
+                      <div className="field margin_0 mt-4 ">
                         <button disabled={loading} className="main_btns">
                           {loading ? "Signing In..." : "Sign In"}
                         </button>
@@ -385,91 +388,21 @@ const UserLogin = ({ handleCloseLoginModel }) => {
                     </fieldset>
                   </form>
                 </div>
-                {/* <div className="form-group mt-5">
-                  <form onSubmit={formik.handleSubmit}>
-                    <fieldset>
-                      {!showOtpInput ? (
-                        <div className="field">
-                          <label className="email-phone" htmlFor="email-phone">
-                            Enter Mobile Number To Sign In Or Register
-                          </label>
-                          <input
-                            type="number"
-                            id="mobile_number"
-                            className="form-control"
-                            placeholder="Enter Mobile Number"
-                            name="mobile_number"
-                            value={formik.values.mobile_number}
-                            onChange={(event) => {
-                              const inputValue = event.target.value;
-                              const numericValue = inputValue.replace(
-                                /[^0-9]/g,
-                                ""
-                              );
-                              event.target.value = numericValue.slice(0, 10);
-                              formik.handleChange(event);
-                            }}
-                            required
-                          />
-                        </div>
-                      ) : (
-                        <div className="sign ">
-                          <label className="label_field">Enter OTP</label>
-                          <input
-                            type="text"
-                            id="otp"
-                            className="form-control"
-                            placeholder="Enter OTP"
-                            name="otp"
-                            onChange={(event) => {
-                              const inputValue = event.target.value;
-                              const numericValue = inputValue.replace(
-                                /[^0-9]/g,
-                                ""
-                              );
-                              event.target.value = numericValue.slice(0, 6);
-                              formik.handleChange(event);
-                            }}
-                            value={formik.values.otp}
-                            required
-                          />
-                        </div>
-                      )}
-                      <div className="field margin_0 mt-4">
-                        <button disabled={loading} className="main_btns">
-                          {loading ? "Sign In" : "Sign In"}
-                        </button>
-                        {showOtpInput && (
-                          <a
-                            href="#"
-                            className="ml-3"
-                            onClick={handleResend}
-                            style={{
-                              pointerEvents: loading ? "none" : "auto",
-                              opacity: loading ? 0.6 : 1,
-                            }}
-                          >
-                            {loading ? "Resend" : "Resend"}
-                          </a>
-                        )}
-                      </div>
-                    </fieldset>
-                  </form>
-                </div> */}
+
                 <p className="sms-update">
                   You might receive SMS updates from Cureka and have the option
                   to opt out with an OTP at any time.
                 </p>
                 <p className="signinterms">
-                  <span className="required-star">*</span>By continuing, you
-                  agree with our{" "}
+                  <span className="required-star gap-2">*</span>By continuing,
+                  you agree with our&nbsp;
                   <Link
                     className="signinconditions"
                     href={pagePaths.privacyPolicy}
                   >
-                    Privacy Policy{" "}
+                    Privacy Policy&nbsp;
                   </Link>
-                  and{" "}
+                  and&nbsp;
                   <Link
                     href={pagePaths.termsAndConditions}
                     className="signincondition"
