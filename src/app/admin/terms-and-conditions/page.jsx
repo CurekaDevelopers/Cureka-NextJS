@@ -17,8 +17,8 @@ const RichtextEditor = lazyLoadable(() =>
 );
 
 const PrivacyPolicyPage = ({
-  policyName = "Privacy Policy",
-  policySlug = "privacy-policy",
+  policyName = "Terms & Conditions",
+  policySlug = "Terms & Conditions",
 }) => {
   const formikRef = useRef();
   const { policy } = useSelector((state) => state.admin);

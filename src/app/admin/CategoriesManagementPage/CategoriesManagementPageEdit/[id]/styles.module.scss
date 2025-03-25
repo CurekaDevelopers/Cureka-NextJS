@@ -36,33 +36,3 @@
         color: rgb(255, 58, 58) !important;
     }
 }
-
-.trackingBar::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #3db14b;
-    border-radius: 50%;
-    position: absolute;
-    left: 51px;
-  }
-  .trackingLine {
-    width: 2px; 
-    height: 50px;
-    margin: auto; 
-    border-radius: 10px; 
-    background-color: #000;
-  }
-  .orderConfirm {
-    color: #0f8901;
-    font: normal 400 12px / normal Rubik-regular;
-    margin-bottom: 3px;
-  }
-  
-  .confirmDate {
-    color: #6b6c86;
-    font: normal 400 10px / normal Rubik-regular;
-    margin-bottom: 17px;
-  }
-  

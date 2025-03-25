@@ -17,7 +17,7 @@ export const validationSchema = Yup.object().shape({
   url: Yup.string()
     .matches(
       urlSlugRegex,
-      "Invalid URL slug format. Please use only lowercase letters, numbers, and hyphens."
+      "Invalid URL slug format. Please use only lowercase letters, numbers, and hyphens.",
     )
     .required("Blog URL slug is required"),
   // canonical_url: Yup.string()
@@ -66,7 +66,7 @@ export const validationSchema = Yup.object().shape({
         //   };
         //   if (isBlob(file)) reader.readAsDataURL(file);
         // });
-      }
+      },
     ),
   thumbnail_image: Yup.mixed()
     .required("Image is required")
@@ -102,7 +102,7 @@ export const validationSchema = Yup.object().shape({
         //   };
         //   if (isBlob(file)) reader.readAsDataURL(file);
         // });
-      }
+      },
     ),
   description: Yup.string().required("Description is required"),
 });

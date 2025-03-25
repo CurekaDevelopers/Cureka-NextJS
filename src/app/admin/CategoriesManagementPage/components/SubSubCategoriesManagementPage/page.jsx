@@ -82,6 +82,12 @@ const SubSubSubCategoriesManagementPage = () => {
         Header: "Image",
         accessor: "image",
         Cell: ({ cell }) => {
+          const imageSrc = cell.row.original.image;
+
+          // If imageSrc is an empty string or not valid, render a placeholder or nothing
+          if (!imageSrc || imageSrc === "") {
+            return <span>No image</span>; // Or render a placeholder image
+          }
           return (
             <img
               style={{ height: 50, width: 50 }}
@@ -174,12 +180,17 @@ const SubSubSubCategoriesManagementPage = () => {
   const mappedSubSubCategories = useMemo(() => {
     if (!searchTerm.trim()) return subSubCategories;
 
-    return subSubCategories.filter(
-      (brand) =>
-        brand.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        brand.category_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        brand.sub_category_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return subSubCategories.filter((brand) => {
+      const searchLower = searchTerm.toLowerCase();
+
+      return (
+        (brand.name && brand.name.toLowerCase().includes(searchLower)) ||
+        (brand.category_name &&
+          brand.category_name.toLowerCase().includes(searchLower)) ||
+        (brand.sub_category_name &&
+          brand.sub_category_name.toLowerCase().includes(searchLower))
+      );
+    });
   }, [subSubCategories, searchTerm]);
 
   const exportToExcel = () => {

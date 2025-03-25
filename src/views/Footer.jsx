@@ -282,7 +282,7 @@ export default function Footer() {
                     </li>
 
                     <li className="list-unstyled">
-                      <Link href={"/Faq"}>Faq</Link>
+                      <Link href={"/faq"}>Faq</Link>
                     </li>
 
                     <li className="list-unstyled">

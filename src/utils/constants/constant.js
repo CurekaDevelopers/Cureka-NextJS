@@ -13,8 +13,8 @@ export const pagePaths = {
   adminBlogs: "/admin/AdminBlogsPage",
   adminReportExcel: "/admin/ProductManagement/report-excel",
   adminCreateBlogs: "/admin/AdminBlogsPage/AdminCreateBlogsPage",
-  adminCreateBlogsEdit: "/admin/blogs/edit/:id",
-  adminCreateBlogsComment: "/admin/blogs/comment/:id",
+  adminCreateBlogsEdit: "/admin/AdminBlogsPage/edit/:id",
+  adminCreateBlogsComment: "/admin/AdminBlogsPage/comment/:id",
   addComment: "/user/blog/addComment",
   adminConcern: "/admin/ConcernsManagementPage",
   adminCreateConcern: "/admin/ConcernsManagementPage/AdminCreateConcernsPage",
@@ -48,28 +48,29 @@ export const pagePaths = {
   adminCreateCategory:
     "/admin/CategoriesManagementPage/AdminCreateCategoryPage",
   adminCreateCategoryEdit:
-    "/admin/CategoriesManagementPage/CategoriesManagementPage/edit/:id",
+    "/admin/CategoriesManagementPage/CategoriesManagementPageEdit/:id",
   adminCreateSubCategory:
     "/admin/CategoriesManagementPage/AdminCreateSubCategoryPage",
   adminCreateSubCategoryEdit:
-    "/admin/CategoriesManagementPage/SubCategoriesManagementPage/edit/:id",
+    "/admin/CategoriesManagementPage/SubCategoriesManagementPageEdit/:id",
   adminCreateSubSubCategory:
     "/admin/CategoriesManagementPage/AdminCreateSubSubCategoryPage",
   adminCreateArticalType:
     "/admin/ArticalTypeManagementPage/AdminCreateArticalPage",
-  adminEditArticalType: "/admin/artical-type/edit/:id",
+  adminEditArticalType:
+    "/admin/ArticalTypeManagementPage/ArticalTypeManagementPageEdit/:id",
   adminCreatePreferenceType:
     "/admin/CategoriesManagementPage/AdminCreatePreferencePage",
   adminCreateStandardArticalType: "/admin/AdminCreateStandardArticalPage/:id",
   adminEditStandardArticalType:
     "/admin/standard-artical-type/edit/:id/:standardEdit",
   adminCreateSubSubCategoryEdit:
-    "/admin/CategoriesManagementPage/SubCategoriesManagementPage/edit/:id",
+    "/admin/CategoriesManagementPage/SubCategoriesManagementPageEdit/edit/:id",
   adminCreatePreferenceEdit: "/admin/preference-type/edit/:id",
   adminCreateSubSubSubCategory:
     "/admin/CategoriesManagementPage/AdminCreateSubSubSubCategoryPage",
   adminCreateSubSubSubCategoryedit:
-    "/admin/CategoriesManagementPage/SubSubSubCategoriesManagementPage/edit/:id",
+    "/admin/CategoriesManagementPage/SubSubSubCategoriesManagementPageEdit/:id",
   adminPrivacyPolicyPage: "/admin/PrivacyPolicyPage",
   adminDisclaimerOfWarranties: "/admin/disclaimer-of-warranties",
   adminCancellationRefund: "/admin/cancellation-refund",
@@ -84,7 +85,7 @@ export const pagePaths = {
   adminEmployee: "/admin/EmployeesManagementPage",
   adminCreateEmployee:
     "/admin/EmployeesManagementPage/AdminCreateEmployeesPage",
-  adminCreateEmployeeEdit: "/admin/Employee/edit/:id",
+  adminCreateEmployeeEdit: "/admin/EmployeesManagementPage/edit/:id",
   hair: "/Hair",
   ayurveda: "/Ayurveda",
   nutrition: "/Nutrition",
@@ -108,7 +109,7 @@ export const pagePaths = {
   cart: "/Cart",
   contactUs: "/Contactus",
   creams: "/Creams",
-  faqs: "/Faq",
+  faqs: "/faq",
   offers: "/Offers",
   account: "/account",
   productDetails: "/shop/:productSlug",
@@ -144,7 +145,7 @@ export const pagePaths = {
   adminCreateRatingAndReviewEdit: "/admin/AdminRatingAndReviewPage/edit/:id",
   adminFaqManagement: "/admin/FaqManagementPage",
   adminCreateFaq: "/admin/FaqManagementPage/AdminCreateFaqsPage",
-  adminCreateFaqEdit: "/admin/faq/edit/:id",
+  adminCreateFaqEdit: "/admin/FaqManagementPage/edit/:id",
   adminSingleAddManagement: "/admin/SingleAddManagementPage",
   adminCreateSingleAdd:
     "/admin/SingleAddManagementPage/AdminCreateSingleAddPage",
@@ -166,7 +167,7 @@ export const pagePaths = {
   adminPopupManagement: "/admin/PopupManagement",
   adminPopupManagementAdd: "/admin/PopupManagement/AdminCreatePopupPage",
   adminPopupManagementEdit: "/admin/popup/edit/:id",
-  adminEditOrder: "/admin/edit/order/:id",
+  adminEditOrder: "/admin/orders/edit/:id",
   trackOrder: "/TrackOrder",
   adminUserWalletTransaction: "/admin/wallet-transaction",
   adminHomePageVision: "/admin/vision",

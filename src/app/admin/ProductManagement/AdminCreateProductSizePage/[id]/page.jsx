@@ -8,25 +8,25 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useRouter } from "next/navigation";
-import Card from "../../../../components/Card";
-import AdminBreadcrumbs from "../../../../components/admin/AdminBreadcrumbs";
+import Card from "../../../../../components/Card";
+import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
 import {
   createProductSize,
   fetchBrands,
   fetchConcerns,
   fetchNestedCategories,
   updateProduct,
-} from "../../../../redux/action";
-import { pagePaths } from "../../../../utils/constants/constant";
-import lazyLoadable from "../../../../utils/lazyLoadable";
-import { uploadImage } from "../../../../lib/services/file-upload";
-import { convertToUrlSlug } from "../../../../utils/common.utils";
-import { ptype, status } from "../../../../utils/constants/common.constants";
+} from "../../../../../redux/action";
+import { pagePaths } from "../../../../../utils/constants/constant";
+import lazyLoadable from "../../../../../utils/lazyLoadable";
+import { uploadImage } from "../../../../../lib/services/file-upload";
+import { convertToUrlSlug } from "../../../../../utils/common.utils";
+import { ptype, status } from "../../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 
 const RichtextEditor = lazyLoadable(() =>
-  import("../../../../components/RichtextEditor")
+  import("../../../../../components/RichtextEditor")
 );
 
 const AdminCreateProductSizePage = ({ isEditPage = false }) => {

@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 import * as XLSX from "xlsx";
+// import Card from "../../../../../components/Card";
 import Card from "../../../../../components/Card";
 import ConfirmationModel from "../../../../../components/ConfirmationModel";
 import DeleteButton from "../../../../../components/DeleteButton/index";
@@ -77,6 +78,12 @@ const SubCategoriesManagementPage = () => {
         Header: "Image",
         accessor: "image",
         Cell: ({ cell }) => {
+          const imageSrc = cell.row.original.image;
+
+          // If imageSrc is an empty string or not valid, render a placeholder or nothing
+          if (!imageSrc || imageSrc === "") {
+            return <span>No image</span>; // Or render a placeholder image
+          }
           return (
             <img
               style={{ height: 50, width: 50 }}
@@ -161,11 +168,15 @@ const SubCategoriesManagementPage = () => {
   const mappedSubCategories = useMemo(() => {
     if (!searchTerm.trim()) return subCategories;
 
-    return subCategories.filter(
-      (brand) =>
-        brand.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        brand.category_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return subCategories.filter((brand) => {
+      const categoryName = brand.category_name || ""; // default to empty string if null or undefined
+      const name = brand.name || ""; // default to empty string if null or undefined
+
+      return (
+        categoryName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
   }, [subCategories, searchTerm]);
 
   const exportToExcel = () => {

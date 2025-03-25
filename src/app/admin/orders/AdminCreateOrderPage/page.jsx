@@ -1117,7 +1117,6 @@ const AdminCreateOrderPage = () => {
                 )}
                 <Form.Group>
                   <Form.Label style={{ color: "#ff9800", marginright: "20" }}>
-                    
                     Discount (
                     {couponDiscount && couponDiscount.discount_percentage}% Off)
                   </Form.Label>
@@ -1142,7 +1141,6 @@ const AdminCreateOrderPage = () => {
               </>
             )}
             <Form.Label>
-              
               Fields marked with <span className="text-danger">*</span> are
               mandatory
             </Form.Label>

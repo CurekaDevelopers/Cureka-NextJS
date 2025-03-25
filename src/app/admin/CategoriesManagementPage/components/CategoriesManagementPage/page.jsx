@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as XLSX from "xlsx";
-import Card from "../../../../../components/Card";
+import Card from "../../../../../components/Card/index";
 import ConfirmationModel from "../../../../../components/ConfirmationModel";
 import DeleteButton from "../../../../../components/DeleteButton/index";
 import EditButton from "../../../../../components/EditButton/index";
@@ -80,6 +80,12 @@ const CategoriesManagementPage = () => {
         Header: "Image",
         accessor: "image",
         Cell: ({ cell }) => {
+          const imageSrc = cell.row.original.image;
+
+          // If imageSrc is an empty string or not valid, render a placeholder or nothing
+          if (!imageSrc || imageSrc === "") {
+            return <span>No image</span>; // Or render a placeholder image
+          }
           return (
             <img
               style={{ height: 50, width: 50 }}

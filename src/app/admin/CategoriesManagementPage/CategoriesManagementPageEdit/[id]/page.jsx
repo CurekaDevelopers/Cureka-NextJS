@@ -1,93 +1,92 @@
 "use client";
+
 import { useFormik } from "formik";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useRouter } from "next/navigation";
-import Card from "../../../../components/Card";
-import AdminBreadcrumbs from "../../../../components/admin/AdminBreadcrumbs/index";
+import Card from "../../../../../components/Card";
+import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
 import {
-  createSubSubCategory,
+  createCategory,
   fetchCategories,
-  fetchSubCategories,
-  fetchSubsubCategories,
-  updateSubsubCategory,
-} from "../../../../redux/action";
-import { pagePaths } from "../../../../utils/constants/constant";
-import lazyLoadable from "../../../../utils/lazyLoadable";
-import { uploadImage } from "../../../../lib/services/file-upload";
-import { status } from "../../../../utils/constants/common.constants";
+  updateCategory,
+} from "../../../../../redux/action";
+
+import { pagePaths } from "../../../../../utils/constants/constant";
+import lazyLoadable from "../../../../../utils/lazyLoadable";
+import { uploadImage } from "../../../../../lib/services/file-upload";
+import {
+  status,
+  nav_link,
+} from "../../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 
 const RichtextEditor = lazyLoadable(() =>
-  import("../../../../components/RichtextEditor")
+  import("../../../../../components/RichtextEditor")
 );
 
-const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
-  const { id } = useParams();
+const AdminCreateCategoryPage = ({ isEditPage = false }) => {
   const formikRef = useRef();
-  const { categories, subCategories, subSubCategories } = useSelector(
-    (state) => state.admin
-  );
   const dispatch = useDispatch();
-  const navigate = useRouter();
   const [previewImage, setPreviewImage] = useState(null);
+  const navigate = useRouter();
+  const { id } = useParams();
+  const { categories } = useSelector((state) => state.admin);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchSubCategories());
-    dispatch(fetchSubsubCategories());
-  }, [dispatch]);
+    if (!categories?.length && isEditPage) {
+      dispatch(fetchCategories());
+    }
+  }, [categories?.length, dispatch, isEditPage]);
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
+      setLoading(true);
       let fileUrl = "";
-      if (typeof values?.image == "string") {
-        fileUrl = values?.image;
+      if (typeof values.image === "string") {
+        fileUrl = values.image;
       } else {
         const uploadData = await uploadImage(
           values.image,
-          "sub-sub-categories",
+          "categories",
           (uploadProgress) => {
             console.log({ uploadProgress });
           }
         );
         fileUrl = uploadData.fileUrl;
       }
-      console.log("fileUrl", fileUrl);
       if (fileUrl) {
-        if (!isEditPage) {
+        if (isEditPage) {
           dispatch(
-            createSubSubCategory(
-              {
-                ...values,
-                image: fileUrl,
-              },
-              () => {
-                setSubmitting(false);
-                navigate.push(pagePaths.adminSubSubCategory);
-              }
-            )
-          );
-        } else {
-          dispatch(
-            updateSubsubCategory(
+            updateCategory(
               id,
               {
                 ...values,
                 image: fileUrl,
               },
               () => {
+                setLoading(false);
+                navigate.push(pagePaths.adminCategories);
+              }
+            )
+          );
+        } else {
+          dispatch(
+            createCategory(
+              {
+                ...values,
+                image: fileUrl,
+              },
+              () => {
                 setSubmitting(false);
-                navigate.push(pagePaths.adminSubSubCategory);
+                navigate.push(pagePaths.adminCategories);
               }
             )
           );
@@ -100,127 +99,42 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
     formikRef.current = formik;
   }, [formik]);
 
-  const filteredSubCategories = useMemo(() => {
-    if (subCategories?.length && formik.values.category_id) {
-      return subCategories?.filter((item) => {
-        return (
-          parseInt(item.category_id) === parseInt(formik.values.category_id)
-        );
-      });
-    }
-    return [];
-  }, [formik.values.category_id, subCategories]);
-
-  const dynamicFilteredSubCategories = [
-    { id: "Select Sub Category", name: "Select Sub Category" }, // Add a default "select" option
-    ...filteredSubCategories,
-  ];
-
   useEffect(() => {
-    if (isEditPage) {
-      if (subSubCategories && subSubCategories?.length > 0) {
-        const subSubCategory = subSubCategories?.find(
-          (item) => parseInt(item.id) === parseInt(id)
-        );
-        console.log("subSubCategory", subSubCategory);
-        formik.setFieldValue("name", subSubCategory?.name);
-        formik.setFieldValue("description", subSubCategory?.description);
-        formik.setFieldValue("image", subSubCategory?.image);
-        formik.setFieldValue(
-          "category_id",
-          Number(subSubCategory?.category_id)
-        );
-        formik.setFieldValue(
-          "sub_category_id",
-          Number(subSubCategory?.sub_category_id)
-        );
-        formik.setFieldValue("sub_sub_category_id", subSubCategory?.id);
-        formik.setFieldValue("metaTitle", subSubCategory?.metaTitle);
-        formik.setFieldValue(
-          "metaDescription",
-          subSubCategory?.metaDescription
-        );
-
-        setPreviewImage(subSubCategory?.image);
+    const formik = formikRef.current || {};
+    if (isEditPage && categories.length && id && formik.setValues) {
+      const category = categories.find(
+        (item) => parseInt(item.id) === parseInt(id)
+      );
+      if (!category) {
+        navigate.push(pagePaths.adminCategories);
       }
+      formik.setValues(category || {});
+      setPreviewImage(category?.image);
     }
-  }, [id, subSubCategories]);
+  }, [isEditPage, categories, id, navigate]);
 
   return (
     <div className={styles.container}>
       <AdminBreadcrumbs
         items={[
           {
-            path: pagePaths.adminSubSubCategory,
-            label: "Sub Sub Categories",
+            path: pagePaths.adminCategories,
+            label: "Categories Management",
           },
           {
-            path: pagePaths.adminCreateSubSubCategory,
-            label: isEditPage
-              ? "Edit Sub Sub Category"
-              : "Create Sub Sub Category",
+            path: pagePaths.adminCreateCategory,
+            label: isEditPage ? "Edit Category" : "Create Category",
           },
         ]}
       />
       <div>
         <Card className={styles.card}>
           <div className={styles.cardHeader}>
-            <p className={styles.title}>Add Sub Sub Category Details</p>
+            <p className={styles.title}>Add Category Details</p>
           </div>
           <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
             <Form.Group>
-              <Form.Label>Select Category</Form.Label>
-              <Form.Select
-                id="category_id"
-                name="category_id"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.category_id}
-                aria-label="Select Category"
-              >
-                {!!categories?.length &&
-                  categories.map((item) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    );
-                  })}
-              </Form.Select>
-              {formik.errors.category_id && formik.touched.category_id && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.category_id}
-                </Form.Text>
-              )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Select Sub Category</Form.Label>
-              <Form.Select
-                id="sub_category_id"
-                name="sub_category_id"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.sub_category_id}
-                aria-label="Select Sub Category"
-              >
-                {!!dynamicFilteredSubCategories?.length &&
-                  dynamicFilteredSubCategories.map((item) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    );
-                  })}
-              </Form.Select>
-              {formik.errors.sub_category_id &&
-                formik.touched.sub_category_id && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.sub_category_id}
-                  </Form.Text>
-                )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="name">Sub Sub Category Title</Form.Label>
+              <Form.Label htmlFor="name">Category Title</Form.Label>
               <Form.Control
                 type="text"
                 id="name"
@@ -235,7 +149,22 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
                 </Form.Text>
               )}
             </Form.Group>
-
+            {/* <Form.Group>
+              <Form.Label htmlFor="name">Slug Name</Form.Label>
+              <Form.Control
+                type="text"
+                id="slug"
+                name="slug"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.slug}
+              />
+              {formik.errors.slug && formik.touched.slug && (
+                <Form.Text className={styles.errorText} muted>
+                  {formik.errors.slug}
+                </Form.Text>
+              )}
+            </Form.Group> */}
             <Form.Group>
               <Form.Label htmlFor="image">Image</Form.Label>
               <Form.Control
@@ -262,7 +191,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
                 </Form.Text>
               )}
             </Form.Group>
-            {previewImage && previewImage !== "" && (
+            {previewImage && (
               <img
                 src={previewImage}
                 alt="Preview"
@@ -283,7 +212,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
               )}
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="metaTitle">
+              <Form.Label htmlFor="name">
                 Meta Title<span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
@@ -301,7 +230,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
               )}
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="metaDescription">
+              <Form.Label htmlFor="name">
                 Meta Description<span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
@@ -344,13 +273,38 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
                 </Form.Text>
               )}
             </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="navLink">Nav Link</Form.Label>
+              <Form.Select
+                aria-label="Select Category"
+                id="navLink"
+                name="navLink"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.nav_link}
+              >
+                <option disabled>Select Status</option>
+                {Object.entries(nav_link).map(([key, value]) => {
+                  return (
+                    <option key={key} value={value}>
+                      {value}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+              {formik.errors.status && formik.touched.status && (
+                <Form.Text className={styles.errorText} muted>
+                  {formik.errors.status}
+                </Form.Text>
+              )}
+            </Form.Group>
             <Button
-              disabled={formik.isSubmitting}
+              disabled={loading}
               type="submit"
               className={styles.submitButton}
               variant="primary"
             >
-              {formik.isSubmitting ? "Loading..." : "Submit"}
+              {loading ? "Loading..." : "Submit"}
             </Button>
           </Form>
         </Card>
@@ -359,4 +313,4 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
   );
 };
 
-export default AdminCreateSubSubCategoryPage;
+export default AdminCreateCategoryPage;

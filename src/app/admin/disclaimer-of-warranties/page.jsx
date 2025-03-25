@@ -17,8 +17,8 @@ const RichtextEditor = lazyLoadable(() =>
 );
 
 const PrivacyPolicyPage = ({
-  policyName = "disclaimer-of-warranties",
-  policySlug = "disclaimer-of-warranties",
+  policyName = "Disclaimer of Warranties",
+  policySlug = "Disclaimer of Warranties",
 }) => {
   const formikRef = useRef();
   const { policy } = useSelector((state) => state.admin);
