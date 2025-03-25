@@ -170,7 +170,7 @@ export default function BlogsHeader() {
               <ul className={style.navbarItems}>
                 <div>
                   <a
-                    href="/track-order"
+                    href="/TrackOrder"
                     className="text-decoration-none reorder-btn"
                   >
                     Track Your Order

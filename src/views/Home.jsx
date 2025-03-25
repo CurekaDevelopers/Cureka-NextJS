@@ -297,7 +297,7 @@ export default function Home() {
         "Cureka is one of India's leading online stores for hair, skin, nutrition products, and healthcare devices. We have a wide range of products.",
       image: {
         "@type": "ImageObject",
-        url: "https://frontend.cureka.com/src/assets/images/logo.svg",
+        url: "https://frontend.cureka.com/assets/images/logo.svg",
         width: 1200,
         height: 630,
       },

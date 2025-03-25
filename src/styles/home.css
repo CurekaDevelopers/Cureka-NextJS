@@ -2030,14 +2030,14 @@
 }
 
 #home-carousel .carousel .control-prev.control-arrow:before {
-  background: url(/src/assets/images/carousel-prev.png) no-repeat center center;
+  background: url("../public/images/carousel-prev.png") no-repeat center center;
   border-right: 0;
   width: 20px;
   height: 20px;
 }
 
 #home-carousel .carousel .control-next.control-arrow:before {
-  background: url(/src/assets/images/carousel-next.png) no-repeat center center;
+  background: url("../public/images/carousel-next.png") no-repeat center center;
   border-left: 0;
   width: 20px;
   height: 20px;
