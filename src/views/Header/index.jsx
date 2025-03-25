@@ -786,7 +786,7 @@ export default function Header({ showCategoryNavbar = true }) {
                                 <div className="col-6 border-left ml-2">
                                   <h2 className="section">Helpful Links</h2>
                                   <Dropdown.Item
-                                    href="/track-order"
+                                    href="/TrackOrder"
                                     className="d-flex"
                                   >
                                     Track your order
@@ -1082,7 +1082,7 @@ export default function Header({ showCategoryNavbar = true }) {
                               Ask our Experts
                             </a>
                             <a
-                              href="/track-order"
+                              href="/TrackOrder"
                               className="nav-link-item border-bottom"
                             >
                               Track your order

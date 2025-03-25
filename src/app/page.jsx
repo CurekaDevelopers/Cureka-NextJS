@@ -299,7 +299,7 @@ export default function Home() {
         "Cureka is one of India's leading online stores for hair, skin, nutrition products, and healthcare devices. We have a wide range of products.",
       image: {
         "@type": "ImageObject",
-        url: "https://frontend.cureka.com/src/assets/images/logo.svg",
+        url: "https://frontend.cureka.com/assets/images/logo.svg",
         width: 1200,
         height: 630,
       },
@@ -775,62 +775,39 @@ export default function Home() {
               <p className="all-deals">All Deals</p>
             </Link>
           </div>
-
           <div className="row">
             <div className="col-lg-12">
-              <div className="container-fluid p-0" id="toppicks">
+              <div className="container-fluid p-0" id="new-arrivals">
                 <CarouselSlider
-                  settings={{ slidesToShow: isMobile ? 2 : isPhone ? 3 : 4 }}
+                  settings={{ slidesToShow: isPhone ? 2 : isMobile ? 3 : 4 }}
                 >
                   {!!topArrivals?.length &&
                     topArrivals?.map((product) => {
-                      let product_front_tp_image;
-                      if (product?.product_images) {
-                        product_front_tp_image =
-                          product?.product_images[0].image;
-                      } else {
-                        product_front_tp_image = noproduct;
-                      }
+                      let product_front_na_image =
+                        product?.product_images?.length > 0
+                          ? product?.product_images[0].image
+                          : noproduct;
+
                       return (
                         <div key={product.id} className="item">
-                          <div className="arrivals card  mr-3">
-                            <div className="d-flex flex-nowrap">
+                          <div className="arrivals card mr-3">
+                            <div className="d-flex flex-nowrap justify-content-between">
                               <div className="sale d-lg-block d-none">
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
                                     -{Number(product.discount_percent)} %
                                   </p>
-                                ) : (
-                                  // <h2 className="sale-heading">-{Number(product.discount_amount)} ₹</h2>
-                                  <div
-                                    style={{
-                                      backgroundColor:
-                                        product.discount_amount !== 0
-                                          ? "sale-heading"
-                                          : "white",
-                                    }}
-                                  >
-                                    {product.discount_amount !== 0 ? (
-                                      <p className="sale-heading">
-                                        {product.discount_amount} ₹
-                                      </p>
-                                    ) : (
-                                      <p className="sale-heading">
-                                        {product.discount_amount}
-                                      </p>
-                                    )}
-                                  </div>
-                                )}
+                                ) : product.discount_amount !== 0 ? (
+                                  <p className="sale-heading">
+                                    {product.discount_amount} ₹
+                                  </p>
+                                ) : null}
                               </div>
-                              <Link
-                                href={generateUrl(product)}
-                                key={product.id}
-                                className=""
-                                target="_blank"
-                              >
+
+                              <Link href={generateUrl(product)} key={product.id} target="_blank">
                                 <div className="product">
                                   <img
-                                    src={product_front_tp_image}
+                                    src={product_front_na_image}
                                     width="218px"
                                     height="172px"
                                     className="img-fluid"
@@ -873,79 +850,60 @@ export default function Home() {
                                     className="d-block mx-auto eye"
                                   />
                                 </button>
-
-                                {/* <div className="watch d-lg-block d-none">
-                                    <img
-                                      src={share}
-                                      width="10px"
-                                      height="10px"
-                                      className="d-block mx-auto eye"
-                                      alt="share"
-                                    />
-                                  </div> */}
                               </div>
                             </div>
 
                             <div className="product-text">
                               <p className="product-category">
                                 <Link
-                                  className="section"
                                   href={`/product-category/${product?.category_slug}`}
                                   target="_blank"
-                                >{`${product.category_name}`}</Link>
+                                >
+                                  {product.category_name}
+                                </Link>
                               </p>
-                              <a
-                                className="text-decoration-none"
+                              <Link
                                 href={generateUrl(product)}
-                                data-toggle="tooltip"
-                                data-placement="right"
                                 target="_blank"
                                 title={product.vendor_article_name}
                               >
-                                <h3 className="product-name text-truncate">
+                                <h3 className="product-name">
                                   {product.vendor_article_name}
                                 </h3>
-                              </a>
+                              </Link>
 
-                              <div className="rating  d-lg-flex d-none">
+                              <div className="rating d-lg-flex d-none">
                                 <p className="rating-number">
-                                  {product &&
-                                  product.product_reviews?.length > 0
-                                    ? product &&
-                                      product.product_reviews.length > 0
-                                      ? product.product_reviews.reduce(
+                                  {Array.isArray(product?.product_reviews) &&
+                                  product.product_reviews.length > 0
+                                    ? (
+                                        product.product_reviews.reduce(
                                           (acc, review) =>
                                             acc + (review.rating || 0),
                                           0
                                         ) / product.product_reviews.length
-                                      : "0"
+                                      ).toFixed(1)
                                     : "0"}
                                 </p>
                               </div>
 
-                              <p className="product-author d-lg-block d-none">
-                                By:
-                                <Link
-                                  className="product-author-className"
-                                  href={`/product-brands/${product.brand_name}`}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  {product.brand_name}
-                                </Link>
-                              </p>
+                              <div className="d-flex">
+                                <p className="product-author d-lg-block d-none">
+                                  By:
+                                  <Link
+                                    href={`/product-brands/${product.brand_name}`}
+                                    target="_blank"
+                                  >
+                                    {product.brand_name}
+                                  </Link>
+                                </p>
+                              </div>
                             </div>
 
                             <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
                               <div className="price d-flex d-lg-block">
-                                {product.mrp == product.final_price ? (
+                                {product.mrp === product.final_price ? (
                                   <>
-                                    <p
-                                      style={{ textDecoration: "none" }}
-                                      className="discount"
-                                    >
-                                      &#8377; {product.mrp}
-                                    </p>
                                     <p className="product-price">
                                       &#8377; {product.final_price}
                                     </p>
@@ -962,100 +920,43 @@ export default function Home() {
                                 )}
                               </div>
 
-                              {/* <button
-                                onClick={(e) => addItemToCart(e, product)}
-                                className="text-decoration-none align-items-center justify-content-center jus w-100 d-flex cart"
-                                href="#"
-                              >
-                                <FontAwesomeIcon
-                                  className="mr-2"
-                                  icon={faShoppingCart}
-                                  size="lg"
-                                />
-                                {isProductPresentInCart(product) ? "Checkout" : "Add to Cart"}
-                              </button> */}
-
-                              {product?.show_stock == 1 &&
-                              product &&
-                              product.stock_status == "Out Stock" ? (
-                                <>
-                                  <div className="d-flex-column pb-0 pb-lg-5">
+                              <div className="d-flex-column pb-0 pb-lg-5">
+                                {product?.show_stock === 1 &&
+                                product?.stock_status === "Out Stock" ? (
+                                  <>
                                     <p
                                       className="text-center"
-                                      style={{
-                                        color:
-                                          product?.show_stock == 1 &&
-                                          product &&
-                                          product.stock_status == "Out Stock"
-                                            ? "red"
-                                            : "",
-                                        fontSize: "10px",
-                                      }}
+                                      style={{ color: "red" }}
                                     >
-                                      {product?.show_stock == 1 &&
-                                      product &&
-                                      product.stock_status == "Out Stock" ? (
-                                        "Out Of Stock"
-                                      ) : (
-                                        <>&nbsp;</>
-                                      )}
+                                      Out Of Stock
                                     </p>
                                     <button
-                                      className="text-decoration-none align-items-center justify-content-center jus w-100 d-flex cart"
+                                      className="cart"
                                       disabled
-                                      style={{ opacity: "0.6" }}
+                                      style={{ opacity: 0.6 }}
                                     >
                                       <FontAwesomeIcon
-                                        className="mr-2"
                                         icon={faShoppingCart}
                                         size="lg"
                                       />
-                                      {isProductPresentInCart(product)
-                                        ? "Add to Cart"
-                                        : "Add to Cart"}
+                                      Add to Cart
                                     </button>
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <div className="d-flex-column pb-0 pb-lg-5">
-                                    <p
-                                      className="text-center"
-                                      style={{
-                                        color:
-                                          product?.show_stock == 1 &&
-                                          product &&
-                                          product.stock_status == "Out Stock"
-                                            ? "red"
-                                            : "",
-                                        fontSize: "10px",
-                                      }}
-                                    >
-                                      {product?.show_stock == 1 &&
-                                      product &&
-                                      product.stock_status == "Out Stock" ? (
-                                        <>&nbsp;</>
-                                      ) : (
-                                        <>&nbsp;</>
-                                      )}
-                                    </p>
-                                    <button
-                                      onClick={(e) => addItemToCart(e, product)}
-                                      className="text-decoration-none align-items-center justify-content-center jus w-100 d-flex cart"
-                                      href="#"
-                                    >
-                                      <FontAwesomeIcon
-                                        className="mr-2"
-                                        icon={faShoppingCart}
-                                        size="lg"
-                                      />
-                                      {isProductPresentInCart(product)
-                                        ? "Checkout"
-                                        : "Add to Cart"}
-                                    </button>
-                                  </div>
-                                </>
-                              )}
+                                  </>
+                                ) : (
+                                  <button
+                                    onClick={(e) => addItemToCart(e, product)}
+                                    className="cart"
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faShoppingCart}
+                                      size="lg"
+                                    />
+                                    {isProductPresentInCart(product)
+                                      ? "Checkout"
+                                      : "Add to Cart"}
+                                  </button>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1065,6 +966,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          
         </div>
         <br />
         <div className="row">
