@@ -151,8 +151,8 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
       <AdminBreadcrumbs
         items={[
           {
-            path: pagePaths.adminSubSubCategory,
-            label: "Sub Sub Categories",
+            path: pagePaths.adminCategories,
+            label: "Categories Management",
           },
           {
             path: pagePaths.adminCreateSubSubCategory,

@@ -1,20 +1,16 @@
 "use client";
 
 import { useFormik } from "formik";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
+
 import { useRouter } from "next/navigation";
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
-import {
-  createCategory,
-  fetchCategories,
-  updateCategory,
-} from "../../../../../redux/action";
-
+import { fetchCategories, updateCategory } from "../../../../../redux/action";
 import { pagePaths } from "../../../../../utils/constants/constant";
 import lazyLoadable from "../../../../../utils/lazyLoadable";
 import { uploadImage } from "../../../../../lib/services/file-upload";
@@ -29,12 +25,14 @@ const RichtextEditor = lazyLoadable(() =>
   import("../../../../../components/RichtextEditor")
 );
 
-const AdminCreateCategoryPage = ({ isEditPage = false }) => {
+const AdminCreateCategoryPage = ({ isEditPage = true }) => {
   const formikRef = useRef();
   const dispatch = useDispatch();
   const [previewImage, setPreviewImage] = useState(null);
   const navigate = useRouter();
   const { id } = useParams();
+  console.log("ID from useParams:", id);
+
   const { categories } = useSelector((state) => state.admin);
   const [loading, setLoading] = useState(false);
 

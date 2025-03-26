@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Card from "../../../../../components/Card/index";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
@@ -76,19 +76,6 @@ const AdminCreateSubCategoryPage = ({ isEditPage = false }) => {
               }
             )
           );
-        } else {
-          dispatch(
-            createSubCategory(
-              {
-                ...values,
-                image: fileUrl,
-              },
-              () => {
-                setSubmitting(false);
-                navigate.push(pagePaths.adminSubCategory);
-              }
-            )
-          );
         }
       }
     },
@@ -97,13 +84,6 @@ const AdminCreateSubCategoryPage = ({ isEditPage = false }) => {
   useEffect(() => {
     formikRef.current = formik;
   }, [formik]);
-
-  // useEffect(() => {
-  //   const formik = formikRef.current || {};
-  //   if (categories?.length && formik) {
-  //     formik.setFieldValue("category_id", categories[0].id);
-  //   }
-  // }, [categories]);
 
   useEffect(() => {
     const formik = formikRef.current || {};
@@ -124,19 +104,19 @@ const AdminCreateSubCategoryPage = ({ isEditPage = false }) => {
       <AdminBreadcrumbs
         items={[
           {
-            path: pagePaths.adminSubCategory,
-            label: "Sub Categories",
+            path: pagePaths.adminCreateSubCategory,
+            label: "Category Page",
           },
           {
-            path: pagePaths.adminCreateSubCategory,
-            label: isEditPage ? "Edit Sub Category" : "Create Sub Category",
+            path: pagePaths.adminCreateSubCategoryEdit,
+            label: "Edit Sub Category",
           },
         ]}
       />
       <div>
         <Card className={styles.card}>
           <div className={styles.cardHeader}>
-            <p className={styles.title}>Add Sub Category Details</p>
+            <p className={styles.title}>Update Sub Category Details</p>
           </div>
           <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
             <Form.Group>

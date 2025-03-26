@@ -86,6 +86,12 @@ export const pagePaths = {
   adminCreateEmployee:
     "/admin/EmployeesManagementPage/AdminCreateEmployeesPage",
   adminCreateEmployeeEdit: "/admin/EmployeesManagementPage/edit/:id",
+  adminArticleType: "/admin/ArticalTypeManagementPage",
+  adminCreateArticleType:
+    "/admin/ArticalTypeManagementPage/AdminCreateArticalPage",
+  adminCreateArticleTypeEdit: "/admin/ArticalTypeManagementPage/edit/:id",
+  adminCreateArticleTypeComment: "/admin/ArticalTypeManagementPage/comment/:id",
+  adminPreferenceType: "/admin/PreferenceTypeManagementPage",
   hair: "/Hair",
   ayurveda: "/Ayurveda",
   nutrition: "/Nutrition",
@@ -166,7 +172,7 @@ export const pagePaths = {
   adminCuratedUploadExcelSheet: "/admin/curated/upload/images/:id",
   adminPopupManagement: "/admin/PopupManagement",
   adminPopupManagementAdd: "/admin/PopupManagement/AdminCreatePopupPage",
-  adminPopupManagementEdit: "/admin/popup/edit/:id",
+  adminPopupManagementEdit: "/admin/PopupManagement/edit/:id",
   adminEditOrder: "/admin/orders/edit/:id",
   trackOrder: "/TrackOrder",
   adminUserWalletTransaction: "/admin/wallet-transaction",

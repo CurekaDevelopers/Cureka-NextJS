@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const webpack = require("webpack");
-
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -20,12 +18,10 @@ const nextConfig = {
       },
     ],
   },
-  output: "standalone",
   experimental: {
-    turbo: {
-      loaders: {},
-    },
+    turbo: {}, // ✅ Corrected: turbo should be an object, not a boolean
   },
+  output: "standalone",
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {

@@ -107,20 +107,20 @@ export const validationSchema = Yup.object().shape({
   description: Yup.string().required("Description is required"),
 });
 
-export const initialValues = {
-  category_id: "",
-  title: "",
-  image: "",
-  thumbnail_image: "",
-  url: "",
-  description: "",
-  canonical_url: "",
-  og_tag: "",
-  keywords: "",
-  content: "",
-  content1: "",
-  blog_date: "",
-  concern_id: "",
-  popularity: "",
-  status: "Active",
-};
+// export const initialValues = {
+//   category_id: "",
+//   title: "",
+//   image: "",
+//   thumbnail_image: "",
+//   url: "",
+//   description: "",
+//   canonical_url: "",
+//   og_tag: "",
+//   keywords: "",
+//   content: "",
+//   content1: "",
+//   blog_date: "",
+//   concern_id: "",
+//   popularity: "",
+//   status: "Active",
+// };

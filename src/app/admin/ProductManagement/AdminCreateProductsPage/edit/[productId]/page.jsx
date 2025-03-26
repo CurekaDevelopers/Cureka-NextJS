@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Card from "../../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../../components/admin/AdminBreadcrumbs";
@@ -39,7 +39,7 @@ const RichtextEditor = lazyLoadable(() =>
   import("../../../../../../components/RichtextEditor")
 );
 
-const AdminCreateBrandsPage = ({ isEditPage = false }) => {
+const AdminCreateBrandsPage = ({ isEditPage = true }) => {
   const navigate = useRouter();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -496,31 +496,6 @@ const AdminCreateBrandsPage = ({ isEditPage = false }) => {
     dispatch(fetchArticleType());
     dispatch(fetchPreferenceType());
   }, [isEditPage]);
-
-  // const handleImageChange = (event) => {
-  //     const selectedFiles = Array.from(event.target.files);
-  //     setUploadedImage(prevSelectedFiles => [...prevSelectedFiles, ...selectedFiles])
-  //     clearErrors('product_image')
-  //     if (selectedFiles.length > 0) {
-  //         const imageArray = selectedFiles.map(file => URL.createObjectURL(file));
-  //         setPreviewImages(prevImages => [...prevImages, ...imageArray]);
-  //     }
-  // };
-
-  // useEffect(() => {
-  //     if (uploadedImage?.length > 0) {
-  //         setValue('product_image', uploadedImage)
-  //     }
-  // }, [uploadedImage])
-
-  // const handleRemoveImage = (index) => {
-  //     const newPreviewImages = [...previewImages];
-  //     const imgFile = [...uploadedImage]
-  //     imgFile.splice(index, 1);
-  //     setUploadedImage(imgFile)
-  //     newPreviewImages.splice(index, 1);
-  //     setPreviewImages(newPreviewImages);
-  // };
 
   const handleImageChange = (event) => {
     const selectedFiles = Array.from(event.target.files);

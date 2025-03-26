@@ -1,167 +1,139 @@
 "use client";
 
-import { useFormik } from "formik";
-import { useEffect, useRef, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { useRouter } from "next/navigation";
-import Card from "../../../../../components/Card";
-import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
 import {
-  articleCategory,
   fetchArticleType,
   updateArticleType,
 } from "../../../../../redux/action";
-import { pagePaths } from "../../../../../utils/constants/constant";
-import lazyLoadable from "../../../../../utils/lazyLoadable";
-import { uploadImage } from "../../../../../lib/services/file-upload";
-import { status } from "../../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
+import { useFormik } from "formik";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Card from "../../../../../components/Card";
+import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
+import { pagePaths } from "../../../../../utils/constants/constant";
+import { status } from "../../../../../utils/constants/common.constants";
 import styles from "./styles.module.scss";
 
-const RichtextEditor = lazyLoadable(() =>
-  import("../../../../../components/RichtextEditor")
-);
-
-const AdminCreateCategoryPage = ({ isEditPage = false }) => {
-  const formikRef = useRef();
+const AdminArticalPageEdit = ({ isEditPage = true }) => {
   const dispatch = useDispatch();
-  const [previewImage, setPreviewImage] = useState(null);
-  const navigate = useRouter();
+  const router = useRouter();
   const { id } = useParams();
+
+  console.log("ID from useParams:", id);
+
   const { articleType } = useSelector((state) => state.admin);
   const [loading, setLoading] = useState(false);
 
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      //setLoading(true);
+  useEffect(() => {
+    if (isEditPage && id) {
+      dispatch(fetchArticleType(id));
+    }
+  }, [isEditPage, id, dispatch]);
 
-      if (isEditPage) {
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: async (values) => {
+      console.log("Submitting Form with Values:", values);
+      setLoading(true);
+
+      if (isEditPage && id) {
         dispatch(
-          updateArticleType(
-            id,
-            {
-              ...values,
-            },
-            () => {
-              setLoading(false);
-              navigate(-1);
+          updateArticleType(id, values, (error) => {
+            console.log("Update Callback Triggered", error);
+            setLoading(false);
+            if (!error) {
+              router.back();
+            } else {
+              console.error("Update Failed:", error);
             }
-          )
-        );
-      } else {
-        dispatch(
-          articleCategory(
-            {
-              ...values,
-            },
-            () => {
-              setSubmitting(false);
-              navigate.push(pagePaths.adminArticalType);
-            }
-          )
+          })
         );
       }
     },
   });
 
   useEffect(() => {
-    formikRef.current = formik;
-  }, [formik]);
-
-  useEffect(() => {
-    const formik = formikRef.current || {};
-    if (isEditPage && articleType?.results?.length && id && formik.setValues) {
-      const category = articleType?.results?.find(
-        (item) => parseInt(item.id) === parseInt(id)
+    if (isEditPage && articleType?.results?.length && id) {
+      const category = articleType.results.find(
+        (item) => item.id === parseInt(id)
       );
-      if (!category) {
-        navigate.push(pagePaths.adminCategories);
+      if (category) {
+        formik.setValues({
+          name: category.name || "",
+          status: category.status || "",
+        });
+      } else {
+        router.push(pagePaths.adminCategories);
       }
-      formik.setValues(category || {});
-      setPreviewImage(category?.image);
     }
-  }, [isEditPage, articleType, id, navigate]);
-
-  useEffect(() => {
-    if (isEditPage) {
-      dispatch(fetchArticleType());
-    }
-  }, [isEditPage]);
+  }, [isEditPage, articleType, id, router]);
 
   return (
     <div className={styles.container}>
       <AdminBreadcrumbs
         items={[
-          {
-            path: pagePaths.adminCategories,
-            label: "Categories Management",
-          },
+          { path: pagePaths.adminCategories, label: "Categories Management" },
           {
             path: pagePaths.adminCreateCategory,
-            label: isEditPage ? "Edit Article" : "Create Article",
+            label: isEditPage ? "Edit Artical Management" : "Create Category",
           },
         ]}
       />
-      <div>
-        <Card className={styles.card}>
-          <div className={styles.cardHeader}>
-            <p className={styles.title}>Add Article Details</p>
-          </div>
-          <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
-            <Form.Group>
-              <Form.Label htmlFor="name">Article Type Title/Name</Form.Label>
-              <Form.Control
-                type="text"
-                id="name"
-                name="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-              />
-              {formik.errors.name && formik.touched.name && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.name}
-                </Form.Text>
-              )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="status">Status</Form.Label>
-              <Form.Select
-                aria-label="Select Category"
-                id="status"
-                name="status"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.status}
-              >
-                <option disabled>Select Status</option>
-                {Object.entries(status).map(([key, value]) => {
-                  return (
-                    <option key={key} value={value}>
-                      {value}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-            </Form.Group>
-            <Button
-              disabled={loading}
-              type="submit"
-              className={styles.submitButton}
-              variant="primary"
+      <Card className={styles.card}>
+        <div className={styles.cardHeader}>
+          <p className={styles.title}>Add Article Details</p>
+        </div>
+        <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
+          <Form.Group>
+            <Form.Label htmlFor="name">Article Type Title/Name</Form.Label>
+            <Form.Control
+              type="text"
+              id="name"
+              name="name"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+            />
+            {formik.errors.name && formik.touched.name && (
+              <Form.Text className={styles.errorText} muted>
+                {formik.errors.name}
+              </Form.Text>
+            )}
+          </Form.Group>
+          <Form.Group>
+            <Form.Label htmlFor="status">Status</Form.Label>
+            <Form.Select
+              id="status"
+              name="status"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.status}
             >
-              {loading ? "Loading..." : "Submit"}
-            </Button>
-          </Form>
-        </Card>
-      </div>
+              <option disabled>Select Status</option>
+              {Object.entries(status).map(([key, value]) => (
+                <option key={key} value={value}>
+                  {value}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          <Button
+            disabled={loading}
+            type="submit"
+            className={styles.submitButton}
+            variant="primary"
+          >
+            {loading ? "Loading..." : "Submit"}
+          </Button>
+        </Form>
+      </Card>
     </div>
   );
 };
 
-export default AdminCreateCategoryPage;
+export default AdminArticalPageEdit;

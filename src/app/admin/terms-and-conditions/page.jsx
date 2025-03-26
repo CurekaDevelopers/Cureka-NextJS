@@ -16,7 +16,7 @@ const RichtextEditor = lazyLoadable(() =>
   import("../../../components/RichtextEditor")
 );
 
-const PrivacyPolicyPage = ({
+const TermsAndConditions = ({
   policyName = "Terms & Conditions",
   policySlug = "Terms & Conditions",
 }) => {
@@ -122,4 +122,4 @@ const PrivacyPolicyPage = ({
   );
 };
 
-export default PrivacyPolicyPage;
+export default TermsAndConditions;

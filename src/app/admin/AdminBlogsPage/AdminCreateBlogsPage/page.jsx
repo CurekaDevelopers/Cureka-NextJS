@@ -8,30 +8,24 @@ import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useRouter } from "next/navigation";
-import Card from "../../../../../components/Card";
-import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
+import Card from "../../../../components/Card";
+import AdminBreadcrumbs from "../../../../components/admin/AdminBreadcrumbs";
 import {
   createBlog,
   fetchBlogs,
   fetchCategories,
   fetchConcerns,
   updateBlogs,
-} from "../../../../../redux/action";
-import { pagePaths } from "../../../../../utils/constants/constant";
-import lazyLoadable from "../../../../../utils/lazyLoadable";
-import { uploadImage } from "../../../../../lib/services/file-upload";
-import {
-  convertToUrlSlug,
-  getMySqlDate,
-} from "../../../../../utils/common.utils";
-import {
-  initialValues,
-  validationSchema,
-} from "../../AdminCreateBlogsPage/helper";
+} from "../../../../redux/action";
+import { pagePaths } from "../../../../utils/constants/constant";
+import lazyLoadable from "../../../../utils/lazyLoadable";
+import { uploadImage } from "../../../../lib/services/file-upload";
+import { convertToUrlSlug, getMySqlDate } from "../../../../utils/common.utils";
+import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 
 const RichtextEditor = lazyLoadable(() =>
-  import("../../../../../components/RichtextEditor")
+  import("../../../../components/RichtextEditor")
 );
 
 const AdminCreateBlogsPage = ({ isEditPage = false }) => {

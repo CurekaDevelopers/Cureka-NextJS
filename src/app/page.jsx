@@ -32,6 +32,7 @@ import wallet from "../public/images/wallet.png";
 import LikeIcon from "../public/svg-components/LikeIcon";
 import CarouselSlider from "../components/CarouselSlider";
 import "../styles/home.css";
+import dynamic from "next/dynamic";
 import {
   addProductToCart,
   addProductToWishlist,
@@ -50,13 +51,19 @@ import { apiUrls, httpCode } from "../utils/constants/api.constants";
 import { generateUrl } from "../utils/constants/common.constants";
 import Footer from "../views/Footer";
 import Header from "../views/Header/index";
-import PopupModal from "../views/Header/HomePopup";
+// import PopupModal from "../views/Header/HomePopup";
 import ScrollToTop from "../views/ScrollToTop";
 import Link from "next/link";
 
 export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isPhone = useMediaQuery({ maxWidth: 991 });
+  const PopupModal = dynamic(() => import("../views/Header/HomePopup"), {
+    ssr: false,
+  });
+  // const Header = dynamic(() => import("../views/Header/HomePopup"), {
+
+  // });
   const { wishlistProducts, cartProducts } = useSelector(
     (state) => state.customer
   );
@@ -804,7 +811,11 @@ export default function Home() {
                                 ) : null}
                               </div>
 
-                              <Link href={generateUrl(product)} key={product.id} target="_blank">
+                              <Link
+                                href={generateUrl(product)}
+                                key={product.id}
+                                target="_blank"
+                              >
                                 <div className="product">
                                   <img
                                     src={product_front_na_image}
@@ -966,7 +977,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
         </div>
         <br />
         <div className="row">

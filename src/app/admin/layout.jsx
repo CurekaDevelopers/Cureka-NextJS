@@ -6,9 +6,11 @@ import { useRouter } from "next/navigation";
 import Sidebar from "../../components/admin/Sidebar";
 import { pagePaths } from "../../utils/constants/constant";
 import styles from "./styles.module.scss";
-import AdminHeader from "../../components/admin/AdminHeader";
-import AdminFooter from "../../components/admin/AdminFooter";
-
+// import AdminHeader from "../../components/admin/AdminHeader";
+// import AdminFooter from "../../components/admin/AdminFooter";
+import dynamic from "next/dynamic";
+const AdminHeader = dynamic(() => import("../../components/admin/AdminHeader"));
+const AdminFooter = dynamic(() => import("../../components/admin/AdminFooter"));
 const AdminDashboardLayout = ({ children }) => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const router = useRouter(); // Correctly initializing useRouter
