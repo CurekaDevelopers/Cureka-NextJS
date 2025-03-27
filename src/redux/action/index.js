@@ -2308,7 +2308,7 @@ export const getpossibleDeliveryData = async ({
 }) => {
   const obj = {
     email: "care@cureka.com",
-    password: "Wed@2024",
+    password: "Cureka@2024",
   };
   try {
     const shiprocketAuthToken = await axios.post(apiUrls.shipRocketAuth, obj, {

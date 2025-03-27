@@ -58,7 +58,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import toast from "react-hot-toast";
 import ScrollToTop from "../../../views/ScrollToTop";
 // import hmac from "hmac"
-// import CryptoJS from "crypto-js";
+import CryptoJS from "crypto-js";
 import Image from "next/image";
 
 export default function Productdetails() {
@@ -80,6 +80,7 @@ export default function Productdetails() {
   const [possibleDeliveryData, setPossibleDeliveryData] = useState("");
   const [pinCode, setPinCode] = useState("");
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
   const [removedProductReview, setRemovedProductReview] = useState([]);
   const [modalProductPopupShow, setmodalProductPopupShow] = useState(false);
   const [openShippingCharges, setIsOpenShippingCharges] = useState(false);
@@ -226,12 +227,12 @@ export default function Productdetails() {
     // console.log(hmac, 'hmac')
     // const calculated_hmac_base64 = hmac.toString(CryptoJS.enc.Base64);
     // Generate the HMAC using CryptoJS
-    // const hmac = CryptoJS.HmacSHA256(content, key);
-    // console.log(hmac, "hmac");
+    const hmac = CryptoJS.HmacSHA256(content, key);
+    console.log(hmac, "hmac");
     // // Convert the HMAC to base64 format
-    // const calculated_hmac_base64 = CryptoJS.enc.Base64.stringify(hmac);
-    // console.log(calculated_hmac_base64, "calculated_hmac_base64");
-    // return calculated_hmac_base64;
+    const calculated_hmac_base64 = CryptoJS.enc.Base64.stringify(hmac);
+    console.log(calculated_hmac_base64, "calculated_hmac_base64");
+    return calculated_hmac_base64;
   };
 
   const addBuynow = async (event, product, quantity = 1) => {
@@ -251,9 +252,9 @@ export default function Productdetails() {
 
     const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
     const payload = JSON.stringify(data);
-    // const hmac = CryptoJS.HmacSHA256(payload, key).toString(
-    //   CryptoJS.enc.Base64
-    // );
+    const hmac = CryptoJS.HmacSHA256(payload, key).toString(
+      CryptoJS.enc.Base64
+    );
     // console.log(payload, 'payload')
     try {
       const response = await axios.post(
@@ -651,8 +652,8 @@ export default function Productdetails() {
               style={{ overflow: "visible" }}
             >
               <div
-                className="col-lg-4 mt-3 position-sticky"
-                style={{ top: "300px", zIndex: "1" }}
+                className={`col-lg-4 mt-3 ${isMobile ? "" : "position-sticky"}`}
+                style={isDesktop ? { top: "300px", zIndex: "1" } : {}}
               >
                 <div className="product-img">
                   <ReactImageMagnify
@@ -747,8 +748,8 @@ export default function Productdetails() {
                 </h1>
 
                 <div
-                  className="col-lg-6 pl-lg-0 mt-5 position-sticky"
-                  style={{ top: "370px" }}
+                  className={`col-lg-6 pl-lg-0 mt-5 ${isMobile ? "" : "position-sticky"}`}
+                  style={isDesktop ? { top: "370px" } : {}}
                 >
                   <h2 className="highlights">Highlights</h2>
                   <div

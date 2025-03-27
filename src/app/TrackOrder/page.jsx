@@ -12,6 +12,7 @@ import { env } from "../../config/env.config";
 import "../../styles/faq.css";
 import Footer from "../../views/Footer";
 import Header from "../../views/Header/index";
+import Image from "next/image";
 
 export default function TrackOrder() {
   const [orderData, setOrderData] = useState({});
@@ -100,7 +101,7 @@ export default function TrackOrder() {
         <div className="container mt-5">
           <div className="d-flex home-back-section">
             <Link href="/">
-              <img
+              <Image
                 className="img-fluid d-flex align-self-center"
                 src={housechimney}
                 width="16px"
