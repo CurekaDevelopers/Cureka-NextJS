@@ -809,22 +809,51 @@ export const deleteArticalType =
   };
 
 // create standard size by artical type api
+// export const addStandardSize =
+//   ({ name, artical_type_id, status }, successCallback, failureCallback) =>
+//   async (/*dispatch*/) => {
+//     try {
+//       const payload = {
+//         name,
+//         status: status ? status : "Active",
+//         artical_type_id,
+//       };
+//       const response = await api.post(apiUrls.addStandardSize, payload);
+//       if (response.status === httpCode.SUCCESS) {
+//         toast.success("Standard Size added successfully.");
+//         successCallback();
+//       }
+//     } catch (error) {
+//       failureCallback(error);
+//       toast.error(
+//         error?.response?.data?.error ||
+//           error.message ||
+//           "Something went wrong while adding new Standard size!"
+//       );
+//     }
+//   };
 export const addStandardSize =
   ({ name, artical_type_id, status }, successCallback, failureCallback) =>
-  async (/*dispatch*/) => {
+  async () => {
     try {
       const payload = {
         name,
-        status: status ? status : "Active",
+        status: status || "Active", // Use default value more concisely
         artical_type_id,
       };
+
       const response = await api.post(apiUrls.addStandardSize, payload);
+
       if (response.status === httpCode.SUCCESS) {
         toast.success("Standard Size added successfully.");
-        successCallback();
+        if (typeof successCallback === "function") {
+          successCallback();
+        }
       }
     } catch (error) {
-      failureCallback(error);
+      if (typeof failureCallback === "function") {
+        failureCallback(error);
+      }
       toast.error(
         error?.response?.data?.error ||
           error.message ||
@@ -872,35 +901,65 @@ export const fetchCategories = () => async (dispatch) => {
 };
 
 export const updateCategory =
-  (
-    id,
-    { name, image, description, status, nav_link, metaTitle, metaDescription },
-    successCallback
-  ) =>
-  async (/*dispatch*/) => {
+  (id, categoryData, successCallback) => async (dispatch) => {
     try {
-      const payload = {
-        name,
-        image,
-        description,
-        nav_link,
-        status,
-        metaTitle,
-        metaDescription,
-      };
-      const response = await api.put(apiUrls.updateCategory(id), payload);
+      const response = await api.put(apiUrls.updateCategory(id), categoryData);
+
       if (response.status === httpCode.SUCCESS) {
         toast.success("Category updated successfully.");
-        successCallback();
+
+        // Dispatch action to update state (if needed)
+        dispatch({
+          type: "UPDATE_CATEGORY_SUCCESS",
+          payload: { id, ...categoryData },
+        });
+
+        if (typeof successCallback === "function") {
+          successCallback();
+        }
+      } else {
+        toast.error("Failed to update category. Please try again.");
       }
     } catch (error) {
+      console.error("Update Category Error:", error);
+
       toast.error(
-        error?.response?.data?.error ||
-          error.message ||
-          "Something went wrong while updating categories!"
+        error?.response?.data?.message ||
+          "Something went wrong while updating the category!"
       );
     }
   };
+
+// export const updateCategory =
+//   (
+//     id,
+//     { name, image, description, status, nav_link, metaTitle, metaDescription },
+//     successCallback
+//   ) =>
+//   async (/*dispatch*/) => {
+//     try {
+//       const payload = {
+//         name,
+//         image,
+//         description,
+//         nav_link,
+//         status,
+//         metaTitle,
+//         metaDescription,
+//       };
+//       const response = await api.put(apiUrls.updateCategory(id), payload);
+//       if (response.status === httpCode.SUCCESS) {
+//         toast.success("Category updated successfully.");
+//         successCallback();
+//       }
+//     } catch (error) {
+//       toast.error(
+//         error?.response?.data?.error ||
+//           error.message ||
+//           "Something went wrong while updating categories!"
+//       );
+//     }
+//   };
 
 export const deleteCategories =
   (id, successCallback) => async (/*dispatch*/) => {

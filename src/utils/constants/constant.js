@@ -18,7 +18,7 @@ export const pagePaths = {
   addComment: "/user/blog/addComment",
   adminConcern: "/admin/ConcernsManagementPage",
   adminCreateConcern: "/admin/ConcernsManagementPage/AdminCreateConcernsPage",
-  adminCreateConcernEdit: "/admin/concern/edit/:id",
+  adminCreateConcernEdit: "/admin/ConcernsManagementPage/edit/:id",
   adminOrders: "/admin/orders",
   adminCreateOrders: "/admin/orders/add",
   adminCreateOrdersEdit: "/admin/orders/edit/:id",
@@ -41,10 +41,9 @@ export const pagePaths = {
   adminCreateProducts: "/admin/ProductManagement/AdminCreateProductsPage",
   adminCreateProductSize:
     "/admin/ProductManagement/AdminCreateProductSizePage/:id",
-  adminCreateProductEdit:
-    "/admin/ProductManagement/AdminCreateProductsPage/edit/:id",
+  adminCreateProductEdit: "/admin/ProductManagement/edit/:id",
   adminCreateProductFaq: "/admin/products/faq/:id",
-  adminCreateBrandEdit: "/admin/brands/edit/:id",
+  adminCreateBrandEdit: "/admin/BrandsManagementPage/edit/:id",
   adminCreateCategory:
     "/admin/CategoriesManagementPage/AdminCreateCategoryPage",
   adminCreateCategoryEdit:
@@ -57,8 +56,7 @@ export const pagePaths = {
     "/admin/CategoriesManagementPage/AdminCreateSubSubCategoryPage",
   adminCreateArticalType:
     "/admin/ArticalTypeManagementPage/AdminCreateArticalPage",
-  adminEditArticalType:
-    "/admin/ArticalTypeManagementPage/ArticalTypeManagementPageEdit/:id",
+  adminEditArticalType: "/admin/ArticalTypeManagementPage/edit/:id",
   adminCreatePreferenceType:
     "/admin/CategoriesManagementPage/AdminCreatePreferencePage",
   adminCreateStandardArticalType: "/admin/AdminCreateStandardArticalPage/:id",
@@ -66,7 +64,8 @@ export const pagePaths = {
     "/admin/standard-artical-type/edit/:id/:standardEdit",
   adminCreateSubSubCategoryEdit:
     "/admin/CategoriesManagementPage/SubCategoriesManagementPageEdit/edit/:id",
-  adminCreatePreferenceEdit: "/admin/preference-type/edit/:id",
+  adminCreatePreferenceEdit:
+    "/admin/CategoriesManagementPage/AdminCreatePreferencePage/edit/:id",
   adminCreateSubSubSubCategory:
     "/admin/CategoriesManagementPage/AdminCreateSubSubSubCategoryPage",
   adminCreateSubSubSubCategoryedit:
@@ -155,7 +154,7 @@ export const pagePaths = {
   adminSingleAddManagement: "/admin/SingleAddManagementPage",
   adminCreateSingleAdd:
     "/admin/SingleAddManagementPage/AdminCreateSingleAddPage",
-  adminCreateSingleAddEdit: "/admin/singleAdd/edit/:id",
+  adminCreateSingleAddEdit: "/admin/SingleAddManagementPage/edit/:id",
   adminMultipleAddManagement: "/admin/MultipleAddManagementPage",
   adminCreateMultipleAdd:
     "/admin/MultipleAddManagementPage/AdminCreateMultipleAddPage",
@@ -166,7 +165,7 @@ export const pagePaths = {
   adminCreateCuratedAddEdit: "/admin/curateAdd/edit/:id",
   adminSelfAddManagement: "/admin/SelfAddManagementPage",
   adminCreateSelfAdd: "/admin/selfAdd/add",
-  adminCreateSelfAddEdit: "/admin/selfAdd/edit/:id",
+  adminCreateSelfAddEdit: "/admin/SelfAddManagementPage/edit/:id",
   addsurl: "/:slug",
   adminCreateOrder: "/admin/orders/AdminCreateOrderPage",
   adminCuratedUploadExcelSheet: "/admin/curated/upload/images/:id",

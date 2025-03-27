@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import styles from "./styles.module.scss";
-
+import { redirect } from "next/navigation";
 export default function AdminDashboardPage() {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/admin/Login");
+      redirect("/admin/Login");
     }
   }, [isLoggedIn, router]);
 

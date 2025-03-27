@@ -4,70 +4,68 @@ import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useRouter } from "next/navigation";
-import Card from "../../../../components/Card";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Card from "../../../../../../components/Card";
+import AdminBreadcrumbs from "../../../../../../components/admin/AdminBreadcrumbs";
 import {
-  addStandardSize,
-  editStandardSize,
-  fetchArticleType,
-  fetchCategories,
-  fetchListStandardSize,
-} from "../../../../redux/action";
-import { pagePaths } from "../../../../utils/constants/constant";
-import lazyLoadable from "../../../../utils/lazyLoadable";
-import { status } from "../../../../utils/constants/common.constants";
+  editPreferenceType,
+  fetchPreferenceType,
+  preferenceCategory,
+} from "../../../../../../redux/action";
+import { pagePaths } from "../../../../../../utils/constants/constant";
+import lazyLoadable from "../../../../../../utils/lazyLoadable";
+import { status } from "../../../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
-import AdminBreadcrumbs from "../../../../components/admin/AdminBreadcrumbs/index";
 
 const RichtextEditor = lazyLoadable(() =>
-  import("../../../../components/RichtextEditor")
+  import("../../../../../../components/RichtextEditor")
 );
 
-const AdminCreateStandardArticalPage = ({ isEditPage = false }) => {
+const AdminCreateCategoryPage = ({ isEditPage = true }) => {
   const formikRef = useRef();
   const dispatch = useDispatch();
+  const [previewImage, setPreviewImage] = useState(null);
   const navigate = useRouter();
-  const { id, standardEdit } = useParams();
-  const { articleType, listStandardSize } = useSelector((state) => state.admin);
+  const { id } = useParams();
+  const { categories, preferenceType } = useSelector((state) => state.admin);
   const [loading, setLoading] = useState(false);
 
-  const { results, pagination } = articleType;
-
   useEffect(() => {
-    if (!results?.length && isEditPage) {
-      dispatch(fetchCategories());
+    if (!categories || (!categories?.length && isEditPage)) {
+      dispatch(fetchPreferenceType());
     }
-  }, [results?.length, dispatch, isEditPage]);
+  }, [categories?.length, dispatch, isEditPage]);
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      setLoading(true);
+      //setLoading(true);
 
       if (isEditPage) {
         dispatch(
-          editStandardSize(
-            standardEdit,
+          editPreferenceType(
+            id,
             {
               ...values,
             },
             () => {
               setSubmitting(false);
-              navigate(-1);
+              navigate.push(pagePaths.adminCategories);
             }
           )
         );
       } else {
         dispatch(
-          addStandardSize(
+          preferenceCategory(
             {
               ...values,
             },
             () => {
               setSubmitting(false);
-              navigate(-1);
+              navigate.push(pagePaths.adminCategories);
             }
           )
         );
@@ -81,70 +79,50 @@ const AdminCreateStandardArticalPage = ({ isEditPage = false }) => {
 
   useEffect(() => {
     const formik = formikRef.current || {};
-    if (isEditPage && listStandardSize?.length && id && formik.setValues) {
-      const artical_type_id = listStandardSize?.find(
-        (item) => parseInt(item.id) === parseInt(standardEdit)
-      );
-      formik.setValues(artical_type_id || {});
-    }
-  }, [isEditPage, listStandardSize, id, navigate]);
+    console.log("Preference Type:", preferenceType);
 
-  useEffect(() => {
-    dispatch(fetchArticleType());
-    dispatch(fetchListStandardSize({ id }));
-  }, [dispatch]);
+    // Ensure preferenceType and results array exist before using `find`
+    if (
+      isEditPage &&
+      preferenceType?.results &&
+      Array.isArray(preferenceType.results) &&
+      id &&
+      formik.setValues
+    ) {
+      const category = preferenceType.results.find(
+        (item) => parseInt(item.id) === parseInt(id)
+      );
+
+      if (!category) {
+        navigate.push(pagePaths.adminPreferenceType);
+      } else {
+        formik.setValues(category);
+      }
+    }
+  }, [isEditPage, preferenceType?.results, id, navigate]);
 
   return (
     <div className={styles.container}>
       <AdminBreadcrumbs
         items={[
           {
-            path: pagePaths.adminCategories,
-            label: "Categories Management",
+            path: pagePaths.adminPreferenceType,
+            label: "Preference  Management",
           },
           {
             path: pagePaths.adminCreateCategory,
-            label: isEditPage
-              ? "Edit Standard Article"
-              : "Create Standard Article",
+            label: isEditPage ? "Edit Preference" : "Create Preference",
           },
         ]}
       />
       <div>
         <Card className={styles.card}>
           <div className={styles.cardHeader}>
-            <p className={styles.title}>Add standard size details</p>
+            <p className={styles.title}>Add Preference Details</p>
           </div>
           <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
             <Form.Group>
-              <Form.Label htmlFor="artical_type_id">
-                Select Article Type<span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Select
-                aria-label="Select Category"
-                id="artical_type_id"
-                name="artical_type_id"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.artical_type_id || formik.values?.id}
-              >
-                <option value="">Select Article Type</option>
-                {results?.map((value, key) => (
-                  <option key={key} value={value?.id}>
-                    {value?.name}
-                  </option>
-                ))}
-              </Form.Select>
-              {formik.errors.artical_type_id &&
-                formik.touched.artical_type_id && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.artical_type_id}
-                  </Form.Text>
-                )}
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label htmlFor="name">Name</Form.Label>
+              <Form.Label htmlFor="name">Preference Name</Form.Label>
               <Form.Control
                 type="text"
                 id="name"
@@ -159,18 +137,15 @@ const AdminCreateStandardArticalPage = ({ isEditPage = false }) => {
                 </Form.Text>
               )}
             </Form.Group>
-
             <Form.Group>
-              <Form.Label htmlFor="status">
-                Status<span className="text-danger">*</span>
-              </Form.Label>
+              <Form.Label htmlFor="status">Status</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="status"
                 name="status"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values?.status}
+                value={formik.values.status}
               >
                 <option disabled>Select Status</option>
                 {Object.entries(status).map(([key, value]) => {
@@ -203,4 +178,4 @@ const AdminCreateStandardArticalPage = ({ isEditPage = false }) => {
   );
 };
 
-export default AdminCreateStandardArticalPage;
+export default AdminCreateCategoryPage;

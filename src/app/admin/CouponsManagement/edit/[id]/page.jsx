@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Select from "react-select";
 import Card from "../../../../../components/Card";
@@ -30,7 +30,7 @@ import {
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 
-const AdminCreateCouponsPage = ({ isEditPage = false }) => {
+const AdminCreateCouponsPage = ({ isEditPage = true }) => {
   const { coupons, brands, productOptions } = useSelector(
     (state) => state.admin
   );

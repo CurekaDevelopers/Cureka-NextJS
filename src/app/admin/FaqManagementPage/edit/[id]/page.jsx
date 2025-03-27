@@ -4,17 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import Card from "../../../../components/Card";
-import AdminBreadcrumbs from "../../../../components/admin/AdminBreadcrumbs";
-import { addFaq, editFaq } from "../../../../redux/action";
-import { pagePaths } from "../../../../utils/constants/constant";
-import { FAQType, status } from "../../../../utils/constants/common.constants";
+import Card from "../../../../../components/Card";
+import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
+import { addFaq, editFaq } from "../../../../../redux/action";
+import { pagePaths } from "../../../../../utils/constants/constant";
+import {
+  FAQType,
+  status,
+} from "../../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 
-const AdminCreateFaqsPage = ({ isEditPage = false }) => {
+const AdminCreateFaqsPage = ({ isEditPage = true }) => {
   const formikRef = useRef();
   const dispatch = useDispatch();
   const navigate = useRouter();

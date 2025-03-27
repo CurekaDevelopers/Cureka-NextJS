@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button, FormGroup, Row, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
@@ -22,6 +22,8 @@ import { env } from "../../../../../config/env.config";
 const staticSubMenus = ["Add", "Update", "Delete"];
 const UserRoleManagement = () => {
   const { id } = useParams();
+  console.log(id, "id from useParams");
+
   const dispatch = useDispatch();
   const navigate = useRouter();
   const [firstName, setFirstName] = useState("");

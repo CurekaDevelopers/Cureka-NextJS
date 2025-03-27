@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import {
   FAQStatus,
   FAQType,
-} from "../../../../utils/constants/common.constants";
+} from "../../../../../utils/constants/common.constants";
 
 export const validationSchema = Yup.object().shape({
   question: Yup.string().required("Question is required"),

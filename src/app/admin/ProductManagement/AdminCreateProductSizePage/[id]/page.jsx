@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
@@ -29,7 +29,7 @@ const RichtextEditor = lazyLoadable(() =>
   import("../../../../../components/RichtextEditor")
 );
 
-const AdminCreateProductSizePage = ({ isEditPage = false }) => {
+const AdminCreateProductSizePage = ({ isEditPage = true }) => {
   const formikRef = useRef();
   const navigate = useRouter();
   const dispatch = useDispatch();

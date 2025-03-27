@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import Form from "react-bootstrap/Form";
-import Card from "../../../components/Card";
-import AdminBreadcrumbs from "../../../components/admin/AdminBreadcrumbs";
-import { pagePaths } from "../utils/constants/constant";
+import Card from "../../../../../components/Card";
+import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
+import { pagePaths } from "../../../../../utils/constants/constant";
 import styles from "./styles.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -12,16 +12,16 @@ import {
   fetchConcerns,
   fetchProductsOptions,
   fetchBrands,
-} from "../../../redux/action";
+} from "../../../../../redux/action";
 import toast from "react-hot-toast";
 import Button from "react-bootstrap/Button";
 import { MultiSelect } from "react-multi-select-component";
-import { uploadImage } from "../../../services/file-upload";
-import { useParams } from "react-router-dom";
+import { uploadImage } from "../../../../../lib/services/file-upload";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { env } from "../../../config/env.config";
+import { env } from "../../../../../config/env.config";
 import { FixedSizeList as List } from "react-window";
 
 const AdminEditPopupPage = () => {
