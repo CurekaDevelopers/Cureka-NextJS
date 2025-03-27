@@ -31,6 +31,7 @@ import sellwithus from "../public/images/sellwithus.png";
 import wallet from "../public/images/wallet.png";
 import LikeIcon from "../public/svg-components/LikeIcon";
 import CarouselSlider from "../components/CarouselSlider";
+import Image from "next/image";
 import "../styles/home.css";
 import {
   addProductToCart,
@@ -225,10 +226,10 @@ export default function Home() {
             {chunk.map((coupon) => (
               <div key={coupon.id} className="item mr-3">
                 <a className="text-decoration-none coupon-img">
-                  <img
+                  <Image
                     src={coupon.image !== "" ? coupon.image : discount1}
-                    width="480px"
-                    height="186px"
+                    width={480}
+                    height={186}
                     className="img-fluid mx-auto d-block"
                     alt={coupon.name}
                   />
@@ -406,7 +407,7 @@ export default function Home() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <img
+                        <Image
                           className="img-fluid mx-auto d-block"
                           itemID={MultipleAdd.id}
                           src={MultipleAdd.image}
@@ -430,7 +431,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img
+                  <Image
                     src={singleAdd.image}
                     className="img-fluid woman women-height mx-auto"
                     alt="Advertisement"
@@ -509,10 +510,10 @@ export default function Home() {
                                 target="_blank"
                               >
                                 <div className="product">
-                                  <img
+                                  <Image
                                     src={product_front_na_image}
-                                    width="218px"
-                                    height="172px"
+                                    width={218}
+                                    height={172}
                                     className="img-fluid"
                                     alt="Product"
                                   />
@@ -525,10 +526,10 @@ export default function Home() {
                                     href={generateUrl(product)}
                                     target="_blank"
                                   >
-                                    <img
+                                    <Image
                                       src={eye}
-                                      width="10px"
-                                      height="10px"
+                                      width={10}
+                                      height={10}
                                       className="d-block mx-auto eye"
                                       alt="eye"
                                     />
@@ -555,7 +556,7 @@ export default function Home() {
                                 </button>
 
                                 {/* <div className="watch d-lg-block d-none">
-                                    <img
+                                    <Image
                                       src={share}
                                       width="10px"
                                       height="10px"
@@ -749,10 +750,10 @@ export default function Home() {
                   onClick={() => router.push(`/${curatedAdd?.url}`)}
                   style={{ cursor: "pointer" }} // Ensure it's clickable
                 >
-                  <img
+                  <Image
                     src={curatedAdd.image}
-                    width="320px"
-                    height="280px"
+                    width={320}
+                    height={280}
                     className="img-fluid mx-auto d-block"
                     alt="monsoon"
                   />
@@ -770,10 +771,10 @@ export default function Home() {
           <div className="col-lg-3 col-6">
             <Link href="/shop-by-age?min=0&max=5" passHref>
               <a className="text-decoration-none" target="_blank">
-                <img
+                <Image
                   src={age1}
-                  width="320px"
-                  height="280px"
+                  width={320}
+                  height={280}
                   className="img-fluid mx-auto d-block"
                   alt="monsoon"
                 />
@@ -784,10 +785,10 @@ export default function Home() {
           <div className="col-lg-3 col-6">
             <Link href="/shop-by-age?min=5&max=18" passHref>
               <a className="text-decoration-none" target="_blank">
-                <img
+                <Image
                   src={age2}
-                  width="320px"
-                  height="159px"
+                  width={320}
+                  height={159}
                   className="img-fluid mx-auto d-block mb-3"
                   alt="monsoontwo"
                 />
@@ -798,10 +799,10 @@ export default function Home() {
           <div className="col-lg-3 col-6">
             <Link href="/shop-by-age?min=18&max=50" passHref>
               <a className="text-decoration-none" target="_blank">
-                <img
+                <Image
                   src={age3}
-                  width="320px"
-                  height="280px"
+                  width={320}
+                  height={280}
                   className="img-fluid mx-auto d-block"
                   alt="monsoon"
                 />
@@ -812,10 +813,10 @@ export default function Home() {
           <div className="col-lg-3 col-6">
             <Link href="/shop-by-age?min=50&max=100" passHref>
               <a className="text-decoration-none" target="_blank">
-                <img
+                <Image
                   src={age4}
-                  width="320px"
-                  height="159px"
+                  width={320}
+                  height={159}
                   className="img-fluid mx-auto d-block mb-3"
                   alt="monsoontwo"
                 />
@@ -860,10 +861,10 @@ export default function Home() {
               target="_blank"
             >
               {/* <a className="text-decoration-none" href="#"> */}
-              <img
+              <Image
                 src={age1}
-                width="320px"
-                height="280px"
+                width={320}
+                height={280}
                 className="img-fluid mx-auto d-block"
                 alt="monsoon"
               />
@@ -877,10 +878,10 @@ export default function Home() {
               href={"/shop-by-age" + "?min=5&max=18"}
               target="_blank"
             >
-              <img
+              <Image
                 src={age2}
-                width="320px"
-                height="159px"
+                width={320}
+                height={159}
                 className="img-fluid mx-auto d-block mb-3"
                 alt="monsoontwo"
               />
@@ -893,10 +894,10 @@ export default function Home() {
               href={"/shop-by-age" + "?min=18&max=50"}
               target="_blank"
             >
-              <img
+              <Image
                 src={age3}
-                width="320px"
-                height="280px"
+                width={320}
+                height={280}
                 className="img-fluid mx-auto d-block"
                 alt="monsoon"
               />
@@ -909,10 +910,10 @@ export default function Home() {
               href={"/shop-by-age" + "?min=50&max=100"}
               target="_blank"
             >
-              <img
+              <Image
                 src={age4}
-                width="320px"
-                height="159px"
+                width={320}
+                height={159}
                 className="img-fluid mx-auto d-block mb-3"
                 alt="monsoontwo"
               />
@@ -996,10 +997,10 @@ export default function Home() {
                                 target="_blank"
                               >
                                 <div className="product">
-                                  <img
+                                  <Image
                                     src={product_front_tp_image}
-                                    width="218px"
-                                    height="172px"
+                                    width={218}
+                                    height={172}
                                     className="img-fluid"
                                     alt="Product"
                                   />
@@ -1012,10 +1013,10 @@ export default function Home() {
                                     href={generateUrl(product)}
                                     target="_blank"
                                   >
-                                    <img
+                                    <Image
                                       src={eye}
-                                      width="10px"
-                                      height="10px"
+                                      width={10}
+                                      height={10}
                                       className="d-block mx-auto eye"
                                       alt="eye"
                                     />
@@ -1042,7 +1043,7 @@ export default function Home() {
                                 </button>
 
                                 {/* <div className="watch d-lg-block d-none">
-                                    <img
+                                    <Image
                                       src={share}
                                       width="10px"
                                       height="10px"
@@ -1246,10 +1247,10 @@ export default function Home() {
                 key={i}
               >
                 <a className="text-decoration-none" href={yourself.url}>
-                  <img
+                  <Image
                     src={yourself.image}
-                    width="480px"
-                    height="260px"
+                    width={480}
+                    height={260}
                     className="img-fluid mx-auto d-block mb-3"
                     alt={yourself.url}
                   />
@@ -1270,7 +1271,7 @@ export default function Home() {
             <div>
               <picture>
                 <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
+                <Image
                   className="w-100 d-block img-fluid mx-auto d-block"
                   itemID={2}
                   src={offers1}
@@ -1284,7 +1285,7 @@ export default function Home() {
             <div>
               <picture>
                 <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
+                <Image
                   className="w-100 d-block img-fluid mx-auto d-block"
                   itemID={2}
                   src={offers1}
@@ -1297,7 +1298,7 @@ export default function Home() {
             <div>
               <picture>
                 <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
+                <Image
                   className="w-100 d-block img-fluid mx-auto d-block"
                   itemID={2}
                   src={offers1}
@@ -1310,7 +1311,7 @@ export default function Home() {
             <div>
               <picture>
                 <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
+                <Image
                   className="w-100 d-block img-fluid mx-auto d-block"
                   itemID={2}
                   src={offers1}
@@ -1323,7 +1324,7 @@ export default function Home() {
             <div>
               <picture>
                 <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
+                <Image
                   className="w-100 d-block img-fluid mx-auto d-block"
                   itemID={2}
                   src={offers1}
@@ -1360,10 +1361,10 @@ export default function Home() {
                             handleConcernsProducts(brandformat.name)
                           }
                         >
-                          <img
+                          <Image
                             src={brandformat.image}
-                            width="180px"
-                            height="180px"
+                            width={180}
+                            height={180}
                             className="img-fluid brand_img"
                             alt="brand2"
                           />
@@ -1380,10 +1381,10 @@ export default function Home() {
           <a className="text-decoration-none" href="/sellwithus">
             <picture>
               <source media="(max-width: 767px)" srcSet={sellwithus_mobile} />
-              <img
+              <Image
                 src={sellwithus}
-                width="1280px"
-                height="228px"
+                width={1280}
+                height={228}
                 className="img-fluid d-block mx-auto desktop-image"
                 alt="sellwithus"
               />
@@ -1420,10 +1421,10 @@ export default function Home() {
                       // href="blogdetails"
                     >
                       <div className="blog-img">
-                        <img
+                        <Image
                           src={blog.thumbnail_image}
-                          width="480px"
-                          height="226px"
+                          width={480}
+                          height={226}
                           className="img-fluid"
                           alt="blog1"
                         />
@@ -1497,10 +1498,10 @@ export default function Home() {
                     <div key={itemIndex} className="item mr-3">
                       <div className="card">
                         <div className="customer-card">
-                          <img
+                          <Image
                             src={quote}
-                            width="19px"
-                            height="17px"
+                            width={19}
+                            height={17}
                             className="img-fluid w-auto"
                             alt="quote1"
                           />
@@ -1548,11 +1549,10 @@ export default function Home() {
             <div className="col-lg-4">
               <div className="card">
                 <div className="card-space">
-                  <img
+                  <Image
                     className="img-fluid mx-auto d-block"
                     src={badge}
-                    width=""
-                    height=""
+                    
                     alt="badge"
                   />
 
@@ -1569,11 +1569,10 @@ export default function Home() {
             <div className="col-lg-4 top-space">
               <div className="card">
                 <div className="card-space">
-                  <img
+                  <Image
                     className="img-fluid mx-auto d-block"
                     src={secure}
-                    width=""
-                    height=""
+                    
                     alt="badge"
                   />
 
@@ -1591,11 +1590,10 @@ export default function Home() {
             <div className="col-lg-4 top-space">
               <div className="card">
                 <div className="card-space">
-                  <img
+                  <Image
                     className="img-fluid mx-auto d-block"
                     src={wallet}
-                    width=""
-                    height=""
+                   
                     alt="badge"
                   />
 
@@ -1628,25 +1626,25 @@ export default function Home() {
               </p>
             </div>
             <div className="col-lg-6">
-              <img
+              {/* <Image
                 className="img-fluid mx-auto d-block"
                 src={healthPage && healthPage[0] && healthPage[0].image}
                 width=""
                 height=""
                 alt="healthcarebg"
-              />
+              /> */}
             </div>
           </div>
 
           <div className="row mt-lg-5 mt-3">
             <div className="col-lg-6">
-              <img
+              {/* <Image
                 className="img-fluid mx-auto d-block"
                 src={healthPage && healthPage[1] && healthPage[1].image}
                 width=""
                 height=""
                 alt="motivebg"
-              />
+              /> */}
             </div>
             <div className="col-lg-6 mt-lg-0 mt-3 align-self-center">
               <h3 className="motive-heading">

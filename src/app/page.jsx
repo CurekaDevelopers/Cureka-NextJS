@@ -32,7 +32,6 @@ import wallet from "../public/images/wallet.png";
 import LikeIcon from "../public/svg-components/LikeIcon";
 import CarouselSlider from "../components/CarouselSlider";
 import "../styles/home.css";
-import dynamic from "next/dynamic";
 import {
   addProductToCart,
   addProductToWishlist,
@@ -51,19 +50,13 @@ import { apiUrls, httpCode } from "../utils/constants/api.constants";
 import { generateUrl } from "../utils/constants/common.constants";
 import Footer from "../views/Footer";
 import Header from "../views/Header/index";
-// import PopupModal from "../views/Header/HomePopup";
+import PopupModal from "../views/Header/HomePopup";
 import ScrollToTop from "../views/ScrollToTop";
 import Link from "next/link";
 
 export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isPhone = useMediaQuery({ maxWidth: 991 });
-  const PopupModal = dynamic(() => import("../views/Header/HomePopup"), {
-    ssr: false,
-  });
-  // const Header = dynamic(() => import("../views/Header/HomePopup"), {
-
-  // });
   const { wishlistProducts, cartProducts } = useSelector(
     (state) => state.customer
   );
@@ -74,8 +67,8 @@ export default function Home() {
     curatedAdds: { CURATED, YOURSELF },
     healthPage,
   } = useSelector((state) => state.admin);
-  console.log("pagePaths:", pagePaths);
-  console.log("pagePaths.shopByAge:", pagePaths?.shopByAge);
+  // console.log("pagePaths:", pagePaths);
+  // console.log("pagePaths.shopByAge:", pagePaths?.shopByAge);
   const [newArrivals, setNewArrivals] = useState([]);
   const [topArrivals, setTopArrivals] = useState([]);
   const [commonHome, setCommonHome] = useState([]);
@@ -977,6 +970,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          
         </div>
         <br />
         <div className="row">

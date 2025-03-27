@@ -23,6 +23,7 @@ import { blogHeaderFixedHeight } from "../../utils/constants/common.constants";
 import style from "./style.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchNestedCategories } from "../../redux/action";
+import Image from "next/image";
 
 export default function BlogsHeader() {
   const dispatch = useDispatch();
@@ -129,7 +130,7 @@ export default function BlogsHeader() {
               </button> */}
               <div className={style.leftItems}>
                 <Link className="navbar-brand" href="/">
-                  <img
+                  <Image
                     className="img-responsive d-block"
                     src={logo}
                     width="112px"
@@ -152,7 +153,7 @@ export default function BlogsHeader() {
                         aria-describedby="search"
                       />
 
-                      <img
+                      <Image
                         onClick={onSearchClicked}
                         className="img-fluid search-icon"
                         src={homeSearch}

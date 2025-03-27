@@ -287,7 +287,7 @@ export default function ProductdetailHeader() {
                 />
               </Button>
               <Link href="/" className="navbar-brand">
-                <img
+                <Image
                   className="img-responsive d-block"
                   src={logo}
                   width="112px"
@@ -305,7 +305,7 @@ export default function ProductdetailHeader() {
                       className="nav-link bg-transparent border-0 p-0"
                       onClick={handleShowLoginModel}
                     >
-                      <img
+                      <Image
                         className="img-fluid mr-2"
                         src={user}
                         width="20px"
@@ -317,7 +317,7 @@ export default function ProductdetailHeader() {
                   </li>
                 ) : (
                   <li className={style.userDropdown}>
-                    <img
+                    <Image
                       className="img-fluid mr-2"
                       src={user}
                       width="20px"
@@ -352,7 +352,7 @@ export default function ProductdetailHeader() {
                 )}
                 <li className="nav-item d-lg-none d-block">
                   <Link href="/cart" className="nav-link">
-                    <img
+                    <Image
                       className="img-fluid"
                       src={shoppingCart}
                       width="20px"
@@ -502,7 +502,7 @@ export default function ProductdetailHeader() {
                                               {product.product_images &&
                                               product.product_images.length >
                                                 0 ? (
-                                                <img
+                                                <Image
                                                   src={
                                                     product.product_images[0]
                                                       ?.image
@@ -616,7 +616,7 @@ export default function ProductdetailHeader() {
                             onClick={handleShowLoginModel}
                             style={{ cursor: "pointer" }}
                           >
-                            <img
+                            <Image
                               className="img-fluid mr-2"
                               src={user}
                               width="20"
@@ -629,7 +629,7 @@ export default function ProductdetailHeader() {
                       ) : (
                         <li className="nav-item">
                           <div className={style.userDropdown}>
-                            <img
+                            <Image
                               className="img-fluid mr-2"
                               src={user}
                               width="20px"
@@ -665,7 +665,7 @@ export default function ProductdetailHeader() {
                       )}
                       <li className="nav-item d-lg-none d-block">
                         <Link href="/cart" className="nav-link">
-                          <img
+                          <Image
                             className="img-fluid"
                             src={shoppingCart}
                             width={20}
@@ -915,7 +915,7 @@ export default function ProductdetailHeader() {
                               href="https://api.whatsapp.com/send?phone=917200150536"
                               className="nav-link-item border-bottom d-flex align-items-center"
                             >
-                              <img
+                              <Image
                                 className="img-fluid mr-2 d-lg-block d-none"
                                 src={chat}
                                 width="20px"
@@ -929,7 +929,7 @@ export default function ProductdetailHeader() {
                               href="https://api.whatsapp.com/send?phone=917200150536"
                               className="nav-link-item border-bottom d-flex align-items-center"
                             >
-                              <img
+                              <Image
                                 className="img-fluid mr-2 d-lg-block d-none"
                                 src={experts}
                                 width="20px"
@@ -965,7 +965,7 @@ export default function ProductdetailHeader() {
                             </h2>
                             <div className="row justify-content-center align-items-center px-0 border-bottom">
                               <div className="col py-3 px-2 border-right">
-                                <img
+                                <Image
                                   className="img-fluid mx-auto d-block"
                                   src={phone}
                                   width="17px"
@@ -980,7 +980,7 @@ export default function ProductdetailHeader() {
                                 </Link>
                               </div>
                               <div className="col py-3 px-2 border-right">
-                                <img
+                                <Image
                                   className="img-fluid mx-auto d-block"
                                   src={email}
                                   width="17px"
@@ -995,7 +995,7 @@ export default function ProductdetailHeader() {
                                 </Link>
                               </div>
                               <div className="col py-3 px-2">
-                                <img
+                                <Image
                                   className="img-fluid mx-auto d-block"
                                   src={home}
                                   width="17px"
@@ -1032,7 +1032,7 @@ export default function ProductdetailHeader() {
                       aria-describedby="search"
                     />
 
-                    <img
+                    <Image
                       onClick={onSearchClicked}
                       className="img-fluid search-icon"
                       src={homeSearch}
@@ -1150,7 +1150,7 @@ export default function ProductdetailHeader() {
                                             {product.product_images &&
                                             product.product_images.length >
                                               0 ? (
-                                              <img
+                                              <Image
                                                 src={
                                                   product.product_images[0]
                                                     ?.image
@@ -1235,7 +1235,7 @@ export default function ProductdetailHeader() {
                       onSelect={handleSelect}
                     />
 
-                    <img
+                    <Image
                       onClick={onSearchClicked}
                       className="img-fluid search-icon"
                       src={homeSearch}
