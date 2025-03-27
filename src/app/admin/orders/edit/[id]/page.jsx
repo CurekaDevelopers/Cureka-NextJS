@@ -17,7 +17,7 @@ import Accordion from "react-bootstrap/Accordion";
 import toast from "react-hot-toast";
 import { env } from "../../../../../config/env.config";
 import { useRouter } from "next/navigation";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 
 const EditAdminOrderPage = () => {
   const { id } = useParams();
