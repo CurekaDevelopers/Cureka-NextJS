@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { useSelector } from "react-redux";
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
-import { pagePaths } from "../../../../utils/constants/constant";
+import { pagePaths } from "../../../../../utils/constants/constant";
 import styles from "./styles.module.scss";
 // import { fetchProductsOptions } from "../../../redux/action";
 // import { MultiSelect } from "react-multi-select-component";
