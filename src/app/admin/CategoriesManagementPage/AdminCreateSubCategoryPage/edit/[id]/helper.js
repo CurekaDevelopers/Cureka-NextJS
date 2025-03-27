@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { status } from "../../../../../utils/constants/common.constants";
+import { status } from "../../../../../../utils/constants/common.constants";
 
 const fileMaxSize = 5 * 1024 * 1024;
 const thumbnailImageResolution = {
@@ -8,11 +8,8 @@ const thumbnailImageResolution = {
 };
 
 export const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Sub Category Title is required")
-    .notOneOf([""], "Please select a valid sub category"),
+  name: Yup.string().required("Sub Category Title is required"),
   category_id: Yup.number().required("Category is required"),
-  sub_category_id: Yup.number().required("Sub Category is required"),
   image: Yup.mixed()
     .required("Image is required")
     .test("fileSize", "File size must be less than 5MB", function (value) {
@@ -29,8 +26,7 @@ export const validationSchema = Yup.object().shape({
 });
 
 export const initialValues = {
-  category_id: undefined,
-  sub_category_id: undefined,
+  category_id: "",
   name: "",
   slug: "",
   image: null,

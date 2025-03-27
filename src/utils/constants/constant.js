@@ -47,11 +47,11 @@ export const pagePaths = {
   adminCreateCategory:
     "/admin/CategoriesManagementPage/AdminCreateCategoryPage",
   adminCreateCategoryEdit:
-    "/admin/CategoriesManagementPage/CategoriesManagementPageEdit/:id",
+    "/admin/CategoriesManagementPage/AdminCreateCategoryPage/edit/:id",
   adminCreateSubCategory:
     "/admin/CategoriesManagementPage/AdminCreateSubCategoryPage",
   adminCreateSubCategoryEdit:
-    "/admin/CategoriesManagementPage/SubCategoriesManagementPageEdit/:id",
+    "/admin/CategoriesManagementPage/AdminCreateSubCategoryPage/edit/:id",
   adminCreateSubSubCategory:
     "/admin/CategoriesManagementPage/AdminCreateSubSubCategoryPage",
   adminCreateArticalType:
@@ -63,13 +63,13 @@ export const pagePaths = {
   adminEditStandardArticalType:
     "/admin/standard-artical-type/edit/:id/:standardEdit",
   adminCreateSubSubCategoryEdit:
-    "/admin/CategoriesManagementPage/SubCategoriesManagementPageEdit/edit/:id",
+    "/admin/CategoriesManagementPage/AdminCreateSubCategoryPage/edit/:id",
   adminCreatePreferenceEdit:
     "/admin/CategoriesManagementPage/AdminCreatePreferencePage/edit/:id",
   adminCreateSubSubSubCategory:
     "/admin/CategoriesManagementPage/AdminCreateSubSubSubCategoryPage",
   adminCreateSubSubSubCategoryedit:
-    "/admin/CategoriesManagementPage/SubSubSubCategoriesManagementPageEdit/:id",
+    "/admin/CategoriesManagementPage/AdminCreateSubSubCategoryPage/edit/:id",
   adminPrivacyPolicyPage: "/admin/PrivacyPolicyPage",
   adminDisclaimerOfWarranties: "/admin/disclaimer-of-warranties",
   adminCancellationRefund: "/admin/cancellation-refund",

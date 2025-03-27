@@ -1,8 +1,5 @@
 import * as Yup from "yup";
-import {
-  statusm,
-  nav_link,
-} from "../../../../../utils/constants/common.constants";
+import { status } from "../../../../../../utils/constants/common.constants";
 
 const fileMaxSize = 5 * 1024 * 1024;
 const thumbnailImageResolution = {
@@ -11,7 +8,11 @@ const thumbnailImageResolution = {
 };
 
 export const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Category Title is required"),
+  name: Yup.string()
+    .required("Sub Category Title is required")
+    .notOneOf([""], "Please select a valid sub category"),
+  category_id: Yup.number().required("Category is required"),
+  sub_category_id: Yup.number().required("Sub Category is required"),
   image: Yup.mixed()
     .required("Image is required")
     .test("fileSize", "File size must be less than 5MB", function (value) {
@@ -25,10 +26,11 @@ export const validationSchema = Yup.object().shape({
   status: Yup.string().required("Status is required"),
   metaTitle: Yup.string().required("Meta Title is required"),
   metaDescription: Yup.string().required("Meta Description is required"),
-  nav_link: Yup.string().required("Nav Link is required"),
 });
 
 export const initialValues = {
+  category_id: undefined,
+  sub_category_id: undefined,
   name: "",
   slug: "",
   image: null,
@@ -36,5 +38,4 @@ export const initialValues = {
   status: status.active,
   metaTitle: "",
   metaDescription: "",
-  nav_link: nav_link.active,
 };

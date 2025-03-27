@@ -1,12 +1,14 @@
 .searchResults {
   background-color: #fff;
   font-weight: 500;
+
   &:hover {
     scroll-behavior: smooth;
     max-height: 300px;
-    // overflow-y: auto;
+    /* overflow-y: auto; */
     scrollbar-width: none;
   }
+
   .searchLabels {
     text-transform: uppercase;
     border-bottom: 1px solid #ddd;
@@ -17,6 +19,7 @@
   .categoryList,
   .productList {
     cursor: pointer;
+
     a {
       color: #444;
     }
@@ -24,15 +27,15 @@
 
   .brandList {
     padding: 10px;
+
     .brandDetails {
       padding: 5px 0;
-      .brandName {
-      }
     }
   }
 
   .categoryList {
     padding: 10px;
+
     .categoryDetails {
       .categoryName {
       }
@@ -45,27 +48,33 @@
       justify-content: space-between;
       padding: 10px;
       background-color: #fff;
+
       &:hover {
         background-color: #eee;
       }
 
       .productImg {
         padding-top: 12px;
+
         img {
           border: 1px solid #e8e8e8;
           width: 50px;
         }
       }
+
       .productInfo {
         display: flex;
+
         .productName {
           flex-grow: 1;
           padding: 27px 7px;
           margin-right: 20px;
           width: 410px;
         }
+
         .productPriceSection {
-          // text-align: right;
+          /* text-align: right; */
+
           .productMrp {
             text-decoration: line-through;
           }
@@ -82,15 +91,13 @@
     position: absolute;
     color: #fff;
     font-size: 10px;
-    font-style: normal;
     font-weight: 500;
-    line-height: normal;
     background-color: #e75204;
     top: -5px;
-    z-index: 1;
     right: 0;
     padding: 2px 4px;
     border-radius: 50px;
+    z-index: 1;
   }
 }
 
@@ -111,17 +118,11 @@
   }
 }
 
-/* .App {
-  text-align: center;
-} */
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  @media (prefers-reduced-motion: no-preference) {
     animation: App-logo-spin infinite 20s linear;
   }
 }
@@ -149,15 +150,18 @@
     transform: rotate(360deg);
   }
 }
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
 nav #sidebar {
   height: 90px !important;
   font-weight: 700;
 }
+
 .box {
   display: flex;
   justify-content: center;
@@ -166,20 +170,20 @@ nav #sidebar {
   color: #fff;
   padding-top: 250px;
 }
+
 h1 {
   padding: 15px;
   font-size: 75px;
   text-shadow: 2px 3px white;
 }
+
 .btn-warning {
   margin-top: 15px;
   padding: 10px 25px;
   border-radius: 0 !important;
   border: none;
 }
-/* #formm{
-  padding-top: 150px;
-  } */
+
 .right_slide.modal-slider {
   width: 400px;
   right: -586px;
@@ -189,40 +193,32 @@ h1 {
 .right_slide.modal-slider.show {
   right: 0;
 }
+
 .right_slide.modal.show .modal-dialog {
   margin-top: 0;
 }
+
 .right_slide.modal.show .modal-dialog,
 .right_slide.modal-content {
   height: 100%;
 }
+
 .login_sectionone {
   max-width: 640px;
   background: #fff;
-  /* min-height: 540px; */
-  /* width: 100%; */
-  /* box-shadow: 0px 0 10px -8px #000; */
-  /* margin: 0px; */
-  /* padding: 0; */
-  /* border-radius: 10px; */
   overflow: hidden;
 }
 
 #email-phone.form-control {
   color: #8b959f;
-
   font: normal 400 12px/26px Rubik-regular;
-
   max-width: 440px;
-
   min-height: 55px;
-
   padding-left: 23px;
-
   margin-bottom: 1rem;
 }
+
 .main_btns {
-  max-width: 105px;
   background: #e75204;
   border: 1px solid #e75204;
   padding: 8px 25px;
