@@ -2,7 +2,7 @@ export const pagePaths = {
   home: "/",
   adminCatchAll: "/admin/*",
   adminDashboard: "/admin/DashboardPage",
-  adminLogin: "/admin/Login",
+  // adminLogin: "/backend/Login",
   adminRegister: "/admin/register",
   adminTermsAndCondition: "/admin/terms-and-conditions",
   adminProfile: "/admin/profile",

@@ -5,17 +5,17 @@ import { Button, Card, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // ✅ Ensure correct import
-import AdminFooter from "../../../components/admin/AdminFooter/index";
+import AdminFooter from "../../../../components/admin/AdminFooter/index";
 import {
   setAdminEmail,
   setIsLoggedIn,
   setUserRoles,
   setIsAdminStatus,
   setAdminAccessToken,
-} from "../../../redux/slices/auth.slice";
-import api from "../../../utils/api.utils";
-import { apiUrls, httpCode } from "../../../utils/constants/api.constants";
-import Header from "../../../views/Header/index"; // ✅ Ensure Header is imported correctly
+} from "../../../../redux/slices/auth.slice";
+import api from "../../../../utils/api.utils";
+import { apiUrls, httpCode } from "../../../../utils/constants/api.constants";
+import Header from "../../../../views/Header/index"; // ✅ Ensure Header is imported correctly
 import toast from "react-hot-toast";
 
 const Login = () => {

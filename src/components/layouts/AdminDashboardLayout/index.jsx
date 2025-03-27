@@ -15,7 +15,7 @@ const AdminDashboardLayout = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate.push(pagePaths.adminLogin);
+      navigate.push("/backend/Login");
     }
   }, [isLoggedIn, navigate]);
 

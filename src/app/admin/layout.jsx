@@ -1,4 +1,4 @@
-"use client"; // Ensure it's at the top
+"use client";
 
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -6,18 +6,18 @@ import { useRouter } from "next/navigation";
 import Sidebar from "../../components/admin/Sidebar";
 import { pagePaths } from "../../utils/constants/constant";
 import styles from "./styles.module.scss";
-// import AdminHeader from "../../components/admin/AdminHeader";
-// import AdminFooter from "../../components/admin/AdminFooter";
 import dynamic from "next/dynamic";
+
 const AdminHeader = dynamic(() => import("../../components/admin/AdminHeader"));
 const AdminFooter = dynamic(() => import("../../components/admin/AdminFooter"));
-const AdminDashboardLayout = ({ children }) => {
+
+export default function AdminLayout({ children }) {
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const router = useRouter(); // Correctly initializing useRouter
+  const router = useRouter();
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push(pagePaths.adminLogin); // Redirect to login if not logged in
+      router.push("/backend/Login");
     }
   }, [isLoggedIn, router]);
 
@@ -31,6 +31,4 @@ const AdminDashboardLayout = ({ children }) => {
       <AdminFooter />
     </>
   );
-};
-
-export default AdminDashboardLayout;
+}
