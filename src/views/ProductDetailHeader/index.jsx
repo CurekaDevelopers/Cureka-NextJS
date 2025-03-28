@@ -946,7 +946,7 @@ export default function ProductdetailHeader() {
                               Track your order
                             </Link>
                             <Link
-                              href="/privacy-policy-2"
+                              href="/Privacypolicy"
                               className="nav-link-item border-bottom"
                             >
                               Privacy Policy

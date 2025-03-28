@@ -98,10 +98,12 @@ const PrivacyPolicyPage = ({
             <RichtextEditor
               id="policy_content"
               value={formik.values.policy_content}
-              onChange={(value) =>
-                formik.setFieldValue("policy_content", value)
-              }
+              onChange={(value) => {
+                formik.setFieldValue("policy_content", value);
+                formik.setTouched({ ...formik.touched, policy_content: true });
+              }}
             />
+
             {formik.errors.policy_content && formik.touched.policy_content && (
               <Form.Text className={styles.errorText} muted>
                 {formik.errors.policy_content}

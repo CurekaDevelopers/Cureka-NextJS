@@ -764,12 +764,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div className=" product-carousel">
+        <div className="product-carousel">
           <div className="d-flex justify-content-between">
             <h2 className="doctors-heading mt-0">Top Picks</h2>
             <Link
               className="text-decoration-none align-self-center"
-              href={"/top-picks"}
+              href="/top-picks"
               target="_blank"
             >
               <p className="all-deals">All Deals</p>

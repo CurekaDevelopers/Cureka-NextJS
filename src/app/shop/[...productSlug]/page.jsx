@@ -674,7 +674,7 @@ export default function Productdetails() {
                   />
                 </div>
 
-                <div className="" id="product-details">
+                <div className="mt-5" id="product-details">
                   {slidesToShow < 3 ? (
                     <>
                       {allProductImages.map((src) => {
@@ -748,7 +748,9 @@ export default function Productdetails() {
                 </h1>
 
                 <div
-                  className={`col-lg-6 pl-lg-0 mt-5 ${isMobile ? "" : "position-sticky"}`}
+                  className={`col-lg-6 pl-lg-0 mt-5 ${
+                    isMobile ? "" : "position-sticky"
+                  }`}
                   style={isDesktop ? { top: "370px" } : {}}
                 >
                   <h2 className="highlights">Highlights</h2>

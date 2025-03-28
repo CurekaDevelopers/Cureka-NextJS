@@ -792,7 +792,7 @@ export default function Header({ showCategoryNavbar = true }) {
                                     Track your order
                                   </Dropdown.Item>
                                   <Dropdown.Item
-                                    href="/privacy-policy-2"
+                                    href="/Privacypolicy"
                                     className="d-flex"
                                   >
                                     Privacy Policy
@@ -1088,7 +1088,7 @@ export default function Header({ showCategoryNavbar = true }) {
                               Track your order
                             </a>
                             <a
-                              href="/privacy-policy-2"
+                              href="/Privacypolicy"
                               className="nav-link-item border-bottom"
                             >
                               Privacy Policy

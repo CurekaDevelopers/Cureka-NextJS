@@ -317,7 +317,7 @@ export default function Footer() {
                       </Link>
                     </li>
                     <li className="list-unstyled">
-                      <Link href={"/privacy-policy-2"}>Privacy Policy</Link>
+                      <Link href={"/Privacypolicy"}>Privacy Policy</Link>
                     </li>
                     <li className="list-unstyled">
                       <a href="contactus">Help Center</a>

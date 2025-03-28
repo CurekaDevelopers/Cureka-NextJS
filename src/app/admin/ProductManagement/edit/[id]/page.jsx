@@ -44,6 +44,8 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
   const navigate = useRouter();
   const dispatch = useDispatch();
   const { id } = useParams();
+  console.log(id,"from Useparams");
+  
   const {
     productsList,
     brands,
