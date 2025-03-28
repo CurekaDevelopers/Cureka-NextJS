@@ -8,17 +8,17 @@ import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useRouter } from "next/navigation";
-import Card from "../../../components/Card";
-import AdminBreadcrumbs from "../../../components/admin/AdminBreadcrumbs";
+import Card from "../../../../components/Card";
+import AdminBreadcrumbs from "../../../../components/admin/AdminBreadcrumbs";
 import {
   createCuratedAdd,
   fetchCuratedAdds,
   fetchProductsOptions,
   updateCuratedAdd,
-} from "../../../redux/action";
-import { pagePaths } from "../utils/constants/constant";
-import { uploadImage } from "../../../services/file-upload";
-import { status } from "../../../utils/constants/common.constants";
+} from "../../../../redux/action";
+import { pagePaths } from "../../../../utils/constants/constant";
+import { uploadImage } from "../../../../lib/services/file-upload";
+import { status } from "../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 import { FixedSizeList as List } from "react-window";
