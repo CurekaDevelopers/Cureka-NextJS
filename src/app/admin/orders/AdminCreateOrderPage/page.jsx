@@ -693,7 +693,7 @@ const AdminCreateOrderPage = () => {
               <Form.Select
                 name="addtype"
                 onChange={onChangeUserDetails}
-                value={selectedOption}
+                // value={selectedOption}
               >
                 <option value="selectValue">Select </option>
 
@@ -707,15 +707,7 @@ const AdminCreateOrderPage = () => {
                   ))}
               </Form.Select>
             </Form.Group>
-            {/* <Form.Group>
-                            <Form.Label htmlFor="concerns">Products<span className="text-danger">*</span></Form.Label>
-                            {options?.length > 0 && <MultiSelect
-                                value={productsList}
-                                options={options}
-                                onChange={onChangeProducts}
-                                required
-                            />}
-                        </Form.Group> */}
+
             <Form.Group>
               <Form.Label htmlFor="concerns">
                 Products<span className="text-danger">*</span>

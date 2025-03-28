@@ -45,7 +45,6 @@ const UsersManagementPage = () => {
         Cell: ({ cell }) => {
           return (
             <span className={styles.titleColumn}>
-              {" "}
               {cell.row.original.transaction_type == "CREDIT"
                 ? "Amount Credit"
                 : "Amount Debit"}
@@ -59,7 +58,6 @@ const UsersManagementPage = () => {
         Cell: ({ cell }) => {
           return (
             <span className={styles.titleColumn}>
-              {" "}
               {cell.row.original.transaction_type == "CREDIT" ? "+" : "-"} ₹
               {cell.row.original.amount}
             </span>
@@ -72,7 +70,6 @@ const UsersManagementPage = () => {
         Cell: ({ cell }) => {
           return (
             <span className={styles.titleColumn}>
-              {" "}
               {"+91"} {cell.row.original.mobile_number}
             </span>
           );
