@@ -651,6 +651,26 @@
   }
 }
 
+/* .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  height: 60px; 
+  background-color: #fff;
+}
+
+.navbar-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 60px;
+}
+
+.navbar {
+  flex-wrap: nowrap;
+  overflow: hidden;
+} */
+
 /* #header .navbar .navbar-toggler.collapsed {
 
   /* display: block; */
@@ -940,6 +960,7 @@
     margin-top: 140px;
   }
 }*/
+
 .wrapper-margin {
   margin-top: 166px;
   @media (min-width: 576px) {

@@ -56,16 +56,14 @@ const AdminBlogsPage = () => {
   const onEdit = useCallback(
     (id, replay = "edit") => {
       if (replay === "replay") {
-        navigate.push(pagePaths.adminCreateBlogsComment.replace(":id", id));
+        navigate.push(pagePaths.adminCreateBlogsComment.replace(":id", id)); // Use navigate directly
         return;
       }
-      //navigate.push(pagePaths.adminCreateBlogsEdit.replace(":id", id));
-      const url = pagePaths.adminCreateBlogsEdit.replace(":id", id);
-      window.open(url, "_blank");
-      return;
+      navigate.push(pagePaths.adminCreateBlogsEdit.replace(":id", id)); // Navigate within the same layout
     },
     [navigate]
   );
+
   const rolesPermission = userRoles.filter((item) => item.name == "Blogs");
 
   const dispatch = useDispatch();

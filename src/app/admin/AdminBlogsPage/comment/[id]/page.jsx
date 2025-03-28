@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
@@ -34,7 +34,7 @@ const RichtextEditor = lazyLoadable(() =>
   import("../../../../../components/RichtextEditor")
 );
 
-const AdminCreateBlogsPage = ({ isEditPage = false }) => {
+const AdminCreateBlogsPage = ({ isEditPage = true }) => {
   // Default value set to false
 
   const formikRef = useRef();

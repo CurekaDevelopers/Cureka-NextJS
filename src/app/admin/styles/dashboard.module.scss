@@ -1,0 +1,55 @@
+.container {
+    padding: 20px;
+    width: 100%;
+}
+.card {
+    border-radius: 30px !important;
+    margin-bottom: 30px;
+    height: calc(100% - 15px);
+}
+.dashboard {
+    background-color: #fff;
+    padding: 30px;
+    height: calc(100% - 15px);
+}
+.sales {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+.circle {
+    width: 52px;
+    height: 52px;
+    position: relative;
+    background-color: #004A98;
+    border-radius: 50%;
+}
+.circleone {
+    width: 52px;
+    height: 52px;
+    position: relative;
+    background-color: #E75204;
+    border-radius: 50%;
+}
+.circletwo {
+    width: 52px;
+    height: 52px;
+    position: relative;
+    background-color: #6b6c86;
+    border-radius: 50%;
+}
+.circlethree {
+    width: 52px;
+    height: 52px;
+    position: relative;
+    background-color: rgba(255, 99, 132);
+    border-radius: 50%;
+}
+
+.icon {
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%,-50%);
+}
