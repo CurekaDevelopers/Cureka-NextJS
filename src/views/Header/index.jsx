@@ -200,16 +200,16 @@ export default function Header({ showCategoryNavbar = true }) {
       
       switch (type) {
           case "Categories":
-            router.push(`/product-category/${item.slug}`);
+            navigate.push(`/product-category/${item.slug}`);
             break;
           case "Concerns":
-            router.push(`/concern/${preprocessConcernName(item.name)}`);
+            navigate.push(`/concern/${preprocessConcernName(item.name)}`);
             break;
           case "Products":
-            router.push(`${generateUrl(item)}`);
+            navigate.push(`${generateUrl(item)}`);
             break;
           case "Brands":
-            router.push(`/product-brands/${item.name}`);
+            navigate.push(`/product-brands/${item.name}`);
             break;
           default:
             console.warn("Unknown item type:", type);
