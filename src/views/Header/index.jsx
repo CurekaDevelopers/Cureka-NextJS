@@ -60,6 +60,7 @@ import UserLogin from "../UserLogin";
 import style from "./style.module.scss";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import "../../styles/product_details.css";
 
 export default function Header({ showCategoryNavbar = true }) {
   const searchParams = useSearchParams();
@@ -1218,7 +1219,7 @@ export default function Header({ showCategoryNavbar = true }) {
                     style={{ position: "relative", zIndex: "9999" }}
                   >
                     <div ref={autocompleteRef}>
-                      <Autocomplete
+                      {/* <Autocomplete
                         inputProps={{
                           placeholder: "Search For “Skin Care”",
                           className: "form-control border-0",
@@ -1402,7 +1403,8 @@ export default function Header({ showCategoryNavbar = true }) {
                         value={searchTerm}
                         onChange={handleInputChange}
                         onSelect={handleSelect}
-                      />
+                      /> */}
+                      <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
                     </div>
 
                     <Image

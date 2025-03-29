@@ -14,7 +14,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
-
+import SearchAutocomplete from "../../components/SearchAutocomplete";
 import { useSearchParams } from "next/navigation";
 
 import badgePercent from "../../public/images/badgepercent.svg";
@@ -119,30 +119,82 @@ export default function ProductdetailHeader() {
   function handleSearch(event) {
     setSearchTerm(event.target.value);
   }
+  useEffect(() => {
+        if (searchTerm.length >= 3) {
+          fetchItems(searchTerm);
+        } else {
+          setItems([]);
+        }
+      }, [searchTerm]);
 
-  const fetchItems = async (searchTerm) => {
-    // Simulate async data fetching, replace with your actual API call
-    const response = await api.get(
-      apiUrls.productsList + "?search_term=" + searchTerm
-    );
-    return [
-      response.data.brands,
-      response.data.categories,
-      response.data.products,
-    ];
-  };
-  const handleInputChange = async (event) => {
-    const newValue = event.target.value;
-    setSearchTerm(newValue);
-    if (newValue.length < 3) {
-      return;
+  // const fetchItems = async (searchTerm) => {
+  //   // Simulate async data fetching, replace with your actual API call
+  //   const response = await api.get(
+  //     apiUrls.productsList + "?search_term=" + searchTerm
+  //   );
+  //   return [
+  //     response.data.brands,
+  //     response.data.categories,
+  //     response.data.products,
+  //   ];
+  // };
+  // const handleInputChange = async (event) => {
+  //   const newValue = event.target.value;
+  //   setSearchTerm(newValue);
+  //   if (newValue.length < 3) {
+  //     return;
+  //   }
+  //   const fetchedItems = await fetchItems(newValue);
+  //   setItems([fetchedItems]);
+  // };
+  // const handleSelect = (value) => {
+  //   setSearchTerm(value);
+  //   // Optionally, do something with the selected value
+  // };
+
+  const fetchItems = async (term) => {
+    try {
+      console.log("Fetching suggestions for:", term);
+      const response = await api.get(`${apiUrls.productsSuggestions}?search_term=${term}`);
+      console.log("API Response:", response.data);
+  
+      const { brands, categories, products, concerns } = response.data;
+  
+      setItems([
+        { type: "Brands", data: brands },
+        { type: "Concerns", data: concerns },
+        { type: "Categories", data: categories },
+        { type: "Products", data: products },
+      ]);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      setItems([]);
     }
-    const fetchedItems = await fetchItems(newValue);
-    setItems([fetchedItems]);
   };
-  const handleSelect = (value) => {
-    setSearchTerm(value);
-    // Optionally, do something with the selected value
+  
+
+  const handleInputChange = (value) => {
+    setSearchTerm(value); // Fix: Accepts the string directly instead of event
+  };
+  const handleSelect = (item,type) => {
+      console.log(item);
+      
+      switch (type) {
+          case "Categories":
+            navigate.push(`/product-category/${item.slug}`);
+            break;
+          case "Concerns":
+            navigate.push(`/concern/${preprocessConcernName(item.name)}`);
+            break;
+          case "Products":
+            navigate.push(`${generateUrl(item)}`);
+            break;
+          case "Brands":
+            navigate.push(`/product-brands/${item.name}`);
+            break;
+          default:
+            console.warn("Unknown item type:", type);
+        }
   };
 
   const onSearchClicked = () => {
@@ -150,7 +202,7 @@ export default function ProductdetailHeader() {
     if (category?.name) {
       searchPageUrl += `&category_id=${category?.id}`;
     }
-    router.push(searchPageUrl); // Use router.push instead of navigate.push
+    navigate.push(searchPageUrl); // Use router.push instead of navigate.push
   };
 
   const onSearchFormSubmit = (e) => {
@@ -395,7 +447,7 @@ export default function ProductdetailHeader() {
                       className="d-flex search"
                       style={{ position: "relative", zIndex: "5" }}
                     >
-                      <Autocomplete
+                      {/* <Autocomplete
                         inputProps={{
                           placeholder: "Search For “Skin Care”",
                           className: "form-control border-0",
@@ -592,8 +644,8 @@ export default function ProductdetailHeader() {
                         value={searchTerm}
                         onChange={handleInputChange}
                         onSelect={handleSelect}
-                      />
-
+                      /> */}
+                      <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
                       <Image
                         onClick={onSearchClicked}
                         className="img-fluid search-icon"
@@ -1050,7 +1102,7 @@ export default function ProductdetailHeader() {
                     className="d-flex search"
                     style={{ position: "relative", zIndex: "5" }}
                   >
-                    <Autocomplete
+                    {/* <Autocomplete
                       inputProps={{
                         placeholder: "Search For “Skin Care”",
                         className: "form-control border-0",
@@ -1233,7 +1285,8 @@ export default function ProductdetailHeader() {
                       value={searchTerm}
                       onChange={handleInputChange}
                       onSelect={handleSelect}
-                    />
+                    /> */}
+                    <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
 
                     <Image
                       onClick={onSearchClicked}
