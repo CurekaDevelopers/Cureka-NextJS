@@ -72,6 +72,7 @@ export default function Home() {
   const [topArrivals, setTopArrivals] = useState([]);
   const [commonHome, setCommonHome] = useState([]);
   const [blogHome, setblogHome] = useState([]);
+
   const [couponHome, setCouponHome] = useState([]);
   const [popupHomeData, setPopupHomeData] = useState([]);
   const { coupons } = useSelector((state) => state.admin);
@@ -1130,19 +1131,6 @@ export default function Home() {
                                 )}
                               </div>
 
-                              {/* <button
-                                onClick={(e) => addItemToCart(e, product)}
-                                className="text-decoration-none align-items-center justify-content-center jus w-100 d-flex cart"
-                                href="#"
-                              >
-                                <FontAwesomeIcon
-                                  className="mr-2"
-                                  icon={faShoppingCart}
-                                  size="lg"
-                                />{" "}
-                                {isProductPresentInCart(product) ? "Checkout" : "Add to Cart"}
-                              </button> */}
-
                               {product?.show_stock == 1 &&
                               product &&
                               product.stock_status == "Out Stock" ? (
@@ -1259,83 +1247,6 @@ export default function Home() {
             ))}
           </div>
         )}
-
-        {/* <div className="offers" id="offers-carousel">
-          <Carousel
-            showArrows={true}
-            showStatus={false}
-            showThumbs={false}
-            autoPlay={true}
-            infiniteLoop={true}
-          >
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <Image
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <Image
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <Image
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <Image
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <Image
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-          </Carousel>
-        </div> */}
 
         <div className="brands mt-0">
           <div className="row">
@@ -1552,7 +1463,6 @@ export default function Home() {
                   <Image
                     className="img-fluid mx-auto d-block"
                     src={badge}
-                    
                     alt="badge"
                   />
 
@@ -1572,7 +1482,6 @@ export default function Home() {
                   <Image
                     className="img-fluid mx-auto d-block"
                     src={secure}
-                    
                     alt="badge"
                   />
 
@@ -1593,7 +1502,6 @@ export default function Home() {
                   <Image
                     className="img-fluid mx-auto d-block"
                     src={wallet}
-                   
                     alt="badge"
                   />
 
@@ -1625,38 +1533,16 @@ export default function Home() {
                   healthPage[0].content.replace(/<\/?p>/g, "")}
               </p>
             </div>
-            <div className="col-lg-6">
-              {/* <Image
-                className="img-fluid mx-auto d-block"
-                src={healthPage && healthPage[0] && healthPage[0].image}
-                width=""
-                height=""
-                alt="healthcarebg"
-              /> */}
-            </div>
+            <div className="col-lg-6"></div>
           </div>
 
           <div className="row mt-lg-5 mt-3">
-            <div className="col-lg-6">
-              {/* <Image
-                className="img-fluid mx-auto d-block"
-                src={healthPage && healthPage[1] && healthPage[1].image}
-                width=""
-                height=""
-                alt="motivebg"
-              /> */}
-            </div>
+            <div className="col-lg-6"></div>
             <div className="col-lg-6 mt-lg-0 mt-3 align-self-center">
               <h3 className="motive-heading">
                 {healthPage && healthPage[1] && healthPage[1].heading}:
               </h3>
-              {/* {healthPage && healthPage[1] && healthPage[1].content.
-              // replace(/<\/?p>/g, '')
-              
-              replace(/<\/?[^>]+>/gi, '')
-              
 
-              } */}
               {finalText}
               <p className="motive-para"></p>
             </div>

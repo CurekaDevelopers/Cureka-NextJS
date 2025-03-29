@@ -4,6 +4,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useEffect, useState } from "react";
 import Autocomplete from "react-autocomplete";
+import SearchAutocomplete from "../../components/SearchAutocomplete";
 import { DropdownItem } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
@@ -63,9 +64,7 @@ import Image from "next/image";
 export default function Header({ showCategoryNavbar = true }) {
   const searchParams = useSearchParams();
   const [category, setCategory] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(
-    searchParams.get("search_term") || " "
-  );
+ const [searchTerm, setSearchTerm] = useState(searchParams.get("search_term") || "");
   const [items, setItems] = useState([]);
   const { isLoggedIn, name } = useCustomerLoggedIn();
   const navigate = useRouter();
@@ -135,34 +134,86 @@ export default function Header({ showCategoryNavbar = true }) {
   function handleSearch(event) {
     setSearchTerm(event.target.value);
   }
+  useEffect(() => {
+      if (searchTerm.length >= 3) {
+        fetchItems(searchTerm);
+      } else {
+        setItems([]);
+      }
+    }, [searchTerm]);
 
-  const fetchItems = async (searchTerm) => {
-    // Simulate async data fetching, replace with your actual API call
-    const response = await api.get(
-      apiUrls.productsSuggestions + "?search_term=" + searchTerm
-    );
-    return [
-      response.data.brands,
-      response.data.categories,
-      response.data.products,
-      response.data.concerns,
-    ];
-  };
-  const handleInputChange = async (event) => {
-    const newValue = event.target.value;
-    setSearchTerm(newValue);
+  // const fetchItems = async (searchTerm) => {
+  //   // Simulate async data fetching, replace with your actual API call
+  //   const response = await api.get(
+  //     apiUrls.productsSuggestions + "?search_term=" + searchTerm
+  //   );
+  //   return [
+  //     response.data.brands,
+  //     response.data.categories,
+  //     response.data.products,
+  //     response.data.concerns,
+  //   ];
+  // };
+  
+  // const handleInputChange = async (event) => {
+  //   const newValue = event.target.value;
+  //   setSearchTerm(newValue);
 
-    if (newValue.length < 3) {
+  //   if (newValue.length < 3) {
+  //     setItems([]);
+  //     return;
+  //   }
+
+  //   const fetchedItems = await fetchItems(newValue);
+  //   setItems([fetchedItems]);
+  // };
+  // const handleSelect = (value) => {
+  //   setSearchTerm(value);
+  //   // Optionally, do something with the selected value
+  // };
+  const fetchItems = async (term) => {
+    try {
+      console.log("Fetching suggestions for:", term);
+      const response = await api.get(`${apiUrls.productsSuggestions}?search_term=${term}`);
+      console.log("API Response:", response.data);
+  
+      const { brands, categories, products, concerns } = response.data;
+  
+      setItems([
+        { type: "Brands", data: brands },
+        { type: "Concerns", data: concerns },
+        { type: "Categories", data: categories },
+        { type: "Products", data: products },
+      ]);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
       setItems([]);
-      return;
     }
-
-    const fetchedItems = await fetchItems(newValue);
-    setItems([fetchedItems]);
   };
-  const handleSelect = (value) => {
-    setSearchTerm(value);
-    // Optionally, do something with the selected value
+  
+
+  const handleInputChange = (value) => {
+    setSearchTerm(value); // Fix: Accepts the string directly instead of event
+  };
+  const handleSelect = (item,type) => {
+      console.log(item);
+      
+      switch (type) {
+          case "Categories":
+            router.push(`/product-category/${item.slug}`);
+            break;
+          case "Concerns":
+            router.push(`/concern/${preprocessConcernName(item.name)}`);
+            break;
+          case "Products":
+            router.push(`${generateUrl(item)}`);
+            break;
+          case "Brands":
+            router.push(`/product-brands/${item.name}`);
+            break;
+          default:
+            console.warn("Unknown item type:", type);
+        }
   };
 
   const onSearchClicked = () => {
@@ -438,7 +489,7 @@ export default function Header({ showCategoryNavbar = true }) {
                         style={{ position: "relative", zIndex: "9999" }}
                       >
                         <div ref={autocompleteRef}>
-                          <Autocomplete
+                          {/* <Autocomplete
                             inputProps={{
                               placeholder: "Search For “Skin Care”",
                               className: "form-control border-0",
@@ -632,7 +683,8 @@ export default function Header({ showCategoryNavbar = true }) {
                             value={searchTerm}
                             onChange={handleInputChange}
                             onSelect={handleSelect}
-                          />
+                          /> */}
+                          <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
                         </div>
                         <Image
                           onClick={onSearchClicked}

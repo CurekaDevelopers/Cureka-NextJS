@@ -23,9 +23,29 @@
   display: none;
 }
 
+/* #product-details.owl-carousel .owl-nav button.owl-next::after {
+  content: "\f0d7";
+
+  color: #000000;
+
+  font-family: FontAwesome;
+
+  font-size: 25px;
+}
+
+#product-details .carousel.carousel-slider button.control-arrow.control-prev::after {
+  content: "<";
+
+  color: #000000;
+
+  font-family: FontAwesome;
+
+  font-size: 25px;
+} */
+
 #product-details .carousel.carousel-slider button.control-arrow.control-next {
   position: absolute;
-  right: 85px !important;
+  right: 65px !important;
   top: 25% !important;
   display: block;
   width: 25px;
