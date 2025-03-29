@@ -644,12 +644,10 @@ export default function Productdetails() {
             </div>
           </div>
 
-          <div className="bottom-border"></div>
-
           <div className="container">
             <div
               className="row d-flex-column d-lg-flex position-relative"
-              style={{ overflow: "visible" }}
+              style={{ overflow: "" }}
             >
               <div
                 className={`col-lg-4 mt-3 ${isMobile ? "" : "position-sticky"}`}
@@ -748,7 +746,9 @@ export default function Productdetails() {
                 </h1>
 
                 <div
-                  className={`col-lg-6 pl-lg-0 mt-5 ${isMobile ? "" : "position-sticky"}`}
+                  className={`col-lg-6 pl-lg-0 mt-5 ${
+                    isMobile ? "" : "position-sticky"
+                  }`}
                   style={isDesktop ? { top: "370px" } : {}}
                 >
                   <h2 className="highlights">Highlights</h2>
@@ -758,7 +758,7 @@ export default function Productdetails() {
                       __html: product.product_highlights,
                     }}
                   ></div>
-                  <div className="col-lg-6 pl-lg-0 mt-5 position-sticky">
+                  <div className="col-lg-6 pl-lg-0 mt-5 ">
                     {product.expert_advice !== "null" &&
                       product.expert_advice !== "undefined" && (
                         <div>
@@ -777,14 +777,6 @@ export default function Productdetails() {
                 <div className="col-lg-6">
                   <div className="d-flex justify-content-end">
                     <div>
-                      {/* <img
-                      src={share}
-                      width="10px"
-                      height="10px"
-                      className="d-block mx-auto eye"
-                      alt="share"
-                      style={{cursor:"pointer"}}
-                    /> */}
                       <Dropdown>
                         <Dropdown.Toggle
                           as="span"

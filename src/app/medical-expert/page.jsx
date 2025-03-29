@@ -370,8 +370,6 @@ export default function MedicalExpert() {
                     <Image
                       className="img-fluid mx-auto d-block"
                       src={badge}
-                      width=""
-                      height=""
                       alt="badge"
                     />
 
@@ -391,8 +389,6 @@ export default function MedicalExpert() {
                     <Image
                       className="img-fluid mx-auto d-block"
                       src={secure}
-                      width=""
-                      height=""
                       alt="badge"
                     />
 
@@ -413,8 +409,6 @@ export default function MedicalExpert() {
                     <Image
                       className="img-fluid mx-auto d-block"
                       src={wallet}
-                      width=""
-                      height=""
                       alt="badge"
                     />
 
@@ -446,8 +440,6 @@ export default function MedicalExpert() {
                 <img
                   className="img-fluid mx-auto d-block"
                   src={healthPage && healthPage[0] && healthPage[0].image}
-                  width=""
-                  height=""
                   alt="healthcarebg"
                 />
               </div>
@@ -458,8 +450,6 @@ export default function MedicalExpert() {
                 <img
                   className="img-fluid mx-auto d-block"
                   src={healthPage && healthPage[1] && healthPage[1].image}
-                  width=""
-                  height=""
                   alt="motivebg"
                 />
               </div>

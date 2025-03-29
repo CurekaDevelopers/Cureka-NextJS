@@ -32,6 +32,7 @@ import wallet from "../public/images/wallet.png";
 import LikeIcon from "../public/svg-components/LikeIcon";
 import CarouselSlider from "../components/CarouselSlider";
 import "../styles/home.css";
+
 import {
   addProductToCart,
   addProductToWishlist,
@@ -459,7 +460,7 @@ export default function Home() {
             <h2 className="doctors-heading mt-0">New Arrivals</h2>
             <Link
               className="text-decoration-none align-self-center"
-              href="/new-arrivals"
+              href={pagePaths.newArrivals}
               target="_blank"
             >
               <p className="all-deals">All Deals</p>
@@ -764,12 +765,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div className=" product-carousel">
+        <div className="product-carousel">
           <div className="d-flex justify-content-between">
             <h2 className="doctors-heading mt-0">Top Picks</h2>
             <Link
               className="text-decoration-none align-self-center"
-              href={"/top-picks"}
+              href="/top-picks"
               target="_blank"
             >
               <p className="all-deals">All Deals</p>
@@ -996,83 +997,6 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        {/* <div className="offers" id="offers-carousel">
-          <Carousel
-            showArrows={true}
-            showStatus={false}
-            showThumbs={false}
-            autoPlay={true}
-            infiniteLoop={true}
-          >
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-            <div>
-              <picture>
-                <source media="(max-width: 767px)" srcSet={mobileresoffersimg} />
-                <img
-                  className="w-100 d-block img-fluid mx-auto d-block"
-                  itemID={2}
-                  src={offers1}
-                  width="1260px"
-                  height="280px"
-                  alt="monsoon"
-                />
-              </picture>
-            </div>
-          </Carousel>
-        </div> */}
 
         <div className="brands mt-0">
           <div className="row">
