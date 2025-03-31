@@ -17,7 +17,7 @@ import "../../styles/blog.css";
 import { fetchBlogsList } from "../../redux/action";
 import BlogsHeader from "../../views/BlogsHeader";
 import Footer from "../../views/Footer";
-
+import Image from "next/image";
 const debouncedFetch = debounce((query, callback) => {
   fetchBlogsList(query).then(callback);
 }, 500);
@@ -171,11 +171,11 @@ export default function BlogHomePage() {
         <div className="container">
           <div className="d-flex home-back-section pt-lg-4 pt-1">
             <Link href="/">
-              <img
+              <Image
                 className="img-fluid d-flex align-self-center"
                 src={houseChimney}
-                width="16px"
-                height="16px"
+                width={16}
+                height={16}
                 alt="home-icon"
               />
             </Link>
@@ -191,30 +191,31 @@ export default function BlogHomePage() {
             <div className="row">
               <div className="col-lg-12 px-lg-0 blog-home">
                 <div id="blog-page">
-                  <Carousel showArrows={false} showStatus={false} infiniteLoop>
-                    {!!latestBlog?.length &&
-                      latestBlog?.map((blog) => {
-                        return (
-                          <div>
-                            <Link
-                              // href={`/blogs/${blog.url}`}
-                              key={blog.id}
-                              className="text-decoration-none banner-container"
-                              href="blogdetails"
-                              target="_blank"
-                            >
-                              <div className="item blog-overlay">
-                                <img
-                                  src={blog.thumbnail_image}
-                                  style={{ width: "100%", height: "390px" }}
-                                  className="img-fluid object-fit-fill banner-img"
-                                />
-                              </div>
-                            </Link>
-                          </div>
-                        );
-                      })}
-                  </Carousel>
+                  {Array.isArray(latestBlog) && latestBlog.length > 0 && (
+                    <Carousel
+                      showArrows={false}
+                      showStatus={false}
+                      infiniteLoop
+                    >
+                      {latestBlog.map((blog) => (
+                        <div key={blog.id}>
+                          <Link
+                            href={`/blogs/${blog.url}`}
+                            className="text-decoration-none banner-container"
+                            target="_blank"
+                          >
+                            <div className="item blog-overlay">
+                              <img
+                                src={blog.thumbnail_image}
+                                style={{ width: "100%", height: "390px" }}
+                                className="img-fluid object-fit-fill banner-img"
+                              />
+                            </div>
+                          </Link>
+                        </div>
+                      ))}
+                    </Carousel>
+                  )}
                 </div>
               </div>
             </div>
@@ -249,10 +250,10 @@ export default function BlogHomePage() {
                         <div className="">
                           <div className="card-body">
                             <div className="d-flex">
-                              <img
+                              <Image
                                 src={user}
-                                width="14px"
-                                height="14px"
+                                width={14}
+                                height={14}
                                 className="img-fluid"
                                 alt="user"
                               />
@@ -261,10 +262,10 @@ export default function BlogHomePage() {
 
                               <div className="left-border"></div>
 
-                              <img
+                              <Image
                                 src={calendar}
-                                width="14px"
-                                height="14px"
+                                width={14}
+                                height={14}
                                 className="img-fluid"
                                 alt="calendar"
                               />
@@ -308,10 +309,10 @@ export default function BlogHomePage() {
                     />
 
                     <div className="d-flex image-space user-space">
-                      <img
+                      <Image
                         src={calendar}
-                        width="20px"
-                        height="20px"
+                        width={20}
+                        height={20}
                         className="img-fluid"
                         alt="calendar"
                       />
@@ -324,10 +325,10 @@ export default function BlogHomePage() {
 
                       <div className="date-border"></div>
 
-                      <img
+                      <Image
                         src={user}
-                        width="20px"
-                        height="20px"
+                        width={20}
+                        height={20}
                         className="img-fluid"
                         alt="user"
                       />
@@ -368,10 +369,10 @@ export default function BlogHomePage() {
 
                           <div className="blog-left">
                             <div className="d-flex releate-blog align-self-center">
-                              <img
+                              <Image
                                 src={calendar}
-                                width="14px"
-                                height="14px"
+                                width={14}
+                                height={14}
                                 className="img-fluid"
                                 alt="calendar"
                               />
@@ -382,10 +383,10 @@ export default function BlogHomePage() {
 
                               <div className="date-border"></div>
 
-                              <img
+                              <Image
                                 src={user}
-                                width="14px"
-                                height="14px"
+                                width={14}
+                                height={14}
                                 className="img-fluid"
                                 alt="user"
                               />
@@ -469,10 +470,10 @@ export default function BlogHomePage() {
 
                     <div className="blog-left">
                       <div className="d-flex releate-blog align-self-center">
-                        <img
+                        <Image
                           src={calendar}
-                          width="14px"
-                          height="14px"
+                          width={14}
+                          height={14}
                           className="img-fluid"
                           alt="calendar"
                         />
@@ -483,10 +484,10 @@ export default function BlogHomePage() {
 
                         <div className="date-border"></div>
 
-                        <img
+                        <Image
                           src={user}
-                          width="14px"
-                          height="14px"
+                          width={14}
+                          height={14}
                           className="img-fluid"
                           alt="user"
                         />
@@ -500,7 +501,7 @@ export default function BlogHomePage() {
 
                       <h3 className="protein">{blog.title}</h3>
                     </div>
-                  </div>
+                  </div>{" "}
                 </Link>
               );
             })}
@@ -572,10 +573,10 @@ export default function BlogHomePage() {
 
                         <div className="blog-left">
                           <div className="d-flex releate-blog align-self-center">
-                            <img
+                            <Image
                               src={calendar}
-                              width="14px"
-                              height="14px"
+                              width={14}
+                              height={14}
                               className="img-fluid"
                               alt="calendar"
                             />
@@ -586,10 +587,10 @@ export default function BlogHomePage() {
 
                             <div className="date-border"></div>
 
-                            <img
+                            <Image
                               src={user}
-                              width="14px"
-                              height="14px"
+                              width={14}
+                              height={14}
                               className="img-fluid"
                               alt="user"
                             />

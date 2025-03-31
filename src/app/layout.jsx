@@ -9,9 +9,7 @@ export default function RootLayout({ children }) {
       <body>
         <ReduxProvider>
           <HelmetProvider>
-            <Toaster position="top-center" reverseOrder={false} />{" "}
-            {/* Add Toaster here */}
-            {children}
+            <Toaster position="top-center" reverseOrder={false} /> {children}
           </HelmetProvider>
         </ReduxProvider>
       </body>

@@ -689,9 +689,6 @@ export default function ProductdetailHeader() {
                 id="mySidenav"
                 style={{}}
               >
-                {/* <Link href="javascript:void(0)" className="closebtn" onClick={handleCloseSidenav}>
-                  &times;
-                </Link> */}
                 <Offcanvas
                   show={show}
                   onHide={handleClose}
@@ -702,7 +699,6 @@ export default function ProductdetailHeader() {
                     style={{ padding: "10px" }}
                   ></div>
                   <Offcanvas.Body>
-                    {" "}
                     <li className="nav-item">
                       <div
                         className="panel-group border-bottom"

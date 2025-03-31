@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <>
       <div className="container-fluid mt-50">
-        <div className="border-bottom">
+        <div className="border-bottom ">
           <div className="container px-0" id="header">
             <nav className="justify-content-between navbar navbar-expand-lg navbar-light bg-white pb-3 px-0 pr-0">
               <div className="mobilelogo">

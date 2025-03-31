@@ -32,6 +32,8 @@ import wallet from "../public/images/wallet.png";
 import LikeIcon from "../public/svg-components/LikeIcon";
 import CarouselSlider from "../components/CarouselSlider";
 import "../styles/home.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import {
   addProductToCart,

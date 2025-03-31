@@ -139,7 +139,6 @@ export const pagePaths = {
   myWishlist: "/account?tab=my-wishlist",
   myCoupons: "/account?tab=my-coupons",
   myAccount: "/account?tab=my-account",
-  // myAccount: "/AccountTab",
   concernProduct: "/concern",
   brand: "/brand",
   brandprod: "/product-brands",

@@ -64,7 +64,9 @@ import Image from "next/image";
 export default function Header({ showCategoryNavbar = true }) {
   const searchParams = useSearchParams();
   const [category, setCategory] = useState(null);
- const [searchTerm, setSearchTerm] = useState(searchParams.get("search_term") || "");
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("search_term") || ""
+  );
   const [items, setItems] = useState([]);
   const { isLoggedIn, name } = useCustomerLoggedIn();
   const navigate = useRouter();
@@ -135,12 +137,12 @@ export default function Header({ showCategoryNavbar = true }) {
     setSearchTerm(event.target.value);
   }
   useEffect(() => {
-      if (searchTerm.length >= 3) {
-        fetchItems(searchTerm);
-      } else {
-        setItems([]);
-      }
-    }, [searchTerm]);
+    if (searchTerm.length >= 3) {
+      fetchItems(searchTerm);
+    } else {
+      setItems([]);
+    }
+  }, [searchTerm]);
 
   // const fetchItems = async (searchTerm) => {
   //   // Simulate async data fetching, replace with your actual API call
@@ -154,7 +156,7 @@ export default function Header({ showCategoryNavbar = true }) {
   //     response.data.concerns,
   //   ];
   // };
-  
+
   // const handleInputChange = async (event) => {
   //   const newValue = event.target.value;
   //   setSearchTerm(newValue);
@@ -174,11 +176,13 @@ export default function Header({ showCategoryNavbar = true }) {
   const fetchItems = async (term) => {
     try {
       console.log("Fetching suggestions for:", term);
-      const response = await api.get(`${apiUrls.productsSuggestions}?search_term=${term}`);
+      const response = await api.get(
+        `${apiUrls.productsSuggestions}?search_term=${term}`
+      );
       console.log("API Response:", response.data);
-  
+
       const { brands, categories, products, concerns } = response.data;
-  
+
       setItems([
         { type: "Brands", data: brands },
         { type: "Concerns", data: concerns },
@@ -190,30 +194,29 @@ export default function Header({ showCategoryNavbar = true }) {
       setItems([]);
     }
   };
-  
 
   const handleInputChange = (value) => {
     setSearchTerm(value); // Fix: Accepts the string directly instead of event
   };
-  const handleSelect = (item,type) => {
-      console.log(item);
-      
-      switch (type) {
-          case "Categories":
-            navigate.push(`/product-category/${item.slug}`);
-            break;
-          case "Concerns":
-            navigate.push(`/concern/${preprocessConcernName(item.name)}`);
-            break;
-          case "Products":
-            navigate.push(`${generateUrl(item)}`);
-            break;
-          case "Brands":
-            navigate.push(`/product-brands/${item.name}`);
-            break;
-          default:
-            console.warn("Unknown item type:", type);
-        }
+  const handleSelect = (item, type) => {
+    console.log(item);
+
+    switch (type) {
+      case "Categories":
+        navigate.push(`/product-category/${item.slug}`);
+        break;
+      case "Concerns":
+        navigate.push(`/concern/${preprocessConcernName(item.name)}`);
+        break;
+      case "Products":
+        navigate.push(`${generateUrl(item)}`);
+        break;
+      case "Brands":
+        navigate.push(`/product-brands/${item.name}`);
+        break;
+      default:
+        console.warn("Unknown item type:", type);
+    }
   };
 
   const onSearchClicked = () => {
@@ -684,7 +687,11 @@ export default function Header({ showCategoryNavbar = true }) {
                             onChange={handleInputChange}
                             onSelect={handleSelect}
                           /> */}
-                          <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
+                          <SearchAutocomplete
+                            items={items}
+                            onSelect={handleSelect}
+                            onChange={handleInputChange}
+                          />
                         </div>
                         <Image
                           onClick={onSearchClicked}

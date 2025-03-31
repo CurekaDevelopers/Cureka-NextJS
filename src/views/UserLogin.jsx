@@ -17,6 +17,8 @@ import Image from "next/image";
 const UserLogin = ({ handleCloseLoginModel }) => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [msg, setMsg] = useState("");
+  const [mailmsg, setmailMsg] = useState("");
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [useMobileLogin, setUseMobileLogin] = useState(false);
@@ -93,7 +95,7 @@ const UserLogin = ({ handleCloseLoginModel }) => {
       });
       if (response.status === 200) {
         dispatch(setAccessToken(response.data?.data?.access_token));
-        setMsg("Login successful!");
+        setmailMsg("Login successful!");
         setTimeout(() => {
           handleCloseLoginModel();
         }, 300);
@@ -103,8 +105,6 @@ const UserLogin = ({ handleCloseLoginModel }) => {
             dispatch(setUserDetails(userDetails));
           }
         });
-      } else {
-        setMsg(response.data.message);
       }
     } catch (error) {
       setMsg(
@@ -175,7 +175,8 @@ const UserLogin = ({ handleCloseLoginModel }) => {
       if (response.status === 200) {
         setMsg(response.data.message);
       } else {
-        setMsg(response.data.message);
+        setShowOtpInput(false);
+        setMsg(response.data.message); // Only error message
       }
     } catch (error) {
       setMsg(
@@ -225,6 +226,21 @@ const UserLogin = ({ handleCloseLoginModel }) => {
                         &times;
                       </button>
                       <strong>Error!</strong> {msg}
+                    </div>
+                  </>
+                )}
+
+                {mailmsg && (
+                  <>
+                    <div className="alert alert-success  mt-4">
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="alert"
+                      >
+                        &times;
+                      </button>
+                      {mailmsg}
                     </div>
                   </>
                 )}

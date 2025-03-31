@@ -459,14 +459,19 @@ const AdminCreateBlogsPage = ({ isEditPage = false }) => {
               </Form.Label>
               <RichtextEditor
                 value={formik.values.content}
-                onChange={(value) => formik.setFieldValue("content", value)}
+                onChange={(value) => {
+                  console.log("Editor value:", value);
+                  formik.setFieldValue("content", value);
+                }}
+                onBlur={() => formik.setFieldTouched("content", true)}
               />
               {formik.errors.content && formik.touched.content && (
-                <Form.Text className={styles.errorText} muted>
+                <Form.Text className="text-danger">
                   {formik.errors.content}
                 </Form.Text>
               )}
             </Form.Group>
+
             <Form.Group>
               <Form.Label>
                 Blog Date

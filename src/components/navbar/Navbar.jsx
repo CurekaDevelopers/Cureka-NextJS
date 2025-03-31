@@ -1,38 +1,46 @@
 "use client";
 import { useEffect, useState } from "react";
-import Col from "react-bootstrap/Col";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
-import Tab from "react-bootstrap/Tab";
+import { Nav, Tab, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-
 import { useRouter } from "next/navigation";
 import PopupModal from "../../views/Header/HomePopup";
 import "../../styles/header.css";
-import { fetchConcerns, fetchConcernsProducts } from "../../redux/action";
-import Image from "next/image";
+import {
+  fetchConcerns,
+  fetchConcernsProducts,
+  fetchCategories,
+} from "../../redux/action";
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const router = useRouter();
+
   const { concerns, concernsProduct } = useSelector((state) => state.admin);
   const { nestedCategories } = useSelector((state) => state.customer);
 
-  const [hoveredCategory, setHoveredCategory] = useState("");
+  const [hoveredCategory, setHoveredCategory] = useState(null);
   const [modalCategoryPopupShow, setModalCategoryPopupShow] = useState(false);
 
+  // 🔹 Debugging: Check Redux Data
   useEffect(() => {
-    if (nestedCategories.length > 0) {
-      setHoveredCategory(nestedCategories[0]);
-    }
+    console.log("nestedCategories from Redux:", nestedCategories);
   }, [nestedCategories]);
 
   useEffect(() => {
     dispatch(fetchConcerns());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
-  const onChangeHoveredCategory = (category) => () => {
+  useEffect(() => {
+    if (nestedCategories.length > 0) {
+      setHoveredCategory(nestedCategories[0]); // ✅ Set first category as default
+    } else {
+      setHoveredCategory(null);
+    }
+  }, [nestedCategories]);
+
+  const onChangeHoveredCategory = (category) => {
     setHoveredCategory(category);
   };
 
@@ -74,15 +82,15 @@ export default function Navbar() {
                           </a>
                           <div className="dropdown-menu megamenu">
                             <Tab.Container
-                              activeKey={hoveredCategory?.slug}
-                              defaultActiveKey={hoveredCategory?.slug}
+                              activeKey={hoveredCategory?.slug || ""}
+                              defaultActiveKey={hoveredCategory?.slug || ""}
                             >
                               <Row>
                                 {/* Left Sidebar Category List */}
                                 <Col lg={2} className="left-megamenu">
                                   <Nav variant="pills" className="flex-column">
-                                    {!!nestedCategories?.length &&
-                                      nestedCategories?.map((item) => {
+                                    {nestedCategories?.length > 0 &&
+                                      nestedCategories.map((item) => {
                                         if (
                                           item.nav_link
                                             ?.trim()
@@ -92,30 +100,18 @@ export default function Navbar() {
                                         return (
                                           <Nav.Item
                                             key={item.id}
-                                            onMouseEnter={onChangeHoveredCategory(
-                                              item
-                                            )}
+                                            onMouseEnter={() =>
+                                              onChangeHoveredCategory(item)
+                                            }
                                           >
-                                            <Link
-                                              href={`/product-category/${hoveredCategory?.slug}`}
-                                              passHref
-                                            >
-                                              <Nav.Item
-                                                as="div" // Ensure it doesn’t render as an <a> tag
-                                                onClick={() =>
-                                                  router.push(
-                                                    `/product-category/${hoveredCategory?.slug}`
-                                                  )
-                                                }
+                                            <Nav.Link eventKey={item.slug}>
+                                              <Link
+                                                href={`/product-category/${item.slug}`}
+                                                legacyBehavior
                                               >
-                                                <Nav.Link
-                                                  as="span"
-                                                  eventKey={item.slug}
-                                                >
-                                                  {item.name}
-                                                </Nav.Link>
-                                              </Nav.Item>
-                                            </Link>
+                                                <a>{item.name}</a>
+                                              </Link>
+                                            </Nav.Link>
                                           </Nav.Item>
                                         );
                                       })}
@@ -126,41 +122,59 @@ export default function Navbar() {
                                 <Col lg={10}>
                                   <Tab.Content className="p-0">
                                     <Tab.Pane
-                                      eventKey={hoveredCategory?.slug}
+                                      eventKey={hoveredCategory?.slug || ""}
                                       className="m-0"
                                     >
                                       <div className="menu-container">
-                                        {hoveredCategory?.sub_categories?.map(
-                                          (subCategory) => (
-                                            <div
-                                              key={subCategory.id}
-                                              className="menu-column"
-                                            >
-                                              <Link
-                                                href={`/product-category/${hoveredCategory?.slug}/${subCategory.slug}`}
+                                        {hoveredCategory?.sub_categories
+                                          ?.length > 0 ? (
+                                          hoveredCategory.sub_categories.map(
+                                            (subCategory) => (
+                                              <div
+                                                key={subCategory.id}
+                                                className="menu-column"
                                               >
+                                                {/* Sub-category title */}
                                                 <h2 className="items-title">
-                                                  {subCategory.name}
+                                                  <Link
+                                                    href={`/product-category/${hoveredCategory.slug}/${subCategory.slug}`}
+                                                  >
+                                                    {subCategory.name}
+                                                  </Link>
                                                 </h2>
-                                              </Link>
-                                              <ul className="category-list">
-                                                {subCategory?.sub_sub_categories?.map(
-                                                  (subSubCategory, index) => (
-                                                    <li
-                                                      key={`${subSubCategory.id}-${index}`}
-                                                      className="items"
-                                                    >
-                                                      <Link
-                                                        href={`/product-category/${hoveredCategory?.slug}/${subCategory.slug}/${subSubCategory.slug}`}
-                                                      >
-                                                        {subSubCategory.name}
-                                                      </Link>
-                                                    </li>
-                                                  )
-                                                )}
-                                              </ul>
-                                            </div>
+
+                                                {/* Sub-subcategories list */}
+                                                <ul className="category-list">
+                                                  {subCategory
+                                                    ?.sub_sub_categories
+                                                    ?.length > 0 ? (
+                                                    subCategory.sub_sub_categories.map(
+                                                      (subSubCategory) => (
+                                                        <li
+                                                          key={
+                                                            subSubCategory.id
+                                                          }
+                                                          className="items"
+                                                        >
+                                                          <Link
+                                                            href={`/product-category/${hoveredCategory.slug}/${subCategory.slug}/${subSubCategory.slug}`}
+                                                          >
+                                                            {
+                                                              subSubCategory.name
+                                                            }
+                                                          </Link>
+                                                        </li>
+                                                      )
+                                                    )
+                                                  ) : (
+                                                    <li>No subcategories</li>
+                                                  )}
+                                                </ul>
+                                              </div>
+                                            )
                                           )
+                                        ) : (
+                                          <p>No categories available</p>
                                         )}
                                       </div>
                                     </Tab.Pane>
@@ -185,11 +199,7 @@ export default function Navbar() {
                       key={item.id}
                       onClick={() => handleConcernsProducts(item.slug)}
                     >
-                      <Link
-                        href={`/concern/${item.slug}`}
-                        passHref
-                        legacyBehavior
-                      >
+                      <Link href={`/concern/${item.slug}`} legacyBehavior>
                         <a className="category-images">
                           <img
                             src={item.image}

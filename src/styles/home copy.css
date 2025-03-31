@@ -150,8 +150,6 @@
 }
 
 .all-deals::after {
-  content: ">";
-
   font-size: 15px;
 
   color: #e75204;
