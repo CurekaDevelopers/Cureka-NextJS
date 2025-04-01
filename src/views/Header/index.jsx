@@ -1411,7 +1411,11 @@ export default function Header({ showCategoryNavbar = true }) {
                         onChange={handleInputChange}
                         onSelect={handleSelect}
                       /> */}
-                      <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
+                      <SearchAutocomplete
+                        items={items}
+                        onSelect={handleSelect}
+                        onChange={handleInputChange}
+                      />
                     </div>
 
                     <Image

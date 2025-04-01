@@ -120,12 +120,12 @@ export default function ProductdetailHeader() {
     setSearchTerm(event.target.value);
   }
   useEffect(() => {
-        if (searchTerm.length >= 3) {
-          fetchItems(searchTerm);
-        } else {
-          setItems([]);
-        }
-      }, [searchTerm]);
+    if (searchTerm.length >= 3) {
+      fetchItems(searchTerm);
+    } else {
+      setItems([]);
+    }
+  }, [searchTerm]);
 
   // const fetchItems = async (searchTerm) => {
   //   // Simulate async data fetching, replace with your actual API call
@@ -155,11 +155,13 @@ export default function ProductdetailHeader() {
   const fetchItems = async (term) => {
     try {
       console.log("Fetching suggestions for:", term);
-      const response = await api.get(`${apiUrls.productsSuggestions}?search_term=${term}`);
+      const response = await api.get(
+        `${apiUrls.productsSuggestions}?search_term=${term}`
+      );
       console.log("API Response:", response.data);
-  
+
       const { brands, categories, products, concerns } = response.data;
-  
+
       setItems([
         { type: "Brands", data: brands },
         { type: "Concerns", data: concerns },
@@ -171,30 +173,29 @@ export default function ProductdetailHeader() {
       setItems([]);
     }
   };
-  
 
   const handleInputChange = (value) => {
     setSearchTerm(value); // Fix: Accepts the string directly instead of event
   };
-  const handleSelect = (item,type) => {
-      console.log(item);
-      
-      switch (type) {
-          case "Categories":
-            navigate.push(`/product-category/${item.slug}`);
-            break;
-          case "Concerns":
-            navigate.push(`/concern/${preprocessConcernName(item.name)}`);
-            break;
-          case "Products":
-            navigate.push(`${generateUrl(item)}`);
-            break;
-          case "Brands":
-            navigate.push(`/product-brands/${item.name}`);
-            break;
-          default:
-            console.warn("Unknown item type:", type);
-        }
+  const handleSelect = (item, type) => {
+    console.log(item);
+
+    switch (type) {
+      case "Categories":
+        navigate.push(`/product-category/${item.slug}`);
+        break;
+      case "Concerns":
+        navigate.push(`/concern/${preprocessConcernName(item.name)}`);
+        break;
+      case "Products":
+        navigate.push(`${generateUrl(item)}`);
+        break;
+      case "Brands":
+        navigate.push(`/product-brands/${item.name}`);
+        break;
+      default:
+        console.warn("Unknown item type:", type);
+    }
   };
 
   const onSearchClicked = () => {
@@ -645,7 +646,11 @@ export default function ProductdetailHeader() {
                         onChange={handleInputChange}
                         onSelect={handleSelect}
                       /> */}
-                      <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
+                      <SearchAutocomplete
+                        items={items}
+                        onSelect={handleSelect}
+                        onChange={handleInputChange}
+                      />
                       <Image
                         onClick={onSearchClicked}
                         className="img-fluid search-icon"
@@ -1282,7 +1287,11 @@ export default function ProductdetailHeader() {
                       onChange={handleInputChange}
                       onSelect={handleSelect}
                     /> */}
-                    <SearchAutocomplete items={items} onSelect={handleSelect} onChange={handleInputChange} />
+                    <SearchAutocomplete
+                      items={items}
+                      onSelect={handleSelect}
+                      onChange={handleInputChange}
+                    />
 
                     <Image
                       onClick={onSearchClicked}

@@ -746,9 +746,8 @@ export default function Productdetails() {
                 </h1>
 
                 <div
-                  className={`col-lg-6 pl-lg-0 mt-5 ${
-                    isMobile ? "" : "position-sticky"
-                  }`}
+                  className={`col-lg-6 pl-lg-0 mt-5 
+                    ${isMobile ? "" : "position-sticky"}`}
                   style={isDesktop ? { top: "370px" } : {}}
                 >
                   <h2 className="highlights">Highlights</h2>
