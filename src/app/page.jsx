@@ -428,7 +428,7 @@ export default function Home() {
                           height="284px"
                           alt="homebanner"
                         />
-                        <button className="shopnow-btn">Shop now</button>
+                        {/* <button className="shopnow-btn">Shop now</button> */}
                       </a>
                       {/* <p className="legend">Legend 1</p> */}
                     </div>
@@ -454,7 +454,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <h1 className="doctors-heading mt-2 font-weight-bold text-center">
+        <h1 className="doctors-heading mt-2 font-weight-bold text-center mb-5">
           Cureka: India’s leading Online Healthcare Platform
         </h1>
         <div className="product-carousel">

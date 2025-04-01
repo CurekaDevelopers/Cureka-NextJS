@@ -97,7 +97,7 @@ export default function BlogsHeader() {
               </Alert>
             </div>
 
-            <div className="offers-wrapper" id="offers-alert">
+            <div className="offers-wrapper mb-5" id="offers-alert">
               <Alert variant="" onClose={handleAlert} dismissible>
                 <p className="offers-heading mb-0">
                   Limited Period Offer:{" "}

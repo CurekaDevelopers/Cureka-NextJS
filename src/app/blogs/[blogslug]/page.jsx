@@ -22,7 +22,7 @@ import calendarIcon from "../../../public/images/calendar.svg";
 import houseIcon from "../../../public/images/house-chimney.png";
 import userIcon from "../../../public/images/user.svg";
 import userAvatar from "../../../public/images/user_icon.svg";
-
+import Image from "next/image";
 const BlogDetailsPage = () => {
   const { blogSlug } = useParams();
   console.log("blogSlug", blogSlug);
@@ -121,7 +121,7 @@ const BlogDetailsPage = () => {
         {/* Breadcrumb Navigation */}
         <div className="d-flex home-back-section pt-1">
           <Link href="/">
-            <img src={houseIcon} width="16px" height="16px" alt="home-icon" />
+            <Image src={houseIcon} width={16} height={16} alt="home-icon" />
           </Link>
           <p className="section mb-0 ml-2">
             <Link href="/blogs"> / Blog </Link> /{" "}
@@ -142,19 +142,14 @@ const BlogDetailsPage = () => {
 
             {/* Blog Meta Info */}
             <div className="d-flex align-items-center user-space">
-              <img
-                src={calendarIcon}
-                width="20px"
-                height="20px"
-                alt="calendar"
-              />
+              <Image src={calendarIcon} width={20} height={20} alt="calendar" />
               <p className="blog-user mb-0">
                 {dayjs(blogData.blog_date).format("DD MMMM, YYYY")}
               </p>
 
               <div className="date-border"></div>
 
-              <img src={userIcon} width="20px" height="20px" alt="user" />
+              <Image src={userIcon} width={20} height={20} alt="user" />
               <p className="blog-user mb-0">By Cureka Admin</p>
             </div>
 
@@ -172,10 +167,10 @@ const BlogDetailsPage = () => {
               <p className="comment">{listApproved.length} Comments</p>
               {listApproved.map((comment, index) => (
                 <div className="d-flex usergaps" key={index}>
-                  <img
+                  <Image
                     src={userAvatar}
-                    width="26px"
-                    height="22px"
+                    width={26}
+                    height={22}
                     alt="user_icon"
                   />
                   <div>

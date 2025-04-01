@@ -54,6 +54,8 @@ export default function Navbar() {
 
   return (
     <>
+      <br />
+      <br />
       <div className="categories">
         <div className="border-bottom">
           <div className="container">
