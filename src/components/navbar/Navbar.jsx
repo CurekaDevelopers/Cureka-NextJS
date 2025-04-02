@@ -22,7 +22,7 @@ export default function Navbar() {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [modalCategoryPopupShow, setModalCategoryPopupShow] = useState(false);
 
-  // 🔹 Debugging: Check Redux Data
+  // Debugging: Check Redux Data
   useEffect(() => {
     console.log("nestedCategories from Redux:", nestedCategories);
   }, [nestedCategories]);
@@ -109,9 +109,9 @@ export default function Navbar() {
                                             <Nav.Link eventKey={item.slug}>
                                               <Link
                                                 href={`/product-category/${item.slug}`}
-                                                legacyBehavior
+                                                className="nav-category-link"
                                               >
-                                                <a>{item.name}</a>
+                                                {item.name}
                                               </Link>
                                             </Nav.Link>
                                           </Nav.Item>
@@ -201,24 +201,23 @@ export default function Navbar() {
                       key={item.id}
                       onClick={() => handleConcernsProducts(item.slug)}
                     >
-                      <Link href={`/concern/${item.slug}`} legacyBehavior>
-                        <a className="category-images">
-                          <img
-                            src={item.image}
-                            width="80"
-                            height="80"
-                            alt={item.name}
-                          />
-                        </a>
+                      <Link
+                        href={`/concern/${item.slug}`}
+                        className="category-images"
+                      >
+                        <img
+                          src={item.image}
+                          width="80"
+                          height="80"
+                          alt={item.name}
+                        />
                       </Link>
-                      {/* Move Nav.Link outside the Link */}
-                      <Nav.Link
+                      <Link
                         href={`/concern/${item.slug}`}
                         className="category-text text-truncate"
-                        title={item.name}
                       >
                         {item.name}
-                      </Nav.Link>
+                      </Link>
                     </Nav.Item>
                   ))}
                 </Nav>

@@ -24,6 +24,12 @@ const sideBarItems = [
     path: pagePaths.adminProductManagement,
     id: 4,
   },
+  ,
+  {
+    label: "Concerns Management",
+    path: pagePaths.adminConcern,
+    id: 31,
+  },
   { label: "Categories Management", path: pagePaths.adminCategories, id: 5 },
   { label: "Orders Management", path: pagePaths.adminOrders, id: 22 },
   {
@@ -98,7 +104,7 @@ const sideBarItems = [
     path: pagePaths.adminUserWalletTransaction,
     id: 26,
   },
-  { label: "Home Page Vision", path: pagePaths.adminHomePageVision, id: 27 },
+  { label: "Home Page Vision", path: pagePaths.adminHomePageVision, id: 30 },
   { label: "Health Page Mission", path: pagePaths.adminHomePageMision, id: 28 },
 ];
 
