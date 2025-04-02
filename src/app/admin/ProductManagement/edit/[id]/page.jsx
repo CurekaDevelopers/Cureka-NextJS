@@ -1,20 +1,20 @@
 "use client";
+import axios from "axios";
 import countryList from "country-list";
-import { useFormik } from "formik";
 import _ from "lodash";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
+import { env } from "../../../../../config/env.config";
 import {
-  createProduct,
   fetchArticleType,
   fetchBrands,
   fetchConcerns,
@@ -32,7 +32,6 @@ import {
   status,
   stock_status,
 } from "../../../../../utils/constants/common.constants";
-import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 
 const RichtextEditor = lazyLoadable(() =>
@@ -40,30 +39,34 @@ const RichtextEditor = lazyLoadable(() =>
 );
 
 const AdminCreateBrandsPage = ({ isEditPage = true }) => {
-  const formikRef = useRef();
   const navigate = useRouter();
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log(id,"from Useparams");
-  
-  const {
-    productsList,
-    brands,
-    concerns,
-    preferenceType,
-    articleType,
-    standardSizeList,
-  } = useSelector((state) => state.admin);
+  const { preferenceType, brands, concerns, articleType, standardSizeList } =
+    useSelector((state) => state.admin);
   const { nestedCategories } = useSelector((state) => state.customer);
-
-  const [previewImage, setPreviewImage] = useState([]);
   const [previewVideo, setPreviewVideo] = useState([]);
-  const [faqData, setFaqData] = useState([
-    {
-      question: "",
-      answer: "",
-    },
-  ]);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    setError,
+    control,
+    clearErrors,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {},
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "faqs_option", // name of the field array in your form data
+  });
+
+  const [uploadedImage, setUploadedImage] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
   const [tags, setTags] = useState([]);
   const [categoryItem, setCategoryItem] = useState({
     category: {},
@@ -71,6 +74,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
     subSubCategory: {},
     subSubSubCategory: {},
   });
+
   const [loading, setLoading] = useState(false);
   const [concernsList, setConcernsList] = useState([]);
   const [preferenceList, setPreferenceList] = useState([]);
@@ -99,7 +103,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
   const onChangeConcerns = (newSelected) => {
     if (newSelected.length <= 3) {
       setConcernsList(newSelected);
-      // setValue('concern', newSelected)
+      setValue("concern", newSelected);
     } else {
       toast.error("Maximum 3 selections allowed!");
     }
@@ -108,334 +112,423 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
   const onChangePreference = (newSelected) => {
     if (newSelected.length <= 3) {
       setPreferenceList(newSelected);
-      // setValue('preference', newSelected)
+      setValue("preference", newSelected);
     } else {
       toast.error("Maximum 3 selections allowed!");
     }
   };
 
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: validationSchema,
+  const onSubmit = async (values) => {
+    let fileUrl = [];
+    let videoUrl = "";
+    let sizeChart = "";
 
-    onSubmit: async (values) => {
-      if (faqData?.length < 1) {
-        formik.setFieldError("faqs_option", "Please add at least one faq.");
-        return;
+    if (values?.size_chart) {
+      if (values?.size_chart && typeof values?.size_chart === "string") {
+        sizeChart = values?.size_chart;
       } else {
-        // formik?.setFieldError("tags", null)
-      }
-
-      // if (tags?.length < 1) {
-      //   formik.setFieldError("tags", "Please create at least on tag.")
-      //   return
-      // }
-
-      if (!values?.product_image) {
-        formik.setFieldError("product_image", "Image is required.");
-        return;
-      }
-
-      // setLoading(true);
-      let fileUrl = [];
-      let videoUrl = "";
-      let sizeChart = "";
-
-      if (values?.size_chart) {
         const uploadData = await uploadImage(
           values?.size_chart[0],
           "product",
           (uploadProgress) => {
             console.log({ uploadProgress });
-            return uploadData.fileUrl;
           }
         );
-        sizeChart = uploadData.fileUrl;
+        sizeChart = uploadData?.fileUrl;
       }
+    }
+    console.log(previewImages, ";previewImages");
+    if (previewImages?.length > 0) {
+      await Promise.all(
+        values?.product_image?.map(async (val) => {
+          if (typeof val === "string") {
+            fileUrl.push(val);
+          } else {
+            const uploadData = await uploadImage(
+              val,
+              "product",
+              (uploadProgress) => {
+                console.log({ uploadProgress });
+              }
+            );
+            fileUrl.push(uploadData?.fileUrl);
+          }
+        })
+      );
+    } else {
+      setError("product_image", {
+        message: "Product image is required.",
+      });
+    }
 
-      if (
-        values?.product_image &&
-        typeof values?.product_image[0] === "string"
-      ) {
-        fileUrl = values?.product_image;
-      } else {
-        let imageUrls = [];
-        const uploadPromises = values.product_image?.map(async (val) => {
-          const uploadData = await uploadImage(
-            val,
-            "product",
-            (uploadProgress) => {
-              console.log({ uploadProgress });
-            }
-          );
-          return uploadData.fileUrl;
-          // imageUrls.push(uploadData.fileUrl)
-        });
-        imageUrls = await Promise.all(uploadPromises);
-        fileUrl.push(imageUrls);
-      }
-      if (
-        values?.product_video &&
-        typeof values?.product_video[0] === "string"
-      ) {
-        videoUrl = values?.product_video;
-      } else if (values.product_video?.length !== undefined) {
-        let videoLink = [];
-        const uploadPromises = values.product_video?.map(async (val) => {
-          const uploadData = await uploadImage(
-            val,
-            "product",
-            (uploadProgress) => {
-              console.log({ uploadProgress });
-            }
-          );
-          return uploadData.fileUrl;
-          // videoLink.push(uploadData.fileUrl)
-        });
+    if (values?.product_video && typeof values?.product_video === "string") {
+      videoUrl = values?.product_video;
+    } else if (
+      values?.product_video &&
+      typeof values.product_video === "object"
+    ) {
+      const uploadData = await uploadImage(
+        values.product_video[0],
+        "product",
+        (uploadProgress) => {
+          console.log("uploadProgress", { uploadProgress });
+        }
+      );
+      videoUrl = uploadData.fileUrl;
+    }
 
-        videoLink = await Promise.all(uploadPromises);
-        videoUrl = videoLink;
-      }
-
+    if (previewImages?.length > 0) {
       if (isEditPage) {
         dispatch(
           updateProduct(
             id,
             {
               ...values,
-              tags: tags,
-              category_id: categoryItem?.category?.id,
-              category_name: categoryItem?.category?.name,
-              sub_category: categoryItem?.subCategory?.name,
-              sub_sub_category: categoryItem?.subSubCategory?.name,
-              sub_sub_sub_category: categoryItem?.subSubSubCategory?.name,
-              brand_image: JSON.stringify(fileUrl),
-              faqs_option: JSON.stringify(faqData),
-              preference: JSON.stringify(preferenceList),
+              category_id: values?.category_id,
+              concern: JSON.stringify(values?.concern),
+              preference: JSON.stringify(values?.preference),
+              faqs_option: JSON.stringify(values?.faqs_option),
+              meta_description: values?.meta_description || null,
+              product_image: JSON.stringify(fileUrl),
               product_video: videoUrl,
               vendor_article_number: "1",
               size_chart: sizeChart,
-              // brand_image: brandImageFileUrl,
             },
             () => {
               setLoading(false);
-              navigate.push(pagePaths.adminProductManagement);
-            }
-          )
-        );
-      } else {
-        delete values?.sub_sub_sub_category;
-        delete values?.sub_sub_category;
-        delete values?.sub_category;
-        dispatch(
-          createProduct(
-            {
-              ...values,
-              tags: tags,
-              category_id: categoryItem?.category?.id,
-              category_name: categoryItem?.category?.name,
-              sub_category_id: categoryItem?.subCategory?.id,
-              sub_sub_category_id: categoryItem?.subSubCategory?.id,
-              sub_sub_sub_category_id: categoryItem?.subSubSubCategory?.id,
-              concern: JSON.stringify(concernsList),
-              preference: JSON.stringify(preferenceList),
-              product_image: JSON.stringify(fileUrl[0]),
-              faqs_option: JSON.stringify(faqData),
-              product_video: JSON.stringify(videoUrl),
-              size_chart: sizeChart,
-              // vendor_article_number:'1',
-              // importer_name_and_address_with_pincode:'1',
-              // weight_kg:'1',
-              // expires_in_days:'1',
-              // min_age_years:'1',
-              // max_age_years:'1',
-              // directions_of_use:'1',
-              // tags:'1',
-              // name:'1'
-              // image: fileUrl,
-              // brand_image: brandImageFileUrl,
-            },
-            () => {
-              setLoading(false);
-              navigate.push(pagePaths.adminProductManagement);
+              navigate(pagePaths.adminProductManagement);
             }
           )
         );
       }
-    },
-  });
-  console.log("formik", formik);
-
-  formik.handleChangeCategory = (event) => {
-    const eventData = JSON.parse(event?.target?.value);
-    const myData = {
-      id: eventData?.id,
-      code: eventData?.code,
-      name: eventData?.name,
-      sub_categories: eventData?.sub_categories,
-    };
-    setCategoryItem((pre) => ({ ...pre, category: myData }));
-    formik.setFieldValue(event.target.name, event.target.value);
+    } else {
+      setError("product_image", { message: "Please select image." });
+    }
   };
 
-  formik.handleChangeSubCategory = (event) => {
-    const eventData = JSON.parse(event.target.value);
-    const myData = {
-      id: eventData?.id,
-      code: eventData?.code,
-      name: eventData?.name,
-      sub_sub_categories: eventData?.sub_sub_categories,
-    };
-    setCategoryItem((pre) => ({ ...pre, subCategory: myData }));
-
-    formik.setFieldValue(event.target.name, event.target.value);
-  };
-  formik.handleChangeSubSubCategory = (event) => {
-    let eventData = JSON.parse(event?.target?.value);
-    const myData = {
-      id: eventData?.id,
-      code: eventData?.code,
-      name: eventData?.name,
-      sub_sub_sub_categories: eventData?.sub_sub_categories,
-    };
-    setCategoryItem((pre) => ({ ...pre, subSubCategory: myData }));
-    formik.setFieldValue(event.target.name, event.target.value);
-  };
-
-  formik.handleChangeSubSubSubCategory = (event) => {
-    eventData = JSON.parse(event.target.value);
-    const myData = {
-      id: eventData?.id,
-      code: eventData?.code,
-      name: eventData?.name,
-    };
-    setCategoryItem((pre) => ({ ...pre, subSubSubCategory: myData }));
-    formik.setFieldValue(event.target.name, event.target.value);
-  };
-
-  // const handleRemoveImage = (ind) => {
-  //   const myArray = previewImage
-  //   myArray.splice(ind, 1)
-  //   setPreviewImage([...myArray])
-  // }
   const handleRemoveVideo = (ind) => {
     const myArray = previewVideo;
     myArray.splice(ind, 1);
     setPreviewVideo([...myArray]);
+    setValue("product_video", "");
   };
 
-  const removeTags = (indexToRemove) => {
-    setTags([...tags.filter((_, index) => index !== indexToRemove)]);
-    if (tags?.length < 1) {
-      // formik.setFieldError("tags", "Please create at least on tag")
+  const removeTags = (indexToRemove, event) => {
+    let newTags = [...tags.filter((_, index) => index !== indexToRemove)];
+    // let newTags = [...tags, event?.target?.value]
+
+    if (newTags?.length < 1) {
+      setError("tags", {
+        message: "Tags are required.",
+      });
     } else {
-      // formik?.setFieldError("tags", null)
+      clearErrors("tags");
     }
+
+    setTags(newTags);
+    setValue("tags", newTags.join());
   };
   const addTags = (event) => {
     if (event.target.value !== "") {
-      setTags([...tags, event.target.value]);
+      let newTags = [...tags, event?.target?.value];
+      setTags(newTags);
+      setValue("tags", newTags.join());
+      if (newTags?.length < 1) {
+        setError("tags", {
+          message: "Tags are required.",
+        });
+      } else {
+        clearErrors("tags");
+      }
+
       event.target.value = "";
     }
   };
 
-  const handleFaqQuestion = (event, ind) => {
-    faqData.splice(ind, 1, { question: event, answer: faqData[ind]?.answer });
-    setFaqData([...faqData]);
-  };
-  const handleFaqAnswer = (event, ind) => {
-    faqData.splice(ind, 1, { answer: event, question: faqData[ind]?.question });
-    setFaqData([...faqData]);
+  const handleAppend = () => {
+    append({ question: "", answer: "" });
   };
 
-  const handleRemoveFaq = (ind) => {
-    if (faqData?.length > 0) {
-      faqData.splice(ind, 1);
-      setFaqData([...faqData]);
-      return;
+  useEffect(() => {
+    if (fields?.length < 1) {
+      setError("faqs_option", {
+        message: "Please add at least one faq.",
+      });
     } else {
-      formik.setFieldError("faqs_option", "Please create at least one faqs");
+      clearErrors("faqs_option");
     }
-    toast.error("Please add Faq first.");
+  }, [fields]);
+
+  const handleKeyUp = (event) => {
+    if (event.key === "Shift") {
+      addTags(event);
+    }
   };
+  const [cateGory, setCategory] = useState();
+  const [directionOfUse, setDirectionOfUse] = useState("");
+  const [description, setDescription] = useState("");
+  const [productBenefit, setProductBenefit] = useState("");
+  const [productHilight, setProductHilight] = useState("");
+  const [safetyInformation, setSafetyInformation] = useState("");
+  const [specialFeatures, setSpecialFeatures] = useState("");
+  const [feedingTable, setFeedingTable] = useState();
+  const [sizeChartImage, setSizeChartImage] = useState();
 
-  // useEffect(() => {
-  //   if (tags?.length < 1) {
-  //     // formik.setFieldError("tags", "Please create at least on tag")
-  //   }
-  //   else {
-  //     formik?.setFieldError("tags", null)
-  //     console.log("no error in tags field")
-  //   }
-  //   // console.log(tags)
-  // }, [tags])
-
-  useEffect(() => {
-    if (faqData?.length < 1) {
-      formik.setFieldError("faqs_option", "Please create at least one faqs");
-    } else {
-      formik?.setFieldError("faqs_option", null);
-    }
-    // console.log(tags)
-  }, [faqData]);
-  useEffect(() => {
-    if (isEditPage) {
-      formik.setFieldValue("category_name", formik?.values?.category_name);
-    }
-  }, [concerns]);
+  const [categoryList, setCategoryList] = useState({});
+  const [subCategoryList, setSubCategoryList] = useState({});
+  const [subSubCategoryList, setSubSubCategoryList] = useState({});
+  const [subSubSubCategoryList, setSubSubSubCategoryList] = useState({});
+  const [productData, setProductData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    formikRef.current = formik;
-  }, [formik]);
-
-  useEffect(() => {
-    const formik = formikRef.current || {};
-    if (isEditPage && productsList?.length && id && formik?.setValues) {
-      const product = productsList?.find(
-        (item) => parseInt(item.id) === parseInt(id)
-      );
-      console.log("product", product);
-      if (!product) {
-        navigate.push(pagePaths?.adminProductManagement);
+    const loadNestedCategories = async () => {
+      if (nestedCategories.length === 0) {
+        await dispatch(fetchNestedCategories());
       }
-      formik.setValues(product || {});
-      // formik.setFieldValue('category', product?.category);
-      // setPreviewImage(product?.image);
-      // setPreviewBrandImage(brand?.brand_image);
-    }
-  }, [isEditPage, productsList, id, navigate]);
+      setIsLoading(false);
+    };
+
+    loadNestedCategories();
+  }, [dispatch, nestedCategories.length]);
+
+  const [slug, setSlug] = useState("");
+  const [categorySlug, setCategorySlug] = useState("");
+  const [subCategorySlug, setSubCategorySlug] = useState("");
+  const [subSubCategorySlug, setSubSubCategorySlug] = useState("");
 
   useEffect(() => {
-    if (formik.values?.article_type) {
-      dispatch(fetchStandardSizeList(formik.values?.article_type));
+    const fetchProductData = async () => {
+      if (isEditPage && id) {
+        try {
+          const response = await axios.get(
+            `${env.REACT_SERVER_BASE_URL}/admin-fetch-products-by-id/${id}`
+          );
+          const product = response.data?.[0];
+
+          console.log("Product list", product);
+
+          if (product) {
+            setSlug(product.slug || ""); // Ensure default to empty string
+            setCategorySlug(product.category_slug || ""); // Ensure default to empty string
+            setSubCategorySlug(product.sub_category_slug || ""); // Ensure default to empty string
+            setSubSubCategorySlug(product.sub_sub_category_slug || ""); // Ensure default to empty string
+          }
+
+          setProductData(product);
+          setValue("vendor_article_name", product?.vendor_article_name);
+          setValue("url", product?.url);
+          setValue("category_id", product?.category_id);
+          setValue("sub_category_id", product?.sub_category_id);
+          setValue("sub_sub_category_id", product?.sub_sub_category_id);
+          setValue("sub_sub_sub_category_id", product?.sub_sub_sub_category_id);
+          setValue("vendor_sku_code", product?.vendor_sku_code);
+          setValue("brand", product?.brand);
+          setValue("checkout", product?.checkout);
+          setValue(
+            "packer_name_and_address_with_pincode",
+            product?.packer_name_and_address_with_pincode
+          );
+          setValue(
+            "importer_name_and_address_with_pincode",
+            product?.importer_name_and_address_with_pincode
+          );
+          setValue("country_of_origin", product?.country_of_origin);
+          setValue("weight_kg", product?.weight_kg);
+          setValue("dimensions_cm", product?.dimensions_cm);
+          setValue("components", product?.components);
+          setValue("expires_in_days", product?.expires_in_days);
+          setValue("article_type", product?.article_type);
+          setValue("brand_size", product?.brand_size);
+          setValue("hsn", product?.hsn);
+          setValue("sku_code", product?.sku_code);
+          setValue("age_group", product?.age_group);
+          setValue("min_age_years", product?.min_age_years);
+          setValue("max_age_years", product?.max_age_years);
+          setValue("stock_status", product?.stock_status);
+          setValue("new_arrival", product?.new_arrival);
+          setValue("show_stock", product?.show_stock);
+          setValue("top_picks", product?.top_picks);
+          setValue("ranking", product?.ranking);
+          setValue("newarrival_ranking", product?.newarrival_ranking);
+          setValue("toppics_ranking", product?.toppics_ranking);
+          if (product?.product_video) {
+            setPreviewVideo([product?.product_video]);
+            setValue(
+              "product_video",
+              product?.product_video ? product?.product_video : ""
+            );
+          }
+          setValue("directions_of_use", product?.directions_of_use);
+          setDirectionOfUse(product.directions_of_use);
+
+          setValue("description", product?.description);
+          setDescription(product?.description);
+
+          setValue("product_benefits", product?.product_benefits);
+          setProductBenefit(product.product_benefits || "");
+
+          setValue("product_highlights", product?.product_highlights || "");
+          setProductHilight(product?.product_highlights || "");
+
+          setValue("safety_information", product?.safety_information);
+          setSafetyInformation(product.safety_information || "");
+          setSpecialFeatures(product.special_features || "");
+          setValue(
+            "manufacturer_name_and_address_with_pincode",
+            product?.manufacturer_name_and_address_with_pincode
+          );
+
+          setValue("tags", product?.tags?.split(","));
+          setTags(product?.tags?.split(","));
+
+          setValue("skin_type", product?.skin_type);
+          setValue("hair_type", product?.hair_type);
+          setValue("spf_type", product?.spf);
+          setValue("size_chart_type", product?.size_chart_type);
+          setValue("color", product?.colours);
+          setValue("flavour", product?.flavours);
+          setValue("protein_type", product?.protein_type);
+          setValue("diaper_style", product?.diaper_style);
+          setValue("formulation_type", product?.formulation);
+          setValue("staging", product?.staging);
+          setValue("mrp", product?.mrp);
+          setValue("discount_in_percent", product?.discount_percent);
+          setValue("discount_in_amount", product?.discount_amount);
+          setValue("key_ingredients", product?.key_ingredients);
+          setValue("other_ingredients", product?.other_ingredients);
+          setValue("max_order_quantity", product?.max_order_quantity);
+          setValue("min_order_quantity", product?.min_order_quantity);
+          setValue("back_order_quantity", product?.back_order_quantity);
+          setValue("meta_title", product?.meta_title);
+          setValue("meta_description", product?.meta_description);
+          setValue("expert_advice", product?.expert_advice);
+          setValue("article_type", product?.article_type);
+          let productImgArr = product?.product_image_array?.map((res) => {
+            return res?.image;
+          });
+          setValue("product_image", productImgArr);
+          setConcernsList(product?.product_concern_array);
+          setPreferenceList(product?.product_preference_array);
+          setValue("preference", product?.product_preference_array);
+          setValue("concern", product?.product_concern_array);
+          setValue("faqs_option", product?.product_faq_array);
+          setFeedingTable(product?.feeding_table);
+          setValue("feeding_table", product?.feeding_table);
+          setValue("specifications", product?.accessories_specification);
+          if (product?.size_chart) setValue("size_chart", product?.size_chart);
+          setSizeChartImage(
+            (product?.size_chart !== "null" && product?.size_chart) || null
+          );
+          setPreviewImages(
+            product?.product_image_array?.map((res) => {
+              return [res?.image];
+            })
+          );
+          setUploadedImage(
+            product?.product_image_array?.map((res) => {
+              return res?.image;
+            })
+          );
+          const subCategory = nestedCategories?.find(
+            (item) => parseInt(item.id) === parseInt(product?.category_id)
+          );
+          if (subCategory) {
+            setCategoryList(subCategory);
+            const sub_subCategory = subCategory?.sub_categories?.find(
+              (item) => parseInt(item.id) === parseInt(product?.sub_category_id)
+            );
+            if (sub_subCategory) {
+              setSubCategoryList(sub_subCategory);
+              const sub_sub_sub_Category =
+                sub_subCategory?.sub_sub_categories?.find(
+                  (item) =>
+                    parseInt(item.id) === parseInt(product?.sub_sub_category_id)
+                );
+              if (sub_sub_sub_Category) {
+                setSubSubCategoryList(sub_sub_sub_Category);
+              }
+            }
+          }
+
+          dispatch(fetchStandardSizeList(3326));
+          if (!product) {
+            navigate(pagePaths?.adminProductManagement);
+          }
+        } catch (error) {
+          console.error("Error fetching product data:", error);
+        }
+      }
+    };
+
+    fetchProductData();
+  }, [isEditPage, id, nestedCategories]);
+
+  const buildUrl = () => {
+    const slugs = [slug, categorySlug, subCategorySlug, subSubCategorySlug];
+    // Filter out any null or empty slugs
+    const validSlugs = slugs.filter((slug) => slug); // Keep only truthy values (non-empty strings)
+    return `/shop/${validSlugs.join("/")}`; // Join remaining slugs
+  };
+
+  const [standerdSize, setStanderdSize] = useState();
+  useEffect(() => {
+    if (productData) {
+      console.log(productData, "productData");
+      setValue("sub_category_id", productData?.sub_category_id);
+      setValue("sub_sub_category_id", productData?.sub_sub_category_id);
+      setValue("sub_sub_sub_category_id", productData?.sub_sub_sub_category_id);
     }
-  }, [formik.values?.article_type]);
+
+    if (productData?.article_type) {
+      dispatch(fetchStandardSizeList(productData?.article_type));
+      setValue("standard_size", productData?.standard_size);
+      setStanderdSize(productData?.standard_size);
+    }
+  }, [productData]);
 
   useEffect(() => {
     dispatch(fetchBrands());
     dispatch(fetchProductsAdmin());
-    dispatch(fetchNestedCategories());
+    // dispatch(fetchNestedCategories());
     dispatch(fetchConcerns());
     dispatch(fetchArticleType());
     dispatch(fetchPreferenceType());
   }, [isEditPage]);
 
-  const [sizeChartImage, setSizeChartImage] = useState();
-  const handleChangeSizeChart = (e) => {
-    const selectedFile = Array.from(e?.target?.files);
-    const SizeChartUrl = URL.createObjectURL(e?.target?.files[0]);
-    formik.setFieldValue("size_chart", selectedFile);
-    setSizeChartImage(SizeChartUrl);
-  };
+  // const handleImageChange = (event) => {
+  //     const selectedFiles = Array.from(event.target.files);
+  //     setUploadedImage(prevSelectedFiles => [...prevSelectedFiles, ...selectedFiles])
+  //     clearErrors('product_image')
+  //     if (selectedFiles.length > 0) {
+  //         const imageArray = selectedFiles.map(file => URL.createObjectURL(file));
+  //         setPreviewImages(prevImages => [...prevImages, ...imageArray]);
+  //     }
+  // };
 
-  const [previewImages, setPreviewImages] = useState([]);
-  const [uploadedImage, setUploadedImage] = useState([]);
+  // useEffect(() => {
+  //     if (uploadedImage?.length > 0) {
+  //         setValue('product_image', uploadedImage)
+  //     }
+  // }, [uploadedImage])
+
+  // const handleRemoveImage = (index) => {
+  //     const newPreviewImages = [...previewImages];
+  //     const imgFile = [...uploadedImage]
+  //     imgFile.splice(index, 1);
+  //     setUploadedImage(imgFile)
+  //     newPreviewImages.splice(index, 1);
+  //     setPreviewImages(newPreviewImages);
+  // };
+
   const handleImageChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
     setUploadedImage((prevSelectedFiles) => [
       ...prevSelectedFiles,
       ...selectedFiles,
     ]);
+    clearErrors("product_image");
+
     if (selectedFiles.length > 0) {
       const imageArray = selectedFiles.map((file) => URL.createObjectURL(file));
       setPreviewImages((prevImages) => [...prevImages, ...imageArray]);
@@ -443,28 +536,100 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
   };
 
   useEffect(() => {
-    if (uploadedImage?.length) {
-      formik.setFieldValue("product_image", uploadedImage);
-    } else {
-      formik.setFieldValue("product_image", null);
+    if (uploadedImage.length > 0) {
+      setValue("product_image", uploadedImage);
     }
-  }, [uploadedImage]);
+  }, [uploadedImage, setValue]);
 
   const handleRemoveImage = (index) => {
     const newPreviewImages = [...previewImages];
-    const imgFile = [...uploadedImage];
-    imgFile.splice(index, 1);
-    setUploadedImage(imgFile);
+    const newUploadedImages = [...uploadedImage];
+    newUploadedImages.splice(index, 1);
+    setUploadedImage(newUploadedImages);
     newPreviewImages.splice(index, 1);
     setPreviewImages(newPreviewImages);
   };
 
-  const imgRef = useRef();
+  const handleDragStart = (index) => (event) => {
+    event.dataTransfer.setData("imageIndex", index);
+  };
+
+  const handleDrop = (index) => (event) => {
+    const draggedIndex = event.dataTransfer.getData("imageIndex");
+    const images = [...previewImages];
+
+    // Reorder the images array
+    const [draggedImage] = images.splice(draggedIndex, 1);
+    images.splice(index, 0, draggedImage);
+
+    // Update the previewImages state
+    setPreviewImages(images);
+
+    // Update the uploadedImage array to reflect the new order
+    const uploadedImagesCopy = [...uploadedImage];
+    const [draggedUploadedImage] = uploadedImagesCopy.splice(draggedIndex, 1);
+    uploadedImagesCopy.splice(index, 0, draggedUploadedImage);
+    setUploadedImage(uploadedImagesCopy);
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+  const handleChangeSizeChart = (e) => {
+    const SizeChartUrl = URL.createObjectURL(e?.target?.files[0]);
+    setSizeChartImage(SizeChartUrl);
+    setValue("size_chart", e?.target?.files);
+  };
 
   const handleRemoveSizeChart = () => {
-    formik.setFieldValue("size_chart", "");
-    imgRef.current.value = null;
+    setValue("size_chart", "");
     setSizeChartImage("");
+  };
+
+  const handleChangeCategory = (event) => {
+    setValue("sub_category_id", "");
+    setValue("sub_sub_category_id", "");
+    setValue("sub_sub_sub_category_id", "");
+
+    setCategory(event?.target?.value);
+    const subCategory = nestedCategories?.find(
+      (item) => parseInt(item.id) === parseInt(event?.target?.value)
+    );
+    setCategoryList(subCategory);
+    setSubCategoryList({});
+    setSubSubCategoryList({});
+  };
+
+  const handleChangeSubCategory = (event) => {
+    setValue("sub_sub_category_id", "");
+    setValue("sub_sub_sub_category_id", "");
+
+    const sub_subCategory = categoryList?.sub_categories?.find(
+      (item) => parseInt(item.id) === parseInt(event?.target?.value)
+    );
+    setSubCategoryList(sub_subCategory);
+    setSubSubCategoryList({});
+  };
+
+  const handleChangeSubSubCategory = (event) => {
+    setValue("sub_sub_sub_category_id", "");
+    const sub_sub_sub_Category = subCategoryList?.sub_sub_categories?.find(
+      (item) => parseInt(item.id) === parseInt(event?.target?.value)
+    );
+    setSubSubCategoryList(sub_sub_sub_Category);
+  };
+  const handleChangeSubSubSubCategory = (event) => {
+    eventData = JSON.parse(event.target.value);
+    const myData = {
+      id: eventData?.id,
+      code: eventData?.code,
+      name: eventData?.name,
+    };
+    setCategoryItem((pre) => ({ ...pre, subSubSubCategory: myData }));
+  };
+
+  const onChangeArticleType = (e) => {
+    dispatch(fetchStandardSizeList(e?.target?.value));
   };
 
   return (
@@ -484,26 +649,9 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
       <div>
         <Card className={styles.card}>
           <div className={styles.cardHeader}>
-            <p className={styles.title}>Add Products Details</p>
+            <p className={styles.title}>Edit Products Details</p>
           </div>
-          <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
-            {/* <Form.Group>
-              <Form.Label htmlFor="name">Name<span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="text"
-                id="name"
-                name="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.name}
-              />
-              {formik.errors.name && formik.touched.name && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.name}
-                </Form.Text>
-              )}
-            </Form.Group> */}
-
+          <form onSubmit={handleSubmit(onSubmit)} className={styles.formItems}>
             <Form.Group>
               <Form.Label htmlFor="vendor_article_name">
                 Vendor article name<span className="text-danger">*</span>
@@ -511,21 +659,32 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
               <Form.Control
                 type="text"
                 id="vendor_article_name"
-                name="vendor_article_name"
-                onChange={(e) => {
-                  const urlSlug = convertToUrlSlug(e?.target?.value || "");
-                  formik.setFieldValue("url", urlSlug);
-                  formik.handleChange(e);
-                }}
-                onBlur={formik.handleBlur}
-                value={formik.values?.vendor_article_name}
+                name=""
+                {...register("vendor_article_name", {
+                  required: "Vendor article name is required.",
+                  onChange: (e) => {
+                    const urlSlug = convertToUrlSlug(e?.target?.value || "");
+                    setValue("url", urlSlug);
+                  },
+                })}
               />
-              {formik.errors.vendor_article_name &&
-                formik.touched.vendor_article_name && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.vendor_article_name}
-                  </Form.Text>
-                )}
+              {errors?.vendor_article_name && (
+                <small className="text-danger">
+                  {errors?.vendor_article_name?.message}
+                </small>
+              )}
+              {/* Show the generated URL link */}
+              <Form.Text>
+                <a
+                  // href={buildUrl()} // Use the buildUrl function to generate the link
+                  href={`/shop/${categorySlug}/${subCategorySlug}/${subSubCategorySlug}/${slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-info"
+                >
+                  Open Product Detail
+                </a>
+              </Form.Text>
             </Form.Group>
 
             <Form.Group>
@@ -536,14 +695,10 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="url"
                 name="url"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.url}
+                {...register("url", { required: "Blog URL slug is required." })}
               />
-              {formik.errors.url && formik.touched.url && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.url}
-                </Form.Text>
+              {errors?.url && (
+                <small className="text-danger">{errors?.url?.message}</small>
               )}
             </Form.Group>
 
@@ -553,23 +708,27 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
               </Form.Label>
               <Form.Select
                 aria-label="Select Category"
-                id="category_name"
-                name="category_name"
-                onChange={formik.handleChangeCategory}
-                onBlur={formik.handleBlur}
-                value={formik?.values?.category_name}
+                id="category_id"
+                name="category_id"
+                value={cateGory}
+                {...register("category_id", {
+                  required: "Category is required.",
+                  onChange: (e) => {
+                    handleChangeCategory(e);
+                  },
+                })}
               >
                 <option value="">Select Category</option>
                 {nestedCategories?.map((value, key) => (
-                  <option key={key} value={JSON.stringify(value)}>
+                  <option key={key} value={value?.id}>
                     {value?.name}
                   </option>
                 ))}
               </Form.Select>
-              {formik.errors?.category_name && formik.touched.category_name && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors?.category_name}
-                </Form.Text>
+              {errors?.category_id && (
+                <small className="text-danger">
+                  {errors?.category_id?.message}
+                </small>
               )}
             </Form.Group>
 
@@ -577,27 +736,24 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
               <Form.Label htmlFor="sub_category">Sub Category</Form.Label>
               <Form.Select
                 aria-label="Select Category"
-                id="sub_category"
-                name="sub_category"
-                onChange={formik.handleChangeSubCategory}
-                onBlur={formik.handleBlur}
-                // value={categoryItem?.subCategory?.name}
+                id="sub_category_id"
+                name="sub_category_id"
+                {...register("sub_category_id", {
+                  onChange: (e) => {
+                    handleChangeSubCategory(e);
+                  },
+                })}
               >
-                <option>Select Sub Category</option>
-                {categoryItem?.category?.sub_categories?.length > 0 &&
-                  categoryItem?.category?.sub_categories?.map((value, key) => {
+                <option value="">Select Sub Category</option>
+                {categoryList?.sub_categories?.length > 0 &&
+                  categoryList?.sub_categories?.map((value, key) => {
                     return (
-                      <option key={key} value={JSON.stringify(value)}>
+                      <option key={key} value={value?.id}>
                         {value?.name}
                       </option>
                     );
                   })}
               </Form.Select>
-              {formik.errors.sub_category && formik.touched.sub_category && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.sub_category}
-                </Form.Text>
-              )}
             </Form.Group>
 
             <Form.Group>
@@ -606,57 +762,47 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
               </Form.Label>
               <Form.Select
                 aria-label="Select Category"
-                id="sub_sub_category"
-                name="sub_sub_category"
-                onChange={formik.handleChangeSubSubCategory}
-                onBlur={formik.handleBlur}
-                // value={categoryItem?.subSubCategory?.name}
+                id="sub_sub_category_id"
+                name="sub_sub_category_id"
+                {...register("sub_sub_category_id", {
+                  onChange: (e) => {
+                    handleChangeSubSubCategory(e);
+                  },
+                })}
               >
-                <option>Select Sub Sub Category</option>
-                {categoryItem?.subCategory?.sub_sub_categories?.length > 0 &&
-                  categoryItem?.subCategory?.sub_sub_categories?.map(
-                    (value, key) => {
-                      return (
-                        <option key={key} value={JSON.stringify(value)}>
-                          {value?.name}
-                        </option>
-                      );
-                    }
-                  )}
+                <option value="">Select Sub Sub Category</option>
+                {subCategoryList?.sub_sub_categories?.length > 0 &&
+                  subCategoryList?.sub_sub_categories?.map((value, key) => {
+                    return (
+                      <option key={key} value={value?.id}>
+                        {value?.name}
+                      </option>
+                    );
+                  })}
               </Form.Select>
-              {formik.errors.sub_sub_category &&
-                formik.touched.sub_sub_category && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.sub_sub_category}
-                  </Form.Text>
-                )}
             </Form.Group>
 
             {/* <Form.Group>
-              <Form.Label htmlFor="sub_sub_sub_category">Sub Sub Sub Category</Form.Label>
-              <Form.Select
-                aria-label="Select Category"
-                id="sub_sub_sub_category"
-                name="sub_sub_sub_category"
-                onChange={formik.handleChangeSubSubSubCategory}
-                onBlur={formik.handleBlur}
-              // value={categoryItem?.subSubSubCategory?.name}
-              >
-                <option>Select Sub Sub Sub Category</option>
-                {categoryItem?.subSubCategory?.sub_sub_sub_categories && categoryItem?.subSubCategory?.sub_sub_sub_categories?.map((value, key) => {
-                  return (
-                    <option key={key} value={JSON.stringify(value)}>
-                      {value?.name}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-              {formik.errors.sub_sub_sub_category && formik.touched.sub_sub_sub_category && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.sub_sub_sub_category}
-                </Form.Text>
-              )}
-            </Form.Group> */}
+                            <Form.Label htmlFor="sub_sub_sub_category">Sub Sub Sub Category</Form.Label>
+                            <Form.Select
+                                aria-label="Select Category"
+                                id="sub_sub_sub_category_id"
+                                name="sub_sub_sub_category_id"
+
+                                {...register('sub_sub_sub_category_id',)}
+
+                            >
+                                <option value=''>Select Sub Sub Sub Category</option>
+                                {subSubCategoryList?.sub_sub_sub_categories && subSubCategoryList?.sub_sub_sub_categories?.map((value, key) => {
+                                    return (
+                                        <option key={key} value={value?.id}>
+                                            {value?.name}
+                                        </option>
+                                    );
+                                })}
+                            </Form.Select>
+
+                        </Form.Group> */}
 
             <Form.Group>
               <Form.Label htmlFor="vendor_sku_code">
@@ -666,16 +812,20 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="vendor_sku_code"
                 name="vendor_sku_code"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.vendor_sku_code}
+                {...register("vendor_sku_code", {
+                  required: "Cureka SKU is required.",
+                  pattern: {
+                    value: /^[A-Z0-9a-z/]+$/,
+                    message:
+                      "Allow only Upper-case Alphabet, / and numbers only.",
+                  },
+                })}
               />
-              {formik.errors.vendor_sku_code &&
-                formik.touched.vendor_sku_code && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.vendor_sku_code}
-                  </Form.Text>
-                )}
+              {errors?.vendor_sku_code && (
+                <small className="text-danger">
+                  {errors?.vendor_sku_code?.message}
+                </small>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -686,9 +836,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 aria-label="Select Category"
                 id="brand"
                 name="brand"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.brand}
+                {...register("brand", { required: "Brand is required." })}
               >
                 <option value="">Select Brand</option>
                 {brands?.map((value, key) => (
@@ -697,10 +845,8 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   </option>
                 ))}
               </Form.Select>
-              {formik.errors.brand && formik.touched.brand && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.brand}
-                </Form.Text>
+              {errors?.brand && (
+                <small className="text-danger">{errors?.brand?.message}</small>
               )}
             </Form.Group>
 
@@ -735,18 +881,15 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="manufacturer_name_and_address_with_pincode"
                 name="manufacturer_name_and_address_with_pincode"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={
-                  formik.values?.manufacturer_name_and_address_with_pincode
-                }
+                {...register("manufacturer_name_and_address_with_pincode", {
+                  required: "Manufacturer name and address is required.",
+                })}
               />
-              {formik.errors.manufacturer_name_and_address_with_pincode &&
-                formik.touched.manufacturer_name_and_address_with_pincode && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.manufacturer_name_and_address_with_pincode}
-                  </Form.Text>
-                )}
+              {errors?.manufacturer_name_and_address_with_pincode && (
+                <small className="text-danger">
+                  {errors?.manufacturer_name_and_address_with_pincode?.message}
+                </small>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -758,16 +901,15 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="packer_name_and_address_with_pincode"
                 name="packer_name_and_address_with_pincode"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.packer_name_and_address_with_pincode}
+                {...register("packer_name_and_address_with_pincode", {
+                  required: "Packer name and address is required.",
+                })}
               />
-              {formik.errors.packer_name_and_address_with_pincode &&
-                formik.touched.packer_name_and_address_with_pincode && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.packer_name_and_address_with_pincode}
-                  </Form.Text>
-                )}
+              {errors?.packer_name_and_address_with_pincode && (
+                <small className="text-danger">
+                  {errors?.packer_name_and_address_with_pincode?.message}
+                </small>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -778,16 +920,8 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="importer_name_and_address_with_pincode"
                 name="importer_name_and_address_with_pincode"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.importer_name_and_address_with_pincode}
+                {...register("importer_name_and_address_with_pincode")}
               />
-              {formik.errors.importer_name_and_address_with_pincode &&
-                formik.touched.importer_name_and_address_with_pincode && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.importer_name_and_address_with_pincode}
-                  </Form.Text>
-                )}
             </Form.Group>
 
             <Form.Group>
@@ -798,11 +932,11 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 aria-label="Select country of origin"
                 id="country_of_origin"
                 name="country_of_origin"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.country_of_origin}
+                {...register("country_of_origin", {
+                  required: "Country of origin is required.",
+                })}
               >
-                <option disabled>Select country of origin</option>
+                <option value="">Select country of origin</option>
                 {Object.entries(countryList?.getCodeList()).map(
                   ([key, value]) => {
                     return (
@@ -813,12 +947,11 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   }
                 )}
               </Form.Select>
-              {formik.errors.country_of_origin &&
-                formik.touched.country_of_origin && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.country_of_origin}
-                  </Form.Text>
-                )}
+              {errors?.country_of_origin && (
+                <small className="text-danger">
+                  {errors?.country_of_origin?.message}
+                </small>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -826,20 +959,20 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 Weight (kg)<span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="weight_kg"
                 name="weight_kg"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.weight_kg}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.weight_kg}
+                {...register("weight_kg", { required: "Weight is required." })}
               />
-              {formik.errors.weight_kg && formik.touched.weight_kg && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.weight_kg}
-                </Form.Text>
+              {errors?.weight_kg && (
+                <small className="text-danger">
+                  {errors?.weight_kg?.message}
+                </small>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="dimensions_cm">
                 Dimensions (cm)<span className="text-danger">*</span>
@@ -848,17 +981,19 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="dimensions_cm"
                 name="dimensions_cm"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.dimensions_cm}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.dimensions_cm}
+                {...register("dimensions_cm", {
+                  required: "Dimensions is required.",
+                })}
               />
-              {formik.errors.dimensions_cm && formik.touched.dimensions_cm && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.dimensions_cm}
-                </Form.Text>
+              {errors?.dimensions_cm && (
+                <small className="text-danger">
+                  {errors?.dimensions_cm?.message}
+                </small>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="components">
                 Components<span className="text-danger">*</span>
@@ -867,37 +1002,40 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="components"
                 name="components"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.components}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.components}
+                {...register("components", {
+                  required: "Components is required.",
+                })}
               />
-              {formik.errors.components && formik.touched.components && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.components}
-                </Form.Text>
+              {errors?.components && (
+                <small className="text-danger">
+                  {errors?.components?.message}
+                </small>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="expires_in_days">
-                Expires in (Enter number of days)
+                Expires in (Enter number of days){" "}
                 <span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
                 type="number"
                 id="expires_in_days"
-                min="0"
                 name="expires_in_days"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.expires_in_days}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.expires_in_days}
+                {...register("expires_in_days", {
+                  required: "Expires in days required.",
+                })}
               />
-              {formik.errors.expires_in_days &&
-                formik.touched.expires_in_days && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.expires_in_days}
-                  </Form.Text>
-                )}
+              {errors?.expires_in_days && (
+                <small className="text-danger">
+                  {errors?.expires_in_days?.message}
+                </small>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -908,9 +1046,12 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 aria-label="Select Category"
                 id="article_type"
                 name="article_type"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.article_type}
+                {...register("article_type", {
+                  required: "Article type is required.",
+                  onChange: (e) => {
+                    onChangeArticleType(e);
+                  },
+                })}
               >
                 <option value="">Select article type</option>
                 {articleType?.results?.map((value, key) => (
@@ -919,10 +1060,10 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   </option>
                 ))}
               </Form.Select>
-              {formik.errors.article_type && formik.touched.article_type && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.article_type}
-                </Form.Text>
+              {errors?.article_type && (
+                <small className="text-danger">
+                  {errors?.article_type?.message}
+                </small>
               )}
             </Form.Group>
 
@@ -934,9 +1075,13 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 aria-label="Standard size"
                 id="standard_size"
                 name="standard_size"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.standard_size}
+                value={standerdSize}
+                {...register("standard_size", {
+                  required: "Standard size is required.",
+                  onChange: (e) => {
+                    setStanderdSize(e?.target?.value);
+                  },
+                })}
               >
                 <option value="">Select standard size</option>
                 {standardSizeList?.results?.map((value, key) => (
@@ -946,10 +1091,10 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 ))}
               </Form.Select>
 
-              {formik.errors.standard_size && formik.touched.standard_size && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.standard_size}
-                </Form.Text>
+              {errors?.standard_size && (
+                <small className="text-danger">
+                  {errors?.standard_size?.message}
+                </small>
               )}
             </Form.Group>
 
@@ -961,14 +1106,17 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="brand_size"
                 name="brand_size"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.brand_size}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.brand_size}
+                {...register("brand_size", {
+                  required: "Brand size is required.",
+                })}
               />
-              {formik.errors.brand_size && formik.touched.brand_size && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.brand_size}
-                </Form.Text>
+              {errors?.brand_size && (
+                <small className="text-danger">
+                  {errors?.brand_size?.message}
+                </small>
               )}
             </Form.Group>
 
@@ -977,23 +1125,18 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 HSN<span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="hsn"
                 name="hsn"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.hsn}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.hsn}
+                {...register("hsn", { required: "HSN size is required." })}
               />
-              <span className="text-info">
-                Please Enter 8 Digit HSN Code Only
-              </span>
-              {formik.errors.hsn && formik.touched.hsn && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.hsn}
-                </Form.Text>
+              {errors?.hsn && (
+                <small className="text-danger">{errors?.hsn?.message}</small>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="sku_code">
                 SKU Code<span className="text-danger">*</span>
@@ -1002,218 +1145,191 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="sku_code"
                 name="sku_code"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.sku_code}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.sku_code}
+                {...register("sku_code", { required: "SKU code is required." })}
               />
-              {formik.errors.sku_code && formik.touched.sku_code && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.sku_code}
-                </Form.Text>
+              {errors?.sku_code && (
+                <small className="text-danger">
+                  {errors?.sku_code?.message}
+                </small>
               )}
             </Form.Group>
-
             <Form.Group>
-              <Form.Label htmlFor="age_group">
-                Age Group<span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Select
-                aria-label="Select Group"
+              <Form.Label htmlFor="age_group">Age group</Form.Label>
+              <Form.Control
+                type="text"
                 id="age_group"
                 name="age_group"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.age_group}
-              >
-                <option value="">Select Age Group</option>
-                {[
-                  "Adult Men",
-                  "Adult Women",
-                  "Adult Unisex",
-                  "Kids Unisex",
-                  "Kids Boys",
-                  "Kids Girls",
-                ].map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Form.Select>
-              {formik.errors.age_group && formik.touched.age_group && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.age_group}
-                </Form.Text>
-              )}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.age_group}
+                {...register("age_group")}
+              />
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="min_age_years">
                 Min age (Years)<span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="min_age_years"
                 name="min_age_years"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.min_age_years}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.min_age_years}
+                {...register("min_age_years", {
+                  required: "Min age is required.",
+                })}
               />
-              {formik.errors.min_age_years && formik.touched.min_age_years && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.min_age_years}
-                </Form.Text>
+              {errors?.min_age_years && (
+                <small className="text-danger">
+                  {errors?.min_age_years?.message}
+                </small>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="max_age_years">
                 Max age (Years)<span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="max_age_years"
                 name="max_age_years"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.max_age_years}
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values?.max_age_years}
+                {...register("max_age_years", {
+                  required: "Max age is required.",
+                })}
               />
-              {formik.errors.max_age_years && formik.touched.max_age_years && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.max_age_years}
-                </Form.Text>
+              {errors?.max_age_years && (
+                <small className="text-danger">
+                  {errors?.max_age_years?.message}
+                </small>
               )}
             </Form.Group>
 
             <Form.Group>
               <Form.Label htmlFor="directions_of_use">
-                Directions of use <span className="text-danger">*</span>
+                Directions of use<span className="text-danger">*</span>
               </Form.Label>
               <RichtextEditor
                 id="directions_of_use"
-                value={formik.values?.directions_of_use || ""}
-                onChange={(value) =>
-                  formik.setFieldValue("directions_of_use", value)
-                }
+                value={directionOfUse || ""}
+                onChange={(value) => {
+                  setValue("directions_of_use", value);
+                  setDirectionOfUse(value);
+                }}
+                register={register("directions_of_use", {
+                  required: "Direction of use is required.",
+                })}
               />
-              {formik.errors.directions_of_use &&
-                formik.touched.directions_of_use && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.directions_of_use}
-                  </Form.Text>
-                )}
+              {errors?.directions_of_use && (
+                <small className="text-danger">
+                  {errors?.directions_of_use?.message}
+                </small>
+              )}
             </Form.Group>
 
             <Form.Group>
               <Form.Label htmlFor="description">
-                Description <span className="text-danger">*</span>
+                Description<span className="text-danger">*</span>
               </Form.Label>
               <RichtextEditor
                 id="description"
-                value={formik.values?.description || ""}
-                onChange={(value) => formik.setFieldValue("description", value)}
+                value={description || ""}
+                onChange={(value) => {
+                  setValue("description", value);
+                  setDescription(value);
+                }}
+                register={register("description", {
+                  required: "Description is required.",
+                })}
               />
-              {formik.errors?.description && formik.touched.description && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.description}
-                </Form.Text>
+              {errors?.description && (
+                <small className="text-danger">
+                  {errors?.description?.message}
+                </small>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="product_benefits">
                 Product benefits
               </Form.Label>
               <RichtextEditor
                 id="product_benefits"
-                value={formik.values?.product_benefits || ""}
-                onChange={(value) =>
-                  formik.setFieldValue("product_benefits", value)
-                }
+                value={productBenefit || ""}
+                onChange={(value) => {
+                  setValue("product_benefits", value);
+                  setProductBenefit(value);
+                }}
+                // register={register('product_benefits', { required: 'Product highlights is required.', })}
               />
-              {formik.errors.product_benefits &&
-                formik.touched.product_benefits && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.product_benefits}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="product_highlights">
                 Product highlights<span className="text-danger">*</span>
               </Form.Label>
               <RichtextEditor
                 id="product_highlights"
-                value={formik.values?.product_highlights || ""}
-                onChange={(value) =>
-                  formik.setFieldValue("product_highlights", value)
-                }
+                onChange={(value) => {
+                  setValue("product_highlights", value);
+                  setProductHilight(value);
+                }}
+                value={productHilight || ""}
+                register={register("product_highlights", {
+                  required: "Product highlights is required.",
+                })}
               />
-              {formik.errors.product_highlights &&
-                formik.touched.product_highlights && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.product_highlights}
-                  </Form.Text>
-                )}
+              {errors?.product_highlights && (
+                <small className="text-danger">
+                  {errors?.product_highlights?.message}
+                </small>
+              )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="safety_information">
                 Safety information<span className="text-danger">*</span>
               </Form.Label>
               <RichtextEditor
                 id="safety_information"
-                value={formik.values?.safety_information || ""}
-                onChange={(value) =>
-                  formik.setFieldValue("safety_information", value)
-                }
+                onChange={(value) => {
+                  setValue("safety_information", value);
+                  setSafetyInformation(value);
+                }}
+                value={safetyInformation || ""}
+                register={register("safety_information", {
+                  required: "Safety information is required.",
+                })}
               />
-              {formik.errors.safety_information &&
-                formik.touched.safety_information && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.safety_information}
-                  </Form.Text>
-                )}
+              {errors?.safety_information && (
+                <small className="text-danger">
+                  {errors?.safety_information?.message}
+                </small>
+              )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="special_features">
                 Special features
               </Form.Label>
               <RichtextEditor
                 id="special_features"
-                value={formik.values?.special_features || ""}
-                onChange={(value) =>
-                  formik.setFieldValue("special_features", value)
-                }
+                value={specialFeatures || ""}
+                onChange={(value) => {
+                  setValue("special_features", value);
+                  setSpecialFeatures(value);
+                }}
               />
-              {formik.errors.special_features &&
-                formik.touched.special_features && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.special_features}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="tags">
                 Tags<span className="text-danger">*</span>
               </Form.Label>
-              {/* <TagsInput
-                id="tags"
-                name="tags"
-                value={tags}
-                onChange={handleTagsChange}
-                placeholder="Add tags"
-                removeKeys={[13, 8]}
-              />
-              {tags.length > 0 && (
-                <p>Selected tags: {tags.join(', ')}</p>
-              )} */}
-
               <div className="tags-input">
                 <ul id="tags">
-                  {tags.map((tag, index) => (
+                  {tags?.map((tag, index) => (
                     <li key={index} className="tag">
                       <span className="tag-title">{tag}</span>
                       <span
@@ -1229,77 +1345,50 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   type="text"
                   id="tags"
                   name="tags"
-                  onKeyUp={(event) =>
-                    event.key === "Shift" ? addTags(event) : null
-                  }
-                  placeholder="Press shift to add tags"
+                  onKeyUp={handleKeyUp}
+                  placeholder="Press shift to update tags"
+                  // {...register('tags', { required: 'Tags are required.', })}
                 />
+                {errors?.tags && (
+                  <small className="text-danger">{errors?.tags?.message}</small>
+                )}
               </div>
-              {formik.errors.tags && formik.touched.tags && (
-                <div style={{ color: "red" }}>{formik.errors.tags}</div>
-              )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="mrp">
                 MRP<span className="text-danger">*</span>
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="mrp"
                 name="mrp"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.mrp}
+                {...register("mrp", { required: "MRP is required." })}
               />
-              {formik.errors.mrp && formik.touched.mrp && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.mrp}
-                </Form.Text>
+              {errors?.mrp && (
+                <small className="text-danger">{errors?.mrp?.message}</small>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="discount_in_percent">
                 Discount in percent
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="discount_in_percent"
                 name="discount_in_percent"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.discount_in_percent}
+                {...register("discount_in_percent")}
               />
-              {formik.errors.discount_in_percent &&
-                formik.touched.discount_in_percent && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.discount_in_percent}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="discount_in_amount">
                 Discount in amount
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="discount_in_amount"
                 name="discount_in_amount"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.discount_in_amount}
+                {...register("discount_in_amount")}
               />
-              {formik.errors.discount_in_amount &&
-                formik.touched.discount_in_amount && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.discount_in_amount}
-                  </Form.Text>
-                )}
             </Form.Group>
 
             <Form.Group>
@@ -1308,18 +1397,9 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="key_ingredients"
                 name="key_ingredients"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.key_ingredients}
+                {...register("key_ingredients")}
               />
-              {formik.errors.key_ingredients &&
-                formik.touched.key_ingredients && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.key_ingredients}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="other_ingredients">
                 Other Ingredients
@@ -1328,98 +1408,51 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="other_ingredients"
                 name="other_ingredients"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.other_ingredients}
+                {...register("other_ingredients")}
               />
-              {formik.errors.other_ingredients &&
-                formik.touched.other_ingredients && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.other_ingredients}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="min_order_quantity">
                 Min order Quantity
               </Form.Label>
               <Form.Control
-                type="number"
-                min="0"
+                type="text"
                 id="min_order_quantity"
                 name="min_order_quantity"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.min_order_quantity}
+                {...register("min_order_quantity")}
               />
-              {formik.errors.min_order_quantity &&
-                formik.touched.min_order_quantity && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.min_order_quantity}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="max_order_quantity">
                 Max order Quantity
               </Form.Label>
               <Form.Control
-                type="number"
-                min="0"
+                type="text"
                 id="max_order_quantity"
                 name="max_order_quantity"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.max_order_quantity}
+                {...register("max_order_quantity")}
               />
-              {formik.errors.max_order_quantity &&
-                formik.touched.max_order_quantity && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.max_order_quantity}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="back_order_quantity">
                 Back order quantity
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 id="back_order_quantity"
                 name="back_order_quantity"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.back_order_quantity}
+                {...register("back_order_quantity")}
               />
-              {formik.errors.back_order_quantity &&
-                formik.touched.back_order_quantity && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.back_order_quantity}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="meta_title">Meta title</Form.Label>
               <Form.Control
                 type="text"
                 id="meta_title"
                 name="meta_title"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.meta_title}
+                {...register("meta_title")}
               />
-              {formik.errors.meta_title && formik.touched.meta_title && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.meta_title}
-                </Form.Text>
-              )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="meta_description">
                 Meta description
@@ -1428,69 +1461,66 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="meta_description"
                 name="meta_description"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.meta_description}
+                {...register("meta_description")}
               />
-              {formik.errors.meta_description &&
-                formik.touched.meta_description && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.meta_description}
-                  </Form.Text>
-                )}
             </Form.Group>
 
+            {/* {console.log(faqs_option)} */}
             <Form.Group>
-              <Form.Label htmlFor="faqs_option">
-                FAQS option<span className="text-danger">*</span>
-              </Form.Label>
-              {faqData?.map((val, ind) => (
+              <div>
+                <Form.Label htmlFor="faqs_option">
+                  FAQS option<span className="text-danger">*</span>
+                </Form.Label>
+              </div>
+              {fields.map((item, index) => (
                 <>
-                  <p>Question</p>
-                  <Form.Control
-                    type="text"
-                    id="faqs_option"
-                    name="faqs_option"
-                    onChange={(e) => handleFaqQuestion(e.target.value, ind)}
-                    value={val?.question}
-                  />
-                  <p>Answer</p>
-                  <Form.Control
-                    type="text"
-                    id="faqs_option"
-                    name="faqs_option"
-                    onChange={(e) => handleFaqAnswer(e.target.value, ind)}
-                    value={val?.answer}
-                  />
-                  <Button
-                    type="button"
-                    className="mt-2 p-2 mb-2"
-                    style={{
-                      fontSize: "12px",
-                      backgroundColor: "red",
-                      borderColor: "red",
-                    }}
-                    variant="primary"
-                    onClick={() => handleRemoveFaq(ind)}
+                  <div
+                    key={item.id}
+                    className="contents"
+                    style={{ display: "contents" }}
                   >
-                    Remove
-                  </Button>
+                    <p>Question</p>
+                    <Form.Control
+                      type="text"
+                      name={`faqs_option[${index}].faq`}
+                      // defaultValue={item.question}
+                      {...register(`faqs_option[${index}].faq`)}
+                    />
+                    <p>Answer</p>
+                    <Form.Control
+                      type="text"
+                      name={`faqs_option[${index}].faq_a`}
+                      // defaultValue={item.answer}
+                      {...register(`faqs_option[${index}].faq_a`)}
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => remove(index)}
+                      className="my-3"
+                      style={{
+                        fontSize: "12px",
+                        backgroundColor: "red",
+                        borderColor: "red",
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  </div>
                 </>
               ))}
-              <div>
-                <Button
-                  type="button"
-                  className="mt-2"
-                  variant="primary"
-                  onClick={() =>
-                    setFaqData((pre) => [...pre, { question: "", answer: "" }])
-                  }
-                >
-                  Add Faq
-                </Button>
-              </div>
-              {formik.errors.faqs_option && (
-                <div style={{ color: "red" }}>{formik.errors.faqs_option}</div>
+              <Button
+                type="button"
+                onClick={handleAppend}
+                className="mx-2 my-3"
+                style={{ fontSize: "12px" }}
+              >
+                Add Faq
+              </Button>
+
+              {errors.faqs_option && (
+                <small className="text-danger">
+                  {errors.faqs_option.message}
+                </small>
               )}
             </Form.Group>
 
@@ -1508,246 +1538,247 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                     let videoArray = [];
                     selectedFile?.map((val, ind) => {
                       const videoUrl = URL.createObjectURL(val);
+                      console.log("videoUrl", videoUrl);
                       videoArray.push(videoUrl);
                     });
                     setPreviewVideo([...videoArray]);
-                    formik.setFieldValue("product_video", selectedFile);
+                    setValue("product_video", event?.currentTarget?.files);
                   } else {
-                    formik.setFieldValue("product_video", null);
                     setPreviewVideo(null);
                   }
                 }}
-                onBlur={formik.handleBlur}
               />
-              {formik.errors.product_video && formik.touched.product_video && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.product_video}
-                </Form.Text>
-              )}
             </Form.Group>
-
             <div className="d-flex justify-content-start">
-              {previewVideo?.map((val, ind) => (
-                <div
-                  className="mr-2"
-                  style={{
-                    position: "relative",
-                    border: "1px solid #000",
-                    borderRadius: "7px",
-                  }}
-                >
-                  <video width="320" height="240" controls>
-                    <source src={val} type="video/mp4" />
-                    <source src={val} type="video/ogg" />
-                    Your browser does not support the video tag.
-                  </video>
-
-                  <span
-                    onClick={() => handleRemoveVideo(ind)}
-                    style={{ position: "absolute", right: 10, top: 10 }}
-                  >
-                    <RxCross2
-                      style={{
-                        fontSize: "30px",
-                        background: "#757575",
-                        borderRadius: "50%",
-                        color: "#fff",
-                        padding: 5,
-                        cursor: "pointer",
-                      }}
-                    />
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <Form.Group>
-              <Form.Label htmlFor="image">
-                Product images<span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Control
-                type="file"
-                id="product_image"
-                name="product_image"
-                multiple
-                accept="image/*"
-                // onChange={(event) => {
-                //   const selectedFile = Array.from(event.currentTarget.files);
-                //   if (selectedFile?.length > 0) {
-                //     let imageArray = []
-                //     selectedFile?.map((val, ind) => {
-                //       const imageUrl = URL.createObjectURL(val);
-                //       imageArray.push(imageUrl)
-                //     })
-                //     setPreviewImage([...imageArray]);
-                //     formik.setFieldValue("product_image", selectedFile);
-                //   } else {
-                //     formik.setFieldValue("product_image", null);
-                //     setPreviewImage(null);
-                //   }
-                // }}
-
-                onChange={handleImageChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.errors.product_image && formik.touched.product_image && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.product_image}
-                </Form.Text>
-              )}
-            </Form.Group>
-
-            <div className="d-flex justify-content-start">
-              {previewImages?.map((val, ind) => (
-                <div
-                  className="mr-2"
-                  style={{
-                    position: "relative",
-                    border: "1px solid #000",
-                    borderRadius: "7px",
-                  }}
-                >
-                  <img
-                    src={val}
+              {previewVideo?.length > 0 &&
+                previewVideo[0] !== "null" &&
+                previewVideo?.map((val, ind) => (
+                  <div
+                    className="mr-2"
                     style={{
-                      maxWidth: "200px",
-                      maxHeight: "100%",
+                      position: "relative",
+                      border: "1px solid #000",
                       borderRadius: "7px",
-                      overflow: "hidden",
                     }}
-                  />
-                  <span
-                    onClick={() => handleRemoveImage(ind)}
-                    style={{ position: "absolute", right: 10, top: 10 }}
                   >
-                    <RxCross2
-                      style={{
-                        fontSize: "30px",
-                        background: "#757575",
-                        borderRadius: "50%",
-                        color: "#fff",
-                        padding: 5,
-                        cursor: "pointer",
-                      }}
-                    />
-                  </span>
-                </div>
-              ))}
+                    <video width="320" height="240" controls>
+                      <source src={val} type="video/mp4" />
+                      <source src={val} type="video/ogg" />
+                      Your browser does not support the video tag.
+                    </video>
+                    <span
+                      onClick={() => handleRemoveVideo(ind)}
+                      style={{ position: "absolute", right: 10, top: 10 }}
+                    >
+                      <RxCross2
+                        style={{
+                          fontSize: "30px",
+                          background: "#757575",
+                          borderRadius: "50%",
+                          color: "#fff",
+                          padding: 5,
+                          cursor: "pointer",
+                        }}
+                      />
+                    </span>
+                  </div>
+                ))}
             </div>
 
-            {/** new fields  skin type */}
+            {/* <Form.Group>
+                            <Form.Label htmlFor="product_image">Product images<span className="text-danger">*</span></Form.Label>
+                            {previewImages?.length < 5 && <Form.Control
+                                type="file"
+                                id="product_image"
+                                onChange={handleImageChange}
+                                name="product_image"
+                                multiple
+                                accept="image/*"
+                            />}
+                            {errors.product_image && <small className="text-danger">{errors.product_image.message}</small>}
+                        </Form.Group>
+
+                        <div className="d-flex justify-content-start">
+                            {previewImages.map((imageUrl, index) => (
+                                <div key={index} className="mr-2" style={{ position: 'relative', border: '1px solid #000', borderRadius: '7px' }}>
+                                    <img src={imageUrl} style={{ maxWidth: "200px", maxHeight: "100%", borderRadius: '7px', overflow: 'hidden' }} alt={`Preview ${index + 1}`} />
+                                    <span onClick={() => handleRemoveImage(index)} style={{ position: 'absolute', right: 10, top: 10 }}>
+                                        <i className="fas fa-times" style={{ fontSize: '18px', background: '#757575', borderRadius: '50%', color: '#fff', padding: '5px', cursor: 'pointer' }} />
+                                    </span>
+                                </div>
+                            ))}
+                        </div> */}
+            <Form.Group>
+              <Form.Label htmlFor="product_image">
+                Product Images<span className="text-danger">*</span>
+              </Form.Label>
+              {previewImages.length < 5 && (
+                <Form.Control
+                  type="file"
+                  id="product_image"
+                  onChange={handleImageChange}
+                  name="product_image"
+                  multiple
+                  accept="image/*"
+                />
+              )}
+              {errors.product_image && (
+                <small className="text-danger">
+                  {errors.product_image.message}
+                </small>
+              )}
+
+              <div className="d-flex justify-content-start mt-2">
+                {previewImages.map((imageUrl, index) => (
+                  <div
+                    key={index}
+                    className="mr-2"
+                    style={{
+                      position: "relative",
+                      border: "1px solid #000",
+                      borderRadius: "7px",
+                    }}
+                    draggable
+                    onDragStart={handleDragStart(index)}
+                    onDrop={handleDrop(index)}
+                    onDragOver={handleDragOver}
+                  >
+                    <img
+                      src={imageUrl}
+                      style={{
+                        maxWidth: "200px",
+                        maxHeight: "100%",
+                        borderRadius: "7px",
+                        overflow: "hidden",
+                      }}
+                      alt={`Preview ${index + 1}`}
+                    />
+                    <span
+                      onClick={() => handleRemoveImage(index)}
+                      style={{ position: "absolute", right: 10, top: 10 }}
+                    >
+                      <i
+                        className="fas fa-times"
+                        style={{
+                          fontSize: "18px",
+                          background: "#757575",
+                          borderRadius: "50%",
+                          color: "#fff",
+                          padding: "5px",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="skin_type">Skin Type</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="skin_type"
                 name="skin_type"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.skin_type}
+                value={cateGory}
+                {...register("skin_type")}
               >
-                <option value="">Select skin type</option>
-                {["Normal", "Oily", "Dry", "Sensitive", "Combination"].map(
+                <option value="">Select Skin Type</option>
+                {["Normal", "Oily", "Dry", "Sensitive", "Combination"]?.map(
                   (value, key) => (
-                    <option key={key}>{value}</option>
+                    <option key={key} value={value}>
+                      {value}
+                    </option>
                   )
                 )}
               </Form.Select>
-              {formik.errors.skin_type && formik.touched.skin_type && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.skin_type}
-                </Form.Text>
+              {errors?.skin_type && (
+                <small className="text-danger">
+                  {errors?.skin_type?.message}
+                </small>
               )}
             </Form.Group>
 
-            {/** new fields  skin type */}
             <Form.Group>
               <Form.Label htmlFor="hair_type">Hair Type</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="hair_type"
                 name="hair_type"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.hair_type}
+                value={cateGory}
+                {...register("hair_type")}
               >
-                <option value="">Select hair type</option>
-                {["Dry", "Frizzy", "Curly", "Normal", "Coloured Hair"].map(
+                <option value="">Select Hair Type</option>
+                {["Dry", "Frizzy", "Curly", "Normal", "Coloured Hair"]?.map(
                   (value, key) => (
-                    <option key={key}>{value}</option>
+                    <option key={key} value={value}>
+                      {value}
+                    </option>
                   )
                 )}
               </Form.Select>
-              {formik.errors.hair_type && formik.touched.hair_type && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.hair_type}
-                </Form.Text>
+              {errors?.hair_type && (
+                <small className="text-danger">
+                  {errors?.hair_type?.message}
+                </small>
               )}
             </Form.Group>
-
-            {/** new fields  spf type */}
             <Form.Group>
               <Form.Label htmlFor="spf_type">SPF Type</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="spf_type"
                 name="spf_type"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.spf_type}
+                {...register("spf_type")}
               >
-                <option value="">Select spf type</option>
-                {["< 15", "15 - 20", "20 - 50", "Above 50"].map(
+                <option value="">Select SPF Type</option>
+                {["< 15", "15 - 20", "20 - 50", "Above 50"]?.map(
                   (value, key) => (
-                    <option key={key}>{value}</option>
+                    <option key={key} value={value}>
+                      {value}
+                    </option>
                   )
                 )}
               </Form.Select>
-              {formik.errors.spf_type && formik.touched.spf_type && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.spf_type}
-                </Form.Text>
+              {errors?.spf_type && (
+                <small className="text-danger">
+                  {errors?.spf_type?.message}
+                </small>
               )}
             </Form.Group>
 
-            {/** new fields  size chart type */}
             <Form.Group>
-              <Form.Label htmlFor="size_chart_type">Size chart Type</Form.Label>
+              <Form.Label htmlFor="size_chart_type">Size Chart Type</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="size_chart_type"
                 name="size_chart_type"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.size_chart_type}
+                {...register("size_chart_type")}
               >
-                <option value="">Select size chart </option>
-                {["CH", "S", "M", "L", "XL", "XXL", "XXL", "Uni", "Spl"].map(
+                <option value="">Select Size Chart Type</option>
+                {["CH", "S", "M", "L", "XL", "XXL", "XXL", "Uni", "Spl"]?.map(
                   (value, key) => (
-                    <option key={key}>{value}</option>
+                    <option key={key} value={value}>
+                      {value}
+                    </option>
                   )
                 )}
               </Form.Select>
-              {formik.errors.size_chart_type &&
-                formik.touched.size_chart_type && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.size_chart_type}
-                  </Form.Text>
-                )}
+              {errors?.size_chart_type && (
+                <small className="text-danger">
+                  {errors?.size_chart_type?.message}
+                </small>
+              )}
             </Form.Group>
 
-            {/** new fields  cols  type */}
             <Form.Group>
               <Form.Label htmlFor="color">Color</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="color"
                 name="color"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.color}
+                {...register("color")}
               >
-                <option value="">Select color</option>
+                <option value="">Select Color</option>
                 {[
                   "Red",
                   "Blue",
@@ -1786,29 +1817,26 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   "Sea Green",
                   "Lavender",
                   "Lime Green",
-                ].map((value, key) => (
-                  <option key={key}>{value}</option>
+                ]?.map((value, key) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
                 ))}
               </Form.Select>
-              {formik.errors.color && formik.touched.color && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.color}
-                </Form.Text>
+              {errors?.color && (
+                <small className="text-danger">{errors?.color?.message}</small>
               )}
             </Form.Group>
 
-            {/** new fields flavour  type */}
             <Form.Group>
               <Form.Label htmlFor="flavour">Flavour</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="flavour"
                 name="flavour"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.flavour}
+                {...register("flavour")}
               >
-                <option value="">Select flavours</option>
+                <option value="">Select Flavour</option>
                 {[
                   "Green Apple",
                   "Lemon",
@@ -1886,82 +1914,77 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   "Cranberry",
                   "Active Ajwain",
                   "Active Jeera",
-                ].map((value, key) => (
-                  <option key={key}>{value}</option>
+                ]?.map((value, key) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
                 ))}
               </Form.Select>
-              {formik.errors.flavour && formik.touched.flavour && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.flavour}
-                </Form.Text>
+              {errors?.flavour && (
+                <small className="text-danger">
+                  {errors?.flavour?.message}
+                </small>
               )}
             </Form.Group>
 
-            {/** new fields protien type */}
             <Form.Group>
               <Form.Label htmlFor="protein_type">Protein Type</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="protein_type"
                 name="protein_type"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.protein_type}
+                {...register("protein_type")}
               >
-                <option value="">Select protein type</option>
+                <option value="">Select Protein Type</option>
                 {[
                   "Whey Protein",
                   "Casein Protein",
                   "Soy Protein",
                   "Vegan Protein",
-                ].map((value, key) => (
-                  <option key={key}>{value}</option>
+                ]?.map((value, key) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
                 ))}
               </Form.Select>
-              {formik.errors.protein_type && formik.touched.protein_type && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.protein_type}
-                </Form.Text>
+              {errors?.protein_type && (
+                <small className="text-danger">
+                  {errors?.protein_type?.message}
+                </small>
               )}
             </Form.Group>
 
-            {/** new fields diaper type */}
             <Form.Group>
-              <Form.Label htmlFor="diaper_style"> Diaper style</Form.Label>
+              <Form.Label htmlFor="diaper_style">Diaper Style</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="diaper_style"
                 name="diaper_style"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.diaper_style}
+                {...register("diaper_style")}
               >
-                <option value="">Select diaper style</option>
-                {["Pant Style", "Tape Style"].map((value, key) => (
-                  <option key={key}>{value}</option>
+                <option value="">Select Diaper Style</option>
+                {["Pant Style", "Tape Style"]?.map((value, key) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
                 ))}
               </Form.Select>
-              {formik.errors.diaper_style && formik.touched.diaper_style && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.diaper_style}
-                </Form.Text>
+              {errors?.diaper_style && (
+                <small className="text-danger">
+                  {errors?.diaper_style?.message}
+                </small>
               )}
             </Form.Group>
 
-            {/** new fields formulation type */}
             <Form.Group>
-              <Form.Label htmlFor="formulation_type">
-                Formulation type
-              </Form.Label>
+              <Form.Label htmlFor="diaper_style">Formulation Type</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="formulation_type"
                 name="formulation_type"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.formulation_type}
+                {...register("formulation_type")}
               >
-                <option value="">Select formulation type</option>
+                <option value="">Select Formulation Type</option>
                 {[
                   "Gel",
                   "Oil",
@@ -1972,86 +1995,62 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   "Capsule",
                   "Gummy",
                   "Spray",
-                  "Gel",
-                  "Balm",
-                  "Oil",
-                  "Bar",
-                  "Lotion",
-                  "Liquid",
-                  "Foam",
-                  "Powder",
-                  "Cream",
-                  "Mask",
-                  "Patches",
-                  "Gel Cream",
-                  "Serum",
-                  "Tablet",
-                  "Capsule",
-                  "Gummies",
-                  "Gel Sheet",
-                  "Spary",
-                  "Gel Serum",
-                  "Pad",
-                ].map((value, key) => (
-                  <option key={key}>{value}</option>
+                ]?.map((value, key) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
                 ))}
               </Form.Select>
-              {formik.errors.formulation_type &&
-                formik.touched.formulation_type && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.formulation_type}
-                  </Form.Text>
-                )}
+              {errors?.formulation_type && (
+                <small className="text-danger">
+                  {errors?.formulation_type?.message}
+                </small>
+              )}
             </Form.Group>
 
-            {/** new fields formulation type */}
             <Form.Group>
               <Form.Label htmlFor="staging">Staging</Form.Label>
               <Form.Select
                 aria-label="Select Category"
                 id="staging"
                 name="staging"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.staging}
+                {...register("staging")}
               >
-                <option value="">Select staging</option>
-                {["Stage 1", "Stage 2", "Stage 3", "Stage 4"].map(
+                <option value="">Select Staging</option>
+                {["Stage 1", "Stage 2", "Stage 3", "Stage 4"]?.map(
                   (value, key) => (
-                    <option key={key}>{value}</option>
+                    <option key={key} value={value}>
+                      {value}
+                    </option>
                   )
                 )}
               </Form.Select>
-              {formik.errors.staging && formik.touched.staging && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.staging}
-                </Form.Text>
+              {errors?.staging && (
+                <small className="text-danger">
+                  {errors?.staging?.message}
+                </small>
               )}
             </Form.Group>
 
-            {/** new fields ends here */}
-
             <Form.Group>
-              <Form.Label htmlFor="checkout">
-                Checkout<span className="text-danger">*</span>
-              </Form.Label>
+              <Form.Label htmlFor="checkout">Checkout</Form.Label>
               <Form.Select
                 aria-label="Select Checkout"
                 id="checkout"
                 name="checkout"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.checkout}
+                {...register("checkout")}
               >
-                <option disabled>Select Checkout</option>
-                <option value="NO">No</option>
-                <option value="YML">YML</option>
-                <option value="LMB">LMB</option>
+                <option value="">Select Checkout</option>
+                {["NO", "LMB", "YML"]?.map((value, key) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
+                ))}
               </Form.Select>
-              {formik.errors.checkout && formik.touched.checkout && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.checkout}
-                </Form.Text>
+              {errors?.checkout && (
+                <small className="text-danger">
+                  {errors?.checkout?.message}
+                </small>
               )}
             </Form.Group>
 
@@ -2063,9 +2062,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 aria-label="Select Category"
                 id="status"
                 name="status"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.status}
+                {...register("status", { required: "Status is required." })}
               >
                 <option disabled>Select Status</option>
                 {Object.entries(status).map(([key, value]) => {
@@ -2076,10 +2073,8 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   );
                 })}
               </Form.Select>
-              {formik.errors.status && formik.touched.status && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.status}
-                </Form.Text>
+              {errors?.status && (
+                <small className="text-danger">{errors?.status?.message}</small>
               )}
             </Form.Group>
 
@@ -2089,9 +2084,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 aria-label="Select stock status"
                 id="stock_status"
                 name="stock_status"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.stock_status}
+                {...register("stock_status")}
               >
                 <option disabled>Select stock status</option>
                 {Object.entries(stock_status).map(([key, value]) => {
@@ -2102,45 +2095,48 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                   );
                 })}
               </Form.Select>
+              {errors?.stock_status && (
+                <small className="text-danger">
+                  {errors?.stock_status?.message}
+                </small>
+              )}
             </Form.Group>
+
             <Form.Group>
               <Form.Label htmlFor="show_stock">Show Stock?</Form.Label>
               <Form.Select
-                aria-label="Select Stock Status"
+                aria-label="Select Show Stock "
                 id="show_stock"
                 name="show_stock"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.show_stock}
+                {...register("show_stock")}
               >
-                <option disabled>Select Show Stock Status</option>
+                <option disabled>Select Show Stock status</option>
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </Form.Select>
-              {formik.errors.show_stock && formik.touched.show_stock && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.show_stock}
-                </Form.Text>
+              {errors?.show_stock && (
+                <small className="text-danger">
+                  {errors?.show_stock?.message}
+                </small>
               )}
             </Form.Group>
+
             <Form.Group>
-              <Form.Label htmlFor="new_arival">Is New Arrival?</Form.Label>
+              <Form.Label htmlFor="new_arrival">Is New Arrival?</Form.Label>
               <Form.Select
                 aria-label="Select New Arrival"
                 id="new_arrival"
                 name="new_arrival"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.new_arrival}
+                {...register("new_arrival")}
               >
-                <option disabled>Select New Arrival Status</option>
+                <option disabled>Select New Arrival status</option>
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </Form.Select>
-              {formik.errors.new_arrival && formik.touched.new_arrival && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.new_arrival}
-                </Form.Text>
+              {errors?.new_arrival && (
+                <small className="text-danger">
+                  {errors?.new_arrival?.message}
+                </small>
               )}
             </Form.Group>
 
@@ -2150,18 +2146,16 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 aria-label="Select Top Pick"
                 id="top_picks"
                 name="top_picks"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.top_picks}
+                {...register("top_picks")}
               >
-                <option disabled>Select Top Pick Status</option>
+                <option disabled>Select Top Pick status</option>
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </Form.Select>
-              {formik.errors.top_picks && formik.touched.top_picks && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.top_picks}
-                </Form.Text>
+              {errors?.top_picks && (
+                <small className="text-danger">
+                  {errors?.top_picks?.message}
+                </small>
               )}
             </Form.Group>
 
@@ -2170,79 +2164,41 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
               <Form.Control
                 type="number"
                 id="ranking"
-                name="ranking"
                 min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.ranking}
+                name="ranking"
+                {...register("ranking")}
               />
-              {formik.errors.ranking && formik.touched.ranking && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.ranking}
-                </Form.Text>
-              )}
             </Form.Group>
-
             <Form.Group>
-              <Form.Label htmlFor="newarrival_ranking">
-                New Arrival Order
-              </Form.Label>
+              <Form.Label htmlFor="ranking">New Arrival Order</Form.Label>
               <Form.Control
                 type="number"
+                min="0"
                 id="newarrival_ranking"
                 name="newarrival_ranking"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.newarrival_ranking}
+                {...register("newarrival_ranking")}
               />
-              {formik.errors.newarrival_ranking &&
-                formik.touched.newarrival_ranking && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.newarrival_ranking}
-                  </Form.Text>
-                )}
             </Form.Group>
-
             <Form.Group>
-              <Form.Label htmlFor="toppics_ranking">Top Picks Order</Form.Label>
+              <Form.Label htmlFor="ranking">Top Picks Order</Form.Label>
               <Form.Control
                 type="number"
+                min="0"
                 id="toppics_ranking"
                 name="toppics_ranking"
-                min="0"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.toppics_ranking}
+                {...register("toppics_ranking")}
               />
-              {formik.errors.toppics_ranking &&
-                formik.touched.toppics_ranking && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.toppics_ranking}
-                  </Form.Text>
-                )}
             </Form.Group>
 
             <Form.Group>
-              <Form.Label htmlFor="expert_advice">
-                Expert advice <span className="text-danger">*</span>
-              </Form.Label>
+              <Form.Label htmlFor="expert_advice">Expert advice</Form.Label>
               <Form.Control
                 type="text"
                 id="expert_advice"
                 name="expert_advice"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.expert_advice}
+                {...register("expert_advice")}
               />
-
-              {formik.errors.expert_advice && formik.touched.expert_advice && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.expert_advice}
-                </Form.Text>
-              )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label htmlFor="specifications">
                 Accessories/specifications
@@ -2251,20 +2207,26 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
                 type="text"
                 id="specifications"
                 name="specifications"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values?.specifications}
+                {...register("specifications", {
+                  required: "Specifications is required.",
+                })}
               />
             </Form.Group>
+            {errors?.specifications && (
+              <small className="text-danger">
+                {errors?.specifications?.message}
+              </small>
+            )}
 
             <Form.Group>
               <Form.Label htmlFor="feeding_table">Feeding table</Form.Label>
               <RichtextEditor
                 id="feeding_table"
-                value={formik.values?.feeding_table || ""}
-                onChange={(value) =>
-                  formik.setFieldValue("feeding_table", value)
-                }
+                onChange={(value) => {
+                  setValue("feeding_table", value);
+                  setFeedingTable(value);
+                }}
+                value={feedingTable || ""}
               />
             </Form.Group>
 
@@ -2272,12 +2234,11 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
               <Form.Label htmlFor="size_chart">Size Chart</Form.Label>
               <Form.Control
                 type="file"
-                id="size_chart"
-                name="size_chart"
-                multiple
+                // id="size_chart"
+                // name="size_chart"
+                // multiple
                 accept="image/*"
                 onChange={handleChangeSizeChart}
-                ref={imgRef}
               />
             </Form.Group>
             {sizeChartImage && (
@@ -2328,7 +2289,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
             >
               {loading ? "Loading..." : "Submit"}
             </Button>
-          </Form>
+          </form>
         </Card>
       </div>
     </div>
