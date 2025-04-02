@@ -32,7 +32,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/cart.css";
 import "../../styles/common-styles.css";
 import "../../styles/contactus.css";
-import "../../styles/faq.css";
+import "../../styles/Faq.css";
 import "../../styles/font-awesome.min.css";
 import "../../styles/fonts.css";
 import "../../styles/footer.css";
@@ -857,7 +857,7 @@ export default function Header({ showCategoryNavbar = true }) {
                                   >
                                     Privacy Policy
                                   </Dropdown.Item>
-                                  <Dropdown.Item href="/faq" className="d-flex">
+                                  <Dropdown.Item href="/Faq" className="d-flex">
                                     FAQ's
                                   </Dropdown.Item>
                                 </div>
@@ -1154,7 +1154,7 @@ export default function Header({ showCategoryNavbar = true }) {
                               Privacy Policy
                             </a>
                             <a
-                              href="/faq"
+                              href="/Faq"
                               className="nav-link-item border-bottom"
                             >
                               FAQ's

@@ -160,7 +160,7 @@
   }
   .send-btn {
     font: normal 400 14px / normal Rubik-regular;
-
+    margin-top: 7px;
     background-color: #e75204;
 
     color: #fff;
@@ -1515,7 +1515,7 @@
 
   .send-btn {
     font: normal 400 14px / normal Rubik-regular;
-
+    margin-top: 7px;
     background-color: #e75204;
 
     color: #fff;

@@ -152,7 +152,10 @@ export default function Footer() {
                       style={{ color: "#ff6347" }}
                     />
 
-                    <a className="address mr-3" href="tel:+91 9655928004">
+                    <a
+                      className="address mr-3 text-decoration-none"
+                      href="tel:+91 9655928004"
+                    >
                       Call us at: +91 96559 28004
                     </a>
                   </div>
@@ -170,7 +173,10 @@ export default function Footer() {
                       className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
                       style={{ color: "#ff6347" }}
                     />
-                    <a href="mailto:care@cureka.com" className="address">
+                    <a
+                      href="mailto:care@cureka.com"
+                      className="address text-decoration-none"
+                    >
                       Email: care@cureka.com
                     </a>
                   </div>
@@ -282,7 +288,7 @@ export default function Footer() {
                     </li>
 
                     <li className="list-unstyled">
-                      <Link href={"/faq"}>Faq</Link>
+                      <Link href={"/Faq"}>Faq</Link>
                     </li>
 
                     <li className="list-unstyled">
@@ -360,10 +366,10 @@ export default function Footer() {
                           ) : null}
                         </div>
 
-                        <div className="send mt-3">
+                        <div className="send mb-5">
                           <button
                             type="submit"
-                            className="send-btn border-0 p-0"
+                            className="send-btn border-0 p-0 mb-8"
                           >
                             Send
                           </button>

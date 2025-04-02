@@ -32,7 +32,7 @@ import "../../styles/bootstrap.min.css";
 import "../../styles/cart.css";
 import "../../styles/common-styles.css";
 import "../../styles/contactus.css";
-import "../../styles/faq.css";
+import "../../styles/Faq.css";
 import "../../styles/font-awesome.min.css";
 import "../../styles/fonts.css";
 import "../../styles/footer.css";
@@ -1005,7 +1005,7 @@ export default function ProductdetailHeader() {
                               Privacy Policy
                             </Link>
                             <Link
-                              href="/faq"
+                              href="/Faq"
                               className="nav-link-item border-bottom"
                             >
                               FAQ's

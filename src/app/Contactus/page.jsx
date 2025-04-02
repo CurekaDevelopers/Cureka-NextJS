@@ -319,7 +319,7 @@ export default function Contactus() {
 
                   <a
                     href="mailto:info@cureka.com"
-                    className="contact-address d-block mx-auto"
+                    className="contact-address d-block mx-auto text-decoration-none"
                   >
                     info@cureka.com
                   </a>
@@ -342,7 +342,7 @@ export default function Contactus() {
 
                   <a
                     href="tel:+91 9655928004"
-                    className="contact-address d-block mx-auto"
+                    className="contact-address d-block mx-auto text-decoration-none"
                   >
                     +91 96559 28004
                   </a>

@@ -42,7 +42,7 @@ export const pagePaths = {
   adminCreateProductSize:
     "/admin/ProductManagement/AdminCreateProductSizePage/:id",
   adminCreateProductEdit: "/admin/ProductManagement/edit/:id",
-  adminCreateProductFaq: "/admin/products/faq/:id",
+  adminCreateProductFaq: "/admin/products/Faq/:id",
   adminCreateBrandEdit: "/admin/BrandsManagementPage/edit/:id",
   adminCreateCategory:
     "/admin/CategoriesManagementPage/AdminCreateCategoryPage",
@@ -114,7 +114,7 @@ export const pagePaths = {
   cart: "/Cart",
   contactUs: "/Contactus",
   creams: "/Creams",
-  faqs: "/faq",
+  faqs: "/Faq",
   offers: "/Offers",
   account: "/account",
   productDetails: "/shop/:productSlug",
