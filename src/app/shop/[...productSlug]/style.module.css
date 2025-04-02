@@ -1,123 +1,128 @@
 .searchResults {
   background-color: #fff;
   font-weight: 500;
-}
 
-.searchResults:hover {
-  scroll-behavior: smooth;
-  max-height: 300px;
-  scrollbar-width: none;
-}
+  &:hover {
+    scroll-behavior: smooth;
+    max-height: 300px;
+    /* overflow-y: auto; */
+    scrollbar-width: none;
+  }
 
-.searchResults .searchLabels {
-  text-transform: uppercase;
-  border-bottom: 1px solid #ddd;
-  margin: 5px 0 5px 7px;
-}
+  .searchLabels {
+    text-transform: uppercase;
+    border-bottom: 1px solid #ddd;
+    margin: 5px 0 5px 7px;
+  }
 
-.searchResults .brandList,
-.searchResults .categoryList,
-.searchResults .productList {
-  cursor: pointer;
-}
+  .brandList,
+  .categoryList,
+  .productList {
+    cursor: pointer;
 
-.searchResults .brandList a,
-.searchResults .categoryList a,
-.searchResults .productList a {
-  color: #444;
-}
+    a {
+      color: #444;
+    }
+  }
 
-.searchResults .brandList {
-  padding: 10px;
-}
+  .brandList {
+    padding: 10px;
 
-.searchResults .brandList .brandDetails {
-  padding: 5px 0;
-}
+    .brandDetails {
+      padding: 5px 0;
+    }
+  }
 
-.searchResults .categoryList {
-  padding: 10px;
-}
+  .categoryList {
+    padding: 10px;
 
-.searchResults .productList .productDetails {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  background-color: #fff;
-}
+    .categoryDetails {
+      .categoryName {
+      }
+    }
+  }
 
-.searchResults .productList .productDetails:hover {
-  background-color: #eee;
-}
+  .productList {
+    .productDetails {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: #fff;
 
-.searchResults .productList .productDetails .productImg {
-  padding-top: 12px;
-}
+      &:hover {
+        background-color: #eee;
+      }
 
-.searchResults .productList .productDetails .productImg img {
-  border: 1px solid #e8e8e8;
-  width: 50px;
-}
+      .productImg {
+        padding-top: 12px;
 
-.searchResults .productList .productDetails .productInfo {
-  display: flex;
-}
+        img {
+          border: 1px solid #e8e8e8;
+          width: 50px;
+        }
+      }
 
-.searchResults .productList .productDetails .productInfo .productName {
-  flex-grow: 1;
-  padding: 27px 7px;
-  margin-right: 20px;
-  width: 410px;
-}
+      .productInfo {
+        display: flex;
 
-.searchResults
-  .productList
-  .productDetails
-  .productInfo
-  .productPriceSection
-  .productMrp {
-  text-decoration: line-through;
+        .productName {
+          flex-grow: 1;
+          padding: 27px 7px;
+          margin-right: 20px;
+          width: 410px;
+        }
+
+        .productPriceSection {
+          /* text-align: right; */
+
+          .productMrp {
+            text-decoration: line-through;
+          }
+        }
+      }
+    }
+  }
 }
 
 .cartItemBadge {
   position: relative;
-}
 
-.cartItemBadge .cartItemBadgeCount {
-  position: absolute;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 500;
-  background-color: #e75204;
-  top: -5px;
-  right: 0;
-  padding: 2px 4px;
-  border-radius: 50px;
-  z-index: 1;
+  .cartItemBadgeCount {
+    position: absolute;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 500;
+    background-color: #e75204;
+    top: -5px;
+    right: 0;
+    padding: 2px 4px;
+    border-radius: 50px;
+    z-index: 1;
+  }
 }
 
 .userDropdown {
   display: flex;
   align-items: center;
   margin-right: 10px;
-}
 
-.userDropdown .userDropdownBtn button {
-  font-size: 16px !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  color: #627284 !important;
-  background-color: transparent !important;
-  outline: none !important;
+  .userDropdownBtn {
+    button {
+      font-size: 16px !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      color: #627284 !important;
+      background-color: transparent !important;
+      outline: none !important;
+    }
+  }
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  @media (prefers-reduced-motion: no-preference) {
     animation: App-logo-spin infinite 20s linear;
   }
 }

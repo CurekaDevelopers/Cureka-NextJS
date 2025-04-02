@@ -19,9 +19,8 @@ const nextConfig = {
     ],
   },
   experimental: {
-    turbo: {}, // ✅ Corrected: turbo should be an object, not a boolean
+    turbo: {}, // ✅ Set turbo to an empty object instead of false to avoid errors
   },
-  output: "standalone",
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {

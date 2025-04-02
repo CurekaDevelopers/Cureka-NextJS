@@ -31,7 +31,7 @@ import newmaestro from "../public/images/newmaestro.svg";
 import newmastercard from "../public/images/newmastercard.svg";
 import newpaytm from "../public/images/newpaytm.svg";
 import newphonepe from "../public/images/newphonepe.svg";
-import newrupay from "../public/images/newrupay.svg";
+import newrupay from "../public/images/rupay.png";
 import newvisa from "../public/images/newvisa.svg";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -112,20 +112,13 @@ export default function Footer() {
                   <Image
                     className="d-block mb-3"
                     src={footerlogo}
-                    width={113}
+                    width={130}
                     height={48}
                     alt="footerlogo"
                   />
 
                   <div className="support">For Support & Order Inquiries</div>
                   <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={map}
-                      width="10px"
-                      height="11px"
-                      alt="map"
-                    /> */}
                     <FontAwesomeIcon
                       icon={faMapMarkerAlt}
                       className="bg-orange-200 p-2 rounded-full text-xl mb-4 mr-2"
@@ -139,13 +132,6 @@ export default function Footer() {
                   </div>
 
                   <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={phone}
-                      width="12px"
-                      height="12px"
-                      alt="phone"
-                    /> */}
                     <FontAwesomeIcon
                       icon={faPhone}
                       className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
@@ -158,13 +144,6 @@ export default function Footer() {
                   </div>
 
                   <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={envelope}
-                      width="12px"
-                      height="12px"
-                      alt="envelope"
-                    /> */}
                     <FontAwesomeIcon
                       icon={faEnvelope}
                       className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
@@ -176,13 +155,6 @@ export default function Footer() {
                   </div>
 
                   <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={clock}
-                      width="12px"
-                      height="12px"
-                      alt="clock"
-                    /> */}
                     <FontAwesomeIcon
                       icon={faClock}
                       className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
@@ -196,35 +168,6 @@ export default function Footer() {
                 <div className="col-lg-2 col-md-6">
                   <div className="title">Categories</div>
 
-                  {/* <ul className="category-list">
-                    <li className="list-unstyled">
-                      <a href="#">Nutrition</a>
-                    </li>
-
-                    <li className="list-unstyled">
-                      <a href="#">Healthcare Devices</a>
-                    </li>
-
-                    <li className="list-unstyled">
-                      <a href="#">Herbal & Ayurveda</a>
-                    </li>
-
-                    <li className="list-unstyled">
-                      <a href="#">Wellness</a>
-                    </li>
-
-                    <li className="list-unstyled">
-                      <a href="#">Pain Relief</a>
-                    </li>
-
-                    <li className="list-unstyled">
-                      <a href="#">Hair Care</a>
-                    </li>
-
-                    <li className="list-unstyled">
-                      <a href="skin">Skin Care</a>
-                    </li>
-                  </ul> */}
                   {!!nestedCategories?.length &&
                     nestedCategories?.map((item) => {
                       if (item.nav_link?.trim().toLowerCase() !== "active")
@@ -534,8 +477,8 @@ export default function Footer() {
                     <div className="payment-img">
                       <Image
                         src={newrupay}
-                        width={50}
-                        height={24}
+                        width={60}
+                        height={35}
                         alt="rupay-logo"
                       />
                     </div>

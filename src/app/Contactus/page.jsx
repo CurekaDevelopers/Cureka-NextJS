@@ -259,14 +259,14 @@ export default function Contactus() {
                     </div>
                   </div>
 
-                  <button type="submit" className="btn sent-btn">
+                  <button type="submit" className="btn sent-btn mt-6">
                     Send
                   </button>
                 </div>
               </form>
             </div>
 
-            <div className="col-lg-6">
+            <div className="col-lg-6 mt-lg-0">
               <div className="map">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31437.712457405465!2d78.13366153033797!3d9.957731690145547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b00c790b1a4d855%3A0x18ff047ae22f738b!2sCureka!5e0!3m2!1sen!2sin!4v1695200474252!5m2!1sen!2sin"
@@ -279,10 +279,19 @@ export default function Contactus() {
               </div>
             </div>
           </div>
-
           <div className="row above-space" id="contact-foot">
+            {/* Location Section (Clickable for Google Maps) */}
             <div className="col-lg-4">
-              <div className="card">
+              <div
+                className="card cursor-pointer"
+                onClick={() =>
+                  window.open(
+                    "https://www.google.com/maps/place/Cureka/@9.9577317,78.1336615,15z/",
+                    "_blank"
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
                 <div className="contact-circle">
                   <Image
                     className="img-fluid mx-auto"
@@ -292,11 +301,10 @@ export default function Contactus() {
                     alt="contact_map"
                   />
                 </div>
-
-                <p className="contact-address">
+                <p className="contact-address  d-block mx-auto">
                   Wedjat Health Solutions Private Limited,
                   <span className="contact-subaddress">
-                    {" "}
+                    <br />
                     75/1, Alagar Kovil Main Rd, Surveyor Colony, Madurai, Tamil
                     Nadu 625007
                   </span>
@@ -304,6 +312,7 @@ export default function Contactus() {
               </div>
             </div>
 
+            {/* Email Section */}
             <div className="col-lg-4 mt-3 mt-lg-0">
               <div className="card">
                 <div className="d-flex-column my-auto">
@@ -316,7 +325,6 @@ export default function Contactus() {
                       alt="message"
                     />
                   </div>
-
                   <a
                     href="mailto:info@cureka.com"
                     className="contact-address d-block mx-auto"
@@ -327,6 +335,7 @@ export default function Contactus() {
               </div>
             </div>
 
+            {/* Phone Section */}
             <div className="col-lg-4 mt-3 mt-lg-0">
               <div className="card">
                 <div className="d-flex-column my-auto">
@@ -339,7 +348,6 @@ export default function Contactus() {
                       alt="phone_call"
                     />
                   </div>
-
                   <a
                     href="tel:+91 9655928004"
                     className="contact-address d-block mx-auto"
