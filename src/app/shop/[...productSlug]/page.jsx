@@ -723,10 +723,10 @@ export default function Productdetails() {
                             className="item cursor-pointer"
                             onClick={() => setSelectedImage(src)}
                           >
-                            <Image
+                            <img
                               src={src}
-                              width={100}
-                              height={101}
+                              width="100px"
+                              height="101px"
                               className="img-fluid"
                               alt="product_detail_2"
                             />
@@ -757,7 +757,7 @@ export default function Productdetails() {
                       __html: product.product_highlights,
                     }}
                   ></div>
-                  <div className="col-lg-6 pl-lg-0 mt-5">
+                  <div className="col-lg-6 pl-lg-0 mt-5 ">
                     {product.expert_advice !== "null" &&
                       product.expert_advice !== "undefined" && (
                         <div>
@@ -797,8 +797,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={mail}
-                              width={25}
-                              height={25}
+                              width="20px"
+                              height="20px"
                               alt="sad"
                             />{" "}
                             Mail
@@ -807,8 +807,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={whatsapp}
-                              width={20}
-                              height={20}
+                              width="20px"
+                              height="20px"
                               alt="sad"
                             />{" "}
                             What's App
@@ -817,8 +817,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={facebook}
-                              width={20}
-                              height={20}
+                              width="20px"
+                              height="20px"
                               alt="sad"
                             />{" "}
                             Facebook
@@ -827,8 +827,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={twitter}
-                              width={20}
-                              height={20}
+                              width="20px"
+                              height="20px"
                               alt="sad"
                             />{" "}
                             Twitter
@@ -837,8 +837,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={linkedin}
-                              width={20}
-                              height={20}
+                              width="20px"
+                              height="20px"
                               alt="sad"
                             />{" "}
                             LinkedIn
@@ -847,8 +847,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={copydata}
-                              width={20}
-                              height={20}
+                              width="20px"
+                              height="20px"
                               alt="sad"
                             />{" "}
                             Copy URL
@@ -1487,7 +1487,9 @@ export default function Productdetails() {
                 </div>
               </div>
             </div>
-            <div className="bottom-border">
+            <div className="">
+              <div className="bottom-border"></div>
+
               <div className="row mt-4 mx-lg-0">
                 <div
                   className="tab-content col-lg-12 px-lg-0 mb-4"

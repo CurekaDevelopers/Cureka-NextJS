@@ -1127,6 +1127,7 @@ export default function Header({ showCategoryNavbar = true }) {
                               />
                               Chat with Us
                             </a>
+
                             <a
                               href="https://api.whatsapp.com/send?phone=917200150536"
                               className="nav-link-item border-bottom"
