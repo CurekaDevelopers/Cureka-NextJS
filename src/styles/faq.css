@@ -20,6 +20,10 @@
   margin-bottom: 22px;
 }
 
+.collapse {
+  display: block; /* Ensures the collapsed content is visible when expanded */
+}
+
 #faq .card-header {
   background-color: #fff;
 
@@ -165,4 +169,8 @@
   margin: 0;
   padding: 1rem;
   color: #555;
+}
+
+.collapse {
+  visibility: visible;
 }

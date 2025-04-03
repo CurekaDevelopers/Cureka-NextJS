@@ -12,34 +12,25 @@ import Footer from "../../views/Footer";
 import Header from "../../views/Header/index";
 import ScrollToTop from "../../views/ScrollToTop";
 import Image from "next/image";
+
 export default function FaqsPage() {
-  const [faqs, setFaqs] = useState();
+  const [faqs, setFaqs] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
-
-  const handleScroll = () => {
-    if (window.scrollY > 200) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  };
-
-  const [activeKey, setActiveKey] = useState(null);
-
-  // Toggle the active key for each accordion item
-  const handleToggle = (key) => {
-    setActiveKey(activeKey === key ? null : key);
-  };
+  const [activeKeys, setActiveKeys] = useState([]); // Use an array to store active keys
 
   useEffect(() => {
+    const handleScroll = () => {
+      setIsVisible(window.scrollY > 200);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   useEffect(() => {
     api
       .get(apiUrls.getAllFaqs)
       .then((response) => {
-        const results = _.get(response, "data.results");
+        const results = _.get(response, "data.results", []);
         if (results) {
           setFaqs(results);
         }
@@ -49,8 +40,17 @@ export default function FaqsPage() {
       });
   }, []);
 
+  const handleToggle = (key) => {
+    setActiveKeys(
+      (prevKeys) =>
+        prevKeys.includes(key)
+          ? prevKeys.filter((item) => item !== key) // Close if already open
+          : [...prevKeys, key] // Otherwise, open it
+    );
+  };
+
   const faqSchema =
-    faqs && typeof faqs === "object" && Object.keys(faqs).length > 0
+    faqs && Object.keys(faqs).length > 0
       ? {
           "@context": "https://schema.org/",
           "@type": "FAQPage",
@@ -60,12 +60,12 @@ export default function FaqsPage() {
               name: item.question,
               acceptedAnswer: {
                 "@type": "Answer",
-                namea: item.answer,
+                text: item.answer,
               },
             }))
           ),
         }
-      : ""; // If faqs is not available, don't generate the schema
+      : "";
 
   return (
     <>
@@ -73,15 +73,21 @@ export default function FaqsPage() {
         <title>FAQ | Buy Healthcare Products Online - Cureka</title>
         <meta
           name="description"
-          content="Shop the best of health care products under one roof. Choose from a wide range of products. Best Prices. GreatDiscounts."
+          content="Shop the best of health care products under one roof. Choose from a wide range of products. Best Prices. Great Discounts."
         />
-        <link rel="canonical" href={window.location.href} />
-        <meta property="og:url" content={window.location.href} />
+        <link
+          rel="canonical"
+          href={typeof window !== "undefined" ? window.location.href : ""}
+        />
+        <meta
+          property="og:url"
+          content={typeof window !== "undefined" ? window.location.href : ""}
+        />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Cureka" />
         <meta
           property="og:description"
-          content="Shop the best of health care products under one roof. Choose from a wide range of products. Best Prices. GreatDiscounts."
+          content="Shop the best of health care products under one roof. Choose from a wide range of products. Best Prices. Great Discounts."
         />
         <meta
           property="og:image"
@@ -113,7 +119,7 @@ export default function FaqsPage() {
           <h1 className="privacy-heading mb-4">FAQ’s</h1>
           <div className="row">
             <div className="col-lg-12">
-              <Accordion activeKey={activeKey} id="faqaccord">
+              <Accordion activeKey={activeKeys} alwaysOpen>
                 {faqs &&
                   Object.keys(faqs).map((faqCategory, i) => (
                     <div key={i}>
@@ -123,22 +129,11 @@ export default function FaqsPage() {
                           eventKey={item.id.toString()}
                           key={item.id}
                         >
-                          {/* Custom clickable header with an arrow icon */}
-                          <div
-                            className="custom-accordion-header details-subheading"
+                          <Accordion.Header
                             onClick={() => handleToggle(item.id.toString())}
                           >
-                            <h4>{item.question}</h4>
-                            {/* Arrow icon that rotates based on the activeKey */}
-                            <span
-                              className={`arrow-icon ${
-                                activeKey === item.id.toString() ? "open" : ""
-                              }`}
-                            >
-                              ▼
-                            </span>
-                          </div>
-
+                            {item.question}
+                          </Accordion.Header>
                           <Accordion.Body>
                             <p className="details-para">{item.answer}</p>
                           </Accordion.Body>

@@ -1741,36 +1741,35 @@ export default function Productdetails() {
                       <div className="row">
                         <div className="col-lg-12">
                           <Accordion activeKey={activeKey}>
-                            {product?.faqs.map((faq) => (
-                              <Accordion.Item
-                                eventKey={faq.id.toString()}
-                                key={faq.id}
-                              >
-                                {/* Custom clickable header with an arrow icon */}
-                                <div
-                                  className="custom-accordion-header details-subheading"
-                                  onClick={() =>
-                                    handleToggle(faq.id.toString())
-                                  }
-                                >
-                                  <h4>{faq.faq}</h4>
-                                  {/* Arrow icon that rotates based on the activeKey */}
-                                  <span
-                                    className={`arrow-icon ${
-                                      activeKey === faq.id.toString()
-                                        ? "open"
-                                        : ""
-                                    }`}
-                                  >
-                                    ▼
-                                  </span>
-                                </div>
+                            {product?.faqs.map((faq, index) => {
+                              const uniqueKey = faq.id
+                                ? faq.id.toString()
+                                : `faq-${index}`;
 
-                                <Accordion.Body>
-                                  <p className="details-para">{faq.faq_a}</p>
-                                </Accordion.Body>
-                              </Accordion.Item>
-                            ))}
+                              return (
+                                <Accordion.Item
+                                  eventKey={uniqueKey}
+                                  key={uniqueKey}
+                                >
+                                  <div
+                                    className="custom-accordion-header details-subheading"
+                                    onClick={() => handleToggle(uniqueKey)}
+                                  >
+                                    <h4>{faq.faq}</h4>
+                                    <span
+                                      className={`arrow-icon ${
+                                        activeKey === uniqueKey ? "open" : ""
+                                      }`}
+                                    >
+                                      ▼
+                                    </span>
+                                  </div>
+                                  <Accordion.Body>
+                                    <p className="details-para">{faq.faq_a}</p>
+                                  </Accordion.Body>
+                                </Accordion.Item>
+                              );
+                            })}
                           </Accordion>
                         </div>
                       </div>

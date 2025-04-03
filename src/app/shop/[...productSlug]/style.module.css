@@ -1,3 +1,8 @@
+.accordion-body {
+  display: block !important;
+  visibility: visible !important;
+}
+
 .searchResults {
   background-color: #fff;
   font-weight: 500;
