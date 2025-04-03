@@ -1755,7 +1755,7 @@ export default function Productdetails() {
                                     className="custom-accordion-header details-subheading"
                                     onClick={() => handleToggle(uniqueKey)}
                                   >
-                                    <h4>{faq.faq}</h4>
+                                    <h5>{faq.faq}</h5>
                                     <span
                                       className={`arrow-icon ${
                                         activeKey === uniqueKey ? "open" : ""

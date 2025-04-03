@@ -378,7 +378,7 @@ export default function Header({ showCategoryNavbar = true }) {
                 <Image
                   className="img-responsive d-block"
                   src={logo}
-                  width={142}
+                  width={120}
                   height={47}
                   alt="cureka-logo"
                 />
