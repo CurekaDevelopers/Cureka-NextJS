@@ -36,7 +36,6 @@ import "./styles/curated.module.scss";
 import "./styles/dashboard.module.scss";
 import "./styles/disclaimer.module.scss";
 import "./styles/employee.module.scss";
-import "./styles/Faq.module.scss";
 import "./styles/home.module.scss";
 import "./styles/importprice.module.scss";
 import "./styles/importproduct.module.scss";
