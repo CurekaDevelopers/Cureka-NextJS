@@ -9,7 +9,7 @@ import Link from "next/link";
 import ScrollToTop from "../../views/ScrollToTop";
 import housechimney from "../../public/images/house-chimney.png";
 import { env } from "../../config/env.config";
-import "../../styles/Faq.css";
+import "../../styles/faq.css";
 import Footer from "../../views/Footer";
 import Header from "../../views/Header/index";
 import Image from "next/image";

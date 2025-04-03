@@ -32,7 +32,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/cart.css";
 import "../../styles/common-styles.css";
 import "../../styles/contactus.css";
-import "../../styles/Faq.css";
+import "../../styles/faq.css";
 import "../../styles/font-awesome.min.css";
 import "../../styles/fonts.css";
 import "../../styles/footer.css";

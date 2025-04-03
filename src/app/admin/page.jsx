@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import styles from "./styles.module.scss";
 import { pagePaths } from "../../utils/constants/constant";
-import "./styles/Faq.module.scss";
+import "./styles/faq.module.scss";
 import "./styles/abondcart.module.scss";
 import "./styles/artical.module.scss";
 import "./styles/blog.module.scss";

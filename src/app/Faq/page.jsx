@@ -5,7 +5,7 @@ import Accordion from "react-bootstrap/Accordion";
 import { Helmet } from "react-helmet-async";
 import Link from "next/link";
 import housechimney from "../../public/images/house-chimney.png";
-import "../../styles/Faq.css";
+import "../../styles/faq.css";
 import api from "../../utils/api.utils";
 import { apiUrls } from "../../utils/constants/api.constants";
 import Footer from "../../views/Footer";

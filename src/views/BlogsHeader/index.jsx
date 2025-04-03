@@ -11,7 +11,7 @@ import "../../styles/bootstrap.min.css";
 import "../../styles/cart.css";
 import "../../styles/common-styles.css";
 import "../../styles/contactus.css";
-import "../../styles/Faq.css";
+import "../../styles/faq.css";
 import "../../styles/font-awesome.css";
 import "../../styles/fonts.css";
 import "../../styles/footer.css";
