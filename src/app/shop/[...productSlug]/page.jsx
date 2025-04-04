@@ -675,18 +675,21 @@ export default function Productdetails() {
                 <div className="" id="product-details">
                   {slidesToShow < 3 ? (
                     <>
-                      {allProductImages.map((src) => {
-                        if (!src) {
+                      {allProductImages.map((src, index) => {
+                        if (!src || typeof src !== "string") {
                           return null;
                         }
+
+                        const sanitizedSrc = encodeURI(src.trim());
+
                         return (
                           <div
-                            key={src}
+                            key={index}
                             className="item cursor-pointer"
-                            onClick={() => setSelectedImage(src)}
+                            onClick={() => setSelectedImage(sanitizedSrc)}
                           >
                             <img
-                              src={src}
+                              src={sanitizedSrc}
                               width="100px"
                               height="101px"
                               className="img-fluid"
@@ -709,22 +712,27 @@ export default function Productdetails() {
                             nextSlide,
                             allProductImages
                           );
-                          setSelectedImage(allProductImages[nextSlide]);
+                          setSelectedImage(
+                            encodeURI(allProductImages[nextSlide]?.trim() || "")
+                          );
                         },
                       }}
                     >
-                      {allProductImages.map((src) => {
-                        if (!src) {
+                      {allProductImages.map((src, index) => {
+                        if (!src || typeof src !== "string") {
                           return null;
                         }
+
+                        const sanitizedSrc = encodeURI(src.trim());
+
                         return (
                           <div
-                            key={src}
+                            key={index}
                             className="item cursor-pointer"
-                            onClick={() => setSelectedImage(src)}
+                            onClick={() => setSelectedImage(sanitizedSrc)}
                           >
                             <img
-                              src={src}
+                              src={sanitizedSrc}
                               width="100px"
                               height="101px"
                               className="img-fluid"
