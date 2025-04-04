@@ -468,11 +468,11 @@ export default function ProductList() {
         <div className="container">
           <div className="d-flex home-back-section">
             <Link href={pagePaths.home}>
-              <img
+              <Image
                 className="img-fluid d-block"
                 src={houseChimney}
-                width="16px"
-                height="16px"
+                width={16}
+                height={16}
                 alt="home-icon"
               />
             </Link>
@@ -710,11 +710,11 @@ export default function ProductList() {
                                   variant="primary"
                                   onClick={handleShowFilter}
                                 >
-                                  <img
+                                  <Image
                                     className="img-fluid mr-2"
                                     src={filterImage}
-                                    width="20px"
-                                    height="20px"
+                                    width={20}
+                                    height={20}
                                     alt="filter-icon"
                                   />
                                   Filters
@@ -726,11 +726,11 @@ export default function ProductList() {
                                   variant="primary"
                                   onClick={handleShowSortBy}
                                 >
-                                  <img
+                                  <Image
                                     className="img-fluid mr-2"
                                     src={bars_filter}
-                                    width="20px"
-                                    height="20px"
+                                    width={20}
+                                    height={20}
                                     alt="filter-icon"
                                   />
                                   Sort by
@@ -1057,10 +1057,10 @@ export default function ProductList() {
                                         className=""
                                       >
                                         <div className="product">
-                                          <img
+                                          <Image
                                             src={product_front_image}
-                                            width="218px"
-                                            height="172px"
+                                            width={218}
+                                            height={172}
                                             className="img-fluid"
                                             alt="product-image"
                                           />
@@ -1073,10 +1073,10 @@ export default function ProductList() {
                                             href={generateUrl(product)}
                                             target="_blank"
                                           >
-                                            <img
+                                            <Image
                                               src={eye}
-                                              width="10px"
-                                              height="10px"
+                                              width={10}
+                                              height={10}
                                               className="d-block mx-auto eye"
                                               alt="eye"
                                             />
@@ -1196,12 +1196,12 @@ export default function ProductList() {
 
                                 {filterProducts?.length > 5 && index === 5 && (
                                   <div className="mb-3">
-                                    <img
+                                    <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
                                       src={skinbanner}
-                                      width="880px"
-                                      height="284px"
+                                      width={880}
+                                      height={284}
                                       alt="homebanner"
                                     />
                                   </div>
@@ -1257,10 +1257,10 @@ export default function ProductList() {
                                         className=""
                                       >
                                         <div className="product">
-                                          <img
+                                          <Image
                                             src={product_front_image}
-                                            width="218px"
-                                            height="172px"
+                                            width={218}
+                                            height={172}
                                             className="img-fluid"
                                             alt="Product"
                                           />
@@ -1273,10 +1273,10 @@ export default function ProductList() {
                                             href={generateUrl(product)}
                                             target="_blank"
                                           >
-                                            <img
+                                            <Image
                                               src={eye}
-                                              width="10px"
-                                              height="10px"
+                                              width={10}
+                                              height={10}
                                               className="d-block mx-auto eye"
                                               alt="eye"
                                             />
@@ -1485,12 +1485,12 @@ export default function ProductList() {
 
                                 {products?.length > 5 && index === 5 && (
                                   <div className="mb-3">
-                                    <img
+                                    <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
                                       src={skinbanner}
-                                      width="880px"
-                                      height="284px"
+                                      width={880}
+                                      height={284}
                                       alt="homebanner"
                                     />
                                   </div>
