@@ -369,7 +369,7 @@ export default function Footer() {
                         <div className="send mb-5">
                           <button
                             type="submit"
-                            className="send-btn border-0 p-0 mb-8"
+                            className="send-btn border-0 p-0 mb-8 "
                           >
                             Send
                           </button>
