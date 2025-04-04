@@ -177,7 +177,7 @@ export default function Cart() {
     e.preventDefault();
     if (product.id) {
       if (isProductPresentInCart(product)) {
-        navigate.push("/cart");
+        navigate.push("/Cart");
       } else {
         addProductToCart(product.id, 1);
         if (isLoggedIn) dispatch(fetchCartProducts());
@@ -589,11 +589,11 @@ export default function Cart() {
                                               target="_blank"
                                               className=""
                                             >
-                                              <img
+                                              <Image
                                                 src={product_front_na_image}
                                                 className="img-fluid"
-                                                width="167px"
-                                                height="183px"
+                                                width={167}
+                                                height={183}
                                                 alt="toppicks1"
                                               />
                                             </a>
@@ -694,11 +694,11 @@ export default function Cart() {
                                               target="_blank"
                                               className=""
                                             >
-                                              <img
+                                              <Image
                                                 src={product_front_na_image}
                                                 className="img-fluid youmay-img"
-                                                width="167px"
-                                                height="183px"
+                                                width={167}
+                                                height={183}
                                                 alt="toppicks1"
                                               />
                                             </a>
