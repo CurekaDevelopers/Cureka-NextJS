@@ -1,5 +1,4 @@
 "use client";
-
 import { useFormik } from "formik";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -7,8 +6,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { useParams } from "react-router-dom";
+import { useRouter, useParams } from "next/navigation";
 import Card from "../../../../components/Card";
 import AdminBreadcrumbs from "../../../../components/admin/AdminBreadcrumbs";
 import {
@@ -23,7 +21,7 @@ import { status } from "../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
 
-const AdminCreateCuratedAddPage = ({ isEditPage = false }) => {
+const AdminCreateCuratedAddPage = ({ isEditPage }) => {
   const formikRef = useRef();
   const dispatch = useDispatch();
   const navigate = useRouter();
@@ -47,71 +45,58 @@ const AdminCreateCuratedAddPage = ({ isEditPage = false }) => {
     }
   }, [CURATED?.length, dispatch]);
 
-  const maskProductOptions = (opt) => {
-    return opt.map((dataObject) => ({
+  const maskProductOptions = (opt) =>
+    opt.map((dataObject) => ({
       value: dataObject.product_id,
       label: dataObject.vendor_article_name,
     }));
-  };
 
-  const options = useMemo(() => {
-    return maskProductOptions(productOptions);
-  }, [productOptions]);
+  const options = useMemo(
+    () => maskProductOptions(productOptions),
+    [productOptions]
+  );
 
   const onChangeProducts = (newSelected) => {
     setProductsList(newSelected);
     const parsedProductList = _.toString(_.map(newSelected, "value"));
-    formik.setFieldValue("products", parsedProductList);
+    formikRef.current?.setFieldValue("products", parsedProductList);
   };
 
   const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: validationSchema,
+    initialValues,
+    validationSchema,
     onSubmit: async (values) => {
-      let fileUrl = "";
-      if (typeof values.image === "string") {
-        fileUrl = values.image;
-      } else {
-        const uploadData = await uploadImage(
-          values.image,
-          "ratingAndReviews",
-          (uploadProgress) => {
-            console.log({ uploadProgress });
-          }
-        );
-        fileUrl = uploadData.fileUrl;
-      }
-      if (fileUrl) {
-        setLoading(true);
-        if (isEditPage) {
-          dispatch(
-            updateCuratedAdd(
-              id,
-              {
-                ...values,
-                image: fileUrl,
-                updated_by: adminEmail,
-              },
-              () => {
-                setLoading(false);
-                navigate.push(pagePaths.adminCuratedAddManagement);
-              }
-            )
+      setLoading(true);
+      try {
+        let fileUrl = values.image;
+        if (values.image && typeof values.image !== "string") {
+          const uploadData = await uploadImage(
+            values.image,
+            "ratingAndReviews"
           );
-        } else {
-          dispatch(
-            createCuratedAdd(
-              {
-                ...values,
-                image: fileUrl,
-              },
-              () => {
-                setLoading(false);
-                navigate.push(pagePaths.adminCuratedAddManagement);
-              }
-            )
-          );
+          fileUrl = uploadData?.fileUrl || "";
         }
+
+        if (fileUrl) {
+          const payload = { ...values, image: fileUrl, updated_by: adminEmail };
+          if (isEditPage) {
+            dispatch(
+              updateCuratedAdd(id, payload, () =>
+                navigate.push(pagePaths.adminCuratedAddManagement)
+              )
+            );
+          } else {
+            dispatch(
+              createCuratedAdd(payload, () =>
+                navigate.push(pagePaths.adminCuratedAddManagement)
+              )
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Image upload error:", error);
+      } finally {
+        setLoading(false);
       }
     },
   });
@@ -121,22 +106,22 @@ const AdminCreateCuratedAddPage = ({ isEditPage = false }) => {
   }, [formik]);
 
   useEffect(() => {
-    const formik = formikRef.current || {};
-    if (isEditPage && CURATED.length && id && formik.setValues) {
+    if (isEditPage && CURATED.length && id && formikRef.current) {
       const curatedAdd = CURATED.find(
         (item) => parseInt(item.id) === parseInt(id)
       );
       if (!curatedAdd) {
         navigate.push(pagePaths.adminCuratedAddManagement);
-      }
-      formik.setValues(curatedAdd || {});
-      setPreviewImage(curatedAdd?.image);
+      } else {
+        formikRef.current.setValues(curatedAdd);
+        setPreviewImage(curatedAdd.image);
 
-      if (curatedAdd?.products) {
-        const maskedProducts = maskProductOptions(curatedAdd?.products);
-        setProductsList(maskedProducts);
-        const parsedProductList = _.toString(_.map(maskedProducts, "value"));
-        formik.setFieldValue("products", parsedProductList);
+        if (curatedAdd.products) {
+          const maskedProducts = maskProductOptions(curatedAdd.products);
+          setProductsList(maskedProducts);
+          const parsedProductList = _.toString(_.map(maskedProducts, "value"));
+          formikRef.current.setFieldValue("products", parsedProductList);
+        }
       }
     }
   }, [isEditPage, CURATED, id, navigate]);
@@ -155,110 +140,96 @@ const AdminCreateCuratedAddPage = ({ isEditPage = false }) => {
           },
         ]}
       />
-      <div>
-        <Card className={styles.card}>
-          <div className={styles.cardHeader}>
-            <p className={styles.title}>Add Curated Add Details</p>
-          </div>
-          <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
-            <Form.Group>
-              <Form.Label>
-                Curated Add URL <span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id="url"
-                name="url"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.url}
-              />
-              {formik.errors.url && formik.touched.url && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.url}
-                </Form.Text>
-              )}
-            </Form.Group>
+      <Card className={styles.card}>
+        <div className={styles.cardHeader}>
+          <p className={styles.title}>Add Curated Add Details</p>
+        </div>
+        <Form onSubmit={formik.handleSubmit} className={styles.formItems}>
+          <Form.Group>
+            <Form.Label>
+              Curated Add URL <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              id="url"
+              name="url"
+              {...formik.getFieldProps("url")}
+            />
+            {formik.touched.url && formik.errors.url && (
+              <Form.Text className={styles.errorText}>
+                {formik.errors.url}
+              </Form.Text>
+            )}
+          </Form.Group>
 
-            <Form.Group>
-              <Form.Label>
-                Curated Add Image<span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Control
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                onChange={(event) => {
-                  const selectedFile = event.currentTarget.files[0];
-                  if (selectedFile) {
-                    const imageUrl = URL.createObjectURL(selectedFile);
-                    setPreviewImage(imageUrl);
-                    formik.setFieldValue("image", selectedFile);
-                  } else {
-                    formik.setFieldValue("image", null);
-                    setPreviewImage(null);
-                  }
-                }}
-                onBlur={formik.handleBlur}
-              />
-              {formik.errors.image && formik.touched.image && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.image}
-                </Form.Text>
-              )}
-            </Form.Group>
-            {previewImage && (
-              <img
-                src={previewImage}
-                alt="Preview"
-                style={{ maxWidth: "200px", maxHeight: "100%" }}
+          <Form.Group>
+            <Form.Label>
+              Curated Add Image <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Control
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={(event) => {
+                const selectedFile = event.target.files[0];
+                if (selectedFile) {
+                  setPreviewImage(URL.createObjectURL(selectedFile));
+                  formik.setFieldValue("image", selectedFile);
+                }
+              }}
+            />
+            {formik.touched.image && formik.errors.image && (
+              <Form.Text className={styles.errorText}>
+                {formik.errors.image}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Preview"
+              style={{ maxWidth: "200px" }}
+            />
+          )}
+
+          <Form.Group>
+            <Form.Label>
+              Products <span className="text-danger">*</span>
+            </Form.Label>
+            {options.length > 0 && (
+              <MultiSelect
+                value={productsList}
+                options={options}
+                onChange={onChangeProducts}
               />
             )}
-            <Form.Group>
-              <Form.Label htmlFor="concerns">
-                Products<span className="text-danger">*</span>
-              </Form.Label>
-              {options?.length > 0 && (
-                <MultiSelect
-                  value={productsList}
-                  options={options}
-                  onChange={onChangeProducts}
-                />
-              )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="status">
-                Status<span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Select
-                aria-label="Select Status"
-                id="status"
-                name="status"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.status}
-              >
-                {Object.entries(status).map(([key, value]) => {
-                  return (
-                    <option key={key} value={value}>
-                      {value}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-            </Form.Group>
-            <Button
-              disabled={loading}
-              type="submit"
-              className={styles.submitButton}
-              variant="primary"
-            >
-              {loading ? "Loading..." : "Submit"}
-            </Button>
-          </Form>
-        </Card>
-      </div>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>
+              Status <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Select {...formik.getFieldProps("status")}>
+              {Object.entries(status).map(([key, value]) => (
+                <option key={key} value={value}>
+                  {value}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
+          <Button
+            disabled={loading}
+            type="submit"
+            className={styles.submitButton}
+            variant="primary"
+          >
+            {loading ? "Loading..." : "Submit"}
+          </Button>
+        </Form>
+      </Card>
     </div>
   );
 };

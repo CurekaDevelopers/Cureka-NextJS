@@ -64,7 +64,10 @@ export default function Navbar() {
                     </button>
                     <div className="collapse navbar-collapse" id="main_nav">
                       <ul className="navbar-nav">
-                        <li className="nav-item dropdown" id="has-megamenu">
+                        <li
+                          className="nav-item dropdown mt-3 ml-2"
+                          id="has-megamenu"
+                        >
                           <a
                             className="nav-link dropdown-toggle"
                             href="#"
@@ -96,14 +99,21 @@ export default function Navbar() {
                                             onMouseEnter={onChangeHoveredCategory(
                                               item
                                             )}
+                                            onClick={() =>
+                                              window.open(
+                                                `/product-category/${item.slug}`,
+                                                "_blank"
+                                              )
+                                            }
                                           >
                                             <Link
                                               href={`/product-category/${hoveredCategory?.slug}`}
                                             >
                                               <Nav.Link
                                                 onClick={() =>
-                                                  navigate(
-                                                    `/product-category/${hoveredCategory?.slug}`
+                                                  window.open(
+                                                    `/product-category/${hoveredCategory?.slug}`,
+                                                    "_blank"
                                                   )
                                                 }
                                                 eventKey={item.slug}
