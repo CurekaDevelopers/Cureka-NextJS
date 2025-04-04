@@ -1,18 +1,17 @@
 "use client";
 
 import { useFormik } from "formik";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "next/navigation";
-
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Card from "../../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../../components/admin/AdminBreadcrumbs";
 import {
   fetchCategories,
   updateCategory,
+  createCategory,
 } from "../../../../../../redux/action";
 import { pagePaths } from "../../../../../../utils/constants/constant";
 import lazyLoadable from "../../../../../../utils/lazyLoadable";
@@ -23,7 +22,7 @@ import {
 } from "../../../../../../utils/constants/common.constants";
 import { initialValues, validationSchema } from "./helper";
 import styles from "./styles.module.scss";
-import { createCategory } from "../../../../../../redux/action";
+
 const RichtextEditor = lazyLoadable(() =>
   import("../../../../../../components/RichtextEditor")
 );
@@ -31,21 +30,21 @@ const RichtextEditor = lazyLoadable(() =>
 const AdminCreateCategoryPage = ({ isEditPage = true }) => {
   const formikRef = useRef();
   const dispatch = useDispatch();
-  const [previewImage, setPreviewImage] = useState(null);
   const router = useRouter();
   const { id } = useParams();
-  console.log("ID from useParams:", id);
-
   const { categories } = useSelector((state) => state.admin);
   const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
+  // Fetch categories once when editing
   useEffect(() => {
     if (isEditPage && id) {
       console.log("Fetching categories", id);
       dispatch(fetchCategories());
     }
-  }, [isEditPage, dispatch, categories]);
+  }, [isEditPage, id, dispatch]); // ✅ Removed `categories` from dependencies
 
+  // Initialize form
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -53,7 +52,6 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
       setLoading(true);
       let fileUrl = values.image;
 
-      // Upload image if it's a file
       if (values.image && typeof values.image !== "string") {
         const uploadData = await uploadImage(
           values.image,
@@ -87,6 +85,7 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
     },
   });
 
+  // Store formik reference
   useEffect(() => {
     formikRef.current = formik;
   }, [formik]);
@@ -143,22 +142,7 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
                 </Form.Text>
               )}
             </Form.Group>
-            {/* <Form.Group>
-              <Form.Label htmlFor="name">Slug Name</Form.Label>
-              <Form.Control
-                type="text"
-                id="slug"
-                name="slug"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.slug}
-              />
-              {formik.errors.slug && formik.touched.slug && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.slug}
-                </Form.Text>
-              )}
-            </Form.Group> */}
+
             <Form.Group>
               <Form.Label htmlFor="image">Image</Form.Label>
               <Form.Control
@@ -192,6 +176,7 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
                 style={{ maxWidth: "200px", maxHeight: "100%" }}
               />
             )}
+
             <Form.Group>
               <Form.Label htmlFor="description">Description</Form.Label>
               <RichtextEditor
@@ -205,10 +190,9 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
                 </Form.Text>
               )}
             </Form.Group>
+
             <Form.Group>
-              <Form.Label htmlFor="name">
-                Meta Title<span className="text-danger">*</span>
-              </Form.Label>
+              <Form.Label htmlFor="metaTitle">Meta Title</Form.Label>
               <Form.Control
                 type="text"
                 id="metaTitle"
@@ -223,29 +207,10 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
                 </Form.Text>
               )}
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="name">
-                Meta Description<span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id="metaDescription"
-                name="metaDescription"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.metaDescription}
-              />
-              {formik.errors.metaDescription &&
-                formik.touched.metaDescription && (
-                  <Form.Text className={styles.errorText} muted>
-                    {formik.errors.metaDescription}
-                  </Form.Text>
-                )}
-            </Form.Group>
+
             <Form.Group>
               <Form.Label htmlFor="status">Status</Form.Label>
               <Form.Select
-                aria-label="Select Category"
                 id="status"
                 name="status"
                 onChange={formik.handleChange}
@@ -253,45 +218,14 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
                 value={formik.values.status}
               >
                 <option disabled>Select Status</option>
-                {Object.entries(status).map(([key, value]) => {
-                  return (
-                    <option key={key} value={value}>
-                      {value}
-                    </option>
-                  );
-                })}
+                {Object.entries(status).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
+                ))}
               </Form.Select>
-              {formik.errors.status && formik.touched.status && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.status}
-                </Form.Text>
-              )}
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="navLink">Nav Link</Form.Label>
-              <Form.Select
-                aria-label="Select Category"
-                id="navLink"
-                name="navLink"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.nav_link}
-              >
-                <option disabled>Select Status</option>
-                {Object.entries(nav_link).map(([key, value]) => {
-                  return (
-                    <option key={key} value={value}>
-                      {value}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-              {formik.errors.status && formik.touched.status && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.status}
-                </Form.Text>
-              )}
-            </Form.Group>
+
             <Button
               disabled={loading}
               type="submit"

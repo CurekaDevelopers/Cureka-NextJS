@@ -144,6 +144,8 @@ export default function Navbar() {
                                                 >
                                                   <Link
                                                     href={`/product-category/${hoveredCategory?.slug}/${subCategory.slug}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                   >
                                                     <h2 className="items-title">
                                                       {subCategory.name}
@@ -164,6 +166,8 @@ export default function Navbar() {
                                                             >
                                                               <Link
                                                                 href={`/product-category/${hoveredCategory?.slug}/${subCategory.slug}/${subSubCategory.slug}`}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
                                                               >
                                                                 {
                                                                   subSubCategory.name
