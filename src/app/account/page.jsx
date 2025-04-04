@@ -1,12 +1,20 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import Footer from "../../views/Footer";
+import Header from "../../views/Header/index";
+import ScrollToTop from "../../views/ScrollToTop";
+import { logoutCustomer } from "../../redux/action/auth.action";
+import { pagePaths } from "../../utils/constants/constant";
+import lazyLoadable from "../../utils/lazyLoadable";
+
+// Images
 import box_open from "../../public/images/box_open.svg";
 import exit from "../../public/images/exit.svg";
 import heart from "../../public/images/heart.svg";
@@ -15,76 +23,87 @@ import map from "../../public/images/map.svg";
 import ticket from "../../public/images/ticket.svg";
 import user from "../../public/images/user.svg";
 import wallet from "../../public/images/wallet.svg";
-import { logoutCustomer } from "../../redux/action/auth.action";
-import { pagePaths } from "../../utils/constants/constant";
-import lazyLoadable from "../../utils/lazyLoadable";
-import Footer from "../../views/Footer";
-import Header from "../../views/Header/index";
-import ScrollToTop from "../../views/ScrollToTop";
-import Image from "next/image";
-const tabs = [
-  {
-    value: "my-orders",
-    label: "My Orders",
-    icon: box_open,
-    tabElement: lazyLoadable(() => import("./components/OrdersTab")),
-  },
-  {
-    value: "address",
-    label: "Address",
-    icon: map,
-    tabElement: lazyLoadable(() => import("./components/AddressTab")),
-  },
-  {
-    value: "my-wallet",
-    label: "My Wallet",
-    icon: wallet,
-    tabElement: lazyLoadable(() => import("./components/MyWalletTab")),
-  },
-  {
-    value: "my-wishlist",
-    label: "My Wishlist",
-    icon: heart,
-    tabElement: lazyLoadable(() => import("./components/MyWishlistTab")),
-  },
-  {
-    value: "my-coupons",
-    label: "My Coupons",
-    icon: ticket,
-    tabElement: lazyLoadable(() => import("./components/MyCouponsTab")),
-  },
-  {
-    value: "my-account",
-    label: "My Account",
-    icon: user,
-    tabElement: lazyLoadable(() => import("./components/AccountTab")),
-  },
-];
+
+// Lazy load components
+const OrdersTab = lazyLoadable(() => import("./components/OrdersTab"));
+const AddressTab = lazyLoadable(() => import("./components/AddressTab"));
+const MyWalletTab = lazyLoadable(() => import("./components/MyWalletTab"));
+const MyWishlistTab = lazyLoadable(() => import("./components/MyWishlistTab"));
+const MyCouponsTab = lazyLoadable(() => import("./components/MyCouponsTab"));
+const AccountTab = lazyLoadable(() => import("./components/AccountTab"));
+
+// Memoized tab data
+const useTabs = () =>
+  useMemo(
+    () => [
+      {
+        value: "my-orders",
+        label: "My Orders",
+        icon: box_open,
+        component: OrdersTab,
+      },
+      { value: "address", label: "Address", icon: map, component: AddressTab },
+      {
+        value: "my-wallet",
+        label: "My Wallet",
+        icon: wallet,
+        component: MyWalletTab,
+      },
+      {
+        value: "my-wishlist",
+        label: "My Wishlist",
+        icon: heart,
+        component: MyWishlistTab,
+      },
+      {
+        value: "my-coupons",
+        label: "My Coupons",
+        icon: ticket,
+        component: MyCouponsTab,
+      },
+      {
+        value: "my-account",
+        label: "My Account",
+        icon: user,
+        component: AccountTab,
+      },
+    ],
+    []
+  );
 
 export default function Orders() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const activeTab = searchParams?.get("tab") || tabs[0].value;
+  const tabs = useTabs();
+
+  const activeTab = useMemo(
+    () => searchParams?.get("tab") || tabs[0].value,
+    [searchParams, tabs]
+  );
+
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleScroll = () => {
-    setIsVisible(window.scrollY > 200);
-  };
-
   useEffect(() => {
+    const handleScroll = () => {
+      requestAnimationFrame(() => {
+        setIsVisible(window.scrollY > 200);
+      });
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleTabChange = (tabValue) => {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set("tab", tabValue);
-    router.push(currentUrl.toString());
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set("tab", tabValue);
+    router.replace(newUrl.toString()); // Use `replace` to avoid history stack pollution
   };
 
   return (
     <>
       <Header showCategoryNavbar={false} />
+      <br />
       <div className="container-fluid px-0">
         <div className="container">
           <div className="d-flex home-back-section pt-1">
@@ -95,6 +114,7 @@ export default function Orders() {
                 width={30}
                 height={35}
                 alt="home-icon"
+                priority // Important images load faster
               />
             </Link>
             <p className="section mb-0 ml-3">/ &nbsp;&nbsp;&nbsp;My Account</p>
@@ -109,26 +129,29 @@ export default function Orders() {
           <div className="col-lg-12 col-md-12 order-tabs">
             <Tab.Container activeKey={activeTab} defaultActiveKey={activeTab}>
               <Row>
+                {/* Sidebar Tabs */}
                 <Col md={4} lg={3}>
                   <div className="orderpills">
                     <Nav variant="pills" className="flex-column">
-                      {tabs.map((item) => (
-                        <Nav.Item style={{ width: "100%" }} key={item.value}>
+                      {tabs.map(({ value, label, icon }) => (
+                        <Nav.Item style={{ width: "100%" }} key={value}>
                           <Nav.Link
-                            onClick={() => handleTabChange(item.value)}
-                            eventKey={item.value}
+                            onClick={() => handleTabChange(value)}
+                            eventKey={value}
                           >
                             <Image
                               className="img-fluid mr-2"
-                              src={item.icon}
-                              alt={item.label}
+                              src={icon}
+                              alt={label}
                               width={20}
                               height={14}
+                              loading="lazy"
                             />
-                            {item.label}
+                            {label}
                           </Nav.Link>
                         </Nav.Item>
                       ))}
+                      {/* Logout Button */}
                       <Nav.Item style={{ width: "100%" }}>
                         <Nav.Link
                           eventKey="logout"
@@ -149,11 +172,17 @@ export default function Orders() {
                     </Nav>
                   </div>
                 </Col>
+
+                {/* Tab Content */}
                 <Col md={8} lg={9}>
                   <Tab.Content>
-                    {tabs.map((item) => (
-                      <Tab.Pane key={item.value} eventKey={item.value}>
-                        {activeTab === item.value && <item.tabElement />}
+                    {tabs.map(({ value, component: Component }) => (
+                      <Tab.Pane key={value} eventKey={value}>
+                        {activeTab === value && (
+                          <Suspense fallback={<div>Loading...</div>}>
+                            <Component />
+                          </Suspense>
+                        )}
                       </Tab.Pane>
                     ))}
                   </Tab.Content>

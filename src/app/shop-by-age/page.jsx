@@ -48,6 +48,7 @@ import Header from "../../views/Header/index";
 import CategoryPopup from "../../views/Header/HomePopup";
 import ScrollToTop from "../../components/ScrollToTop/ScrollToTop";
 import { useRouter } from "next/navigation";
+import ShopHeader from "@/views/Header/ShopHeader";
 export default function ProductList() {
   const {
     categorySlug,
@@ -463,7 +464,7 @@ export default function ProductList() {
       <div className="container-fluid px-0">
         <div className="bottom-border"></div>
 
-        <Header />
+        <ShopHeader />
         <div className="container">
           <div className="d-flex home-back-section">
             <Link href={pagePaths.home}>

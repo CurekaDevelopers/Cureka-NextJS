@@ -65,7 +65,7 @@ export default function Navbar() {
                     <div className="collapse navbar-collapse" id="main_nav">
                       <ul className="navbar-nav">
                         <li
-                          className="nav-item dropdown mt-3 ml-2"
+                          className="nav-item dropdown ml-2"
                           id="has-megamenu"
                         >
                           <a

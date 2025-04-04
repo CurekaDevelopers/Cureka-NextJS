@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap";
 import api from "../../utils/api.utils";
 import Footer from "../../views/Footer";
 import Header from "../../views/Header/index";
+import ShopHeader from "@/views/Header/ShopHeader";
 
 export default function Listblogs() {
   const [listblogs, setListblogs] = useState();
@@ -19,7 +20,7 @@ export default function Listblogs() {
 
   return (
     <div>
-      <Header />
+      <ShopHeader />
       <Container className="p-4">
         {listblogs?.map((val) => (
           <div key={val.policy_name}>

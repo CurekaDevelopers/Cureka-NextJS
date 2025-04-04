@@ -63,7 +63,7 @@ export const pagePaths = {
   adminEditStandardArticalType:
     "/admin/standard-artical-type/edit/:id/:standardEdit",
   adminCreateSubSubCategoryEdit:
-    "/admin/CategoriesManagementPage/AdminCreateSubCategoryPage/edit/:id",
+    "/admin/CategoriesManagementPage/AdminCreateSubSubCategoryPage/edit/:id",
   adminCreatePreferenceEdit:
     "/admin/CategoriesManagementPage/AdminCreatePreferencePage/edit/:id",
   adminCreateSubSubSubCategory:

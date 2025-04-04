@@ -207,7 +207,7 @@ export default function CuratedAddManagementPage() {
 
           {/* Table */}
           {CURATED.length > 0 ? (
-            <RTable columns={columns} data={YOURSELF} />
+            <RTable columns={columns} data={CURATED} />
           ) : (
             <p className={styles.noRecordFoundMessage}>
               No curated add found. Please add a new one.

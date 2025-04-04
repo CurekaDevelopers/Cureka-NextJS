@@ -22,7 +22,7 @@ import styles from "./styles.module.scss";
 
 const RTable = lazyLoadable(() => import("../../../../components/Table/index"));
 
-const SubSubSubCategoriesManagementPage = () => {
+const SubSubSubCategoriesManagementPage = ({ use }) => {
   const { subSubCategories } = useSelector((state) => state.admin);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
   const { isAdminStatus, userRoles } = useSelector((state) => state.auth);
@@ -53,6 +53,7 @@ const SubSubSubCategoriesManagementPage = () => {
     },
     [navigate]
   );
+
   const closeDeleteConfirmModal = () => {
     setCategoryToDelete(null);
   };
@@ -126,6 +127,7 @@ const SubSubSubCategoriesManagementPage = () => {
               {isAdminStatus == 1 ? (
                 <div>
                   <EditButton onClick={() => onEdit(cell.row.original.id)} />
+
                   <DeleteButton
                     onClick={() => onDeleteButtonClicked(cell.row.original)}
                   />

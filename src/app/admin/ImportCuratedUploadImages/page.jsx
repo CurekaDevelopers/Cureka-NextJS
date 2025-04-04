@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import Card from "../../../components/Card";
 import AdminBreadcrumbs from "../../../components/admin/AdminBreadcrumbs";
 import { pagePaths } from "../../../utils/constants/constant";

@@ -18,6 +18,7 @@ import { fetchBlogsList } from "../../redux/action";
 import BlogsHeader from "../../views/BlogsHeader";
 import Footer from "../../views/Footer";
 import Image from "next/image";
+import ShopHeader from "@/views/Header/ShopHeader";
 const debouncedFetch = debounce((query, callback) => {
   fetchBlogsList(query).then(callback);
 }, 500);
@@ -166,7 +167,9 @@ export default function BlogHomePage() {
           content="https://frontend.cureka.com/assets/images/logo.svg"
         />
       </Helmet>
-      <BlogsHeader />
+      {/* <BlogsHeader /> */}
+      <ShopHeader />
+      <br />
       <div className="container-fluid px-0">
         <div className="container">
           <div className="d-flex home-back-section pt-lg-4 pt-1">
