@@ -2251,7 +2251,7 @@ const AdminCreateBrandsPage = ({ isEditPage = false }) => {
                 name="specifications"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values?.specifications}
+                // value={formik.values?.specifications}
               />
             </Form.Group>
 

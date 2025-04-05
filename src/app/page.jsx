@@ -60,13 +60,9 @@ import Link from "next/link";
 export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isPhone = useMediaQuery({ maxWidth: 991 });
-  // const { wishlistProducts, cartProducts } = useSelector(
-  //   (state) => state.customer
-  // );
-  const { wishlistProducts = [], cartProducts = [] } = useSelector(
-    (state) => state.customer || {}
+  const { wishlistProducts, cartProducts } = useSelector(
+    (state) => state.customer
   );
-
   const {
     brands,
     singleAdds,
@@ -170,25 +166,14 @@ export default function Home() {
 
   const addItemToWishlist = (e, product) => {
     e.preventDefault();
-
-    if (!product || !product.id) {
-      console.error("Invalid product:", product);
-      return;
-    }
-
-    if (!wishlistProducts || !Array.isArray(wishlistProducts)) {
-      console.error("wishlistProducts is not an array or is undefined.");
-      return;
-    }
-
-    if (!isProductPresentInWishlist(product)) {
-      addProductToWishlist(product.id);
-    } else {
-      deleteProductFromWishlist(product.id);
+    if (product.id) {
+      if (!isProductPresentInWishlist(product)) {
+        addProductToWishlist(product.id);
+      } else {
+        deleteProductFromWishlist(product.id);
+      }
     }
   };
-
-  // Redux state
 
   const addItemToCart = (e, product) => {
     e.preventDefault();
@@ -515,10 +500,10 @@ export default function Home() {
 
                               <Link href={generateUrl(product)} target="_blank">
                                 <div className="product">
-                                  <img
+                                  <Image
                                     src={product_front_na_image}
-                                    width="218px"
-                                    height="172px"
+                                    width={218}
+                                    height={172}
                                     className="img-fluid"
                                     alt="Product"
                                   />
@@ -828,10 +813,10 @@ export default function Home() {
                                 target="_blank"
                               >
                                 <div className="product">
-                                  <img
+                                  <Image
                                     src={product_front_na_image}
-                                    width="218px"
-                                    height="172px"
+                                    width={218}
+                                    height={172}
                                     className="img-fluid"
                                     alt="Product"
                                   />

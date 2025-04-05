@@ -73,7 +73,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
               },
               () => {
                 setSubmitting(false);
-                navigate.push(pagePaths.adminSubSubCategory);
+                navigate.push(pagePaths.adminCategories);
               }
             )
           );
@@ -87,7 +87,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = false }) => {
               },
               () => {
                 setSubmitting(false);
-                navigate.push(pagePaths.adminSubSubCategory);
+                navigate.push(pagePaths.adminCategories);
               }
             )
           );

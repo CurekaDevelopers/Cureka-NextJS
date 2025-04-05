@@ -60,6 +60,8 @@ import ScrollToTop from "../../../views/ScrollToTop";
 // import hmac from "hmac"
 import CryptoJS from "crypto-js";
 import Image from "next/image";
+import Header from "@/views/Header";
+import ShopHeader from "@/views/Header/ShopHeader";
 
 export default function Productdetails() {
   const [newArrivals, setNewArrivals] = useState([]);
@@ -580,9 +582,9 @@ export default function Productdetails() {
           {JSON.stringify(productSchema)}
         </script>
       </Helmet>
-      <ProductdetailHeader />
+      <ShopHeader />
       {product && (
-        <div className="container-fluid px-0 navbar-margin">
+        <div className="container-fluid px-0 navbar-margin mt-5">
           <div className="container">
             <div className="d-flex home-back-section">
               <a href={pagePaths.home}>

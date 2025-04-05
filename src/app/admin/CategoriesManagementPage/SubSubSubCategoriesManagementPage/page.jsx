@@ -21,7 +21,7 @@ import styles from "./styles.module.scss";
 
 const RTable = lazyLoadable(() => import("../../../../components/Table/index"));
 
-const SubSubSubCategoriesManagementPage = () => {
+const SubSubSubCategoriesManagementPage = ({ isEditPage = false }) => {
   const { subSubSubCategories } = useSelector((state) => state.admin);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
   const { isAdminStatus, userRoles } = useSelector((state) => state.auth);
@@ -106,6 +106,9 @@ const SubSubSubCategoriesManagementPage = () => {
             <div>
               {isAdminStatus == 1 ? (
                 <div>
+                  <Link
+                  // href={`${pagePaths.adminEditSubSubSubCategory}/${category.id}`}
+                  ></Link>
                   <EditButton />
                   <DeleteButton
                     onClick={() => onDeleteButtonClicked(cell.row.original)}

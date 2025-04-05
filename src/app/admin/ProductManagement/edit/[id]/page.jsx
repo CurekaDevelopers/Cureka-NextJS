@@ -11,6 +11,7 @@ import { RxCross2 } from "react-icons/rx";
 import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useParams } from "next/navigation";
+
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
 import { env } from "../../../../../config/env.config";
@@ -196,7 +197,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
             },
             () => {
               setLoading(false);
-              navigate(pagePaths.adminProductManagement);
+              navigate.push(pagePaths.adminProductManagement);
             }
           )
         );
@@ -453,7 +454,7 @@ const AdminCreateBrandsPage = ({ isEditPage = true }) => {
 
           dispatch(fetchStandardSizeList(3326));
           if (!product) {
-            navigate(pagePaths?.adminProductManagement);
+            navigate.push(pagePaths?.adminProductManagement);
           }
         } catch (error) {
           console.error("Error fetching product data:", error);

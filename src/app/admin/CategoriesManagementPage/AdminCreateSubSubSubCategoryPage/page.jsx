@@ -24,7 +24,7 @@ const RichtextEditor = lazyLoadable(() =>
   import("../../../../components/RichtextEditor")
 );
 
-const AdminCreateSubSubSubCategoryPage = () => {
+const AdminCreateSubSubSubCategoryPage = ({ isEditPage = false }) => {
   const formikRef = useRef();
   const { categories, subCategories, subSubCategories } = useSelector(
     (state) => state.admin
@@ -65,7 +65,7 @@ const AdminCreateSubSubSubCategoryPage = () => {
             },
             () => {
               setSubmitting(false);
-              navigate.push(pagePaths.adminSubSubSubCategory);
+              navigate.push(pagePaths.adminCategories);
             }
           )
         );
@@ -133,8 +133,8 @@ const AdminCreateSubSubSubCategoryPage = () => {
       <AdminBreadcrumbs
         items={[
           {
-            path: pagePaths.adminSubSubSubCategory,
-            label: "Sub Sub Sub Categories",
+            path: pagePaths.adminCategories,
+            label: "Categories",
           },
           {
             path: pagePaths.adminCreateSubSubSubCategory,

@@ -36,8 +36,9 @@ import "../../styles/faq.css";
 import "../../styles/font-awesome.min.css";
 import "../../styles/fonts.css";
 import "../../styles/footer.css";
-import "../../styles/header.css";
+import "../../styles/shopheader.css";
 import "../../styles/home.css";
+
 import "../../styles/loginmodal.css";
 import {
   fetchCartProducts,
@@ -56,12 +57,12 @@ import {
 } from "../../utils/constants/common.constants";
 import useCustomerLoggedIn from "../../utils/hooks/useCustomerLoggedIn";
 import UserLogin from "../UserLogin";
-import style from "./style.module.scss";
+import style from "./shopstyle.module.scss";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "../../styles/product_details.css";
 
-export default function Header({ showCategoryNavbar = true }) {
+export default function ShopHeader({ showCategoryNavbar = false }) {
   const searchParams = useSearchParams();
   const [category, setCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState(
@@ -330,35 +331,6 @@ export default function Header({ showCategoryNavbar = true }) {
   return (
     <>
       <div className="container-fluid header-border header-fixed px-0">
-        {showCurekaAlert && (
-          <>
-            <div className="blue-wrapper" id="cureka-alert">
-              <Alert variant="" onClose={handleAlert} dismissible>
-                <p className="india-heading mb-0">
-                  <strong>Cureka: </strong>
-                  <span className="india-color">{"India's"}</span> leading
-                  Online Healthcare Platform.
-                </p>
-              </Alert>
-            </div>
-            <div className="offers-wrapper" id="offers-alert">
-              <Alert variant="" onClose={handleAlert} dismissible>
-                <p className="offers-heading mb-0">
-                  Limited Period Offer:{" "}
-                  <span className="get-offers">
-                    Get 10% off + extra 8% off on Nutrition Products &amp; more
-                    offers.
-                  </span>
-                  &nbsp;
-                  <a href="/" className="explore">
-                    Explore
-                  </a>
-                </p>
-              </Alert>
-            </div>
-          </>
-        )}
-
         <div className="container" id="header">
           <nav className="navbar navbar-expand-lg navbar-light bg-white justify-content-between align-items-center px-0">
             <div className="mobilelogo">
@@ -457,7 +429,7 @@ export default function Header({ showCategoryNavbar = true }) {
                 </li>
               </ul>
             </div>
-            <div className="d-none d-lg-block">
+            <div className="d-none d-lg-block mt-110">
               <ul className="navbar-nav align-items-center">
                 <li>
                   <DropdownButton
