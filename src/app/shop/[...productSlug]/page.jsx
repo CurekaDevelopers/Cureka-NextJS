@@ -195,16 +195,17 @@ export default function Productdetails() {
   const isProductPresentInCart = (product) =>
     !!cartProducts?.find?.((item) => item.product_id === product.id);
 
-  const addItemToCart = (e, product, quantity = 1) => {
+  const addItemToCart = (e, product) => {
     e.preventDefault();
     if (product.id) {
-      //if (isProductPresentInCart(product)) {
-      //navigate.push("/cart");
-      //} else {
-      addProductToCart(product.id, quantity);
-      //}
+      if (isProductPresentInCart(product)) {
+        navigate("/cart");
+      } else {
+        addProductToCart(product.id, 1);
+      }
     }
   };
+
   const { accessToken } = useSelector((state) => state.auth);
   const [activeKey, setActiveKey] = useState(null);
 
@@ -815,7 +816,7 @@ export default function Productdetails() {
                               width={40}
                               height={20}
                               alt="sad"
-                            />{" "}
+                            />
                             Mail
                           </Dropdown.Item>
                           <Dropdown.Item onClick={shareContent}>
@@ -825,7 +826,7 @@ export default function Productdetails() {
                               width={40}
                               height={20}
                               alt="sad"
-                            />{" "}
+                            />
                             What's App
                           </Dropdown.Item>
                           <Dropdown.Item onClick={shareViaFacebook}>
@@ -835,7 +836,7 @@ export default function Productdetails() {
                               width={40}
                               height={20}
                               alt="sad"
-                            />{" "}
+                            />
                             Facebook
                           </Dropdown.Item>
                           <Dropdown.Item onClick={shareViaTwitter}>
@@ -845,7 +846,7 @@ export default function Productdetails() {
                               width={40}
                               height={20}
                               alt="sad"
-                            />{" "}
+                            />
                             Twitter
                           </Dropdown.Item>
                           <Dropdown.Item onClick={shareViaLinkedIn}>
@@ -855,7 +856,7 @@ export default function Productdetails() {
                               width={40}
                               height={20}
                               alt="sad"
-                            />{" "}
+                            />
                             LinkedIn
                           </Dropdown.Item>
                           <Dropdown.Item onClick={copyToClipboard}>
@@ -865,7 +866,7 @@ export default function Productdetails() {
                               width={40}
                               height={20}
                               alt="sad"
-                            />{" "}
+                            />
                             Copy URL
                           </Dropdown.Item>
                         </Dropdown.Menu>
@@ -942,7 +943,7 @@ export default function Productdetails() {
                             style={{ cursor: "pointer" }}
                             onClick={handleOpenReviewTab}
                           >
-                            {product?.ratingCount?.totalReviews} Ratings &{" "}
+                            {product?.ratingCount?.totalReviews} Ratings &
                             {product?.ratingCount?.totalReviews} Reviews
                           </p>
                         </>
@@ -951,7 +952,7 @@ export default function Productdetails() {
                     {product.mrp == product.final_price ? (
                       <>
                         <p className="product-categorytwo">
-                          MRP:{" "}
+                          MRP:
                           <span
                             className="strike"
                             style={{ textDecoration: "none" }}
@@ -963,7 +964,7 @@ export default function Productdetails() {
                     ) : (
                       <>
                         <p className="product-categorytwo">
-                          MRP:{" "}
+                          MRP:
                           <span className="strike">
                             ₹ {Number(product.mrp).toFixed(2)}
                           </span>
@@ -989,7 +990,7 @@ export default function Productdetails() {
                       >
                         {product.discount_percent > 0 ? (
                           <p className="price-off mb-0">
-                            -{Number(product.discount_percent)} %{" "}
+                            -{Number(product.discount_percent)} %
                           </p>
                         ) : (
                           product.discount_amount !== 0 && (
@@ -1001,7 +1002,7 @@ export default function Productdetails() {
                       </div>
 
                       <p className="saved align-self-center">
-                        You Saved ₹{" "}
+                        You Saved ₹
                         {Number(product.mrp - product.final_price).toFixed(2)}
                       </p>
                     </div>
@@ -1156,7 +1157,7 @@ export default function Productdetails() {
                           {/* <div className="quantity-picker"> */}
                           <div>
                             <Form.Label className="price">Quantity:</Form.Label>
-                          </div>{" "}
+                          </div>
                           <button
                             className="quantity-button"
                             onClick={decreaseQuantity}
@@ -1256,7 +1257,7 @@ export default function Productdetails() {
                         <>
                           <button
                             onClick={(e) => addBuynow(e, product, quantity)}
-                            className="text-decoration-none readmore cart buy-btn"
+                            className="text-decoration-none readmore cart buy-btn w-30px"
                             href="cart"
                             style={{ height: "48px" }}
                           >
@@ -1307,7 +1308,7 @@ export default function Productdetails() {
 
                         <p className="free-ship">
                           {possibleDeliveryData &&
-                            `Delivery by ${possibleDeliveryData.date}`}{" "}
+                            `Delivery by ${possibleDeliveryData.date}`}
                           <span className="right-border"></span>
                           <span
                             className="freeship"
@@ -1942,14 +1943,12 @@ export default function Productdetails() {
                                       <div className="sale d-lg-block d-none">
                                         {product.discount_percent > 0 ? (
                                           <p className="sale-heading">
-                                            -{Number(product.discount_percent)}{" "}
-                                            %{" "}
+                                            -{Number(product.discount_percent)}%
                                           </p>
                                         ) : (
                                           product.discount_amount !== 0 && (
                                             <p className="sale-heading">
-                                              {" "}
-                                              {product.discount_amount} ₹{" "}
+                                              {product.discount_amount} ₹
                                             </p>
                                           )
                                         )}
@@ -2062,7 +2061,7 @@ export default function Productdetails() {
                                       </div>
 
                                       <p className="product-author d-lg-block d-none">
-                                        By:{" "}
+                                        By:
                                         <a
                                           className="product-author-className"
                                           href={`/product-brands/${product.brand_name}`}
@@ -2109,7 +2108,7 @@ export default function Productdetails() {
                                         className="mr-2"
                                         icon={faShoppingCart}
                                         size="lg"
-                                      />{" "}
+                                      />
                                       {isProductPresentInCart(product)
                                         ? "Checkout"
                                         : "Add to Cart"}
@@ -2149,7 +2148,7 @@ export default function Productdetails() {
                                                 className="mr-2"
                                                 icon={faShoppingCart}
                                                 size="lg"
-                                              />{" "}
+                                              />
                                               {isProductPresentInCart(product)
                                                 ? "Add to Cart"
                                                 : "Add to Cart"}
@@ -2190,7 +2189,7 @@ export default function Productdetails() {
                                                 className="mr-2"
                                                 icon={faShoppingCart}
                                                 size="lg"
-                                              />{" "}
+                                              />
                                               {isProductPresentInCart(product)
                                                 ? "Checkout"
                                                 : "Add to Cart"}
