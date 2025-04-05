@@ -7,7 +7,6 @@ import Sidebar from "../../components/admin/Sidebar";
 import { pagePaths } from "../../utils/constants/constant";
 import styles from "./styles.module.scss";
 import dynamic from "next/dynamic";
-import "./styles/faq.module.scss";
 import "./styles/abondcart.module.scss";
 import "./styles/artical.module.scss";
 import "./styles/blog.module.scss";
