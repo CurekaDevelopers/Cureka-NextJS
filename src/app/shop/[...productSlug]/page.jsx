@@ -95,6 +95,11 @@ export default function Productdetails() {
   const fullUrl = window.location.href; // Get the full URL of the current page
   // console.log('Current URL:', fullUrl);
 
+  const isValidHTML = (html) => {
+    const cleaned = html?.replace(/<[^>]*>/g, '').trim().toLowerCase();
+    return cleaned && cleaned !== 'na' && cleaned !== 'null';
+  };
+
   const productUrl = fullUrl;
   const productName = "Product Details";
 
@@ -807,8 +812,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={mail}
-                              width="20px"
-                              height="20px"
+                              width={40}
+                              height={20}
                               alt="sad"
                             />{" "}
                             Mail
@@ -817,8 +822,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={whatsapp}
-                              width="20px"
-                              height="20px"
+                              width={40}
+                              height={20}
                               alt="sad"
                             />{" "}
                             What's App
@@ -827,8 +832,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={facebook}
-                              width="20px"
-                              height="20px"
+                              width={40}
+                              height={20}
                               alt="sad"
                             />{" "}
                             Facebook
@@ -837,8 +842,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={twitter}
-                              width="20px"
-                              height="20px"
+                              width={40}
+                              height={20}
                               alt="sad"
                             />{" "}
                             Twitter
@@ -847,8 +852,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={linkedin}
-                              width="20px"
-                              height="20px"
+                              width={40}
+                              height={20}
                               alt="sad"
                             />{" "}
                             LinkedIn
@@ -857,8 +862,8 @@ export default function Productdetails() {
                             <Image
                               className="img-fluid mr-2"
                               src={copydata}
-                              width="20px"
-                              height="20px"
+                              width={40}
+                              height={20}
                               alt="sad"
                             />{" "}
                             Copy URL
@@ -1190,7 +1195,7 @@ export default function Productdetails() {
                       </div>
                     )}
 
-                    <div className="d-flex">
+                    <div className="d-flex justify-content-around">
                       {product && product.stock_status == "Out Stock" ? (
                         <>
                           <button
@@ -1523,7 +1528,9 @@ export default function Productdetails() {
                             }}
                           ></div>
                         )}
-                        <h4 className="details-heading">Ingredients</h4>
+                        {(product?.key_ingredients !== "null" || product?.other_ingredients !== "null") && (
+                          <h4 className="details-heading">Ingredients</h4>
+                        )}
 
                         {product.key_ingredients !== "null" && (
                           <div className="dynamic-content">
@@ -1553,7 +1560,21 @@ export default function Productdetails() {
                           </div>
                         )}
 
-                        <h4 className="details-heading">Other Information</h4>
+                        {(
+                          product.directions_of_use !== "null" ||
+                          (product.feeding_table !== "<p>NA</p>" &&
+                          product.feeding_table !== "<p>na</p>" &&
+                          product.feeding_table !== "NA" &&
+                          product.feeding_table !== "na") ||
+                          product.safety_information !== "null" ||
+                          (product.product_benefits !== "<p>NA</p>" &&
+                          product.product_benefits !== "<p>na</p>" &&
+                          product.product_benefits !== "NA" &&
+                          product.product_benefits !== "na") ||
+                          (typeof product.special_features !== "string")
+                        ) && (
+                          <h4 className="details-heading">Other Information</h4>
+                        )}
 
                         {product.directions_of_use !== "null" && (
                           <div className="dynamic-content">
@@ -1569,10 +1590,7 @@ export default function Productdetails() {
                           </div>
                         )}
 
-                        {product.feeding_table !== "<p>NA</p>" &&
-                          product.feeding_table !== "<p>na</p>" &&
-                          product.feeding_table !== "NA" &&
-                          product.feeding_table !== "na" && (
+                        {isValidHTML(product.feeding_table) && (
                             <div className="dynamic-content">
                               <h5 className="details-subheading">
                                 Feeding Table
@@ -1600,10 +1618,7 @@ export default function Productdetails() {
                           </div>
                         )}
 
-                        {product.product_benefits !== "<p>NA</p>" &&
-                          product.product_benefits !== "<p>na</p>" &&
-                          product.product_benefits !== "NA" &&
-                          product.product_benefits !== "na" && (
+                        {isValidHTML(product.product_benefits) && (
                             <div className="dynamic-content">
                               <h4 className="details-subheading">
                                 Product Benefits
@@ -2099,7 +2114,7 @@ export default function Productdetails() {
                                         ? "Checkout"
                                         : "Add to Cart"}
                                     </button> */}
-                                      {product &&
+                                      {/* {product &&
                                       product.stock_status == "Out Stock" ? (
                                         <>
                                           <div className="d-flex-column pb-0 pb-lg-5">
@@ -2182,7 +2197,44 @@ export default function Productdetails() {
                                             </button>
                                           </div>
                                         </>
-                                      )}
+                                      )} */}
+                                      <div className="d-flex-column pb-0 pb-lg-5">
+                                                                      {product?.show_stock === 1 &&
+                                                                      product?.stock_status === "Out Stock" ? (
+                                                                        <>
+                                                                          <p
+                                                                            className="text-center"
+                                                                            style={{ color: "red" }}
+                                                                          >
+                                                                            Out Of Stock
+                                                                          </p>
+                                                                          <button
+                                                                            className="cart"
+                                                                            disabled
+                                                                            style={{ opacity: 0.6 }}
+                                                                          >
+                                                                            <FontAwesomeIcon
+                                                                              icon={faShoppingCart}
+                                                                              size="lg"
+                                                                            />
+                                                                            Add to Cart
+                                                                          </button>
+                                                                        </>
+                                                                      ) : (
+                                                                        <button
+                                                                          onClick={(e) => addItemToCart(e, product)}
+                                                                          className="cart"
+                                                                        >
+                                                                          <FontAwesomeIcon
+                                                                            icon={faShoppingCart}
+                                                                            size="lg"
+                                                                          />
+                                                                          {isProductPresentInCart(product)
+                                                                            ? "Checkout"
+                                                                            : "Add to Cart"}
+                                                                        </button>
+                                                                      )}
+                                                                    </div>
                                     </div>
                                   </div>
                                 </div>
