@@ -139,84 +139,143 @@ export default function Cart() {
       }
     });
   };
+  // const addBuynow = async (event, cartProducts) => {
+  //   event.preventDefault();
 
-  const addBuynow = async (event, cartProducts) => {
+  //   if (!cartProducts || cartProducts.length === 0) {
+  //     toast.error("Your cart is empty. Please add products to buy now.");
+  //     return;
+  //   }
+
+  //   const timestamp = Math.floor(Date.now() / 1000);
+  //   const redirectUrl = window.location.origin + "/faster-order";
+
+  //   const data = {
+  //     cartData: [
+  //       cartProducts.map((item) => ({
+  //         product_id: item.product_id,
+  //         quantity: item.qty,
+  //         final_price: item.final_price,
+  //       })),
+  //     ],
+  //     redirect_url: redirectUrl,
+  //     timestamp: timestamp,
+  //   };
+
+  //   const apiKey = "1OXaKLiBm7r3OVKI"; // Replace with real key
+  //   const secretKey = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b"; // Replace with real key
+
+  //   try {
+  //     const stringifiedPayload = JSON.stringify(data);
+  //     const hmac = CryptoJS.HmacSHA256(stringifiedPayload, secretKey).toString(
+  //       CryptoJS.enc.Base64
+  //     );
+
+  //     console.log("📦 Sending payload to Shiprocket:", data);
+
+  //     const response = await axios.post(
+  //       "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
+  //       stringifiedPayload,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "X-Api-Key": apiKey,
+  //           "X-Api-HMAC-SHA256": hmac,
+  //         },
+  //       }
+  //     );
+
+  //     const token = response?.data?.result?.token;
+  //     console.log("✅ Received token:", token);
+
+  //     if (!token) {
+  //       toast.error("Unable to retrieve checkout token. Please try again.");
+  //       return;
+  //     }
+
+  //     await waitForCheckout();
+
+  //     window.HeadlessCheckout.addToCart(event, token);
+  //   } catch (error) {
+  //     console.error("🚨 Error during Shiprocket Checkout:", error);
+
+  //     if (error.response) {
+  //       console.error("❌ Server response error:", error.response.data);
+  //       toast.error(
+  //         `Checkout failed: ${error.response.data?.message || "Server error"}`
+  //       );
+  //     } else if (error.request) {
+  //       console.error("❌ No response received:", error.request);
+  //       toast.error("No response from Shiprocket. Please try again.");
+  //     } else {
+  //       console.error("❌ Unexpected error:", error.message);
+  //       toast.error("Something went wrong. Please try again.");
+  //     }
+  //   }
+  // };
+  // cartProducts.map((item) => ({
+  //   //         product_id: item.product_id,
+  //   //         quantity: item.qty,
+  //   //         final_price: item.final_price,
+  //   //       })),
+  // const [quantity, setQuantity] = useState(1);
+  const timestamp = Math.floor(Date.now() / 1000);
+  const [quantity] = useState(1);
+
+  const addBuynow = async (event) => {
     event.preventDefault();
-
-    if (!cartProducts || cartProducts.length === 0) {
-      toast.error("Your cart is empty. Please add products to buy now.");
-      return;
-    }
-
     const timestamp = Math.floor(Date.now() / 1000);
-    const redirectUrl = window.location.origin + "/faster-order";
+
+    console.log("🚀 cartProducts:", cartProducts); // Debug log
+
+    const items = cartProducts.map((product) => ({
+      variant_id: product.product_id,
+      quantity: product.quantity || 1,
+    }));
 
     const data = {
-      cartData: {
-        products: cartProducts.map((item) => ({
-          product_id: item.product_id,
-          quantity: item.qty,
-          final_price: item.final_price,
-        })),
+      cart_data: {
+        items: items,
       },
-      redirect_url: redirectUrl,
+      redirect_url: "http://frontend.cureka.com/faster-order",
       timestamp: timestamp,
     };
 
-    const apiKey = "1OXaKLiBm7r3OVKI"; // Replace with real key
-    const secretKey = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b"; // Replace with real key
+    const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
+    const payload = JSON.stringify(data);
+    const hmac = CryptoJS.HmacSHA256(payload, key).toString(
+      CryptoJS.enc.Base64
+    );
 
     try {
-      const stringifiedPayload = JSON.stringify(data);
-      const hmac = CryptoJS.HmacSHA256(stringifiedPayload, secretKey).toString(
-        CryptoJS.enc.Base64
-      );
-
-      console.log("📦 Sending payload to Shiprocket:", data);
-
       const response = await axios.post(
         "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
-        stringifiedPayload,
+        payload,
         {
           headers: {
             "Content-Type": "application/json",
-            "X-Api-Key": apiKey,
+            "X-Api-Key": "1OXaKLiBm7r3OVKI",
             "X-Api-HMAC-SHA256": hmac,
           },
         }
       );
 
-      const token = response?.data?.result?.token;
-      console.log("✅ Received token:", token);
+      const token = response.data?.result?.token;
+      setShiprocketToken(token);
 
-      if (!token) {
-        toast.error("Unable to retrieve checkout token. Please try again.");
-        return;
-      }
-
-      await waitForCheckout();
-
-      window.HeadlessCheckout.addToCart(event, token);
-    } catch (error) {
-      console.error("🚨 Error during Shiprocket Checkout:", error);
-
-      if (error.response) {
-        // Backend responded with error status
-        console.error("❌ Server response error:", error.response.data);
-        toast.error(
-          `Checkout failed: ${error.response.data?.message || "Server error"}`
-        );
-      } else if (error.request) {
-        // No response received
-        console.error("❌ No response received:", error.request);
-        toast.error("No response from Shiprocket. Please try again.");
+      if (token && window.HeadlessCheckout) {
+        window.HeadlessCheckout.addToCart(event, token);
       } else {
-        // Any other error
-        console.error("❌ Unexpected error:", error.message);
-        toast.error("Something went wrong. Please try again.");
+        console.error("❌ HeadlessCheckout not available or token missing.");
       }
+    } catch (error) {
+      console.error(
+        "🚨 Shiprocket error:",
+        error.response?.data || error.message
+      );
     }
   };
+
   const waitForCheckout = () =>
     new Promise((resolve, reject) => {
       const maxRetries = 10;
@@ -564,11 +623,11 @@ export default function Cart() {
                                             target="_blank"
                                             className=""
                                           >
-                                            <Image
+                                            <img
                                               src={product_front_na_image}
                                               className="img-fluid"
-                                              width={167}
-                                              height={183}
+                                              width="167px"
+                                              height="183px"
                                               alt="toppicks1"
                                             />
                                           </a>
@@ -669,11 +728,11 @@ export default function Cart() {
                                             target="_blank"
                                             className=""
                                           >
-                                            <Image
+                                            <img
                                               src={product_front_na_image}
                                               className="img-fluid youmay-img"
-                                              width={167}
-                                              height={183}
+                                              width="167px"
+                                              height="183px"
                                               alt="toppicks1"
                                             />
                                           </a>
@@ -770,7 +829,6 @@ export default function Cart() {
                       </div>
                     </div>
                   )}
-
                   <div className="address-three">
                     <div
                       className="form-group mb-0 align-items-center d-flex"
@@ -792,57 +850,41 @@ export default function Cart() {
                       </label>
                     </div>
                   </div>
-
                   <OrderSummary
                     subTotalAmount={subTotalAmount}
                     discountInfo={discountInfo}
                     isGiftWrappingSelected={isGiftWrappingSelected}
                     finalAmount={finalAmount}
                   />
-                  <div className="d-flex align-items-center justify-content-start">
-                    {product?.stock_status === "Out Stock" ? (
-                      <button
-                        onClick={(e) => addBuynow(e, cartProducts)}
-                        className="text-decoration-none readmore buy-btn"
-                        style={{ height: "48px", opacity: 0.6 }}
-                        disabled
-                      >
-                        <FontAwesomeIcon
-                          className="me-2"
-                          icon={faGem}
-                          size="lg"
-                          style={{ color: "#ffffff" }}
-                        />
-                        Buy Now
-                      </button>
-                    ) : (
-                      <button
-                        onClick={(e) => addBuynow(e, cartProducts)}
-                        className="text-decoration-none readmore cart buy-btn"
-                        style={{ height: "48px" }}
-                      >
-                        <FontAwesomeIcon
-                          className="me-2"
-                          icon={faGem}
-                          size="lg"
-                          style={{ color: "#ffffff" }}
-                        />
-                        Buy Now
-                        <span
-                          style={{
-                            fontSize: "8px",
-                            position: "absolute",
-                            bottom: "-12px",
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            whiteSpace: "nowrap",
-                            color: "#555",
-                          }}
-                        >
-                          Powered by Shiprocket
-                        </span>
-                      </button>
-                    )}
+                  <div
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    <button
+                      onClick={(e) => addBuynow(e)}
+                      className="text-decoration-none readmore cart buy-btn"
+                      style={{ height: "48px" }}
+                    >
+                      <FontAwesomeIcon
+                        className="me-2"
+                        icon={faGem}
+                        size="lg"
+                        style={{ color: "#ffffff" }}
+                      />
+                      Buy Now
+                    </button>
+                    <span
+                      style={{
+                        fontSize: "8px",
+                        position: "absolute",
+                        bottom: "-12px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        whiteSpace: "nowrap",
+                        color: "#555",
+                      }}
+                    >
+                      Instant Checkout with Shiprocket
+                    </span>
                   </div>
                 </div>
               </div>

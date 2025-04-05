@@ -1707,8 +1707,10 @@ export const fetchNestedCategories = () => async (dispatch) => {
   }
 };
 
-export const addProductToCart = async (product_id, quantity) => {
+export const addProductToCart = async (cartItem, dispatch) => {
   try {
+    const { product_id, quantity } = cartItem;
+
     const data = {
       product_id,
       quantity,

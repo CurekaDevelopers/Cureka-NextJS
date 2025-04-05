@@ -62,14 +62,14 @@ import CryptoJS from "crypto-js";
 import Image from "next/image";
 import Header from "@/views/Header";
 import ShopHeader from "@/views/Header/ShopHeader";
-
+import { useDispatch } from "react-redux";
 export default function Productdetails() {
   const [newArrivals, setNewArrivals] = useState([]);
   const pathname = usePathname();
   const params = pathname.split("/").filter(Boolean);
   const productSlug = params[params.length - 1];
   console.log("productSlug", productSlug);
-
+  const dispatch = useDispatch();
   const navigate = useRouter();
   // const productSlug = params?.productSlug; // ✅ Safely access slug
   // if (!productSlug) return <div>Loading...</div>;
@@ -96,8 +96,11 @@ export default function Productdetails() {
   // console.log('Current URL:', fullUrl);
 
   const isValidHTML = (html) => {
-    const cleaned = html?.replace(/<[^>]*>/g, '').trim().toLowerCase();
-    return cleaned && cleaned !== 'na' && cleaned !== 'null';
+    const cleaned = html
+      ?.replace(/<[^>]*>/g, "")
+      .trim()
+      .toLowerCase();
+    return cleaned && cleaned !== "na" && cleaned !== "null";
   };
 
   const productUrl = fullUrl;
@@ -195,14 +198,38 @@ export default function Productdetails() {
   const isProductPresentInCart = (product) =>
     !!cartProducts?.find?.((item) => item.product_id === product.id);
 
+  // const addItemToCart = (e, product) => {
+  //   e.preventDefault();
+  //   if (product.id) {
+  //     if (isProductPresentInCart(product)) {
+  //       navigate("/cart");
+  //     } else {
+  //       addProductToCart(product.id, 1);
+  //     }
+  //   }
+  // };
+
   const addItemToCart = (e, product) => {
     e.preventDefault();
-    if (product.id) {
+
+    const productId = product?.id || product?.product_id;
+    const quantity = 1;
+
+    if (productId) {
       if (isProductPresentInCart(product)) {
         navigate("/cart");
       } else {
-        addProductToCart(product.id, 1);
+        // Add product with quantity
+        const cartItem = {
+          ...product,
+          product_id: productId,
+          quantity: quantity,
+        };
+        addProductToCart(cartItem, dispatch);
+        toast.info("🛒 Adding product to cart...");
       }
+    } else {
+      console.error("❌ Product ID not found");
     }
   };
 
@@ -340,7 +367,7 @@ export default function Productdetails() {
     product?.additional_image_1,
     product?.additional_image_2,
   ];*/
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const [inputValue, setInputValue] = useState("1");
 
   const handleQuantityChange = (e) => {
@@ -358,7 +385,8 @@ export default function Productdetails() {
       parsedValue <= maxQuantity
     ) {
       // If entered value is a valid number within the allowed range
-      setQuantity(parsedValue);
+
+      parsedValue;
     }
   };
   const increaseQuantity = () => {
@@ -1529,7 +1557,8 @@ export default function Productdetails() {
                             }}
                           ></div>
                         )}
-                        {(product?.key_ingredients !== "null" || product?.other_ingredients !== "null") && (
+                        {(product?.key_ingredients !== "null" ||
+                          product?.other_ingredients !== "null") && (
                           <h4 className="details-heading">Ingredients</h4>
                         )}
 
@@ -1561,19 +1590,17 @@ export default function Productdetails() {
                           </div>
                         )}
 
-                        {(
-                          product.directions_of_use !== "null" ||
+                        {(product.directions_of_use !== "null" ||
                           (product.feeding_table !== "<p>NA</p>" &&
-                          product.feeding_table !== "<p>na</p>" &&
-                          product.feeding_table !== "NA" &&
-                          product.feeding_table !== "na") ||
+                            product.feeding_table !== "<p>na</p>" &&
+                            product.feeding_table !== "NA" &&
+                            product.feeding_table !== "na") ||
                           product.safety_information !== "null" ||
                           (product.product_benefits !== "<p>NA</p>" &&
-                          product.product_benefits !== "<p>na</p>" &&
-                          product.product_benefits !== "NA" &&
-                          product.product_benefits !== "na") ||
-                          (typeof product.special_features !== "string")
-                        ) && (
+                            product.product_benefits !== "<p>na</p>" &&
+                            product.product_benefits !== "NA" &&
+                            product.product_benefits !== "na") ||
+                          typeof product.special_features !== "string") && (
                           <h4 className="details-heading">Other Information</h4>
                         )}
 
@@ -1592,18 +1619,18 @@ export default function Productdetails() {
                         )}
 
                         {isValidHTML(product.feeding_table) && (
-                            <div className="dynamic-content">
-                              <h5 className="details-subheading">
-                                Feeding Table
-                              </h5>
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: product.feeding_table,
-                                }}
-                              ></div>
-                              <br />
-                            </div>
-                          )}
+                          <div className="dynamic-content">
+                            <h5 className="details-subheading">
+                              Feeding Table
+                            </h5>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: product.feeding_table,
+                              }}
+                            ></div>
+                            <br />
+                          </div>
+                        )}
 
                         {product.safety_information !== "null" && (
                           <div className="dynamic-content">
@@ -1620,18 +1647,18 @@ export default function Productdetails() {
                         )}
 
                         {isValidHTML(product.product_benefits) && (
-                            <div className="dynamic-content">
-                              <h4 className="details-subheading">
-                                Product Benefits
-                              </h4>
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: product.product_benefits,
-                                }}
-                              ></div>
-                              <br />
-                            </div>
-                          )}
+                          <div className="dynamic-content">
+                            <h4 className="details-subheading">
+                              Product Benefits
+                            </h4>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: product.product_benefits,
+                              }}
+                            ></div>
+                            <br />
+                          </div>
+                        )}
 
                         {typeof product.special_features !== "string" && (
                           <div className="dynamic-content">
@@ -2198,42 +2225,45 @@ export default function Productdetails() {
                                         </>
                                       )} */}
                                       <div className="d-flex-column pb-0 pb-lg-5">
-                                                                      {product?.show_stock === 1 &&
-                                                                      product?.stock_status === "Out Stock" ? (
-                                                                        <>
-                                                                          <p
-                                                                            className="text-center"
-                                                                            style={{ color: "red" }}
-                                                                          >
-                                                                            Out Of Stock
-                                                                          </p>
-                                                                          <button
-                                                                            className="cart"
-                                                                            disabled
-                                                                            style={{ opacity: 0.6 }}
-                                                                          >
-                                                                            <FontAwesomeIcon
-                                                                              icon={faShoppingCart}
-                                                                              size="lg"
-                                                                            />
-                                                                            Add to Cart
-                                                                          </button>
-                                                                        </>
-                                                                      ) : (
-                                                                        <button
-                                                                          onClick={(e) => addItemToCart(e, product)}
-                                                                          className="cart"
-                                                                        >
-                                                                          <FontAwesomeIcon
-                                                                            icon={faShoppingCart}
-                                                                            size="lg"
-                                                                          />
-                                                                          {isProductPresentInCart(product)
-                                                                            ? "Checkout"
-                                                                            : "Add to Cart"}
-                                                                        </button>
-                                                                      )}
-                                                                    </div>
+                                        {product?.show_stock === 1 &&
+                                        product?.stock_status ===
+                                          "Out Stock" ? (
+                                          <>
+                                            <p
+                                              className="text-center"
+                                              style={{ color: "red" }}
+                                            >
+                                              Out Of Stock
+                                            </p>
+                                            <button
+                                              className="cart"
+                                              disabled
+                                              style={{ opacity: 0.6 }}
+                                            >
+                                              <FontAwesomeIcon
+                                                icon={faShoppingCart}
+                                                size="lg"
+                                              />
+                                              Add to Cart
+                                            </button>
+                                          </>
+                                        ) : (
+                                          <button
+                                            onClick={(e) =>
+                                              addItemToCart(e, product)
+                                            }
+                                            className="cart"
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faShoppingCart}
+                                              size="lg"
+                                            />
+                                            {isProductPresentInCart(product)
+                                              ? "Checkout"
+                                              : "Add to Cart"}
+                                          </button>
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
