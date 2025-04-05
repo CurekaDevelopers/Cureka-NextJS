@@ -115,56 +115,56 @@ const UserLogin = ({ handleCloseLoginModel }) => {
     }
   };
   // OTP-Based Login
-  // const handleOtpLogin = async (values) => {
-  //   try {
-  //     setLoading(true);
-  //     if (!showOtpInput) {
-  //       const response = await api.post(apiUrls.sendOtp, {
-  //         mobile_number: values.mobile_number,
-  //       });
-  //       if (response.status === 200) {
-  //         setShowOtpInput(true);
-  //         setMsg(response.data.message);
-  //       } else {
-  //         setShowOtpInput(false);
-  //         setMsg(response.data.message);
-  //       }
-  //     } else {
-  //       const response = await api.post(apiUrls.verifyOtp, {
-  //         mobile_number: values.mobile_number,
-  //         otp: values.otp,
-  //       });
-  //       if (response.status === 200) {
-  //         setShowOtpInput(true);
-  //         setMsg(response.data.message);
-  //         dispatch(setAccessToken(response.data?.data?.access_token));
-  //         setTimeout(() => {
-  //           handleCloseLoginModel();
-  //         }, 300);
-  //         api.get(apiUrls.getAccountDetails).then((response) => {
-  //           const userDetails = _.get(response, "data.userDetails");
-  //           if (userDetails) {
-  //             dispatch(setUserDetails(userDetails));
-  //           }
-  //         });
-  //       } else {
-  //         setShowOtpInput(false);
-  //         setMsg(response.data.message);
+  const handleOtpLogin = async (values) => {
+    try {
+      setLoading(true);
+      if (!showOtpInput) {
+        const response = await api.post(apiUrls.sendOtp, {
+          mobile_number: values.mobile_number,
+        });
+        if (response.status === 200) {
+          setShowOtpInput(true);
+          setMsg(response.data.message);
+        } else {
+          setShowOtpInput(false);
+          setMsg(response.data.message);
+        }
+      } else {
+        const response = await api.post(apiUrls.verifyOtp, {
+          mobile_number: values.mobile_number,
+          otp: values.otp,
+        });
+        if (response.status === 200) {
+          setShowOtpInput(true);
+          setMsg(response.data.message);
+          dispatch(setAccessToken(response.data?.data?.access_token));
+          setTimeout(() => {
+            handleCloseLoginModel();
+          }, 300);
+          api.get(apiUrls.getAccountDetails).then((response) => {
+            const userDetails = _.get(response, "data.userDetails");
+            if (userDetails) {
+              dispatch(setUserDetails(userDetails));
+            }
+          });
+        } else {
+          setShowOtpInput(false);
+          setMsg(response.data.message);
 
-  //         // setMsg(response && response.data && response.data.message);
-  //       }
-  //     }
-  //     setLoading(false);
-  //   } catch (error) {
-  //     if (error.response?.status === 401) {
-  //       setMsg(error.response?.data?.message || "Invalid credentials. Please try again.");
-  //     } else {
-  //       setMsg("An error occurred. Please try again.");
-  //     }
-  //     // setLoading(false);
-  //     // setMsg(error && error.response && error.response.data && error.response.data.message);
-  //   }
-  // };
+          // setMsg(response && response.data && response.data.message);
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      if (error.response?.status === 401) {
+        setMsg(error.response?.data?.message || "Invalid credentials. Please try again.");
+      } else {
+        setMsg("An error occurred. Please try again.");
+      }
+      // setLoading(false);
+      // setMsg(error && error.response && error.response.data && error.response.data.message);
+    }
+  };
 
   const handleResend = async () => {
     try {

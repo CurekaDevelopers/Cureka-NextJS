@@ -1,7 +1,7 @@
 "use client";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Autocomplete from "react-autocomplete";
 import { DropdownItem } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
@@ -111,6 +111,18 @@ export default function ProductdetailHeader() {
       dispatch(fetchWishlistProducts(1));
     }
   }, [dispatch, isLoggedIn]);
+
+   const autocompleteRef = useRef(null);
+  
+    useEffect(() => {
+      if (autocompleteRef.current) {
+        // If you want to trigger scrollIntoView or focus on the autocomplete
+        autocompleteRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, [items]);
 
   const onCategoryChange = (category) => () => {
     setCategory(category);
@@ -646,11 +658,13 @@ export default function ProductdetailHeader() {
                         onChange={handleInputChange}
                         onSelect={handleSelect}
                       /> */}
+                      <div ref={autocompleteRef}>
                       <SearchAutocomplete
                         items={items}
                         onSelect={handleSelect}
                         onChange={handleInputChange}
                       />
+                      </div>
                       <Image
                         onClick={onSearchClicked}
                         className="img-fluid search-icon"
