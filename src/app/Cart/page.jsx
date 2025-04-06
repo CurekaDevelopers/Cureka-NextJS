@@ -140,142 +140,6 @@ export default function Cart() {
       }
     });
   };
-  // const addBuynow = async (event, cartProducts) => {
-  //   event.preventDefault();
-
-  //   if (!cartProducts || cartProducts.length === 0) {
-  //     toast.error("Your cart is empty. Please add products to buy now.");
-  //     return;
-  //   }
-
-  //   const timestamp = Math.floor(Date.now() / 1000);
-  //   const redirectUrl = window.location.origin + "/faster-order";
-
-  //   const data = {
-  //     cartData: [
-  //       cartProducts.map((item) => ({
-  //         product_id: item.product_id,
-  //         quantity: item.qty,
-  //         final_price: item.final_price,
-  //       })),
-  //     ],
-  //     redirect_url: redirectUrl,
-  //     timestamp: timestamp,
-  //   };
-
-  //   const apiKey = "1OXaKLiBm7r3OVKI"; // Replace with real key
-  //   const secretKey = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b"; // Replace with real key
-
-  //   try {
-  //     const stringifiedPayload = JSON.stringify(data);
-  //     const hmac = CryptoJS.HmacSHA256(stringifiedPayload, secretKey).toString(
-  //       CryptoJS.enc.Base64
-  //     );
-
-  //     console.log("📦 Sending payload to Shiprocket:", data);
-
-  //     const response = await axios.post(
-  //       "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
-  //       stringifiedPayload,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           "X-Api-Key": apiKey,
-  //           "X-Api-HMAC-SHA256": hmac,
-  //         },
-  //       }
-  //     );
-
-  //     const token = response?.data?.result?.token;
-  //     console.log("✅ Received token:", token);
-
-  //     if (!token) {
-  //       toast.error("Unable to retrieve checkout token. Please try again.");
-  //       return;
-  //     }
-
-  //     await waitForCheckout();
-
-  //     window.HeadlessCheckout.addToCart(event, token);
-  //   } catch (error) {
-  //     console.error("🚨 Error during Shiprocket Checkout:", error);
-
-  //     if (error.response) {
-  //       console.error("❌ Server response error:", error.response.data);
-  //       toast.error(
-  //         `Checkout failed: ${error.response.data?.message || "Server error"}`
-  //       );
-  //     } else if (error.request) {
-  //       console.error("❌ No response received:", error.request);
-  //       toast.error("No response from Shiprocket. Please try again.");
-  //     } else {
-  //       console.error("❌ Unexpected error:", error.message);
-  //       toast.error("Something went wrong. Please try again.");
-  //     }
-  //   }
-  // };
-  // cartProducts.map((item) => ({
-  //   //         product_id: item.product_id,
-  //   //         quantity: item.qty,
-  //   //         final_price: item.final_price,
-  //   //       })),
-  // const [quantity, setQuantity] = useState(1);
-
-  const loadHeadlessCheckoutScript = () => {
-    return new Promise((resolve, reject) => {
-      if (window.HeadlessCheckout) {
-        return resolve(); // Already loaded
-      }
-
-      const script = document.createElement("script");
-      script.src = "https://cdn.shiprocket.in/checkout-v2/checkout.js"; // Replace with official URL if updated
-      script.async = true;
-
-      script.onload = () => {
-        console.log("✅ Shiprocket HeadlessCheckout script loaded");
-        resolve();
-      };
-
-      script.onerror = () => {
-        console.error("❌ Failed to load Shiprocket HeadlessCheckout script");
-        reject(new Error("Script load error"));
-      };
-
-      document.body.appendChild(script);
-    });
-  };
-
-  const timestamp = Math.floor(Date.now() / 1000);
-  const [quantity] = useState(1);
-  const [shiprocketToken, setShiprocketToken] = useState("");
-
-  // const loadShiprocketScript = () => {
-  //   return new Promise((resolve, reject) => {
-  //     if (typeof window === "undefined") return reject("Not in browser");
-
-  //     if (window.HeadlessCheckout) {
-  //       return resolve(true);
-  //     }
-
-  //     const existingScript = document.getElementById("shiprocket-checkout");
-  //     if (existingScript) {
-  //       existingScript.onload = () => resolve(true);
-  //       existingScript.onerror = () =>
-  //         reject("❌ Failed to load Shiprocket script");
-  //       return;
-  //     }
-
-  //     const script = document.createElement("script");
-  //     script.src = "https://cdn.shiprocket.in/checkout-v2/checkout.js";
-  //     script.id = "shiprocket-checkout";
-  //     script.async = true;
-
-  //     script.onload = () => resolve(true);
-  //     script.onerror = () => reject("❌ Failed to load Shiprocket script");
-
-  //     document.body.appendChild(script);
-  //   });
-  // };
 
   const loadScript = (src) => {
     return new Promise((resolve, reject) => {
@@ -287,6 +151,7 @@ export default function Cart() {
       document.body.appendChild(script);
     });
   };
+  const [shiprocketToken, setShiprocketToken] = useState("");
 
   useEffect(() => {
     // Load external CSS
@@ -338,10 +203,8 @@ export default function Cart() {
     const hmac = CryptoJS.HmacSHA256(payload, key).toString(
       CryptoJS.enc.Base64
     );
-    // console.log(payload, 'payload')
+    console.log(payload, "payload");
     try {
-      // await loadShiprocketScript();
-
       const response = await axios.post(
         "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
         payload,
@@ -354,94 +217,16 @@ export default function Cart() {
         }
       );
       console.log(response.data.result.token, "response");
-      // shiprocketToken = response.data.result.token
       const token = response.data.result.token;
       setShiprocketToken(token);
       if (window.HeadlessCheckout) {
-        // Assuming addToCart accepts product data and token
         window.HeadlessCheckout.addToCart(event, token);
       } else {
         console.error("HeadlessCheckout is not available.");
       }
     } catch (error) {
       console.error("shiprocket error:", error);
-      // toast.error('Something went to wrong');
     }
-  };
-
-  // const addBuynow = async (event, cartProducts, setShiprocketToken) => {
-  //   event.preventDefault();
-
-  //   const isScriptLoaded = await loadShiprocketScript().catch((err) => {
-  //     console.error(err);
-  //     return false;
-  //   });
-
-  //   if (!isScriptLoaded || !window.HeadlessCheckout) {
-  //     console.error("❌ HeadlessCheckout not available");
-  //     return;
-  //   }
-
-  //   const timestamp = Math.floor(Date.now() / 1000);
-  //   const items = cartProducts.map((product) => ({
-  //     variant_id: product.product_id?.toString(),
-  //     quantity: product.quantity || 1,
-  //   }));
-
-  //   const data = {
-  //     cart_data: { items },
-  //     redirect_url: "http://frontend.cureka.com/faster-order",
-  //     timestamp,
-  //   };
-
-  //   const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
-  //   const payload = JSON.stringify(data);
-  //   const hmac = CryptoJS.HmacSHA256(payload, key).toString(
-  //     CryptoJS.enc.Base64
-  //   );
-
-  //   try {
-  //     const response = await axios.post(
-  //       "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
-  //       payload,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           "X-Api-Key": "1OXaKLiBm7r3OVKI",
-  //           "X-Api-HMAC-SHA256": hmac,
-  //         },
-  //       }
-  //     );
-
-  //     const token = response?.data?.result?.token;
-  //     if (!token) {
-  //       console.error("❌ Token not received:", response.data);
-  //       return;
-  //     }
-
-  //     setShiprocketToken(token);
-  //     console.log("🚀 Shiprocket token:", token);
-
-  //     window.HeadlessCheckout.init({
-  //       token,
-  //       onComplete: (orderData) => {
-  //         console.log("✅ Order successful:", orderData);
-  //         window.location.href = "http://frontend.cureka.com/faster-order";
-  //       },
-  //       onError: (err) => {
-  //         console.error("❌ Checkout error:", err);
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.error(
-  //       "🚨 Shiprocket error:",
-  //       error.response?.data || error.message || error
-  //     );
-  //   }
-  // };
-
-  const handleBuyNow = (event) => {
-    addBuynow(event, cartProducts);
   };
 
   const handleBillingChange = () => {
@@ -544,71 +329,6 @@ export default function Cart() {
     }
   };
 
-  // const addBuynow = async (event, cartProducts) => {
-  //   event.preventDefault();
-
-  //   if (!cartProducts || cartProducts.length === 0) {
-  //     toast.error("Your cart is empty. Please add products to buy now.");
-  //     return;
-  //   }
-
-  //   const timestamp = Math.floor(Date.now() / 1000);
-  //   const redirectUrl = window.location.origin + "/faster-order"; // Use dynamic origin
-
-  //   const data = {
-  //     products: cartProducts.map((item) => ({
-  //       product_id: item.product_id,
-  //       quantity: item.qty,
-  //       final_price: item.final_price,
-  //     })),
-  //     redirect_url: redirectUrl,
-  //     timestamp: timestamp,
-  //   };
-  //   console.log("datas");
-
-  //   const apiKey = "1OXaKLiBm7r3OVKI"; // Your Shiprocket public key
-  //   const secretKey = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b"; // Your Shiprocket secret key
-
-  //   const stringifiedPayload = JSON.stringify(data);
-  //   const hmac = CryptoJS.HmacSHA256(stringifiedPayload, secretKey).toString(
-  //     CryptoJS.enc.Base64
-  //   );
-
-  //   try {
-  //     const response = await axios.post(
-  //       "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
-  //       stringifiedPayload,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           "X-Api-Key": apiKey,
-  //           "X-Api-HMAC-SHA256": hmac,
-  //         },
-  //       }
-  //     );
-
-  //     const token = response.data?.result?.token;
-
-  //     if (token) {
-  //       if (
-  //         window.HeadlessCheckout &&
-  //         typeof window.HeadlessCheckout.addToCart === "function"
-  //       ) {
-  //         window.HeadlessCheckout.addToCart(event, token);
-  //       } else {
-  //         console.error(
-  //           "🚫 HeadlessCheckout is not available. Script may not be loaded."
-  //         );
-  //         alert("Checkout is not ready. Please wait a moment and try again.");
-  //       }
-  //     } else {
-  //       console.error("❌ Shiprocket did not return a token.");
-  //     }
-  //   } catch (error) {
-  //     console.error("❌ Error during Shiprocket Buy Now:", error);
-  //     toast.error("Failed to initiate faster checkout. Please try again.");
-  //   }
-  // };
   const handleBackClick = () => {
     window.history.back();
   };
