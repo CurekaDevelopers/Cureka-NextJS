@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import _ from "lodash";
 import { forwardRef, useEffect, useMemo, useState } from "react";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
-import CryptoJS from "crypto-js";
+
 import {
   Form,
   OverlayTrigger,
@@ -58,12 +58,15 @@ import { useRouter } from "next/navigation";
 import CartProduct from "./CartProduct";
 import OrderSummary from "./OrderSummary";
 import { initialValues, validationSchema } from "./helper";
-
+import { loadShiprocketScript } from "../../utils/loadShiprocket";
+import CryptoJS from "crypto-js"; // Import CryptoJS
 const checkoutStep = {
   cart: "cart",
   delivery: "delivery",
   payment: "payment",
 };
+
+// Helper to wait for checkout script
 
 const CustomToggleButton = ({ value, children, onClick, isSelected }) => (
   <button
@@ -86,6 +89,8 @@ export default function Cart() {
     useState(true);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const [product, setProduct] = useState();
+
   const dispatch = useDispatch();
   const { cartProducts, LastProducts, LikeProducts, cartPopup } = useSelector(
     (state) => state.customer
@@ -136,11 +141,168 @@ export default function Cart() {
     });
   };
 
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     navigate.push(pagePaths.home);
-  //   }
-  // }, [isLoggedIn, navigate]);
+  const loadScript = (src) => {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+      document.body.appendChild(script);
+    });
+  };
+  const [shiprocketToken, setShiprocketToken] = useState("");
+
+  useEffect(() => {
+    // Load external CSS
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href =
+      // "https://customcheckoutfastrr.netlify.app/assets/styles/shopify.css?v=123";
+      "https://checkout-ui.shiprocket.com/assets/styles/shopify.css";
+    document.head.appendChild(link);
+
+    // Load external JavaScript
+    loadScript(
+      // "https://customcheckoutfastrr.netlify.app/assets/js/channels/shopify.js"
+      "https://checkout-ui.shiprocket.com/assets/js/channels/shopify.js"
+    )
+      .then(() => {
+        // Script loaded successfully, set up event listeners
+        const button = document.getElementById("buyNow");
+        if (button) {
+          button.addEventListener("click", handleButtonClick);
+        }
+      })
+      .catch((error) => console.error(error));
+
+    // Clean up on component unmount
+    return () => {
+      const button = document.getElementById("buyNow");
+      if (button) {
+        button.removeEventListener("click", handleButtonClick);
+      }
+    };
+  }, []);
+
+  const handlePinCode = () => {
+    // Validation: Check if pincode is empty or invalid
+    if (!pinCode || !/^\d{6}$/.test(pinCode)) {
+      toast.error(
+        "Please enter a valid 6-digit pincode containing only numbers."
+      );
+      return;
+    }
+    const zipCodes =
+      product.packer_name_and_address_with_pincode.match(zipCodePattern);
+    const request = {
+      pickup_postcode: zipCodes[0],
+      delivery_postcode: pinCode,
+      weight: product.weight_kg,
+      cod: 1, // TODO
+    };
+    getpossibleDeliveryData(request).then((rep) => {
+      if (rep) {
+        const obj = {
+          date: addDays(rep.estimated_delivery_days),
+          shipping: "Shippping Charges",
+        };
+        setPossibleDeliveryData(obj);
+      }
+    });
+  };
+
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    name: product?.vendor_article_name,
+    image: product?.images,
+    description: product?.meta_description,
+    sku: product?.sku_code,
+    mpn: product?.vendor_sku_code,
+    brand: {
+      "@type": "Brand",
+      name: product?.brand_name,
+    },
+    offers: {
+      "@type": "Offer",
+      url: window.location.href,
+      priceCurrency: "INR",
+      price: product?.final_price,
+      itemCondition: "https://schema.org/NewCondition",
+      availability:
+        product?.stock_status == "In stock"
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "Cureka",
+      },
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: product?.ratingCount.average,
+      reviewCount: product?.ratingCount.totalReviews,
+    },
+    review: product?.product_reviews?.map((review) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: review.created_by,
+      },
+      datePublished: review.created_at,
+      description: review.title,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: review.rating,
+      },
+    })),
+  };
+  const addBuynow = async (event, cartProducts) => {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const items = cartProducts.map((product) => ({
+      variant_id: product.product_id?.toString(),
+      quantity: product.quantity || 1,
+    }));
+
+    const data = {
+      cart_data: { items },
+      redirect_url: "http://frontend.cureka.com/faster-order",
+      timestamp,
+    };
+
+    const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
+    const payload = JSON.stringify(data);
+    console.log(payload, "payload");
+
+    const hmac = CryptoJS.HmacSHA256(payload, key).toString(
+      CryptoJS.enc.Base64
+    );
+    console.log(payload, "payload");
+    try {
+      const response = await axios.post(
+        "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Api-Key": "1OXaKLiBm7r3OVKI",
+            "X-Api-HMAC-SHA256": hmac,
+          },
+        }
+      );
+      console.log(response.data.result.token, "response");
+      const token = response.data.result.token;
+      setShiprocketToken(token);
+      if (window.HeadlessCheckout) {
+        window.HeadlessCheckout.addToCart(event, token);
+      } else {
+        console.error("HeadlessCheckout is not available.");
+      }
+    } catch (error) {
+      console.error("shiprocket error:", error);
+    }
+  };
 
   const handleBillingChange = () => {
     setIsGiftWrappingSelected(!isGiftWrappingSelected);
@@ -174,102 +336,6 @@ export default function Cart() {
     // Call the async function
     fetchShippingCharges();
   }, [dispatch, isLoggedIn]);
-
-  useEffect(() => {
-    const scriptId = "fastrr-checkout-script";
-
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script");
-      script.id = scriptId;
-      script.src = "https://cdn.fastrr.shiprocket.in/headless-checkout.js";
-      script.async = true;
-      script.onload = () => {
-        console.log("Fastrr checkout script loaded ✅");
-        setIsFastrrReady(true);
-      };
-      document.body.appendChild(script);
-    } else {
-      setIsFastrrReady(true); // Script already present
-    }
-  }, []);
-  const [isFastrrReady, setIsFastrrReady] = useState(false);
-  const addCartCheckout = async (
-    event,
-    cartProducts,
-    subTotalAmount,
-    discountInfo,
-    finalAmount
-  ) => {
-    event.preventDefault();
-
-    if (
-      !window.HeadlessCheckout ||
-      typeof window.HeadlessCheckout.addToCart !== "function"
-    ) {
-      console.error(
-        "🚫 HeadlessCheckout is not available. Script may not be loaded."
-      );
-      alert("Checkout is not ready yet. Please wait a moment and try again.");
-      return;
-    }
-
-    const timestamp = Math.floor(Date.now() / 1000);
-    const redirectUrl = "http://frontend.cureka.com/faster-order";
-
-    const items = cartProducts.map((item) => ({
-      variant_id: item.product_id.toString(),
-      quantity: item.qty,
-      price: item.final_price,
-      name: item.name || "Product",
-      sku: item.sku || "",
-    }));
-
-    // Prepare optional price breakdown
-    const discountAmount = discountInfo?.amount || 0;
-
-    const payload = {
-      cart_data: {
-        items: items,
-        price_details: {
-          subtotal: subTotalAmount,
-          discount: discountAmount,
-          total: finalAmount,
-        },
-      },
-      redirect_url: redirectUrl,
-      timestamp: timestamp,
-    };
-
-    const apiKey = "1OXaKLiBm7r3OVKI";
-    const secretKey = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
-    const stringifiedPayload = JSON.stringify(payload);
-    const hmac = CryptoJS.HmacSHA256(stringifiedPayload, secretKey).toString(
-      CryptoJS.enc.Base64
-    );
-
-    try {
-      const response = await axios.post(
-        "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
-        stringifiedPayload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-Api-Key": apiKey,
-            "X-Api-HMAC-SHA256": hmac,
-          },
-        }
-      );
-
-      const token = response.data?.result?.token;
-      if (token) {
-        window.HeadlessCheckout.addToCart(event, token);
-      } else {
-        console.error("❌ Shiprocket did not return a token.");
-      }
-    } catch (error) {
-      console.error("❌ Error in Shiprocket Cart Checkout:", error);
-    }
-  };
 
   const addItemToCart = (e, product) => {
     e.preventDefault();
@@ -336,184 +402,6 @@ export default function Cart() {
     } else {
       setCurrentCheckoutStep(checkoutStep.delivery);
     }
-  };
-
-  const formikShippingAddress = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: async (values) => {
-      const response = await addUserAddress(
-        values.name,
-        values.email,
-        values.mobile_number,
-        values.address,
-        values.pincode,
-        values.address_type,
-        values.landmark,
-        values.city,
-        values.state
-      );
-      console.log("shipping Address Response:", response);
-      if (response?.id) {
-        setShippingAddressId(response?.id);
-        if (!isBillingAndShippingSame) {
-          await formikBillingAddress.handleSubmit();
-        } else {
-          setBillingAddressId(response?.id);
-        }
-      }
-    },
-  });
-
-  const formikBillingAddress = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: async (values) => {
-      const response = await addUserAddress(
-        values.name,
-        values.email,
-        values.mobile_number,
-        values.address,
-        values.pincode,
-        values.address_type,
-        values.landmark,
-        values.city,
-        values.state
-      );
-      console.log("Billing Address:", response);
-      if (response?.id) {
-        setBillingAddressId(response?.id);
-      }
-    },
-  });
-
-  useEffect(() => {
-    if (shippingAddressId && billingAddressId) {
-      setCurrentCheckoutStep(checkoutStep.payment);
-    }
-  }, [billingAddressId, shippingAddressId]);
-
-  const isAmountValid = finalAmount >= 599 && finalAmount <= 9999;
-  const onSubmitPayment =
-    (isCod = false, isWalletOption = false) =>
-    async (values) => {
-      // eslint-disable-next-line no-console
-      // Calculate the payable amount and wallet money used
-      let payableAmount = finalAmount;
-      let walletMoneyUsed = 0;
-
-      // Apply discount/charge first
-      if (selectedPaymentMethod === "makeapayement" && finalAmount > 599) {
-        payableAmount = Number(
-          Math.round(
-            finalAmount -
-              subTotalAmount * 0.01 +
-              (shippingCharge && shippingCharge.charge)
-          )
-        ).toFixed(2);
-      } else {
-        payableAmount = Number(
-          Math.round(finalAmount + (shippingCharge && shippingCharge.charge))
-        ).toFixed(2);
-      }
-      let walleAmount =
-        walletMoney && walletMoney[0] && walletMoney[0].wallet_balance;
-
-      // Apply wallet deduction
-      if (isWalletMoneyChecked) {
-        if (walleAmount >= payableAmount) {
-          walletMoneyUsed = Math.round(payableAmount).toFixed(2); // Use the entire payable amount from wallet
-          payableAmount = 0; // No amount left to pay
-        } else {
-          walletMoneyUsed = Math.round(walleAmount).toFixed(2); // Use all of the wallet balance
-          payableAmount -= Math.round(walleAmount).toFixed(2); // Deduct wallet balance from payable amount
-        }
-      }
-      const data = {
-        orderData: {
-          shipping_address_id: shippingAddressId,
-          billing_address_id: billingAddressId
-            ? billingAddressId
-            : shippingAddressId,
-          subtotal: payableAmount, // The remaining amount after wallet deduction,
-          discount: discountInfo?.discount,
-          coupon_code: selectedCoupon?.coupon_code,
-          gift_wrapping: isGiftWrappingSelected,
-          transaction_id: "-",
-          is_cod: isCod,
-          is_wallet_option: isWalletOption,
-          shippingCharge: shippingCharge && shippingCharge.charge,
-          walletMoneyUsed: walletMoneyUsed, // Amount used from wallet
-        },
-        products: cartProducts.map((item) => ({
-          product_id: item.product_id,
-          quantity: item.qty,
-          final_price: item.final_price,
-        })),
-      };
-      console.log(data, "data");
-      // return;
-      const response = await createOrder(data);
-      if (response.order_id) {
-        if (isCod || isWalletOption) {
-          navigate.push(
-            pagePaths.orderPlaced.replace(":orderId", response.order_id),
-            { replace: true }
-          );
-        } else {
-          const sessionData = await getPaymentSessionId(response.order_id);
-          if (sessionData?.sessionId) {
-            const checkoutOptions = {
-              paymentSessionId: sessionData?.sessionId,
-              returnUrl: urlJoin(
-                env.REACT_SERVER_BASE_URL,
-                basePath,
-                "status",
-                "{order_id}"
-              ),
-              cancelUrl: urlJoin(
-                env.REACT_SERVER_BASE_URL,
-                basePath,
-                "status",
-                "{order_id}"
-              ),
-            };
-            // Call the function
-            initializeCashfree()
-              .then((cashfree) => {
-                cashfree.checkout(checkoutOptions).then(function (result) {
-                  if (result.error) {
-                    alert(result.error.message);
-                  }
-                  if (result.redirect) {
-                  }
-                });
-              })
-              .catch((error) => {
-                console.error("Error initializing Cashfree:", error);
-              });
-          }
-        }
-      }
-    };
-  const [product, setProduct] = useState();
-
-  const handlePinCodeBlur = () => {
-    getAddressOnPincode(formikShippingAddress.values.pincode).then(
-      (response) => {
-        if (response) {
-          formikShippingAddress.setFieldValue("city", response.districtname);
-          formikShippingAddress.setFieldValue("state", response.statename);
-          formikBillingAddress.setFieldValue("city", response.districtname);
-          formikBillingAddress.setFieldValue("state", response.statename);
-        } else {
-          formikShippingAddress.setFieldValue("city", "");
-          formikShippingAddress.setFieldValue("state", "");
-          formikBillingAddress.setFieldValue("city", "");
-          formikBillingAddress.setFieldValue("state", "");
-        }
-      }
-    );
   };
 
   const handleBackClick = () => {
@@ -675,11 +563,11 @@ export default function Cart() {
                                             target="_blank"
                                             className=""
                                           >
-                                            <Image
+                                            <img
                                               src={product_front_na_image}
                                               className="img-fluid"
-                                              width={167}
-                                              height={183}
+                                              width="167px"
+                                              height="183px"
                                               alt="toppicks1"
                                             />
                                           </a>
@@ -780,11 +668,11 @@ export default function Cart() {
                                             target="_blank"
                                             className=""
                                           >
-                                            <Image
+                                            <img
                                               src={product_front_na_image}
                                               className="img-fluid youmay-img"
-                                              width={167}
-                                              height={183}
+                                              width="167px"
+                                              height="183px"
                                               alt="toppicks1"
                                             />
                                           </a>
@@ -857,6 +745,7 @@ export default function Cart() {
                 </div>
 
                 <div className="col-lg-4">
+                  {/* This block will never render due to `false &&`, so you can remove or adjust it */}
                   {false && (
                     <div className="address-three">
                       <div className="d-flex Address justify-content-start">
@@ -867,14 +756,12 @@ export default function Cart() {
                           height={20}
                           alt="map"
                         />
-
                         <p className="deliveraddress mb-0">
                           Delivery to{" "}
                           <span style={{ color: "#231F20" }}>
                             500085, Hyderabad
                           </span>
                         </p>
-
                         <a href="#" className="change">
                           Change
                         </a>
@@ -882,6 +769,7 @@ export default function Cart() {
                     </div>
                   )}
 
+                  {/* Gift Wrapping Checkbox */}
                   <div className="address-three">
                     <div
                       className="form-group mb-0 align-items-center d-flex"
@@ -904,34 +792,22 @@ export default function Cart() {
                     </div>
                   </div>
 
+                  {/* Order Summary Component */}
                   <OrderSummary
                     subTotalAmount={subTotalAmount}
                     discountInfo={discountInfo}
                     isGiftWrappingSelected={isGiftWrappingSelected}
                     finalAmount={finalAmount}
                   />
-                  <div className="d-flex flex-column align-items-center justify-content-center w-100 mt-4 position-relative">
+
+                  {/* Buy Now Button with Label */}
+                  <div
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
                     <button
-                      onClick={(e) =>
-                        addCartCheckout(
-                          e,
-                          cartProducts,
-                          subTotalAmount,
-                          discountInfo,
-                          finalAmount
-                        )
-                      }
-                      disabled={!isFastrrReady}
-                      className="readmore buy-btn w-100 py-3 position-relative"
-                      style={{
-                        maxWidth: "400px",
-                        backgroundColor: "#28a745", // Feel free to change
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "8px",
-                        fontWeight: "bold",
-                        fontSize: "16px",
-                      }}
+                      onClick={(e) => addBuynow(e, cartProducts)}
+                      className="text-decoration-none readmore cart buy-btn"
+                      style={{ height: "48px" }}
                     >
                       <FontAwesomeIcon
                         className="me-2"
@@ -940,20 +816,20 @@ export default function Cart() {
                         style={{ color: "#ffffff" }}
                       />
                       Buy Now
-                      <span
-                        style={{
-                          fontSize: "10px",
-                          position: "absolute",
-                          bottom: "-18px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          whiteSpace: "nowrap",
-                          color: "#555",
-                        }}
-                      >
-                        Powered by Shiprocket
-                      </span>
                     </button>
+                    <span
+                      style={{
+                        fontSize: "8px",
+                        position: "absolute",
+                        bottom: "-12px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        whiteSpace: "nowrap",
+                        color: "#555",
+                      }}
+                    >
+                      Instant Checkout with Shiprocket
+                    </span>
                   </div>
                 </div>
               </div>
