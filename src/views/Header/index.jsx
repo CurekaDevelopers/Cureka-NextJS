@@ -799,7 +799,7 @@ export default function Header({ showCategoryNavbar = true }) {
                         <li className="nav-item mb-3">
                           <div id="helpdesk">
                             <DropdownButton title="Help Desk">
-                              <div className="d-flex">
+                              {/* <div className="d-flex">
                                 <div className="col-6">
                                   <h2 className="section">Contact Us</h2>
                                   <Dropdown.Item
@@ -860,7 +860,64 @@ export default function Header({ showCategoryNavbar = true }) {
                                     FAQ's
                                   </Dropdown.Item>
                                 </div>
-                              </div>
+                              </div> */}
+                              <div className="d-flex">
+    <div className="col-md-6 mb-4">
+      <h2 className="section ml-2">Contact Us</h2>
+      <Dropdown.Item
+        href="https://api.whatsapp.com/send?phone=917200150536"
+        className="d-flex align-items-center"
+      >
+        <Image
+          className="img-fluid me-2 d-lg-block d-none"
+          src={chat}
+          width={19}
+          height={20}
+          alt="chat"
+        />
+        Chat with Us
+      </Dropdown.Item>
+      <Dropdown.Item
+        href="mailto:care@cureka.com"
+        className="d-flex align-items-center"
+      >
+        <Image
+          className="img-fluid me-2 d-lg-block d-none"
+          src={email}
+          width={20}
+          height={20}
+          alt="email"
+        />
+        Email
+      </Dropdown.Item>
+      <Dropdown.Item
+        href="https://api.whatsapp.com/send?phone=917200150536"
+        className="d-flex align-items-center"
+      >
+        <Image
+          className="img-fluid me-2 d-lg-block d-none"
+          src={experts}
+          width={20}
+          height={20}
+          alt="experts"
+        />
+        Ask our Experts
+      </Dropdown.Item>
+    </div>
+
+    <div className="col-md-6 mb-4 ps-md-3 border-start">
+      <h2 className="section">Helpful Links</h2>
+      <Dropdown.Item href="/TrackOrder" className="d-flex me-2">
+        Track your order
+      </Dropdown.Item>
+      <Dropdown.Item href="/Privacypolicy" className="d-flex me-2">
+        Privacy Policy
+      </Dropdown.Item> 
+      <Dropdown.Item href="/Faq" className="d-flex me-2">
+        FAQ's
+      </Dropdown.Item>
+    </div>
+  </div>
                               <div className="contactus p-3 mx-2 mt-3">
                                 <p className="section mb-2">
                                   For Support & Order Enquiries

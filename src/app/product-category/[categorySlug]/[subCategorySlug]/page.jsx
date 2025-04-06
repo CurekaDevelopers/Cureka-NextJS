@@ -1060,7 +1060,7 @@ export default function ProductList() {
                                       >
                                         <div className="product">
                                           <img
-                                            src={product_front_image}
+                                            src={product_front_image?.trim()}
                                             width="218px"
                                             height="172px"
                                             className="img-fluid"
@@ -1260,7 +1260,7 @@ export default function ProductList() {
                                       >
                                         <div className="product">
                                           <img
-                                            src={product_front_image}
+                                            src={product_front_image?.trim()}
                                             width="218px"
                                             height="172px"
                                             className="img-fluid"

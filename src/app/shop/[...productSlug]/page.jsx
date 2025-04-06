@@ -263,7 +263,7 @@ export default function Productdetails() {
     const hmac = CryptoJS.HmacSHA256(payload, key).toString(
       CryptoJS.enc.Base64
     );
-    // console.log(payload, 'payload')
+    console.log(payload, 'payload')
     try {
       const response = await axios.post(
         "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
