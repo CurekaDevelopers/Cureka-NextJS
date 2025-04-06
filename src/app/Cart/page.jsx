@@ -185,6 +185,79 @@ export default function Cart() {
     };
   }, []);
 
+  const handlePinCode = () => {
+    // Validation: Check if pincode is empty or invalid
+    if (!pinCode || !/^\d{6}$/.test(pinCode)) {
+      toast.error(
+        "Please enter a valid 6-digit pincode containing only numbers."
+      );
+      return;
+    }
+    const zipCodes =
+      product.packer_name_and_address_with_pincode.match(zipCodePattern);
+    const request = {
+      pickup_postcode: zipCodes[0],
+      delivery_postcode: pinCode,
+      weight: product.weight_kg,
+      cod: 1, // TODO
+    };
+    getpossibleDeliveryData(request).then((rep) => {
+      if (rep) {
+        const obj = {
+          date: addDays(rep.estimated_delivery_days),
+          shipping: "Shippping Charges",
+        };
+        setPossibleDeliveryData(obj);
+      }
+    });
+  };
+
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    name: product?.vendor_article_name,
+    image: product?.images,
+    description: product?.meta_description,
+    sku: product?.sku_code,
+    mpn: product?.vendor_sku_code,
+    brand: {
+      "@type": "Brand",
+      name: product?.brand_name,
+    },
+    offers: {
+      "@type": "Offer",
+      url: window.location.href,
+      priceCurrency: "INR",
+      price: product?.final_price,
+      itemCondition: "https://schema.org/NewCondition",
+      availability:
+        product?.stock_status == "In stock"
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "Cureka",
+      },
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: product?.ratingCount.average,
+      reviewCount: product?.ratingCount.totalReviews,
+    },
+    review: product?.product_reviews?.map((review) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: review.created_by,
+      },
+      datePublished: review.created_at,
+      description: review.title,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: review.rating,
+      },
+    })),
+  };
   const addBuynow = async (event, cartProducts) => {
     const timestamp = Math.floor(Date.now() / 1000);
     const items = cartProducts.map((product) => ({
@@ -200,6 +273,8 @@ export default function Cart() {
 
     const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
     const payload = JSON.stringify(data);
+    console.log(payload, "payload");
+
     const hmac = CryptoJS.HmacSHA256(payload, key).toString(
       CryptoJS.enc.Base64
     );
@@ -670,6 +745,7 @@ export default function Cart() {
                 </div>
 
                 <div className="col-lg-4">
+                  {/* This block will never render due to `false &&`, so you can remove or adjust it */}
                   {false && (
                     <div className="address-three">
                       <div className="d-flex Address justify-content-start">
@@ -680,20 +756,20 @@ export default function Cart() {
                           height={20}
                           alt="map"
                         />
-
                         <p className="deliveraddress mb-0">
                           Delivery to{" "}
                           <span style={{ color: "#231F20" }}>
                             500085, Hyderabad
                           </span>
                         </p>
-
                         <a href="#" className="change">
                           Change
                         </a>
                       </div>
                     </div>
                   )}
+
+                  {/* Gift Wrapping Checkbox */}
                   <div className="address-three">
                     <div
                       className="form-group mb-0 align-items-center d-flex"
@@ -715,12 +791,16 @@ export default function Cart() {
                       </label>
                     </div>
                   </div>
+
+                  {/* Order Summary Component */}
                   <OrderSummary
                     subTotalAmount={subTotalAmount}
                     discountInfo={discountInfo}
                     isGiftWrappingSelected={isGiftWrappingSelected}
                     finalAmount={finalAmount}
                   />
+
+                  {/* Buy Now Button with Label */}
                   <div
                     style={{ position: "relative", display: "inline-block" }}
                   >
