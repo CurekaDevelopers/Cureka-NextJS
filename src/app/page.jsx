@@ -34,6 +34,7 @@ import CarouselSlider from "../components/CarouselSlider";
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { useDispatch } from "react-redux";
 
 import {
   addProductToCart,
@@ -63,6 +64,7 @@ export default function Home() {
   const { wishlistProducts, cartProducts } = useSelector(
     (state) => state.customer
   );
+  const dispatch = useDispatch();
   const {
     brands,
     singleAdds,
@@ -177,12 +179,25 @@ export default function Home() {
 
   const addItemToCart = (e, product) => {
     e.preventDefault();
-    if (product.id) {
+
+    const productId = product?.id || product?.product_id;
+    const quantity = 1;
+
+    if (productId) {
       if (isProductPresentInCart(product)) {
-        navigate.push("/cart");
+        navigate("/cart");
       } else {
-        addProductToCart(product.id, 1);
+        // Add product with quantity
+        const cartItem = {
+          ...product,
+          product_id: productId,
+          quantity: quantity,
+        };
+        addProductToCart(cartItem, dispatch);
+        toast.info("🛒 Adding product to cart...");
       }
+    } else {
+      console.error("❌ Product ID not found");
     }
   };
 

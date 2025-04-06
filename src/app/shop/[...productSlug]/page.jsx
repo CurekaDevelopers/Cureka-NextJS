@@ -217,7 +217,7 @@ export default function Productdetails() {
 
     if (productId) {
       if (isProductPresentInCart(product)) {
-        navigate("/cart");
+        navigate.push("/Cart");
       } else {
         // Add product with quantity
         const cartItem = {
