@@ -112,17 +112,17 @@ export default function ProductdetailHeader() {
     }
   }, [dispatch, isLoggedIn]);
 
-   const autocompleteRef = useRef(null);
-  
-    useEffect(() => {
-      if (autocompleteRef.current) {
-        // If you want to trigger scrollIntoView or focus on the autocomplete
-        autocompleteRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, [items]);
+  const autocompleteRef = useRef(null);
+
+  useEffect(() => {
+    if (autocompleteRef.current) {
+      // If you want to trigger scrollIntoView or focus on the autocomplete
+      autocompleteRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [items]);
 
   const onCategoryChange = (category) => () => {
     setCategory(category);
@@ -416,7 +416,7 @@ export default function ProductdetailHeader() {
                   </li>
                 )}
                 <li className="nav-item d-lg-none d-block">
-                  <Link href="/cart" className="nav-link">
+                  <Link href="/Cart" className="nav-link">
                     <Image
                       className="img-fluid"
                       src={shoppingCart}
@@ -659,11 +659,11 @@ export default function ProductdetailHeader() {
                         onSelect={handleSelect}
                       /> */}
                       <div ref={autocompleteRef}>
-                      <SearchAutocomplete
-                        items={items}
-                        onSelect={handleSelect}
-                        onChange={handleInputChange}
-                      />
+                        <SearchAutocomplete
+                          items={items}
+                          onSelect={handleSelect}
+                          onChange={handleInputChange}
+                        />
                       </div>
                       <Image
                         onClick={onSearchClicked}
@@ -735,7 +735,7 @@ export default function ProductdetailHeader() {
                         </li>
                       )}
                       <li className="nav-item d-lg-none d-block">
-                        <Link href="/cart" className="nav-link">
+                        <Link href="/Cart" className="nav-link">
                           <Image
                             className="img-fluid"
                             src={shoppingCart}

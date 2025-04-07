@@ -287,7 +287,7 @@ export default function ProductList() {
     e.preventDefault();
     if (product.id) {
       if (isProductPresentInCart(product)) {
-        navigate.push("/cart");
+        navigate.push("/Cart");
       } else {
         addProductToCart(product.id, 1);
       }

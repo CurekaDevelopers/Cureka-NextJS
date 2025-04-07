@@ -1,3 +1,4 @@
+"use client";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { forwardRef, useRef, useState } from "react";
@@ -5,7 +6,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import trash from "../../public/images/trash.svg";
 import { moveToCart } from "../../redux/action";
 import noproduct from "../../public/images/noimageavailable.png";
-
+import Image from "next/image";
 const CartProduct = ({ product, onQuantityChange, onRemoveFromCart }) => {
   const inputRef = useRef();
   const [productQuantity, setProductQuantity] = useState(product?.qty || 1);
@@ -40,11 +41,11 @@ const CartProduct = ({ product, onQuantityChange, onRemoveFromCart }) => {
         <div className="d-lg-flex d-flex-column">
           <div className="card align-self-center">
             {product && product?.product_images?.length > 0 && (
-              <img
+              <Image
                 className="img-fluid mx-auto"
                 src={product?.product_images[0]?.image}
-                width="73px"
-                height="80px"
+                width={73}
+                height={80}
                 alt={product.product_name}
               />
             )}
@@ -79,11 +80,11 @@ const CartProduct = ({ product, onQuantityChange, onRemoveFromCart }) => {
           className="trash cursor-pointer"
           onClick={() => onRemoveFromCartFun(product)}
         >
-          <img
+          <Image
             className="img-fluid"
             src={trash}
-            width="20px"
-            height="20px"
+            width={20}
+            height={20}
             alt="trash"
           />
           Delete
