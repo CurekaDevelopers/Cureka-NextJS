@@ -606,44 +606,44 @@ export default function ProductList() {
                                     {filterData &&
                                     filterData[filterKey]?.length > 0 ? (
                                       filterData[filterKey]
-                                        .slice(0, 10)
-                                        ?.map(({ value, count }) => {
-                                          return (
-                                            <li key={value}>
-                                              <a
-                                                className="text-decoration-none"
-                                                href="#"
-                                                data-toggle="tooltip"
-                                                data-placement="right"
-                                                title={value}
-                                              >
-                                                <label className="selectall">
-                                                  <input
-                                                    type="checkbox"
-                                                    checked={isFilterSet(
+                                        .slice(
+                                          (paginate - 1) * 10,
+                                          paginate * 10
+                                        )
+                                        .map(({ value, count }) => (
+                                          <li key={value}>
+                                            <div
+                                              className="text-decoration-none d-flex align-items-center"
+                                              role="button"
+                                              title={value}
+                                            >
+                                              <label className="selectall mb-0 w-100">
+                                                <input
+                                                  type="checkbox"
+                                                  checked={isFilterSet(
+                                                    filterKey,
+                                                    value
+                                                  )}
+                                                  onChange={() =>
+                                                    handleCategorySelect(
                                                       filterKey,
                                                       value
-                                                    )}
-                                                    onClick={handleCategorySelect(
-                                                      filterKey,
-                                                      value
-                                                    )}
-                                                    className="select-input"
-                                                  />
-                                                  <span className="category-input">
-                                                    {value}
-                                                  </span>
-                                                  <div className="selectall-num">
-                                                    {count}
-                                                  </div>
-                                                </label>
-                                              </a>
-                                            </li>
-                                          );
-                                        })
+                                                    )
+                                                  }
+                                                  className="select-input"
+                                                />
+                                                <span className="category-input">
+                                                  {value}
+                                                </span>
+                                                <div className="selectall-num">
+                                                  {count}
+                                                </div>
+                                              </label>
+                                            </div>
+                                          </li>
+                                        ))
                                     ) : (
-                                      // Render something if filterData[filterKey] has a length of 0
-                                      <p>No data available</p>
+                                      <p className="px-3">No data available</p>
                                     )}
                                   </ul>
 
@@ -664,6 +664,7 @@ export default function ProductList() {
                                                 filterKey
                                               )
                                             }
+                                            className="cursor-pointer text-primary"
                                           >
                                             Prev
                                           </p>
@@ -680,6 +681,7 @@ export default function ProductList() {
                                                 filterKey
                                               )
                                             }
+                                            className="cursor-pointer text-primary"
                                           >
                                             Next
                                           </p>

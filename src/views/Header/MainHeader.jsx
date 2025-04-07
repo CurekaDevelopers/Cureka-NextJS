@@ -36,8 +36,9 @@ import "../../styles/faq.css";
 import "../../styles/font-awesome.min.css";
 import "../../styles/fonts.css";
 import "../../styles/footer.css";
-import "../../styles/header.css";
+import "../../styles/shopheader.css";
 import "../../styles/home.css";
+
 import "../../styles/loginmodal.css";
 import {
   fetchCartProducts,
@@ -56,12 +57,12 @@ import {
 } from "../../utils/constants/common.constants";
 import useCustomerLoggedIn from "../../utils/hooks/useCustomerLoggedIn";
 import UserLogin from "../UserLogin";
-import style from "./style.module.scss";
+import style from "./shopstyle.module.scss";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "../../styles/product_details.css";
 
-export default function Header({ showCategoryNavbar = true }) {
+export default function MainHeader({ showCategoryNavbar = true }) {
   const searchParams = useSearchParams();
   const [category, setCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState(
@@ -173,49 +174,15 @@ export default function Header({ showCategoryNavbar = true }) {
   //   setSearchTerm(value);
   //   // Optionally, do something with the selected value
   // };
-  // const fetchItems = async (term) => {
-  //   try {
-  //     console.log("Fetching suggestions for:", term);
-  //     const response = await api.get(
-  //       `${apiUrls.productsSuggestions}?search_term=${term}`
-  //     );
-  //     console.log("API Response:", response.data);
-
-  //     const { brands, categories, products, concerns } = response.data;
-
-  //     setItems([
-  //       { type: "Brands", data: brands },
-  //       { type: "Concerns", data: concerns },
-  //       { type: "Categories", data: categories },
-  //       { type: "Products", data: products },
-  //     ]);
-  //   } catch (error) {
-  //     console.error("Error fetching suggestions:", error);
-  //     setItems([]);
-  //   }
-  // };
   const fetchItems = async (term) => {
     try {
-      const encodedTerm = encodeURIComponent(term.trim());
-      console.log("🔍 Fetching suggestions for:", encodedTerm);
-
+      console.log("Fetching suggestions for:", term);
       const response = await api.get(
-        `${apiUrls.productsSuggestions}?search_term=${encodedTerm}`
+        `${apiUrls.productsSuggestions}?search_term=${term}`
       );
+      console.log("API Response:", response.data);
 
-      const {
-        brands = [],
-        categories = [],
-        products = [],
-        concerns = [],
-      } = response.data || {};
-
-      console.log("✅ API Response:", {
-        brands,
-        categories,
-        products,
-        concerns,
-      });
+      const { brands, categories, products, concerns } = response.data;
 
       setItems([
         { type: "Brands", data: brands },
@@ -224,10 +191,7 @@ export default function Header({ showCategoryNavbar = true }) {
         { type: "Products", data: products },
       ]);
     } catch (error) {
-      console.error(
-        "❌ Error fetching suggestions:",
-        error?.response?.data || error.message
-      );
+      console.error("Error fetching suggestions:", error);
       setItems([]);
     }
   };
@@ -256,27 +220,14 @@ export default function Header({ showCategoryNavbar = true }) {
     }
   };
 
-  // const onSearchClicked = () => {
-  //   let searchPageUrl = `${pagePaths.products}?search_term=${searchTerm}`;
-  //   if (category?.name) {
-  //     // searchPageUrl += `&category_name=${category?.name}`;
-  //     searchPageUrl += `&category_id=${category?.id}`;
-  //   }
-  //   //navigate(searchPageUrl);
-  //   navigate(encodeURI(searchPageUrl));
-  // };
-
   const onSearchClicked = () => {
-    if (!searchTerm.trim()) return;
-
-    const params = new URLSearchParams();
-    params.set("search_term", searchTerm.trim());
-
-    if (category?.id) {
-      params.set("category_id", category.id);
+    let searchPageUrl = `${pagePaths.products}?search_term=${searchTerm}`;
+    if (category?.name) {
+      // searchPageUrl += `&category_name=${category?.name}`;
+      searchPageUrl += `&category_id=${category?.id}`;
     }
-
-    navigate.push(`/products?${params.toString()}`);
+    //navigate(searchPageUrl);
+    navigate(encodeURI(searchPageUrl));
   };
 
   const onSearchFormSubmit = (e) => {
@@ -379,36 +330,7 @@ export default function Header({ showCategoryNavbar = true }) {
 
   return (
     <>
-      <div className="container-fluid header-border header-fixed px-0 pl-8 pr-5">
-        {showCurekaAlert && (
-          <>
-            <div className="blue-wrapper" id="cureka-alert">
-              <Alert variant="" onClose={handleAlert} dismissible>
-                <p className="india-heading mb-0">
-                  <strong>Cureka: </strong>
-                  <span className="india-color">{"India's"}</span> leading
-                  Online Healthcare Platform.
-                </p>
-              </Alert>
-            </div>
-            <div className="offers-wrapper" id="offers-alert">
-              <Alert variant="" onClose={handleAlert} dismissible>
-                <p className="offers-heading mb-0">
-                  Limited Period Offer:{" "}
-                  <span className="get-offers">
-                    Get 10% off + extra 8% off on Nutrition Products &amp; more
-                    offers.
-                  </span>
-                  &nbsp;
-                  <a href="/" className="explore">
-                    Explore
-                  </a>
-                </p>
-              </Alert>
-            </div>
-          </>
-        )}
-
+      <div className="container-fluid header-border header-fixed px-0">
         <div className="container" id="header">
           <nav className="navbar navbar-expand-lg navbar-light bg-white justify-content-between align-items-center px-0">
             <div className="mobilelogo">
@@ -507,7 +429,7 @@ export default function Header({ showCategoryNavbar = true }) {
                 </li>
               </ul>
             </div>
-            <div className="d-none d-lg-block">
+            <div className="d-none d-lg-block mt-110">
               <ul className="navbar-nav align-items-center">
                 <li>
                   <DropdownButton
@@ -849,7 +771,7 @@ export default function Header({ showCategoryNavbar = true }) {
                         <li className="nav-item mb-3">
                           <div id="helpdesk">
                             <DropdownButton title="Help Desk">
-                              {/* <div className="d-flex">
+                              <div className="d-flex">
                                 <div className="col-6">
                                   <h2 className="section">Contact Us</h2>
                                   <Dropdown.Item
@@ -907,72 +829,6 @@ export default function Header({ showCategoryNavbar = true }) {
                                     Privacy Policy
                                   </Dropdown.Item>
                                   <Dropdown.Item href="/Faq" className="d-flex">
-                                    FAQ's
-                                  </Dropdown.Item>
-                                </div>
-                              </div> */}
-                              <div className="d-flex">
-                                <div className="col-md-6 mb-4">
-                                  <h2 className="section ml-2">Contact Us</h2>
-                                  <Dropdown.Item
-                                    href="https://api.whatsapp.com/send?phone=917200150536"
-                                    className="d-flex align-items-center"
-                                  >
-                                    <Image
-                                      className="img-fluid me-2 d-lg-block d-none"
-                                      src={chat}
-                                      width={19}
-                                      height={20}
-                                      alt="chat"
-                                    />
-                                    Chat with Us
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    href="mailto:care@cureka.com"
-                                    className="d-flex align-items-center"
-                                  >
-                                    <Image
-                                      className="img-fluid me-2 d-lg-block d-none"
-                                      src={email}
-                                      width={20}
-                                      height={20}
-                                      alt="email"
-                                    />
-                                    Email
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    href="https://api.whatsapp.com/send?phone=917200150536"
-                                    className="d-flex align-items-center"
-                                  >
-                                    <Image
-                                      className="img-fluid me-2 d-lg-block d-none"
-                                      src={experts}
-                                      width={20}
-                                      height={20}
-                                      alt="experts"
-                                    />
-                                    Ask our Experts
-                                  </Dropdown.Item>
-                                </div>
-
-                                <div className="col-md-6 mb-4 ps-md-3 border-start">
-                                  <h2 className="section">Helpful Links</h2>
-                                  <Dropdown.Item
-                                    href="/TrackOrder"
-                                    className="d-flex me-2"
-                                  >
-                                    Track your order
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    href="/Privacypolicy"
-                                    className="d-flex me-2"
-                                  >
-                                    Privacy Policy
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    href="/Faq"
-                                    className="d-flex me-2"
-                                  >
                                     FAQ's
                                   </Dropdown.Item>
                                 </div>
