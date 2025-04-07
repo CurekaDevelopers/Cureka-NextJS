@@ -1,3 +1,4 @@
+"use client";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { forwardRef, useRef, useState } from "react";
