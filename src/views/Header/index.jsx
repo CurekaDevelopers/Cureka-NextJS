@@ -441,7 +441,7 @@ export default function Header({ showCategoryNavbar = true }) {
                     <ul>
                       <li className="nav-item">
                         <a
-                          className="nav-links"
+                          className="nav-link"
                           data-toggle="modal"
                           // href="#loginModal"
                           // data-target="#loginModal"
@@ -756,8 +756,8 @@ export default function Header({ showCategoryNavbar = true }) {
                 </ul>
                 <ul>
                   <li>
-                    <div className="cart-icon iconspace mt-2">
-                      <div className="text-links d-lg-flex d-flex-column align-items-center mt-10">
+                    <div className="cart-icon iconspace flex items-center justify-center gap-3">
+                      <div className="text-links d-lg-flex d-flex-column align-items-center">
                         <li className="nav-item gap-2">
                           <a className="nav-link" href={pagePaths.offers}>
                             <Image
