@@ -273,6 +273,12 @@
     justify-content: space-between;
   }
 }
+.style_userDropdown__UVokv {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-bottom: 3px;
+}
 
 .nav-links {
   font: normal 400 16px / normal Rubik-regular;
@@ -1015,6 +1021,7 @@
   justify-content: start;
   overflow: hidden;
   white-space: nowrap;
+  margin-bottom: -13px;
 }
 #helpdesk .dropdown .dropdown-toggle .dropdown-menu {
   min-width: 12rem !important;
