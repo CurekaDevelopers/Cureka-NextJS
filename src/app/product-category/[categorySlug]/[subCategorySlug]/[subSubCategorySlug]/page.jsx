@@ -119,20 +119,22 @@ export default function ProductList() {
   const handlePriceRangeFinalChange = (newValues) => {
     const [minPrice, maxPrice] = newValues;
 
+    const params = new URLSearchParams(searchParams.toString());
     // Update searchParams for price range
     if (minPrice !== 0) {
-      searchParams.set("minPrice", minPrice);
+      params.set("minPrice", minPrice);
     } else {
-      searchParams.delete("minPrice");
+      params.delete("minPrice");
     }
 
     if (maxPrice !== 10000) {
-      searchParams.set("maxPrice", maxPrice);
+      params.set("maxPrice", maxPrice);
     } else {
-      searchParams.delete("maxPrice");
+      params.delete("maxPrice");
     }
 
-    setSearchParams(searchParams);
+    // setSearchParams(params);
+    navigate.push(`?${params.toString()}`);
   };
 
   //  Combine filtering and sorting in useEffect
@@ -250,30 +252,35 @@ export default function ProductList() {
   ]);
 
   const handleCategorySelect = (categoryName, value) => () => {
-    const values = searchParams.get(categoryName);
+    const params = new URLSearchParams(searchParams.toString());
+    const values = params.get(categoryName);
     const valuesArray = values?.split(",");
     if (valuesArray?.length && valuesArray.includes(value)) {
       const newValue = valuesArray.filter((v) => v !== value).join(",");
       if (newValue) {
-        searchParams.set(categoryName, newValue);
+        params.set(categoryName, newValue);
       } else {
-        searchParams.delete(categoryName);
+        params.delete(categoryName);
       }
     } else {
-      searchParams.set(categoryName, [...(valuesArray || []), value].join(","));
+      params.set(categoryName, [...(valuesArray || []), value].join(","));
     }
-    console.log(searchParams);
+    console.log(params);
     console.log("ddd");
-    setSearchParams(searchParams);
+    // setSearchParams(searchParams);
+    navigate.push(`?${params.toString()}`);
   };
 
   const isFilterSet = (categoryName, value) => {
-    const values = searchParams.get(categoryName) || "";
+    const params = new URLSearchParams(searchParams.toString());
+    const values = params.get(categoryName) || "";
     return values.includes(value);
   };
   const handlePageClick = (event) => {
-    searchParams.set("page", event.selected + 1);
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", event.selected + 1);
+    // setSearchParams(searchParams);
+    navigate.push(`?${params.toString()}`);
   };
 
   const isProductPresentInWishlist = (product) =>
