@@ -67,12 +67,6 @@ export default function Header({ showCategoryNavbar = true }) {
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search_term") || ""
   );
-
-  useEffect(() => {
-    const term = searchParams.get("search_term") || "";
-    setSearchTerm(term);
-  }, [searchParams]);
-
   const [items, setItems] = useState([]);
   const { isLoggedIn, name } = useCustomerLoggedIn();
   const navigate = useRouter();
@@ -179,15 +173,49 @@ export default function Header({ showCategoryNavbar = true }) {
   //   setSearchTerm(value);
   //   // Optionally, do something with the selected value
   // };
+  // const fetchItems = async (term) => {
+  //   try {
+  //     console.log("Fetching suggestions for:", term);
+  //     const response = await api.get(
+  //       `${apiUrls.productsSuggestions}?search_term=${term}`
+  //     );
+  //     console.log("API Response:", response.data);
+
+  //     const { brands, categories, products, concerns } = response.data;
+
+  //     setItems([
+  //       { type: "Brands", data: brands },
+  //       { type: "Concerns", data: concerns },
+  //       { type: "Categories", data: categories },
+  //       { type: "Products", data: products },
+  //     ]);
+  //   } catch (error) {
+  //     console.error("Error fetching suggestions:", error);
+  //     setItems([]);
+  //   }
+  // };
   const fetchItems = async (term) => {
     try {
-      console.log("Fetching suggestions for:", term);
-      const response = await api.get(
-        `${apiUrls.productsSuggestions}?search_term=${term}`
-      );
-      console.log("API Response:", response.data);
+      const encodedTerm = encodeURIComponent(term.trim());
+      console.log("🔍 Fetching suggestions for:", encodedTerm);
 
-      const { brands, categories, products, concerns } = response.data;
+      const response = await api.get(
+        `${apiUrls.productsSuggestions}?search_term=${encodedTerm}`
+      );
+
+      const {
+        brands = [],
+        categories = [],
+        products = [],
+        concerns = [],
+      } = response.data || {};
+
+      console.log("✅ API Response:", {
+        brands,
+        categories,
+        products,
+        concerns,
+      });
 
       setItems([
         { type: "Brands", data: brands },
@@ -196,7 +224,10 @@ export default function Header({ showCategoryNavbar = true }) {
         { type: "Products", data: products },
       ]);
     } catch (error) {
-      console.error("Error fetching suggestions:", error);
+      console.error(
+        "❌ Error fetching suggestions:",
+        error?.response?.data || error.message
+      );
       setItems([]);
     }
   };
@@ -225,16 +256,27 @@ export default function Header({ showCategoryNavbar = true }) {
     }
   };
 
+  // const onSearchClicked = () => {
+  //   let searchPageUrl = `${pagePaths.products}?search_term=${searchTerm}`;
+  //   if (category?.name) {
+  //     // searchPageUrl += `&category_name=${category?.name}`;
+  //     searchPageUrl += `&category_id=${category?.id}`;
+  //   }
+  //   //navigate(searchPageUrl);
+  //   navigate(encodeURI(searchPageUrl));
+  // };
+
   const onSearchClicked = () => {
-    let searchPageUrl = `${pagePaths.products}?search_term=${searchTerm}`;
-    if (category?.name) {
-      // searchPageUrl += `&category_name=${category?.name}`;
-      searchPageUrl += `&category_id=${category?.id}`;
+    if (!searchTerm.trim()) return;
+
+    const params = new URLSearchParams();
+    params.set("search_term", searchTerm.trim());
+
+    if (category?.id) {
+      params.set("category_id", category.id);
     }
-    console.log("SeacrchPage",searchPageUrl);
-    
-    //navigate(searchPageUrl);
-    navigate.push(encodeURI(searchPageUrl));
+
+    navigate.push(`/products?${params.toString()}`);
   };
 
   const onSearchFormSubmit = (e) => {
