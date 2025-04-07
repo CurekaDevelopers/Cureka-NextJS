@@ -76,7 +76,7 @@ export default function Navbar() {
                             All Categories{" "}
                           </a>
                           <div
-                            className="dropdown-menu megamenu"
+                            className="dropdown-menu megamenu "
                             role="menu"
                             id="megamenutabs"
                           >
