@@ -117,21 +117,22 @@ export default function ProductList() {
   // Update searchParams and call the API when the user releases the slider thumb
   const handlePriceRangeFinalChange = (newValues) => {
     const [minPrice, maxPrice] = newValues;
-
+    const params = new URLSearchParams(searchParams.toString());
     // Update searchParams for price range
     if (minPrice !== 0) {
-      searchParams.set("minPrice", minPrice);
+      params.set("minPrice", minPrice);
     } else {
-      searchParams.delete("minPrice");
+      params.delete("minPrice");
     }
 
     if (maxPrice !== 10000) {
-      searchParams.set("maxPrice", maxPrice);
+      params.set("maxPrice", maxPrice);
     } else {
-      searchParams.delete("maxPrice");
+      params.delete("maxPrice");
     }
 
-    setSearchParams(searchParams);
+    // setSearchParams(params);
+    navigate.push(`?${params.toString()}`);
   };
 
   //  Combine filtering and sorting in useEffect
@@ -249,21 +250,23 @@ export default function ProductList() {
   ]);
 
   const handleCategorySelect = (categoryName, value) => () => {
-    const values = searchParams.get(categoryName);
+    const params = new URLSearchParams(searchParams.toString());
+    const values = params.get(categoryName);
     const valuesArray = values?.split(",");
     if (valuesArray?.length && valuesArray.includes(value)) {
       const newValue = valuesArray.filter((v) => v !== value).join(",");
       if (newValue) {
-        searchParams.set(categoryName, newValue);
+        params.set(categoryName, newValue);
       } else {
-        searchParams.delete(categoryName);
+        params.delete(categoryName);
       }
     } else {
-      searchParams.set(categoryName, [...(valuesArray || []), value].join(","));
+      params.set(categoryName, [...(valuesArray || []), value].join(","));
     }
-    console.log(searchParams);
+    console.log(params);
     console.log("ddd");
-    setSearchParams(searchParams);
+    // setSearchParams(params);
+    navigate.push(`?${params.toString()}`);
   };
 
   const isFilterSet = (categoryName, value) => {
@@ -271,8 +274,12 @@ export default function ProductList() {
     return values.includes(value);
   };
   const handlePageClick = (event) => {
-    searchParams.set("page", event.selected + 1);
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", event.selected + 1);
+    console.log("Pagination", event.selected);
+
+    // setSearchParams(searchParams);
+    navigate.push(`?${params.toString()}`);
   };
 
   const isProductPresentInWishlist = (product) =>
@@ -1011,19 +1018,23 @@ export default function ProductList() {
                       <div className="row">
                         {filterProducts && filterProducts.length > 0 ? (
                           filterProducts.map((product, index) => {
-                            let product_front_image;
-
-                            if (product?.product_images) {
-                              product_front_image =
-                                product?.product_images[0].image;
-                            } else {
-                              product_front_image = noproduct;
-                            }
-                            const safeImageUrl =
-                              typeof product.product_front_image === "string"
-                                ? product.product_front_image.trim()
+                            // let product_front_image;
+                            // if (product?.product_images) {
+                            //   product_front_image =
+                            //     product?.product_images[0].image;
+                            // } else {
+                            //   product_front_image = noproduct;
+                            // }
+                            // Clean and prepare image URL
+                            let rawImage = product?.product_images?.[0]?.image;
+                            let product_front_image =
+                              typeof rawImage === "string"
+                                ? rawImage.trim()
                                 : "";
 
+                            // fallback if no valid image
+                            const finalImageSrc =
+                              product_front_image || noproduct;
                             return (
                               <>
                                 <div className="col-lg-4  col-md-4 col-6 mb-3">
@@ -1064,7 +1075,7 @@ export default function ProductList() {
                                       >
                                         <div className="product">
                                           <Image
-                                            src={safeImageUrl}
+                                            src={finalImageSrc}
                                             width={218}
                                             height={172}
                                             className="img-fluid"
@@ -1278,18 +1289,22 @@ export default function ProductList() {
                           })
                         ) : products && products.length > 0 ? (
                           products.map((product, index) => {
-                            let product_front_image;
-
-                            if (product?.product_images) {
-                              product_front_image =
-                                product?.product_images[0].image;
-                            } else {
-                              product_front_image = noproduct;
-                            }
-                            const safeImageUrl =
-                              typeof product.product_front_image === "string"
-                                ? product.product_front_image.trim()
+                            // let product_front_image;
+                            // if (product?.product_images) {
+                            //   product_front_image =
+                            //     product?.product_images[0].image;
+                            // } else {
+                            //   product_front_image = noproduct;
+                            // }
+                            let rawImage = product?.product_images?.[0]?.image;
+                            let product_front_image =
+                              typeof rawImage === "string"
+                                ? rawImage.trim()
                                 : "";
+
+                            // fallback if no valid image
+                            const finalImageSrc =
+                              product_front_image || noproduct;
                             return (
                               <>
                                 <div className="col-lg-4  col-md-4 col-6 mb-3">
@@ -1330,7 +1345,7 @@ export default function ProductList() {
                                       >
                                         <div className="product">
                                           <Image
-                                            src={safeImageUrl}
+                                            src={finalImageSrc}
                                             width={218}
                                             height={172}
                                             className="img-fluid"

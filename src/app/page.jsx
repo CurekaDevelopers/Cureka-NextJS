@@ -185,7 +185,7 @@ export default function Home() {
 
     if (productId) {
       if (isProductPresentInCart(product)) {
-        navigate("/Cart");
+        navigate.push("/Cart");
       } else {
         // Add product with quantity
         const cartItem = {
@@ -417,6 +417,7 @@ export default function Home() {
       </Helmet>
 
       <Header />
+      {/* { showCategoryNavbar = true } */}
       <div className="container">
         <div className="row home-section">
           <div className="col-lg-9 px-lg-0">

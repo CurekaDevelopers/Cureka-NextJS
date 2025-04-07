@@ -27,6 +27,7 @@ import { env } from "../../../config/env.config";
 import { pagePaths } from "../../../utils/constants/constant";
 import lazyLoadable from "../../../utils/lazyLoadable";
 import styles from "./styles.module.scss";
+import Image from "next/image";
 const RTable = lazyLoadable(() => import("../../../components/Table/index"));
 
 ChartJS.register(
@@ -281,11 +282,11 @@ const DashboardPage = () => {
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div className={styles.circle}>
-                        <img
+                        <Image
                           className={styles.icon}
                           src={shopping}
-                          width={"25px"}
-                          height={"25px"}
+                          width={25}
+                          height={25}
                         />
                       </div>
                       <div className="ml-3">
@@ -305,11 +306,11 @@ const DashboardPage = () => {
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div className={styles.circleone}>
-                        <img
+                        <Image
                           className={styles.icon}
                           src={dollar}
-                          width={"25px"}
-                          height={"25px"}
+                          width={25}
+                          height={25}
                         />
                       </div>
                       <div className="ml-3">
@@ -331,11 +332,11 @@ const DashboardPage = () => {
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div className={styles.circletwo}>
-                        <img
+                        <Image
                           className={styles.icon}
                           src={file}
-                          width={"25px"}
-                          height={"25px"}
+                          width={25}
+                          height={25}
                         />
                       </div>
                       <div className="ml-3">
@@ -355,11 +356,11 @@ const DashboardPage = () => {
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div className={styles.circlethree}>
-                        <img
+                        <Image
                           className={styles.icon}
                           src={users}
-                          width={"25px"}
-                          height={"25px"}
+                          width={25}
+                          height={25}
                         />
                       </div>
                       <div className="ml-3">
@@ -374,34 +375,7 @@ const DashboardPage = () => {
               </div>
             </div>
           </div>
-          {/* <div className="row">
-            <div className="col-lg-3">
-              <div className={styles.dashboard}>
-                <DateTime
-                  value={selectedProRevFromDate}
-                  onChange={handleProRevFromDateChange}
-                  inputProps={{ placeholder: "Select From Date" }}
-                  dateFormat="YYYY-MM-DD"
-                  timeFormat="HH:mm:ss"
-                />
-              </div>
-            </div>
-            <div className="col-lg-3">
-              <div className={styles.dashboard}>
-                <DateTime
-                  value={selectedProRevToDate}
-                  onChange={handleProRevToDateChange}
-                  inputProps={{ placeholder: "Select To Date" }}
-                  dateFormat="YYYY-MM-DD"
-                  timeFormat="HH:mm:ss"
-                />
-              </div>
-            </div> <div className="col-lg-3">
-              <div className={styles.dashboard}>
-                <Button className={styles.addButton} onClick={exportToProRevExcel}>Export to Excel 12</Button>
-              </div>
-            </div>
-          </div> */}
+
           <div className="row">
             <div className="col-lg-4">
               <div className={styles.card}>
