@@ -279,6 +279,8 @@ export default function ProductList() {
   const handlePageClick = (event) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", event.selected + 1);
+    console.log("Pagination",selected + 1);
+    
     // setSearchParams(searchParams);
     navigate.push(`?${params.toString()}`);
   };
