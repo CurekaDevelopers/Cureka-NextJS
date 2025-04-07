@@ -44,7 +44,7 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
   };
 
   return (
-    <div style={{ position: "relative", width: "300px" }}>
+    <div style={{ position: "relative", width: "380px" }}>
       <input
         type="text"
         value={searchTerm}

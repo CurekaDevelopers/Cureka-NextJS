@@ -225,8 +225,10 @@ export default function Header({ showCategoryNavbar = true }) {
       // searchPageUrl += `&category_name=${category?.name}`;
       searchPageUrl += `&category_id=${category?.id}`;
     }
+    console.log("SeacrchPage",searchPageUrl);
+    
     //navigate(searchPageUrl);
-    navigate(encodeURI(searchPageUrl));
+    navigate.push(encodeURI(searchPageUrl));
   };
 
   const onSearchFormSubmit = (e) => {
