@@ -1061,7 +1061,7 @@ export default function ProductList() {
                                       >
                                         <div className="product">
                                           <Image
-                                            src={product_front_image}
+                                            src={product_front_image?.trim()}
                                             width={218}
                                             height={172}
                                             className="img-fluid"
@@ -1151,7 +1151,7 @@ export default function ProductList() {
                                       </p>
                                     </div>
 
-                                    <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                    {/* <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
                                       <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
@@ -1191,9 +1191,67 @@ export default function ProductList() {
                                         />{" "}
                                         {isProductPresentInCart(product)
                                           ? "Checkout"
-                                          : "Add to Cart"}
+                                          : "Add to Cart1"}
                                       </button>
-                                    </div>
+                                    </div> */}
+                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                                                  <div className="price d-flex d-lg-block">
+                                                                    {product.mrp === product.final_price ? (
+                                                                      <>
+                                                                        <p className="product-price">
+                                                                          &#8377; {product.final_price}
+                                                                        </p>
+                                                                      </>
+                                                                    ) : (
+                                                                      <>
+                                                                        <p className="discount">
+                                                                          &#8377; {product.mrp}
+                                                                        </p>
+                                                                        <p className="product-price">
+                                                                          &#8377; {product.final_price}
+                                                                        </p>
+                                                                      </>
+                                                                    )}
+                                                                  </div>
+                                    
+                                                                  <div className="d-flex-column pb-0 pb-lg-5">
+                                                                    {product?.show_stock === 1 &&
+                                                                    product?.stock_status === "Out Stock" ? (
+                                                                      <>
+                                                                        <p
+                                                                          className="text-center"
+                                                                          style={{ color: "red" }}
+                                                                        >
+                                                                          Out Of Stock
+                                                                        </p>
+                                                                        <button
+                                                                          className="cart"
+                                                                          disabled
+                                                                          style={{ opacity: 0.6 }}
+                                                                        >
+                                                                          <FontAwesomeIcon
+                                                                            icon={faShoppingCart}
+                                                                            size="lg"
+                                                                          />
+                                                                          Add to Cart
+                                                                        </button>
+                                                                      </>
+                                                                    ) : (
+                                                                      <button
+                                                                        onClick={(e) => addItemToCart(e, product)}
+                                                                        className="cart"
+                                                                      >
+                                                                        <FontAwesomeIcon
+                                                                          icon={faShoppingCart}
+                                                                          size="lg"
+                                                                        />
+                                                                        {isProductPresentInCart(product)
+                                                                          ? "Checkout"
+                                                                          : "Add to Cart"}
+                                                                      </button>
+                                                                    )}
+                                                                  </div>
+                                                                </div>
                                   </div>
                                 </div>
 
@@ -1261,7 +1319,7 @@ export default function ProductList() {
                                       >
                                         <div className="product">
                                           <Image
-                                            src={product_front_image}
+                                            src={product_front_image?.trim()}
                                             width={218}
                                             height={172}
                                             className="img-fluid"

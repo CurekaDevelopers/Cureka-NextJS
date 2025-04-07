@@ -28,7 +28,7 @@ import filterImage from "../../../../../public/images/filter.svg";
 import houseChimney from "../../../../../public/images/house-chimney.png";
 import skinbanner from "../../../../../public/images/skinbanner.png";
 import LikeIcon from "../../../../../public/svg-components/LikeIcon";
-
+import Image from "next/image";
 import { Helmet } from "react-helmet-async";
 import noproduct from "../../../../../public/images/noimageavailable.png";
 import "../../../../../styles/skin.css";
@@ -469,11 +469,11 @@ export default function ProductList() {
         <div className="container">
           <div className="d-flex home-back-section">
             <Link href={pagePaths.home}>
-              <img
+              <Image
                 className="img-fluid d-block"
                 src={houseChimney}
-                width="16px"
-                height="16px"
+                width={16}
+                height={16}
                 alt="home-icon"
               />
             </Link>
@@ -711,11 +711,11 @@ export default function ProductList() {
                                   variant="primary"
                                   onClick={handleShowFilter}
                                 >
-                                  <img
+                                  <Image
                                     className="img-fluid mr-2"
                                     src={filterImage}
-                                    width="20px"
-                                    height="20px"
+                                    width={20}
+                                    height={20}
                                     alt="filter-icon"
                                   />
                                   Filters
@@ -727,11 +727,11 @@ export default function ProductList() {
                                   variant="primary"
                                   onClick={handleShowSortBy}
                                 >
-                                  <img
+                                  <Image
                                     className="img-fluid mr-2"
                                     src={bars_filter}
-                                    width="20px"
-                                    height="20px"
+                                    width={20}
+                                    height={20}
                                     alt="filter-icon"
                                   />
                                   Sort by
@@ -1058,10 +1058,10 @@ export default function ProductList() {
                                         className=""
                                       >
                                         <div className="product">
-                                          <img
+                                          <Image
                                             src={product_front_image}
-                                            width="218px"
-                                            height="172px"
+                                            width={218}
+                                            height={172}
                                             className="img-fluid"
                                             alt="product-image"
                                           />
@@ -1074,10 +1074,10 @@ export default function ProductList() {
                                             href={generateUrl(product)}
                                             target="_blank"
                                           >
-                                            <img
+                                            <Image
                                               src={eye}
-                                              width="10px"
-                                              height="10px"
+                                              width={10}
+                                              height={10}
                                               className="d-block mx-auto eye"
                                               alt="eye"
                                             />
@@ -1149,7 +1149,7 @@ export default function ProductList() {
                                       </p>
                                     </div>
 
-                                    <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                    {/* <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
                                       <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
@@ -1191,18 +1191,76 @@ export default function ProductList() {
                                           ? "Checkout"
                                           : "Add to Cart"}
                                       </button>
-                                    </div>
+                                    </div> */}
+                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                                                  <div className="price d-flex d-lg-block">
+                                                                    {product.mrp === product.final_price ? (
+                                                                      <>
+                                                                        <p className="product-price">
+                                                                          &#8377; {product.final_price}
+                                                                        </p>
+                                                                      </>
+                                                                    ) : (
+                                                                      <>
+                                                                        <p className="discount">
+                                                                          &#8377; {product.mrp}
+                                                                        </p>
+                                                                        <p className="product-price">
+                                                                          &#8377; {product.final_price}
+                                                                        </p>
+                                                                      </>
+                                                                    )}
+                                                                  </div>
+                                    
+                                                                  <div className="d-flex-column pb-0 pb-lg-5">
+                                                                    {product?.show_stock === 1 &&
+                                                                    product?.stock_status === "Out Stock" ? (
+                                                                      <>
+                                                                        <p
+                                                                          className="text-center"
+                                                                          style={{ color: "red" }}
+                                                                        >
+                                                                          Out Of Stock
+                                                                        </p>
+                                                                        <button
+                                                                          className="cart"
+                                                                          disabled
+                                                                          style={{ opacity: 0.6 }}
+                                                                        >
+                                                                          <FontAwesomeIcon
+                                                                            icon={faShoppingCart}
+                                                                            size="lg"
+                                                                          />
+                                                                          Add to Cart
+                                                                        </button>
+                                                                      </>
+                                                                    ) : (
+                                                                      <button
+                                                                        onClick={(e) => addItemToCart(e, product)}
+                                                                        className="cart"
+                                                                      >
+                                                                        <FontAwesomeIcon
+                                                                          icon={faShoppingCart}
+                                                                          size="lg"
+                                                                        />
+                                                                        {isProductPresentInCart(product)
+                                                                          ? "Checkout"
+                                                                          : "Add to Cart"}
+                                                                      </button>
+                                                                    )}
+                                                                  </div>
+                                                                </div>
                                   </div>
                                 </div>
 
                                 {filterProducts?.length > 5 && index === 5 && (
                                   <div className="mb-3">
-                                    <img
+                                    <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
                                       src={skinbanner}
-                                      width="880px"
-                                      height="284px"
+                                      width={880}
+                                      height={284}
                                       alt="homebanner"
                                     />
                                   </div>
@@ -1258,10 +1316,10 @@ export default function ProductList() {
                                         className=""
                                       >
                                         <div className="product">
-                                          <img
+                                          <Image
                                             src={product_front_image}
-                                            width="218px"
-                                            height="172px"
+                                            width={218}
+                                            height={172}
                                             className="img-fluid"
                                             alt="Product"
                                           />
@@ -1274,10 +1332,10 @@ export default function ProductList() {
                                             href={generateUrl(product)}
                                             target="_blank"
                                           >
-                                            <img
+                                            <Image
                                               src={eye}
-                                              width="10px"
-                                              height="10px"
+                                              width={10}
+                                              height={10}
                                               className="d-block mx-auto eye"
                                               alt="eye"
                                             />
@@ -1486,8 +1544,8 @@ export default function ProductList() {
 
                                 {products?.length > 5 && index === 5 && (
                                   <div className="mb-3">
-                                    <img
-                                      className="w-100 d-block img-fluid mx-auto"
+                                    <Image
+                                      className="w-100 d-block image-fluid mx-auto"
                                       itemID={2}
                                       src={skinbanner}
                                       width="880px"
