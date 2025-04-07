@@ -198,15 +198,6 @@ export default function Productdetails() {
   const isProductPresentInCart = (product) =>
     !!cartProducts?.find?.((item) => item.product_id === product.id);
 
-  // const addItemToCart = (e, product) => {
-  //   e.preventDefault();
-  //   if (product.id) {
-  //     if (isProductPresentInCart(product)) {
-  //       navigate("/cart");
-  //     } else {
-  //       addProductToCart(product.id, 1);
-  //     }
-  //   }
   // };
 
   const addItemToCart = (e, product) => {
