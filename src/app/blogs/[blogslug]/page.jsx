@@ -25,7 +25,8 @@ import userAvatar from "../../../public/images/user_icon.svg";
 import Image from "next/image";
 import ShopHeader from "@/views/Header/ShopHeader";
 const BlogDetailsPage = () => {
-  const { blogSlug } = useParams();
+  const params = useParams();
+  const blogSlug = params?.blogSlug;
   console.log("blogSlug", blogSlug);
 
   const {
@@ -86,7 +87,6 @@ const BlogDetailsPage = () => {
   useEffect(() => {
     setCurrentURL(window.location.href);
   }, []);
-
   // Scroll Visibility Handler
   useEffect(() => {
     const handleScroll = () => {
