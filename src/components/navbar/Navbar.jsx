@@ -44,7 +44,7 @@ export default function Navbar() {
   return (
     <>
       <br />
-      <div className="categories mb-4">
+      <div className="categories">
         <div className="border-bottom">
           <div className="container">
             <div className="row">
@@ -196,7 +196,7 @@ export default function Navbar() {
                   </div>
                 </nav>
               </div>
-              <div className="col-lg-6 d-flex justify-content-start justify-content-xl-between category-banners">
+              <div className="col-lg-10 d-flex justify-content-start justify-content-xl-between category-banners">
                 <Nav defaultActiveKey="/home" as="ul" className="category-nav ">
                   {!!concerns?.length &&
                     concerns.map((item) => (

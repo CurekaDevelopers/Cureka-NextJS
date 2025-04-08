@@ -1329,7 +1329,6 @@ export default function Home() {
                       href={`/blogs/${blog.url}`}
                       key={blog.id}
                       className="text-decoration-none banner-container"
-                      // href="blogdetails"
                     >
                       <div className="blog-img">
                         <Image
