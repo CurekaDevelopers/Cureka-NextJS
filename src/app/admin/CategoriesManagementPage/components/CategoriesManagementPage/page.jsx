@@ -218,7 +218,9 @@ const CategoriesManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateCategory}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Categories
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Categories
+                      </span>
                     </Button>
                   </Link>
                 ) : (

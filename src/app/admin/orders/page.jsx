@@ -382,7 +382,9 @@ const OrderManagementPage = () => {
               {isAdminStatus == 1 ? (
                 <Link href={pagePaths.adminCreateOrder}>
                   <Button className={styles.addButton}>
-                    <MdAdd /> Add Order
+                    <span className="flex items-center gap-1">
+                      <MdAdd className="" /> Add Order
+                    </span>
                   </Button>
                 </Link>
               ) : (
@@ -396,7 +398,9 @@ const OrderManagementPage = () => {
                         {role.isAdd == 1 && (
                           <Link href={pagePaths.adminCreateOrder}>
                             <Button className={styles.addButton}>
-                              <MdAdd /> Add Order
+                              <span className="flex items-center gap-4">
+                                <MdAdd /> Add Order
+                              </span>
                             </Button>
                           </Link>
                         )}

@@ -167,7 +167,9 @@ const PopupManagementPage = () => {
               {isAdminStatus == 1 ? (
                 <Link href={pagePaths.adminPopupManagementAdd}>
                   <Button className={styles.addButton}>
-                    <MdAdd /> Add Popup
+                    <span className="flex items-center gap-1">
+                      <MdAdd /> Add Popup
+                    </span>
                   </Button>
                 </Link>
               ) : (

@@ -179,7 +179,9 @@ const SubSubSubCategoriesManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateSubSubSubCategory}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Sub Sub Sub Categories
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Sub Sub Sub Categories
+                      </span>
                     </Button>
                   </Link>
                 ) : (

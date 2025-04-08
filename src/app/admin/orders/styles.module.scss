@@ -5,7 +5,6 @@
 .card {
   min-height: 300px;
   position: relative;
-
   .cardHeader {
     margin-bottom: 12px;
     display: flex;
@@ -23,7 +22,10 @@
       color: #fff;
       background-color: #004a98;
       border-color: #004a98;
-      margin-left: 10px;
+      margin-left: 15px;
+      border-radius: 10px;
+      padding: 5px;
+      gap: 2px;
     }
   }
 }
@@ -44,4 +46,10 @@
   .errorText {
     color: rgb(255, 58, 58) !important;
   }
+}
+
+.addButton span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }

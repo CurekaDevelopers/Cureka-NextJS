@@ -215,7 +215,9 @@ const EmployeesManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateEmployee}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Employees
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Employees
+                      </span>
                     </Button>
                   </Link>
                 ) : (

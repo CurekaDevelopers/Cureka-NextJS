@@ -193,7 +193,9 @@ const ConcernsManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateConcern}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Concern
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Concern
+                      </span>
                     </Button>
                   </Link>
                 ) : (

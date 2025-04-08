@@ -229,7 +229,9 @@ const AdminBlogsPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateBlogs}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Blog
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Blog
+                      </span>
                     </Button>
                   </Link>
                 ) : (

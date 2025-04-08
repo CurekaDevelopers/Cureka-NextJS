@@ -1,41 +1,51 @@
 .container {
-    padding: 20px;
+  padding: 20px;
 }
 
 .titleColumn {
-    max-width: 700px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  max-width: 700px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card {
-    min-height: 300px;
-    position: relative;
+  min-height: 300px;
+  position: relative;
 
-    .cardHeader {
-        margin-bottom: 12px;
-        display: flex;
-        justify-content: space-between;
+  .cardHeader {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
 
-        .title {
-            font-size: 20px;
-            color: #004a98;
-            font-weight: 600;
-        }
-
-        .addButton, .addButton:hover,.addButton:focus{
-            color: #fff;
-            background-color: #004a98;
-            border-color: #004a98;
-        } 
+    .title {
+      font-size: 20px;
+      color: #004a98;
+      font-weight: 600;
     }
 
-    .noRecordFoundMessage {
-        position: absolute;
-        transform: translate(-50%, -50%);
-        top: 50%;
-        left: 50%;
-        text-align: center;
+    .addButton,
+    .addButton:hover,
+    .addButton:focus {
+      color: #fff;
+      background-color: #004a98;
+      border-color: #004a98;
     }
+  }
+
+  .noRecordFoundMessage {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    text-align: center;
+  }
+}
+.addButton span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.addButton {
+  margin-left: 10px;
 }

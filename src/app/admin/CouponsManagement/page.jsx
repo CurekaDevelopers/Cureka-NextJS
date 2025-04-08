@@ -139,7 +139,9 @@ const CouponsManagementPage = () => {
             {isAdminStatus === 1 || rolesPermission?.isAdd === 1 ? (
               <Link href={pagePaths.adminCreateCoupon}>
                 <Button className={styles.addButton}>
-                  <MdAdd /> Add Coupons
+                  <span className="flex items-center gap-1">
+                    <MdAdd /> Add Coupons
+                  </span>
                 </Button>
               </Link>
             ) : null}

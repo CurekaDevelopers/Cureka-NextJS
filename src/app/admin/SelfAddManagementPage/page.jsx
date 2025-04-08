@@ -137,7 +137,9 @@ const SelfAddManagementPage = () => {
             {(isAdminStatus === 1 || hasAddPermission) && (
               <Link href={pagePaths.adminCreateSelfAdd}>
                 <Button className={styles.addButton}>
-                  <MdAdd /> Add Self Add
+                  <span className="flex items-center gap-1">
+                    <MdAdd /> Add Self Add
+                  </span>
                 </Button>
               </Link>
             )}

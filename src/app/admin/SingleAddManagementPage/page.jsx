@@ -176,7 +176,9 @@ const SingleAddManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateSingleAdd}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Single Add
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Single Add
+                      </span>
                     </Button>
                   </Link>
                 ) : (

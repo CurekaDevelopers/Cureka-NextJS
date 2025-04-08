@@ -27,7 +27,7 @@ import noproduct from "../public/images/noimageavailable.png";
 import quote from "../public/images/quote.png";
 import secure from "../public/images/secure.png";
 import sellwithus_mobile from "../public/images/sellwithus-mobile.png";
-import sellwithus from "../public/images/sellwithus.png";
+import sellwithus from "../public/images/sell.jpg";
 import wallet from "../public/images/wallet.png";
 import LikeIcon from "../public/svg-components/LikeIcon";
 import CarouselSlider from "../components/CarouselSlider";
@@ -35,7 +35,7 @@ import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useDispatch } from "react-redux";
-
+import "../app/admin/styles/orders.module.scss";
 import {
   addProductToCart,
   addProductToWishlist,
@@ -703,7 +703,7 @@ export default function Home() {
           </div>
         )}
 
-        <div className="row">
+        <div className="row mt-5">
           <h2 className="doctors-heading">Curated by Age</h2>
         </div>
 
@@ -989,7 +989,7 @@ export default function Home() {
           <h2 className="doctors-heading">Tell Us About Your Selves</h2>
 
           {YOURSELF && (
-            <div className="row">
+            <div className="row mt-4">
               {YOURSELF.map((yourself, i) => (
                 <div
                   className={i > 3 ? "col-lg-4 col-6" : "col-lg-4 col-6"}
@@ -1017,7 +1017,7 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="row" id="topbrands">
+          <div className="row mt-5" id="topbrands">
             <div className="col-lg-12">
               <CarouselSlider
                 settings={{ slidesToShow: isMobile ? 2 : isPhone ? 3 : 6 }}
@@ -1148,11 +1148,11 @@ export default function Home() {
 
         {/* <MyBlogCarousel bitems={blogHome} /> */}
 
-        <div className="row">
+        <div className="row mt-4">
           <h3 className="doctors-heading">Customer Reviews</h3>
         </div>
 
-        <div className="customers">
+        <div className="customers mt-4">
           {/* <MyCarousel items={commonHome} /> */}
           <div id="customers-carousel">
             <CarouselSlider

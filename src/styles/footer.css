@@ -166,7 +166,8 @@
     color: #fff;
   }
   .send-btn:hover {
-    background-color: #004a98;
+    background-color: #e75204;
+    color: #fff;
   }
   .footer-border {
     border-bottom: 1px solid #6b6c86;
@@ -1521,10 +1522,10 @@
     color: #fff;
   }
   .send:hover {
-    background-color: #004a98;
+    background-color: #e75204;
   }
   .send-btn:hover {
-    background-color: #004a98;
+    background-color: #e75204;
   }
 
   .footer-border {

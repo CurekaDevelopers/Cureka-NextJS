@@ -244,7 +244,9 @@ const ProductManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateProducts}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Product
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Product
+                      </span>
                     </Button>
                   </Link>
                 ) : (

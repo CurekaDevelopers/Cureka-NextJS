@@ -184,7 +184,9 @@ export default function CuratedAddManagementPage() {
               {isAdminStatus === 1 ? (
                 <Link href={pagePaths.adminCreateCuratedAdd}>
                   <Button className={styles.addButton}>
-                    <MdAdd /> Add Curated Add
+                    <span className="flex items-center gap-1">
+                      <MdAdd /> Add Curated Add
+                    </span>
                   </Button>
                 </Link>
               ) : (

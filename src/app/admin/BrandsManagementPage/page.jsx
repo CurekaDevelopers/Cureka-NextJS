@@ -210,7 +210,9 @@ const BrandsManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateBrand}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Brand
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Brand
+                      </span>
                     </Button>
                   </Link>
                 ) : (

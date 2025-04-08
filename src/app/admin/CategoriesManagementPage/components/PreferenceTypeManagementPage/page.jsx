@@ -173,7 +173,9 @@ const PreferenceTypeManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreatePreferenceType}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Preference Type
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Preference Type
+                      </span>
                     </Button>
                   </Link>
                 ) : (

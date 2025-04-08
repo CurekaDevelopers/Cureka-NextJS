@@ -1,48 +1,57 @@
 .container {
-    padding: 20px;
+  padding: 20px;
 }
 
 .titleColumn {
-    max-width: 700px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  max-width: 700px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card {
-    min-height: 300px;
-    position: relative;
+  min-height: 300px;
+  position: relative;
 
-    .cardHeader {
-        margin-bottom: 12px;
-        display: flex;
-        justify-content: space-between;
+  .cardHeader {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
 
-    }
-
-    .noRecordFoundMessage {
-        position: absolute;
-        transform: translate(-50%, -50%);
-        top: 50%;
-        left: 50%;
-        text-align: center;
-    }
+  .noRecordFoundMessage {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    text-align: center;
+  }
 }
 
 .title {
-    font-size: 20px;
-    color: #004a98;
-    font-weight: 600;
+  font-size: 20px;
+  color: #004a98;
+  font-weight: 600;
 }
 
-.addButton, .addButton:hover,.addButton:focus{
-    color: #fff;
-    background-color: #004a98;
-    border-color: #004a98;
-
+.addButton,
+.addButton:hover,
+.addButton:focus {
+  color: #fff;
+  background-color: #004a98;
+  border-color: #004a98;
 }
 .searchInput {
-    padding: 0.375rem 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.addButton span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.addButton {
+  margin-left: 10px;
 }

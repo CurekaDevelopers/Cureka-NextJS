@@ -1,36 +1,42 @@
 .container {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .titleColumn {
-    max-width: 700px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  max-width: 700px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card {
-    min-height: 300px;
-    position: relative;
+  min-height: 300px;
+  position: relative;
 
-    .cardHeader {
-        margin-bottom: 12px;
-        display: flex;
-        justify-content: space-between;
+  .cardHeader {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
 
-        .title {
-            // font-weight: 600;
-            font-size: 14px;
-        }
-
-        .addButton {}
+    .title {
+      // font-weight: 600;
+      font-size: 14px;
     }
 
-    .noRecordFoundMessage {
-        position: absolute;
-        transform: translate(-50%, -50%);
-        top: 50%;
-        left: 50%;
-        text-align: center;
+    .addButton {
     }
+  }
+
+  .noRecordFoundMessage {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    text-align: center;
+  }
+}
+.addButton span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }

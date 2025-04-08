@@ -210,10 +210,10 @@ export default function Navbar() {
                           className="category-link text-decoration-none"
                         >
                           <div className="category-images text-center">
-                            <Image
+                            <img
                               src={item.image}
-                              width={80}
-                              height={80}
+                              width="80px"
+                              height="80px"
                               alt="skin-logo"
                               className="category-img"
                             />

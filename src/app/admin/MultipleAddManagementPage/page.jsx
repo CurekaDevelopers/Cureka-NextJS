@@ -167,7 +167,9 @@ const MultipleAddManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateMultipleAdd}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Multiple Add
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Multiple Add
+                      </span>
                     </Button>
                   </Link>
                 ) : (
