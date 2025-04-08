@@ -157,7 +157,10 @@ const UserLogin = ({ handleCloseLoginModel }) => {
       setLoading(false);
     } catch (error) {
       if (error.response?.status === 401) {
-        setMsg(error.response?.data?.message || "Invalid credentials. Please try again.");
+        setMsg(
+          error.response?.data?.message ||
+            "Invalid credentials. Please try again."
+        );
       } else {
         setMsg("An error occurred. Please try again.");
       }
@@ -233,13 +236,7 @@ const UserLogin = ({ handleCloseLoginModel }) => {
                 {mailmsg && (
                   <>
                     <div className="alert alert-success  mt-4">
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="alert"
-                      >
-                        &times;
-                      </button>
+                      <button type="button" className="close"></button>
                       {mailmsg}
                     </div>
                   </>
