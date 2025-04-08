@@ -90,7 +90,7 @@ export default function ProductList() {
   const [filterProducts, setFilterProducts] = useState([]);
   const [values, setValues] = useState([0, 10000]);
   const [priceRange, setPriceRange] = useState([0, 10000]);
-
+  const [pageNumber, setpageNumber] = useState();
   const [isFixed, setIsFixed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -269,7 +269,11 @@ export default function ProductList() {
     console.log(params);
     console.log("ddd");
     // setSearchParams(params);
-    navigate.push(`?${params.toString()}`);
+   // 🧼 Reset page on any filter
+   setpageNumber(1);
+   params.delete("page");
+   // setSearchParams(searchParams);
+   navigate.push(`?${params.toString()}`);
   };
 
   const isFilterSet = (categoryName, value) => {
@@ -277,8 +281,16 @@ export default function ProductList() {
     return values.includes(value);
   };
   const handlePageClick = (event) => {
-    searchParams.set("page", event.selected + 1);
-    setSearchParams(searchParams);
+    // searchParams.set("page", event.selected + 1);
+    // setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", event.selected + 1);
+    const page = event.selected + 1
+    setpageNumber(page);
+    console.log('Pagination',event.selected);
+    
+    // setSearchParams(searchParams);
+    navigate.push(`?${params.toString()}`);
   };
 
   const isProductPresentInWishlist = (product) =>
@@ -328,6 +340,11 @@ export default function ProductList() {
       setFilterData((pre) => ({ ...pre, [filterKey]: modifyData }));
       setPaginate(paginate - 1);
     }
+    // 🧼 Reset page on any filter
+  setpageNumber(1);
+  const params = new URLSearchParams(searchParams.toString());
+  params.delete("page");
+  navigate.push(`?${params.toString()}`);
   };
 
   const [showFilter, setShowFilter] = useState(false);
