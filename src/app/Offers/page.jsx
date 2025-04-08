@@ -13,6 +13,7 @@ import "../../styles/offers.css";
 import { fetchCoupons, fetchMultipleAdds } from "../../redux/action";
 import { pagePaths } from "../../utils/constants/constant";
 import Image from "next/image";
+
 import noimage from "../../public/images/noimageavailable.png";
 import ScrollToTop from "../../views/ScrollToTop";
 
@@ -83,7 +84,7 @@ export default function Offers() {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/assets/images/logo.svg"
+          content="https://frontend.cureka.com/src/assets/images/logo.svg"
         />
       </Helmet>
       {/* <h1 style={{ display: 'none' }}>Cureka Offers & Coupon Codes</h1> */}
@@ -152,52 +153,62 @@ export default function Offers() {
               </div>
 
               <h2 className="all-offers mt-3">All Offers</h2>
-
               <div className="row">
                 {localStateCoupons.map((coupon, i) => (
-                  <div className="col-lg-4 mb-4" key={i}>
-                    <div className="card-image">
-                      <div className="d-flex">
-                        <div className="discount-img">
-                          <img
-                            className="img-fluid dis-img"
+                  <div className="col-lg-4 col-md-6 mb-4" key={i}>
+                    <div className="card-image p-3 border rounded shadow-sm h-100">
+                      {/* Top Row: Image & Description */}
+                      <div className="d-flex align-items-center mb-3">
+                        <div className="me-3">
+                          <Image
+                            className="img-fluid"
                             src={coupon.image ? coupon.image : noimage}
-                            width="97px"
-                            height="97px"
-                            alt="offercardone"
+                            width={97}
+                            height={97}
+                            alt="Coupon"
+                            style={{ borderRadius: "8px", objectFit: "cover" }}
                           />
                         </div>
 
-                        <div className="discount-text d-flex align-self-center">
-                          <p className="discount-paraone">
+                        <div className="flex-grow-1">
+                          <p
+                            className="mb-0 fw-semibold"
+                            style={{ fontSize: "0.95rem" }}
+                          >
                             {coupon.description}
                           </p>
                         </div>
                       </div>
 
-                      <div className="d-flex justify-content-between">
-                        <div className="bottom-code">
-                          <p className="code">
+                      {/* Bottom Row: Coupon Code & Copy */}
+                      <div className="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                        <div>
+                          <span
+                            className="text-muted color-secondary"
+                            style={{ fontSize: "18px" }}
+                          >
                             Code:
-                            <span className="codewell">
-                              {coupon.coupon_code}
-                            </span>
-                          </p>
+                          </span>{" "}
+                          <span
+                            className="fw-bold text-primary gap-2"
+                            style={{ fontSize: "17px" }}
+                          >
+                            {coupon.coupon_code}
+                          </span>
                         </div>
 
-                        <div className="top-code">
-                          <p
-                            className="copycode"
-                            onClick={() => copyToClipboard(coupon.coupon_code)}
-                          >
-                            Copy Code
-                          </p>
-                        </div>
+                        <button
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={() => copyToClipboard(coupon.coupon_code)}
+                        >
+                          Copy Code
+                        </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+
               <div className="load">
                 {showLoadMore && (
                   <a

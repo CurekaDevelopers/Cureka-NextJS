@@ -787,25 +787,33 @@ export default function Home() {
           <div className="d-flex justify-content-between">
             <h2 className="doctors-heading mt-0">Top Picks</h2>
             <Link
-              className="text-decoration-none align-self-center"
               href="/top-picks"
               target="_blank"
+              className="text-decoration-none align-self-center"
             >
               <p className="all-deals">All Deals</p>
             </Link>
           </div>
+
           <div className="row">
             <div className="col-lg-12">
               <div className="container-fluid p-0" id="new-arrivals">
                 <CarouselSlider
                   settings={{ slidesToShow: isPhone ? 2 : isMobile ? 3 : 4 }}
                 >
-                  {!!topArrivals?.length &&
-                    topArrivals?.map((product) => {
-                      let product_front_na_image =
-                        product?.product_images?.length > 0
-                          ? product?.product_images[0].image
-                          : noproduct;
+                  {topArrivals?.length > 0 &&
+                    topArrivals.map((product) => {
+                      const productImage =
+                        product?.product_images?.[0]?.image || noproduct;
+
+                      const rating = Array.isArray(product.product_reviews)
+                        ? (
+                            product.product_reviews.reduce(
+                              (acc, review) => acc + (review.rating || 0),
+                              0
+                            ) / product.product_reviews.length
+                          ).toFixed(1)
+                        : "0";
 
                       return (
                         <div key={product.id} className="item">
@@ -814,7 +822,7 @@ export default function Home() {
                               <div className="sale d-lg-block d-none">
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
-                                    -{Number(product.discount_percent)} %
+                                    -{product.discount_percent} %
                                   </p>
                                 ) : product.discount_amount !== 0 ? (
                                   <p className="sale-heading">
@@ -823,18 +831,15 @@ export default function Home() {
                                 ) : null}
                               </div>
 
-                              <Link
-                                href={generateUrl(product)}
-                                key={product.id}
-                                target="_blank"
-                              >
+                              <Link href={generateUrl(product)} target="_blank">
                                 <div className="product">
                                   <Image
-                                    src={product_front_na_image}
+                                    src={productImage}
                                     width={218}
                                     height={172}
                                     className="img-fluid"
                                     alt="Product"
+                                    unoptimized={false}
                                   />
                                 </div>
                               </Link>
@@ -885,6 +890,7 @@ export default function Home() {
                                   {product.category_name}
                                 </Link>
                               </p>
+
                               <Link
                                 href={generateUrl(product)}
                                 target="_blank"
@@ -896,18 +902,7 @@ export default function Home() {
                               </Link>
 
                               <div className="rating d-lg-flex d-none">
-                                <p className="rating-number">
-                                  {Array.isArray(product?.product_reviews) &&
-                                  product.product_reviews.length > 0
-                                    ? (
-                                        product.product_reviews.reduce(
-                                          (acc, review) =>
-                                            acc + (review.rating || 0),
-                                          0
-                                        ) / product.product_reviews.length
-                                      ).toFixed(1)
-                                    : "0"}
-                                </p>
+                                <p className="rating-number">{rating}</p>
                               </div>
 
                               <div className="d-flex">
@@ -926,11 +921,9 @@ export default function Home() {
                             <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
                               <div className="price d-flex d-lg-block">
                                 {product.mrp === product.final_price ? (
-                                  <>
-                                    <p className="product-price">
-                                      &#8377; {product.final_price}
-                                    </p>
-                                  </>
+                                  <p className="product-price">
+                                    &#8377; {product.final_price}
+                                  </p>
                                 ) : (
                                   <>
                                     <p className="discount">
@@ -990,6 +983,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+
         <br />
         <div className="row">
           <h2 className="doctors-heading">Tell Us About Your Selves</h2>
