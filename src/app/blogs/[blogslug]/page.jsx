@@ -101,6 +101,9 @@ const BlogDetailsPage = () => {
     postComment({ ...data, blogId: blogData?.id });
     reset();
   };
+  useEffect(() => {
+    setCurrentURL(window.location.href);
+  }, []);
 
   return (
     <>
@@ -135,11 +138,15 @@ const BlogDetailsPage = () => {
         <div className="row">
           <div className="col-lg-9">
             {/* Blog Image */}
-            <img
-              src={blogData.image}
-              className="img-fluid blogDetailsImage"
-              alt="blog_image"
-            />
+            {blogData?.image && (
+              <Image
+                src={blogData.image}
+                alt="blog_image"
+                width={800}
+                height={400}
+                className="img-fluid blogDetailsImage"
+              />
+            )}
 
             {/* Blog Meta Info */}
             <div className="d-flex align-items-center user-space">
