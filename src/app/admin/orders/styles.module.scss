@@ -1,17 +1,5 @@
 .container {
   padding: 20px;
-  .searchInput {
-    padding: 0.375rem 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-  }
-}
-
-.titleColumn {
-  max-width: 700px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .card {
@@ -38,19 +26,22 @@
       margin-left: 10px;
     }
   }
-  .addButton,
-  .addButton:hover,
-  .addButton:focus {
+}
+
+.formItems {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .submitButton {
+    margin: auto;
+    width: 200px;
     color: #fff;
     background-color: #004a98;
     border-color: #004a98;
-    margin-left: 10px;
   }
-  .noRecordFoundMessage {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    text-align: center;
+
+  .errorText {
+    color: rgb(255, 58, 58) !important;
   }
 }
