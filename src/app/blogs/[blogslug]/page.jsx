@@ -23,6 +23,7 @@ import houseIcon from "../../../public/images/house-chimney.png";
 import userIcon from "../../../public/images/user.svg";
 import userAvatar from "../../../public/images/user_icon.svg";
 import Image from "next/image";
+import ShopHeader from "@/views/Header/ShopHeader";
 const BlogDetailsPage = () => {
   const { blogSlug } = useParams();
   console.log("blogSlug", blogSlug);
@@ -115,7 +116,7 @@ const BlogDetailsPage = () => {
         <meta property="og:image" content={blogData?.thumbnail_image} />
       </Helmet>
 
-      <BlogsHeader />
+      <ShopHeader />
 
       <div className="container">
         {/* Breadcrumb Navigation */}

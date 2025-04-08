@@ -170,6 +170,7 @@ export default function BlogHomePage() {
       {/* <BlogsHeader /> */}
       <ShopHeader />
       <br />
+
       <div className="container-fluid px-0">
         <div className="container">
           <div className="d-flex home-back-section pt-lg-4 pt-1">
