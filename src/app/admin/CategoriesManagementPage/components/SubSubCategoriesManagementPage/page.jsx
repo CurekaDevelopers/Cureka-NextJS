@@ -28,22 +28,18 @@ const SubSubSubCategoriesManagementPage = () => {
   const dispatch = useDispatch();
   const navigate = useRouter();
 
-  useEffect(() => {
-    dispatch(fetchSubsubCategories());
-  }, [dispatch]);
-
-  const onDeleteButtonClicked = (category) => {
-    setCategoryToDelete(category);
+  const onDeleteButtonClicked = (brand) => {
+    setCategoryToDelete(brand);
   };
 
   const onDeleteConfirmed = () => {
-    if (categoryToDelete?.id) {
+    if (categoryToDelete?.id && subSubCategories?.length) {
       dispatch(
         deleteSubSubCategories(categoryToDelete.id, () => {
-          const updatedList = subSubCategories.filter(
+          const updatedConcernsList = subSubCategories.filter(
             (item) => item.id !== categoryToDelete.id
           );
-          dispatch(setSubSubCategories(updatedList));
+          dispatch(setSubSubCategories(updatedConcernsList || []));
           setCategoryToDelete(null);
         })
       );
@@ -52,15 +48,23 @@ const SubSubSubCategoriesManagementPage = () => {
 
   const onEdit = useCallback(
     (id) => {
-      navigate.push(pagePaths.adminCreateSubSubCategoryEdit.replace(":id", id));
+      navigate(pagePaths.adminCreateSubSubCategoryEdit.replace(":id", id));
     },
     [navigate]
+  );
+  const closeDeleteConfirmModal = () => {
+    setCategoryToDelete(null);
+  };
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const rolesPermission = userRoles.filter(
+    (item) => item.name == "Sub Sub Category"
   );
 
   const columns = useMemo(
     () => [
       {
-        Header: "ID",
+        Header: "id",
         accessor: "id",
       },
       {
@@ -75,15 +79,11 @@ const SubSubSubCategoriesManagementPage = () => {
         Header: "Image",
         accessor: "image",
         Cell: ({ cell }) => {
-          const imageSrc = cell.row.original.image;
-          return imageSrc ? (
+          return (
             <img
               style={{ height: 50, width: 50 }}
-              src={imageSrc}
-              alt="Category"
+              src={cell.row.original.image}
             />
-          ) : (
-            <span>No Image</span>
           );
         },
       },
@@ -91,19 +91,29 @@ const SubSubSubCategoriesManagementPage = () => {
         Header: "Name",
         accessor: "name",
         Cell: ({ cell }) => {
-          const categorySlug = cell.row.original.category_slug || "";
-          const subCategorySlug = cell.row.original.sub_category_slug || "";
-          const nameSlug = cell.row.original.slug || "";
+          const original = cell.row.original;
+
+          const category_name = original.category_slug
+            ? original.category_slug.toLowerCase().replace(/\s+/g, "-")
+            : "unknown-category";
+
+          const sub_category_name = original.sub_category_slug
+            ? original.sub_category_slug.toLowerCase().replace(/\s+/g, "-")
+            : "unknown-sub-category";
+
+          const name = original.slug
+            ? original.slug.toLowerCase().replace(/\s+/g, "-")
+            : "unknown-name";
 
           return (
-            <Link
+            <a
               className={styles.titleColumn}
-              href={`/product-category/${categorySlug.toLowerCase()}/${subCategorySlug.toLowerCase()}/${nameSlug.toLowerCase()}`}
+              href={`/product-category/${category_name}/${sub_category_name}/${name}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {cell.row.original.name}
-            </Link>
+              {original.name || "Unnamed"}
+            </a>
           );
         },
       },
@@ -113,93 +123,156 @@ const SubSubSubCategoriesManagementPage = () => {
       },
       {
         Header: "Actions",
-        accessor: "actions",
-        Cell: ({ cell }) => (
-          <div>
-            {isAdminStatus === 1 ? (
-              <>
-                <EditButton onClick={() => onEdit(cell.row.original.id)} />
-                <DeleteButton
-                  onClick={() => onDeleteButtonClicked(cell.row.original)}
-                />
-              </>
-            ) : (
-              userRoles.map((role) => (
-                <div key={role.roleId}>
-                  {role.isUpdate === 1 && (
-                    <EditButton onClick={() => onEdit(cell.row.original.id)} />
-                  )}
-                  {role.isDelete === 1 && (
-                    <DeleteButton
-                      onClick={() => onDeleteButtonClicked(cell.row.original)}
-                    />
-                  )}
+        accessor: "Actions",
+        Cell: ({ cell }) => {
+          return (
+            <div>
+              {isAdminStatus == 1 ? (
+                <div>
+                  <EditButton onClick={() => onEdit(cell.row.original.id)} />
+                  <DeleteButton
+                    onClick={() => onDeleteButtonClicked(cell.row.original)}
+                  />
                 </div>
-              ))
-            )}
-          </div>
-        ),
+              ) : (
+                <>
+                  {rolesPermission &&
+                    rolesPermission.map((role) => (
+                      <div key={role.roleId}>
+                        {role.isUpdate == 1 && (
+                          <EditButton
+                            onClick={() => onEdit(cell.row.original.id)}
+                          />
+                        )}
+                        {role.isDelete == 1 && (
+                          <DeleteButton
+                            onClick={() =>
+                              onDeleteButtonClicked(cell.row.original)
+                            }
+                          />
+                        )}
+                      </div>
+                    ))}
+                </>
+              )}
+            </div>
+          );
+        },
       },
     ],
-    [onEdit, isAdminStatus, userRoles]
+    [onEdit]
   );
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const filteredCategories = useMemo(
-    () =>
-      subSubCategories.filter((category) =>
-        [
-          category.name,
-          category.category_name,
-          category.sub_category_name,
-        ].some((field) =>
-          field?.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      ),
-    [subSubCategories, searchTerm]
-  );
+  useEffect(() => {
+    dispatch(fetchSubsubCategories());
+  }, [dispatch]);
+
+  // const mappedSubSubCategories = subSubCategories.map((item) => {
+  //   return {
+  //     ...item,
+  //   };
+  // });
+
+  const mappedSubSubCategories = useMemo(() => {
+    if (!searchTerm.trim()) return subSubCategories;
+
+    const search = searchTerm.toLowerCase();
+
+    return subSubCategories.filter((brand) => {
+      const name = brand.name?.toLowerCase() || "";
+      const category = brand.category_name?.toLowerCase() || "";
+      const subCategory = brand.sub_category_name?.toLowerCase() || "";
+
+      return (
+        name.includes(search) ||
+        category.includes(search) ||
+        subCategory.includes(search)
+      );
+    });
+  }, [subSubCategories, searchTerm]);
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredCategories);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "SubSubCategories");
-    XLSX.writeFile(workbook, "subsubCategories.xlsx");
+    try {
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(mappedSubSubCategories); // Use filteredBrands here
+      XLSX.utils.book_append_sheet(workbook, worksheet, "subsubCategories");
+      XLSX.writeFile(workbook, "subsubCategories.xlsx");
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+    }
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <ConfirmationModel
         showModal={!!categoryToDelete}
-        ctaTitle="Delete"
-        label="Delete Confirmation"
-        message={`Are you sure you want to delete ${categoryToDelete?.name} (ID: ${categoryToDelete?.id})?`}
-        hideModal={() => setCategoryToDelete(null)}
+        ctaTitle={"Delete"}
+        label={"Delete Confirmation"}
+        message={`Are you sure you want to delete the sub sub sub category ${categoryToDelete?.name}, Id: ${categoryToDelete?.id}`}
+        hideModal={closeDeleteConfirmModal}
         confirmModal={onDeleteConfirmed}
       />
-      <Card className={styles.card}>
-        <div className={styles.cardHeader}>
-          <p className={styles.title}>Sub Sub Categories Management</p>
+      <div className={styles.container}>
+        <div>
+          <Card className={styles.card}>
+            <div className={styles.cardHeader}>
+              <p className={styles.title}>Sub Sub Categories Management</p>
+            </div>
+            <div className="d-flex">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={styles.searchInput}
+              />
+              <div className="ml-auto">
+                <Button className={styles.addButton} onClick={exportToExcel}>
+                  Export to Excel
+                </Button>
+                {isAdminStatus == 1 ? (
+                  <Link href={pagePaths.adminCreateSubSubCategory}>
+                    <Button className={styles.addButton}>
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Sub Sub Categories
+                      </span>
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Button
+                      className={styles.addButton}
+                      onClick={exportToExcel}
+                    >
+                      Export to Excel
+                    </Button>
+                    {rolesPermission &&
+                      rolesPermission.map((role) => (
+                        <div key={role.roleId}>
+                          {role.isAdd == 1 && (
+                            <Link href={pagePaths.adminCreateSubSubCategory}>
+                              <Button className={styles.addButton}>
+                                <MdAdd /> Add Sub Sub Categories
+                              </Button>
+                            </Link>
+                          )}
+                        </div>
+                      ))}
+                  </>
+                )}
+              </div>
+            </div>
+            {mappedSubSubCategories?.length ? (
+              <RTable columns={columns} data={mappedSubSubCategories} />
+            ) : (
+              <p className={styles.noRecordFoundMessage}>
+                No Sub Sub Categories found, please add new sub sub category.
+              </p>
+            )}
+          </Card>
         </div>
-        <div className="d-flex">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={styles.searchInput}
-          />
-          <Button className={styles.addButton} onClick={exportToExcel}>
-            Export to Excel
-          </Button>
-        </div>
-        {filteredCategories.length ? (
-          <RTable columns={columns} data={filteredCategories} />
-        ) : (
-          <p className={styles.noRecordFoundMessage}>No categories found.</p>
-        )}
-      </Card>
-    </div>
+      </div>
+    </>
   );
 };
-
 export default SubSubSubCategoriesManagementPage;

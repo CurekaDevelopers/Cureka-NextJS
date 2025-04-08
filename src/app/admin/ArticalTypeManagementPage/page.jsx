@@ -191,7 +191,9 @@ const ArticalTypeManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateArticalType}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add Article Type
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add Article Type
+                      </span>
                     </Button>
                   </Link>
                 ) : (

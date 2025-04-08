@@ -46,3 +46,11 @@
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
+.addButton span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.addButton {
+  margin-left: 10px;
+}

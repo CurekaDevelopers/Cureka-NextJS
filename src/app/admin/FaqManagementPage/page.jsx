@@ -181,7 +181,9 @@ const FaqManagementPage = () => {
                 {isAdminStatus == 1 ? (
                   <Link href={pagePaths.adminCreateFaq}>
                     <Button className={styles.addButton}>
-                      <MdAdd /> Add FAQ
+                      <span className="flex items-center gap-1">
+                        <MdAdd /> Add FAQ
+                      </span>
                     </Button>
                   </Link>
                 ) : (
