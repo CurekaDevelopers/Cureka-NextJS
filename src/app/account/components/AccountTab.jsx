@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../../../redux/slices/auth.slice";
 import api from "../../../utils/api.utils";
 import { apiUrls } from "../../../utils/constants/api.constants";
-
+import Image from "next/image";
 const AccountTab = () => {
   const { userDetails } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,135 +116,99 @@ const AccountTab = () => {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/assets/images/logo.svg"
+          content="https://frontend.cureka.com/src/assets/images/logo.svg"
         />
       </Helmet>
-      <div
-        className="tab-pane fade show active"
-        id="account-tab"
-        role="tabpanel"
-        aria-labelledby="account-vertical-tab"
-      >
-        <div className="account-section" id="edit-address">
-          <h1 className="order-heading">Account Details</h1>
 
-          <div className="row address-two px-0 px-lg-3">
-            <div className="col-lg-12">
-              <div className="row">
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <label className="firstname" htmlFor="firstname">
-                      First Name
-                      <span className="required-star">*</span>
-                    </label>
+      <div className="account-section p-4 bg-white rounded shadow-sm">
+        <h2 className="mb-4 text-primary">Account Details</h2>
 
-                    <input
-                      className="form-control"
-                      type="text"
-                      id="firstname"
-                      name="firstname"
-                      placeholder="Enter your First Name"
-                      value={userDetails?.first_name || ""}
-                      onChange={(e) => {
-                        handleChange(e, "first_name");
-                      }}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </div>
+        <div className="row g-3">
+          {/* First Name */}
+          <div className="col-md-6">
+            <label htmlFor="firstname" className="form-label fw-semibold">
+              First Name <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              id="firstname"
+              className="form-control"
+              placeholder="Enter your First Name"
+              value={userDetails?.first_name || ""}
+              onChange={(e) => handleChange(e, "first_name")}
+              disabled={isLoading}
+            />
+          </div>
 
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <label className="lastname" htmlFor="lastname">
-                      Last Name
-                      <span className="required-star">*</span>
-                    </label>
+          {/* Last Name */}
+          <div className="col-md-6">
+            <label htmlFor="lastname" className="form-label fw-semibold">
+              Last Name <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              id="lastname"
+              className="form-control"
+              placeholder="Enter your Last Name"
+              value={userDetails?.last_name || ""}
+              onChange={(e) => handleChange(e, "last_name")}
+              disabled={isLoading}
+            />
+          </div>
 
-                    <input
-                      className="form-control"
-                      type="text"
-                      id="lastname"
-                      name="lastname"
-                      placeholder="Enter your Last Name"
-                      value={userDetails?.last_name || ""}
-                      onChange={(e) => {
-                        handleChange(e, "last_name");
-                      }}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </div>
-              </div>
+          {/* Email */}
+          <div className="col-md-6">
+            <label htmlFor="email" className="form-label fw-semibold">
+              Email Address <span className="text-danger">*</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="form-control"
+              placeholder="Enter your Email Address"
+              value={userDetails?.email || ""}
+              onChange={(e) => handleChange(e, "email")}
+              disabled={isLoading}
+            />
+          </div>
 
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className="form-group">
-                    <label className="email" htmlFor="last_name">
-                      Email Address
-                      <span className="required-star">*</span>
-                    </label>
+          {/* Mobile Number */}
+          <div className="col-md-6">
+            <label htmlFor="mobileno" className="form-label fw-semibold">
+              Mobile Number <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              id="mobileno"
+              className="form-control"
+              placeholder="Enter your Mobile Number"
+              value={userDetails?.mobile_number || ""}
+              onChange={(e) => handleChange(e, "mobile_number")}
+              disabled={isLoading}
+            />
+          </div>
 
-                    <input
-                      className="form-control"
-                      type="text"
-                      id="email"
-                      name="email"
-                      placeholder="Enter your mail address"
-                      value={userDetails?.email || ""}
-                      onChange={(e) => {
-                        handleChange(e, "email");
-                      }}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-lg-12">
-                  <div className="form-group">
-                    <label className="mobileno" htmlFor="mobileno">
-                      Mobile Number
-                      <span className="required-star">*</span>
-                    </label>
-
-                    <input
-                      className="form-control"
-                      type="text"
-                      id="mobileno"
-                      name="mobileno"
-                      placeholder="Enter your Mobile Number"
-                      value={userDetails?.mobile_number || ""}
-                      onChange={(e) => {
-                        handleChange(e, "mobile_number");
-                      }}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-lg-12 mt-3">
-                  <button
-                    className="text-decoartion-none rate-btn"
-                    onClick={handleSave}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span>
-                        <span
-                          className="spinner-border spinner-border-sm"
-                          role="status"
-                          aria-hidden="true"
-                        ></span>
-                        Saving...
-                      </span>
-                    ) : (
-                      "Save Changes"
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
+          {/* Save Button */}
+          <div className="col-12 mt-3">
+            <button
+              className="btns btn-primary px-4 py-2"
+              onClick={handleSave}
+              disabled={isLoading}
+              style={{ backgroundColor: "#007bff", color: "#black" }}
+            >
+              {isLoading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Saving...
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </button>
           </div>
         </div>
       </div>

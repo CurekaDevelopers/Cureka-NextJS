@@ -22,6 +22,7 @@ import {
   updateUserAddress,
 } from "../../../redux/action/index";
 import { initialValues, validationSchema } from "./helper";
+import Image from "next/image";
 
 const CustomToggleButton = ({ value, children, onClick, isSelected }) => (
   <button
@@ -239,12 +240,12 @@ const AddressTab = () => {
                                   className="d-flex"
                                   onClick={() => onEditAddressClicked(item)}
                                 >
-                                  <img
+                                  <Image
                                     className="m-2 align-self-center"
                                     src={pencil}
                                     alt="pencil"
-                                    width="12px"
-                                    height="12px"
+                                    width={12}
+                                    height={12}
                                   />
                                 </div>
                               </div>
