@@ -13,6 +13,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "backend.cureka.com",
+      },
+      {
+        protocol: "https",
         hostname: "cureka-static.s3.ap-south-1.amazonaws.com",
         pathname: "/new-uploads/**",
       },

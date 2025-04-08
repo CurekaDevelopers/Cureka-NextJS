@@ -314,13 +314,49 @@ const MyWalletTab = () => {
     }
   };
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const order_id = Date.now();
+  //   const formData = {
+  //     amount: userAmount,
+  //     order_id: order_id,
+  //     phone: userDetails?.mobile_number,
+  //   };
+  //   try {
+  //     const response = await axios.post(
+  //       `${env.REACT_SERVER_BASE_URL}/api/v1/walletpayment`,
+  //       formData
+  //     );
+  //     const sessionData = response.data;
+
+  //     if (sessionData?.sessionId) {
+  //       const checkoutOptions = {
+  //         paymentSessionId: sessionData.sessionId,
+  //         returnUrl: urlJoin("http://frontend.cureka.com", pagePaths.myWallet),
+  //       };
+
+  //       initializeCashfree()
+  //         .then((cashfree) => {
+  //           cashfree.checkout(checkoutOptions).then(function (result) {
+  //             if (result.error) alert(result.error.message);
+  //           });
+  //         })
+  //         .catch((error) => console.error("Cashfree init error:", error));
+  //     }
+  //   } catch (error) {
+  //     console.error("Payment request failed:", error);
+  //   }
+
+  //   handleClose(); // Close the modal
+  // };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const order_id = Date.now();
     const formData = {
       amount: userAmount,
       order_id: order_id,
-      phone: userDetails?.mobile_number,
+      phone: userDetails && userDetails.mobile_number,
     };
     try {
       const response = await axios.post(
@@ -328,26 +364,34 @@ const MyWalletTab = () => {
         formData
       );
       const sessionData = response.data;
-
-      if (sessionData?.sessionId) {
+      console.log(sessionData && sessionData.sessionId);
+      if (sessionData && sessionData.sessionId) {
         const checkoutOptions = {
-          paymentSessionId: sessionData.sessionId,
+          paymentSessionId: sessionData && sessionData.sessionId,
+          // returnUrl: urlJoin(env.REACT_FRONTEND_BASE_URL, pagePaths.myWallet),
           returnUrl: urlJoin("http://frontend.cureka.com", pagePaths.myWallet),
+          // returnUrl: urlJoin("http://localhost:3000", pagePaths.myWallet),
         };
-
+        // Call cash free the function
         initializeCashfree()
           .then((cashfree) => {
             cashfree.checkout(checkoutOptions).then(function (result) {
-              if (result.error) alert(result.error.message);
+              if (result.error) {
+                alert(result.error.message);
+              }
+              if (result.redirect) {
+                console.log("Redirection");
+              }
             });
           })
-          .catch((error) => console.error("Cashfree init error:", error));
+          .catch((error) => {
+            console.error("Error initializing Cashfree:", error);
+          });
       }
     } catch (error) {
-      console.error("Payment request failed:", error);
+      console.error("Response data:", error);
     }
-
-    handleClose(); // Close the modal
+    handleClose(); // Close the modal after submission
   };
 
   return (

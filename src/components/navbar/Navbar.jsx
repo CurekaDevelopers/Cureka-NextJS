@@ -11,6 +11,7 @@ import {
   fetchConcernsProducts,
   fetchCategories,
 } from "../../redux/action";
+import Image from "next/image";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -197,37 +198,36 @@ export default function Navbar() {
                 </nav>
               </div>
               <div className="col-lg-10 d-flex justify-content-start justify-content-xl-between category-banners">
-                <Nav defaultActiveKey="/home" as="ul">
+                <Nav defaultActiveKey="/home" as="ul" className="category-nav ">
                   {!!concerns?.length &&
-                    concerns.map((item) => {
-                      return (
-                        <Nav.Item
-                          as="li"
-                          key={item.id}
-                          onClick={() => handleConcernsProducts(item.slug)}
+                    concerns.map((item) => (
+                      <Nav.Item
+                        as="li"
+                        key={item.id}
+                        onClick={() => handleConcernsProducts(item.slug)}
+                      >
+                        <Link
+                          href={`/concern/${item.slug}`}
+                          className="category-link text-decoration-none"
                         >
-                          <Link href={`/concern/${item.slug}`}>
-                            <div className="category-images">
-                              <img
-                                src={item.image}
-                                width="80px"
-                                height="80px"
-                                alt="skin-logo"
-                              />
-                              <Nav.Link
-                                className="category-text text-truncate"
-                                href="/skin"
-                                data-toggle="tooltip"
-                                data-placement="right"
-                                title={item.name}
-                              >
-                                {item.name}
-                              </Nav.Link>
+                          <div className="category-images text-center">
+                            <Image
+                              src={item.image}
+                              width={80}
+                              height={80}
+                              alt="skin-logo"
+                              className="category-img"
+                            />
+                            <div
+                              className="category-text text-truncate"
+                              title={item.name}
+                            >
+                              {item.name}
                             </div>
-                          </Link>
-                        </Nav.Item>
-                      );
-                    })}
+                          </div>
+                        </Link>
+                      </Nav.Item>
+                    ))}
                 </Nav>
               </div>
             </div>

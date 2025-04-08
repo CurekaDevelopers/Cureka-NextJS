@@ -194,7 +194,7 @@ const AccountTab = () => {
               className="btns btn-primary px-4 py-2"
               onClick={handleSave}
               disabled={isLoading}
-              style={{ backgroundColor: "#007bff", color: "#black" }}
+              style={{ backgroundColor: "#007bff", color: "white" }}
             >
               {isLoading ? (
                 <>
