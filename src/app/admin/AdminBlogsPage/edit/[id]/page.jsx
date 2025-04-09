@@ -7,7 +7,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Card from "../../../../../components/Card";
 import AdminBreadcrumbs from "../../../../../components/admin/AdminBreadcrumbs";
@@ -25,7 +24,10 @@ import {
   convertToUrlSlug,
   getMySqlDate,
 } from "../../../../../utils/common.utils";
-import { initialValues, validationSchema } from "./helper";
+import {
+  initialValues,
+  validationSchema,
+} from "../../AdminCreateBlogsPage/helper";
 import styles from "./styles.module.scss";
 
 const RichtextEditor = lazyLoadable(() =>
@@ -42,9 +44,8 @@ const AdminCreateBlogsPage = ({ isEditPage = true }) => {
   const [previewImage, setPreviewImage] = useState(null);
   const [previewImageThumbnail, setPreviewImageThumbnail] = useState(null);
   const { id } = useParams();
-  console.log("Blog id", id);
-  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  console.log("ID from useParams:", id);
 
   const [formData, setFromData] = useState({
     anyInput: "something",
@@ -134,20 +135,6 @@ const AdminCreateBlogsPage = ({ isEditPage = true }) => {
   useEffect(() => {
     formikRef.current = formik;
   }, [formik]);
-
-  // useEffect(() => {
-  //   const formik = formikRef.current || {};
-  //   if (categories?.length && formik) {
-  //     formik.setFieldValue("category_id", categories[0].id);
-  //   }
-  // }, [categories]);
-
-  // useEffect(() => {
-  //   const formik = formikRef.current || {};
-  //   if (concerns?.length && formik) {
-  //     formik.setFieldValue("concern_id", concerns[0].id);
-  //   }
-  // }, [concerns]);
 
   return (
     <div className={styles.container}>
@@ -420,49 +407,21 @@ const AdminCreateBlogsPage = ({ isEditPage = true }) => {
                 </Form.Text>
               )}
             </Form.Group>
-            {/* <Form.Group>
-              <Form.Label>Select Populariry</Form.Label>
-              <Form.Select
-                id="popularity"
-                name="popularity"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.popularity}
-                aria-label="Select Popularity"
-              >
-                {["Yes", "No"].map((item) => {
-                  return (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-              {formik.errors.popularity && formik.touched.popularity && (
-                <Form.Text className={styles.errorText} muted>
-                  {formik.errors.popularity}
-                </Form.Text>
-              )}
-            </Form.Group> */}
+
             <Form.Group>
               <Form.Label>
                 Content <span className="text-danger">*</span>
               </Form.Label>
               <RichtextEditor
                 value={formik.values.content}
-                onChange={(value) => {
-                  console.log("Editor value:", value);
-                  formik.setFieldValue("content", value);
-                }}
-                onBlur={() => formik.setFieldTouched("content", true)}
+                onChange={(value) => formik.setFieldValue("content", value)}
               />
               {formik.errors.content && formik.touched.content && (
-                <Form.Text className="text-danger">
+                <Form.Text className={styles.errorText} muted>
                   {formik.errors.content}
                 </Form.Text>
               )}
             </Form.Group>
-
             <Form.Group>
               <Form.Label>
                 Blog Date
