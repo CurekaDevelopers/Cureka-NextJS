@@ -255,6 +255,8 @@ export default function ProductList() {
 
   const handleCategorySelect = (categoryName, value) => () => {
     const params = new URLSearchParams(searchParams.toString());
+    console.log(params,"params");
+    
     const values = params.get(categoryName);
     const valuesArray = values?.split(",");
     if (valuesArray?.length && valuesArray.includes(value)) {
