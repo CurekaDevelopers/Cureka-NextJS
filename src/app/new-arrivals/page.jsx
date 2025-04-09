@@ -317,26 +317,45 @@ export default function ProductList() {
   };
 
   const handlePaginationFilter = (type, filterKey) => {
-    let searchData;
+    let searchData = filter[filterKey] || [];
+
+    // Filter data based on searchBrand if available
     if (searchBrand) {
-      searchData = filter[filterKey]?.filter((val) =>
+      searchData = searchData.filter((val) =>
         val.value.toLowerCase().includes(searchBrand.toLowerCase())
       );
-    } else {
-      searchData = filter[filterKey];
     }
-    if (type === "next") {
-      const modifyData = searchData.slice(paginate * 10, paginate * 10 + 10);
-      setFilterData((pre) => ({ ...pre, [filterKey]: modifyData }));
-      setPaginate(paginate + 1);
-    }
-    if (type === "prev") {
-      const modifyData = searchData.slice(paginate - 1, paginate * 10);
-      setFilterData((pre) => ({ ...pre, [filterKey]: modifyData }));
-      setPaginate(paginate - 1);
-    }
-  };
 
+    const itemsPerPage = 10;
+    let newPaginate = paginate;
+
+    // Handle pagination types
+    if (type === "next") {
+      const nextPage = paginate + 1;
+      const start = nextPage * itemsPerPage;
+      const modifyData = searchData.slice(start, start + itemsPerPage);
+      if (modifyData.length) {
+        setFilterData((prev) => ({ ...prev, [filterKey]: modifyData }));
+        newPaginate = nextPage;
+      }
+    }
+
+    if (type === "prev" && paginate > 0) {
+      const prevPage = paginate - 1;
+      const start = prevPage * itemsPerPage;
+      const modifyData = searchData.slice(start, start + itemsPerPage);
+      setFilterData((prev) => ({ ...prev, [filterKey]: modifyData }));
+      newPaginate = prevPage;
+    }
+
+    setPaginate(newPaginate);
+
+    // Reset pagination URL parameter
+    setpageNumber(0);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    navigate.push(`?${params.toString()}`);
+  };
   const [showFilter, setShowFilter] = useState(false);
   const [showSortBy, setShowSortBy] = useState(false);
   // const [filterSortBy, setFilterSortBy] = useSearchParams({});

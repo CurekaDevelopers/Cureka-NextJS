@@ -332,31 +332,43 @@ export default function ProductList() {
   };
 
   const handlePaginationFilter = (type, filterKey) => {
-    let searchData;
-    console.log(type, filterKey);
+    let searchData = filter[filterKey] || [];
 
+    // Filter data based on searchBrand if available
     if (searchBrand) {
-      searchData = filter[filterKey]?.filter((val) =>
+      searchData = searchData.filter((val) =>
         val.value.toLowerCase().includes(searchBrand.toLowerCase())
       );
-    } else {
-      searchData = filter[filterKey];
     }
+
+    const itemsPerPage = 10;
+    let newPaginate = paginate;
+
+    // Handle pagination types
     if (type === "next") {
-      const modifyData = searchData.slice(paginate * 10, paginate * 10 + 10);
-      setFilterData((pre) => ({ ...pre, [filterKey]: modifyData }));
-      setPaginate(paginate + 1);
+      const nextPage = paginate + 1;
+      const start = nextPage * itemsPerPage;
+      const modifyData = searchData.slice(start, start + itemsPerPage);
+      if (modifyData.length) {
+        setFilterData((prev) => ({ ...prev, [filterKey]: modifyData }));
+        newPaginate = nextPage;
+      }
     }
-    if (type === "prev") {
-      const modifyData = searchData.slice(paginate - 1, paginate * 10);
-      setFilterData((pre) => ({ ...pre, [filterKey]: modifyData }));
-      setPaginate(paginate - 1);
+
+    if (type === "prev" && paginate > 0) {
+      const prevPage = paginate - 1;
+      const start = prevPage * itemsPerPage;
+      const modifyData = searchData.slice(start, start + itemsPerPage);
+      setFilterData((prev) => ({ ...prev, [filterKey]: modifyData }));
+      newPaginate = prevPage;
     }
-    // 🧼 Reset page on any filter
-    setpageNumber(1);
+
+    setPaginate(newPaginate);
+
+    // Reset pagination URL parameter
+    setpageNumber(0);
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
-    console.log("params-=-=", params);
     navigate.push(`?${params.toString()}`);
   };
 
