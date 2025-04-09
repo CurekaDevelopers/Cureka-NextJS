@@ -358,7 +358,7 @@ export default function Productdetails() {
     product?.additional_image_1,
     product?.additional_image_2,
   ];*/
-  const [quantity] = useState(1);
+  const [quantity,setQuantity] = useState(1);
   const [inputValue, setInputValue] = useState("1");
 
   const handleQuantityChange = (e) => {
