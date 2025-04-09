@@ -24,6 +24,7 @@ import userIcon from "../../../public/images/user.svg";
 import userAvatar from "../../../public/images/user_icon.svg";
 import Image from "next/image";
 import ShopHeader from "@/views/Header/ShopHeader";
+
 const BlogDetailsPage = () => {
   const params = useParams();
   const blogSlug = params?.blogSlug;

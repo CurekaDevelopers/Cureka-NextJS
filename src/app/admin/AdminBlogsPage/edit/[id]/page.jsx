@@ -42,6 +42,8 @@ const AdminCreateBlogsPage = ({ isEditPage = true }) => {
   const [previewImage, setPreviewImage] = useState(null);
   const [previewImageThumbnail, setPreviewImageThumbnail] = useState(null);
   const { id } = useParams();
+  console.log("Blog id", id);
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFromData] = useState({
