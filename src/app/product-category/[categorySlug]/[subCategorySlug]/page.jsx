@@ -269,11 +269,11 @@ export default function ProductList() {
     console.log(params);
     console.log("ddd");
     // setSearchParams(params);
-   // 🧼 Reset page on any filter
-   setpageNumber(1);
-   params.delete("page");
-   // setSearchParams(searchParams);
-   navigate.push(`?${params.toString()}`);
+    // 🧼 Reset page on any filter
+    setpageNumber(1);
+    params.delete("page");
+    // setSearchParams(searchParams);
+    navigate.push(`?${params.toString()}`);
   };
 
   const isFilterSet = (categoryName, value) => {
@@ -285,10 +285,10 @@ export default function ProductList() {
     // setSearchParams(searchParams);
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", event.selected + 1);
-    const page = event.selected + 1
+    const page = event.selected + 1;
     setpageNumber(page);
-    console.log('Pagination',event.selected);
-    
+    console.log("Pagination", event.selected);
+
     // setSearchParams(searchParams);
     navigate.push(`?${params.toString()}`);
   };
@@ -301,12 +301,25 @@ export default function ProductList() {
 
   const addItemToCart = (e, product) => {
     e.preventDefault();
-    if (product.id) {
+
+    const productId = product?.id || product?.product_id;
+    const quantity = 1;
+
+    if (productId) {
       if (isProductPresentInCart(product)) {
         navigate.push("/Cart");
       } else {
-        addProductToCart(product.id, 1);
+        // Add product with quantity
+        const cartItem = {
+          ...product,
+          product_id: productId,
+          quantity: quantity,
+        };
+        addProductToCart(cartItem, dispatch);
+        toast.info("🛒 Adding product to cart...");
       }
+    } else {
+      console.error("❌ Product ID not found");
     }
   };
 
@@ -341,10 +354,10 @@ export default function ProductList() {
       setPaginate(paginate - 1);
     }
     // 🧼 Reset page on any filter
-  setpageNumber(1);
-  const params = new URLSearchParams(searchParams.toString());
-  params.delete("page");
-  navigate.push(`?${params.toString()}`);
+    setpageNumber(1);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    navigate.push(`?${params.toString()}`);
   };
 
   const [showFilter, setShowFilter] = useState(false);

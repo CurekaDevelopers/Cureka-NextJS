@@ -283,12 +283,25 @@ export default function ProductList() {
 
   const addItemToCart = (e, product) => {
     e.preventDefault();
-    if (product.id) {
+
+    const productId = product?.id || product?.product_id;
+    const quantity = 1;
+
+    if (productId) {
       if (isProductPresentInCart(product)) {
         navigate.push("/Cart");
       } else {
-        addProductToCart(product.id, 1);
+        // Add product with quantity
+        const cartItem = {
+          ...product,
+          product_id: productId,
+          quantity: quantity,
+        };
+        addProductToCart(cartItem, dispatch);
+        toast.info("🛒 Adding product to cart...");
       }
+    } else {
+      console.error("❌ Product ID not found");
     }
   };
 

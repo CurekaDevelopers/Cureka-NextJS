@@ -379,7 +379,7 @@ export default function Header({ showCategoryNavbar = true }) {
 
   return (
     <>
-      <div className="container-fluid header-border header-fixed px-0 pl-8 pr-5">
+      <div className="container-fluid header-border header-fixed px-0 pl-8 ">
         {showCurekaAlert && (
           <>
             <div className="blue-wrapper" id="cureka-alert">

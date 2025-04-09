@@ -1359,11 +1359,11 @@ export default function ProductdetailHeader() {
       >
         <div className="blue-wrapper" style={{ padding: 15 }}></div>
 
-        <Modal.Header closeButton>
-          <Modal.Body>
+        <Modal.Body className="p-0 mt-13">
+          <Modal.Header closeButton>
             <UserLogin handleCloseLoginModel={handleCloseLoginModel} />
-          </Modal.Body>
-        </Modal.Header>
+          </Modal.Header>
+        </Modal.Body>
       </Modal>
     </>
   );
