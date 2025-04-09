@@ -110,21 +110,6 @@ const AdminCreateBlogsPage = ({ isEditPage = true }) => {
               }
             )
           );
-        } else {
-          dispatch(
-            createBlog(
-              {
-                ...values,
-                image: imageFileUrl,
-                thumbnail_image: thumbnailImageFileUrl,
-                blog_date,
-              },
-              () => {
-                setLoading(false);
-                navigate.push(pagePaths.adminBlogs);
-              }
-            )
-          );
         }
       }
     },
