@@ -171,7 +171,7 @@ export default function BlogHomePage() {
       <ShopHeader />
       <br />
 
-      <div className="container-fluid px-0">
+      <div className="container-fluid px-0  mt-30">
         <div className="container">
           <div className="d-flex home-back-section pt-lg-4 pt-1">
             <Link href="/">
@@ -284,7 +284,7 @@ export default function BlogHomePage() {
                             <Link
                               href={`/blogs/${blog.url}`}
                               className="text-decoration-none readmore"
-                              target="_blank"
+                              // target="_blank"
                             >
                               Read More
                             </Link>
@@ -361,7 +361,7 @@ export default function BlogHomePage() {
                           href={`/blogs/${blog.url}`}
                           key={blog.id}
                           className="releate d-lg-flex d-flex-column  mb-3"
-                          target="_blank"
+                          // target="_blank"
                         >
                           <div className="releate-img">
                             <img

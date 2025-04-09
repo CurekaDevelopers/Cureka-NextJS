@@ -24,6 +24,7 @@ import userIcon from "../../../public/images/user.svg";
 import userAvatar from "../../../public/images/user_icon.svg";
 import Image from "next/image";
 import ShopHeader from "@/views/Header/ShopHeader";
+
 const BlogDetailsPage = () => {
   const params = useParams();
   console.log("params",params);  
@@ -142,11 +143,11 @@ const BlogDetailsPage = () => {
           <div className="col-lg-9">
             {/* Blog Image */}
             {blogData?.image && (
-              <Image
+              <img
                 src={blogData.image}
                 alt="blog_image"
-                width={800}
-                height={400}
+                width="800px"
+                height="400px"
                 className="img-fluid blogDetailsImage"
               />
             )}
@@ -231,7 +232,11 @@ const BlogDetailsPage = () => {
                   )}
                 </div>
 
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary mb-5"
+                  style={{ backgroundColor: "#007bff", color: "#fff" }}
+                >
                   Submit Comment
                 </button>
               </form>
