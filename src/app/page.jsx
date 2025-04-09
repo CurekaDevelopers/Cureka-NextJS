@@ -1085,64 +1085,68 @@ export default function Home() {
             settings={{ slidesToShow: isMobile ? 1 : isPhone ? 2 : 3 }}
           >
             {blogHome?.length &&
-              blogHome?.map((blog, blogIndex) => (
-                <div
-                  key={blogIndex}
-                  className="d-lg-flex justify-content-between"
-                >
-                  <div key={blogIndex} className="item mr-3">
-                    <Link
-                      href={`/blogs/${blog.url}`}
-                      key={blog.id}
-                      className="text-decoration-none banner-container"
-                    >
-                      <div className="blog-img">
-                        <img
-                          src={blog.thumbnail_image}
-                          width="480px"
-                          height="226px"
-                          className="img-fluid"
-                          alt="blog1"
-                        />
-                        <div>
-                          <div className="blog-card pb-0">
-                            <div className="d-flex">
-                              <FontAwesomeIcon
-                                style={{
-                                  color: "gray",
-                                  width: "14px",
-                                  height: "14px",
-                                }}
-                                icon={faUser}
-                                className="mr-2"
-                                size="lg"
-                              />
-                              <p className="user mb-0">Admin</p>
-                              <div className="left-border"></div>
-                              <FontAwesomeIcon
-                                style={{
-                                  color: "gray",
-                                  width: "14px",
-                                  height: "14px",
-                                }}
-                                icon={faCalendar}
-                                className="mr-2"
-                                size="lg"
-                              />
-                              <p className="user mb-0">
-                                {dayjs(blog.blog_date).format("DD MMMM, YYYY")}
-                              </p>
+              [...blogHome]
+                .sort((a, b) => new Date(b.blog_date) - new Date(a.blog_date)) // sort by date descending
+                .map((blog, blogIndex) => (
+                  <div
+                    key={blogIndex}
+                    className="d-lg-flex justify-content-between"
+                  >
+                    <div className="item mr-3">
+                      <Link
+                        href={`/blogs/${blog.url}`}
+                        key={blog.id}
+                        className="text-decoration-none banner-container"
+                      >
+                        <div className="blog-img">
+                          <img
+                            src={blog.thumbnail_image}
+                            width="480px"
+                            height="226px"
+                            className="img-fluid"
+                            alt="blog1"
+                          />
+                          <div>
+                            <div className="blog-card pb-0">
+                              <div className="d-flex">
+                                <FontAwesomeIcon
+                                  style={{
+                                    color: "gray",
+                                    width: "14px",
+                                    height: "14px",
+                                  }}
+                                  icon={faUser}
+                                  className="mr-2"
+                                  size="lg"
+                                />
+                                <p className="user mb-0">Admin</p>
+                                <div className="left-border"></div>
+                                <FontAwesomeIcon
+                                  style={{
+                                    color: "gray",
+                                    width: "14px",
+                                    height: "14px",
+                                  }}
+                                  icon={faCalendar}
+                                  className="mr-2"
+                                  size="lg"
+                                />
+                                <p className="user mb-0">
+                                  {dayjs(blog.blog_date).format(
+                                    "DD MMMM, YYYY"
+                                  )}
+                                </p>
+                              </div>
+                              <h4 className="blog-heading text-left">
+                                {blog.title}
+                              </h4>
                             </div>
-                            <h4 className="blog-heading text-left">
-                              {blog.title}
-                            </h4>
                           </div>
                         </div>
-                      </div>
-                    </Link>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
           </CarouselSlider>
         </div>
 
