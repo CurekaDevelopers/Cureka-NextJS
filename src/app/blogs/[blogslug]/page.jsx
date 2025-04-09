@@ -26,7 +26,8 @@ import Image from "next/image";
 import ShopHeader from "@/views/Header/ShopHeader";
 const BlogDetailsPage = () => {
   const params = useParams();
-  const blogSlug = params?.blogSlug;
+  console.log("params",params);  
+  const blogSlug = params?.blogslug;
   console.log("blogSlug", blogSlug);
 
   const {
@@ -48,6 +49,8 @@ const BlogDetailsPage = () => {
   // Fetch Blog Data
   useEffect(() => {
     fetchBlogBySlug(blogSlug).then((blogRes) => {
+      console.log("Blog slug",blogRes);
+      
       if (blogRes) setBlogData(blogRes);
     });
   }, [blogSlug]);
