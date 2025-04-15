@@ -94,7 +94,7 @@ export default function Productdetails() {
   const closeShippingChargesModal = () => setIsOpenShippingCharges(false);
   const [isVisible, setIsVisible] = useState(false);
   const [shiprocketToken, setShiprocketToken] = useState("");
-  console.log('Current URL:', fullUrl);
+  console.log('Current URL:');
 
   const fullUrl = window.location.href; // Get the full URL of the current page
   console.log('Current URL:', fullUrl);
