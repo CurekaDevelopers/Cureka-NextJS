@@ -51,8 +51,7 @@ import { addDays, zipCodePattern } from "../../../utils/common.utils";
 import { apiUrls, httpCode } from "../../../utils/constants/api.constants";
 import { generateUrl } from "../../../utils/constants/common.constants";
 import Footer from "../../../views/Footer";
-import ProductdetailHeader from "../../../views/ProductDetailHeader";
-import { userRouter } from "next/navigation";
+
 import axios from "axios";
 import Dropdown from "react-bootstrap/Dropdown";
 import toast from "react-hot-toast";
@@ -174,6 +173,9 @@ export default function Productdetails() {
     )}`;
     window.open(url, "_blank", "width=600,height=400");
   };
+
+  console.log("Product api calling");
+  
 
   useEffect(() => {
     fetchProductBySlug(productSlug).then((blogRes) => {
