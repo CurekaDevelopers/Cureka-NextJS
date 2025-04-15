@@ -75,7 +75,10 @@ export default function Productdetails() {
   const { wishlistProducts, cartProducts } = useSelector(
     (state) => state.customer
   );
+  console.log("wishlistProducts",wishlistProducts);
+  
   const [key, setKey] = useState("details");
+  console.log("key",key);
   const [product, setProduct] = useState();
   const [selectedImage, setSelectedImage] = useState("");
   const [possibleDeliveryData, setPossibleDeliveryData] = useState("");
@@ -90,6 +93,7 @@ export default function Productdetails() {
   const closeShippingChargesModal = () => setIsOpenShippingCharges(false);
   const [isVisible, setIsVisible] = useState(false);
   const [shiprocketToken, setShiprocketToken] = useState("");
+  console.log('Current URL:', fullUrl);
 
   const fullUrl = window.location.href; // Get the full URL of the current page
   console.log('Current URL:', fullUrl);
