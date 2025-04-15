@@ -69,6 +69,7 @@ export default function Productdetails() {
   const productSlug = params[params.length - 1];
   console.log("productSlug", productSlug);
   const dispatch = useDispatch();
+  onsole.log("Product Details");
   const navigate = useRouter();
   // const productSlug = params?.productSlug; // ✅ Safely access slug
   // if (!productSlug) return <div>Loading...</div>;

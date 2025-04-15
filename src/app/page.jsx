@@ -72,8 +72,8 @@ export default function Home() {
     curatedAdds: { CURATED, YOURSELF },
     healthPage,
   } = useSelector((state) => state.admin);
-  // console.log("pagePaths:", pagePaths);
-  // console.log("pagePaths.shopByAge:", pagePaths?.shopByAge);
+  console.log("pagePaths:", pagePaths);
+  console.log("pagePaths.shopByAge:", pagePaths?.shopByAge);
   const [newArrivals, setNewArrivals] = useState([]);
   const [topArrivals, setTopArrivals] = useState([]);
   const [commonHome, setCommonHome] = useState([]);
