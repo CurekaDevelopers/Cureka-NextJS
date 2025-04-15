@@ -92,7 +92,7 @@ export default function Productdetails() {
   const [shiprocketToken, setShiprocketToken] = useState("");
 
   const fullUrl = window.location.href; // Get the full URL of the current page
-  // console.log('Current URL:', fullUrl);
+  console.log('Current URL:', fullUrl);
 
   const isValidHTML = (html) => {
     const cleaned = html
@@ -111,7 +111,9 @@ export default function Productdetails() {
     const url = `https://api.whatsapp.com/send?text=${encodedMessage}`;
     window.open(url, "_blank");
   };
-
+  
+  console.log("Share content api calling");
+  
   const shareContent = () => {
     const message = `${productUrl}`;
     if (navigator.share) {
@@ -1952,7 +1954,7 @@ export default function Productdetails() {
                               } else {
                                 product_front_tp_image = noproduct;
                               }
-                              console.log(product.product_id);
+                              // console.log(product.product_id);
                               return (
                                 <div
                                   key={product.product_id}
