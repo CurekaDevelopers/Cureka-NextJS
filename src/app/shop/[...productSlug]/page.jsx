@@ -269,6 +269,13 @@ export default function Productdetails() {
     console.log(calculated_hmac_base64, "calculated_hmac_base64");
     return calculated_hmac_base64;
   };
+  const handleBuyNowClick = async (event) => {
+    if (typeof window.HeadlessCheckout !== "undefined") {
+      await addBuynow(event, product, 1);
+    } else {
+      console.error("Fastrr script not yet loaded");
+    }
+  };
 
   const addBuynow = async (event, product, quantity = 1) => {
     const variant_id = product.product_id.toString();
@@ -1266,7 +1273,7 @@ export default function Productdetails() {
                       {product && product.stock_status == "Out Stock" ? (
                         <>
                           <button
-                            onClick={(e) => addBuynow(e, product, quantity)}
+                            onClick={(e) => handleBuyNowClick(e, product, quantity)}
                             className="text-decoration-none readmore buy-btn"
                             href="cart"
                             disabled
@@ -1284,7 +1291,7 @@ export default function Productdetails() {
                       ) : (
                         <>
                           <button
-                            onClick={(e) => addBuynow(e, product, quantity)}
+                            onClick={(e) => handleBuyNowClick(e, product, quantity)}
                             className="text-decoration-none readmore cart buy-btn w-30px"
                             href="cart"
                             style={{ height: "48px" }}
@@ -1955,7 +1962,7 @@ export default function Productdetails() {
                               let product_front_tp_image;
                               if (product?.product_images) {
                                 product_front_tp_image =
-                                  product?.product_images[0].image;
+                                  product?.product_images[0].image.trimStart();
                               } else {
                                 product_front_tp_image = noproduct;
                               }

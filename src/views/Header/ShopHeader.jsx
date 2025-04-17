@@ -430,431 +430,189 @@ export default function ShopHeader({ showCategoryNavbar = false }) {
               </ul>
             </div>
             <div className="d-none d-lg-block mt-110">
-              <ul className="navbar-nav align-items-center">
-                <li>
-                  <DropdownButton
-                    id="dropdown-toggle"
-                    title={category?.name || "All"}
-                  >
-                    <Dropdown.Item onClick={onCategoryChange(null)}>
-                      All
-                    </Dropdown.Item>
+            <ul className="navbar-nav d-flex flex-row align-items-center gap-3">
+  <li className="nav-item">
+    <DropdownButton id="dropdown-toggle" title={category?.name || "All"}>
+      <Dropdown.Item onClick={() => onCategoryChange(null)}>All</Dropdown.Item>
+      {!!nestedCategories?.length &&
+        nestedCategories.map((item) => {
+          if (item.nav_link?.trim().toLowerCase() !== "active") return null;
+          return (
+            <Dropdown.Item
+              key={item.id}
+              onClick={() => onCategoryChange(item)}
+            >
+              {item.name}
+            </Dropdown.Item>
+          );
+        })}
+    </DropdownButton>
+  </li>
 
-                    {!!nestedCategories?.length &&
-                      nestedCategories?.map((item) => {
-                        if (item.nav_link?.trim().toLowerCase() !== "active")
-                          return null;
-                        return (
-                          <Dropdown.Item
-                            key={item.id}
-                            onClick={onCategoryChange(item)}
-                          >
-                            {item.name}
-                          </Dropdown.Item>
-                        );
-                      })}
-                  </DropdownButton>
-                </li>
-                <ul>
-                  <li className="nav-item">
-                    <div className="form-group mb-0">
-                      <form
-                        onSubmit={onSearchFormSubmit}
-                        className="d-flex search"
-                        style={{ position: "relative", zIndex: "9999" }}
-                      >
-                        <div ref={autocompleteRef}>
-                          {/* <Autocomplete
-                            inputProps={{
-                              placeholder: "Search For “Skin Care”",
-                              className: "form-control border-0",
-                            }}
-                            getItemValue={(item) => ""}
-                            items={items}
-                            renderItem={(item, isHighlighted) => {
-                              const [brands, categories, products, concerns] =
-                                item;
+  <li className="nav-item">
+    <form
+      onSubmit={onSearchFormSubmit}
+      className="d-flex align-items-center"
+      style={{ position: "relative", zIndex: 9999 }}
+    >
+      <div ref={autocompleteRef}>
+        <SearchAutocomplete
+          items={items}
+          onSelect={handleSelect}
+          onChange={handleInputChange}
+        />
+      </div>
+      <Image
+        onClick={onSearchClicked}
+        className="img-fluid search-icon ms-2"
+        src={homeSearch}
+        width={16}
+        alt="search"
+      />
+    </form>
+  </li>
 
-                              const highlightSearchString = (text) => {
-                                const searchedString = searchTerm;
-                                const regex = new RegExp(
-                                  `(${searchedString})`,
-                                  "gi"
-                                );
-                                const parts = text.split(regex);
-                                return parts.map((part, index) =>
-                                  regex.test(part) ? (
-                                    <strong key={index}>{part}</strong>
-                                  ) : (
-                                    part
-                                  )
-                                );
-                              };
+  <li className="nav-item">
+    <a className="nav-link" href={pagePaths.offers}>
+      <Image
+        className="img-fluid me-2 d-lg-block d-none"
+        src={badgePercent}
+        width={20}
+        height={20}
+        alt="badge"
+      />
+      Offers
+    </a>
+  </li>
 
-                              const renderBrands = () => (
-                                <>
-                                  {!!brands?.length && (
-                                    <>
-                                      <div className={style.searchLabels}>
-                                        BRANDS
-                                      </div>
-                                      {brands.map((brand, index) => (
-                                        <div
-                                          className={style.brandDetails}
-                                          key={`brand-${brand.name}-${index}`}
-                                        >
-                                          <a
-                                            className={style.brandName}
-                                            href={`/product-brands/${brand.name}`}
-                                          >
-                                            {highlightSearchString(brand.name)}
-                                          </a>
-                                        </div>
-                                      ))}
-                                    </>
-                                  )}
-                                </>
-                              );
+  {!isLoggedIn ? (
+    <li className="nav-item">
+      <a
+        className="nav-link"
+        style={{ cursor: "pointer" }}
+        onClick={handleShowLoginModel}
+      >
+        <Image
+          className="img-fluid me-2"
+          src={user}
+          width={20}
+          height={20}
+          alt="user"
+        />
+        Hello, Login
+      </a>
+    </li>
+  ) : (
+    <li className="nav-item">
+      <div className={style.userDropdown}>
+        <Image
+          className="img-fluid me-2"
+          src={user}
+          width={20}
+          height={20}
+          alt="user"
+        />
+        <DropdownButton
+          menuVariant="dark"
+          title={name}
+          className={style.userDropdownBtn}
+        >
+          <Dropdown.Item onClick={() => navigateTo(pagePaths.myAccount)}>
+            My Account
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => navigateTo(pagePaths.myOrders)}>
+            My Orders
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => navigateTo(pagePaths.myWishlist)}>
+            My Wishlist
+          </Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
+        </DropdownButton>
+      </div>
+    </li>
+  )}
 
-                              const renderConcerns = () => (
-                                <>
-                                  {!!concerns?.length && (
-                                    <>
-                                      <div className={style.searchLabels}>
-                                        CONCERNS
-                                      </div>
-                                      {concerns.map((concern, index) => (
-                                        <div
-                                          className={style.brandDetails}
-                                          key={`concern-${concern.name}-${index}`}
-                                        >
-                                          <a
-                                            className={style.brandName}
-                                            href={`/concern/${preprocessConcernName(
-                                              concern.name
-                                            )}`}
-                                          >
-                                            {highlightSearchString(
-                                              concern.name
-                                            )}
-                                          </a>
-                                        </div>
-                                      ))}
-                                    </>
-                                  )}
-                                </>
-                              );
+  <li className="nav-item">
+    <Link className="nav-link d-flex align-items-center" href={pagePaths.cart}>
+      <div className={style.cartItemBadge}>
+        <Image
+          className="img-fluid me-2"
+          src={shoppingCart}
+          width={20}
+          height={20}
+          alt="cart"
+        />
+        <div className={style.cartItemBadgeCount}>
+          {cartProducts?.length}
+        </div>
+      </div>
+      Cart
+    </Link>
+  </li>
 
-                              const renderCategories = () => (
-                                <>
-                                  {!!categories?.length && (
-                                    <>
-                                      <div className={style.searchLabels}>
-                                        CATEGORIES
-                                      </div>
-                                      {categories.map((category, index) => (
-                                        <div
-                                          className={style.categoryDetails}
-                                          key={`category-${category.slug}-${index}`}
-                                        >
-                                          <a
-                                            className={style.categoryName}
-                                            href={`/product-category/${category.slug}`}
-                                          >
-                                            {highlightSearchString(
-                                              category.name
-                                            )}
-                                          </a>
-                                        </div>
-                                      ))}
-                                    </>
-                                  )}
-                                </>
-                              );
+  <li className="nav-item">
+    <DropdownButton title="Help Desk">
+      <div className="d-flex">
+        <div className="col-6">
+          <h2 className="section">Contact Us</h2>
+          <Dropdown.Item
+            href="https://api.whatsapp.com/send?phone=917200150536"
+            className="d-flex"
+          >
+            <Image
+              className="img-fluid me-2 d-lg-block d-none"
+              src={chat}
+              width={20}
+              height={20}
+              alt="chat"
+            />
+            Chat with US
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="mailto:care@cureka.com"
+            className="d-flex"
+          >
+            <Image
+              className="img-fluid me-2 d-lg-block d-none"
+              src={email}
+              width={20}
+              height={20}
+              alt="email"
+            />
+            Email
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="https://api.whatsapp.com/send?phone=917200150536"
+            className="d-flex"
+          >
+            <Image
+              className="img-fluid me-2 d-lg-block d-none"
+              src={experts}
+              width={20}
+              height={20}
+              alt="experts"
+            />
+            Ask our Experts
+          </Dropdown.Item>
+        </div>
+        <div className="col-6 border-left ms-3">
+          <h2 className="section">Helpful Links</h2>
+          <Dropdown.Item href="/TrackOrder">Track your order</Dropdown.Item>
+          <Dropdown.Item href="/Privacypolicy">Privacy Policy</Dropdown.Item>
+          <Dropdown.Item href="/Faq">FAQ's</Dropdown.Item>
+        </div>
+      </div>
+      <div className="contactus p-3 mx-2 mt-3">
+        <p className="section mb-2">For Support & Order Enquiries</p>
+        <a className="review-heading" href="tel:+91 9655928004">
+          Call Us at: +91 9655928004
+        </a>
+        <p className="review-heading">Mon to Sat - 10:00 AM to 06:00 PM</p>
+      </div>
+    </DropdownButton>
+  </li>
+</ul>
 
-                              const renderProducts = () => (
-                                <>
-                                  {!!products?.length && (
-                                    <>
-                                      <div className={style.searchLabels}>
-                                        PRODUCTS
-                                      </div>
-                                      <div className={style.productList}>
-                                        {products.map((product, index) => (
-                                          <a
-                                            className={style.productDetails}
-                                            href={generateUrl(product)}
-                                            key={`product-${product.id}-${index}`}
-                                          >
-                                            <div className={style.productImg}>
-                                              {product.product_images?.length >
-                                              0 ? (
-                                                <Image
-                                                  src={
-                                                    product.product_images[0]
-                                                      ?.image
-                                                  }
-                                                />
-                                              ) : (
-                                                <div>No Image Available</div>
-                                              )}
-                                            </div>
-                                            <div className={style.productInfo}>
-                                              <div
-                                                className={style.productName}
-                                              >
-                                                {highlightSearchString(
-                                                  product.vendor_article_name
-                                                )}
-                                              </div>
-                                              <div
-                                                className={
-                                                  style.productPriceSection
-                                                }
-                                              >
-                                                {product.mrp ===
-                                                product.final_price ? (
-                                                  <p className="product-categorytwo">
-                                                    ₹{product.mrp}
-                                                  </p>
-                                                ) : (
-                                                  <>
-                                                    {!!product.mrp && (
-                                                      <div
-                                                        className={
-                                                          style.productMrp
-                                                        }
-                                                      >
-                                                        ₹{product.mrp}
-                                                      </div>
-                                                    )}
-                                                    <div>
-                                                      ₹{product.final_price}
-                                                    </div>
-                                                    <div>
-                                                      Inclusive of all taxes
-                                                    </div>
-                                                  </>
-                                                )}
-                                              </div>
-                                            </div>
-                                          </a>
-                                        ))}
-                                      </div>
-                                    </>
-                                  )}
-                                </>
-                              );
-
-                              return (
-                                <div className={style.searchResults}>
-                                  {renderBrands()}
-                                  {renderConcerns()}
-                                  {renderCategories()}
-                                  {renderProducts()}
-                                </div>
-                              );
-                            }}
-                            value={searchTerm}
-                            onChange={handleInputChange}
-                            onSelect={handleSelect}
-                          /> */}
-                          <SearchAutocomplete
-                            items={items}
-                            onSelect={handleSelect}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                        <Image
-                          onClick={onSearchClicked}
-                          className="img-fluid search-icon"
-                          src={homeSearch}
-                          width={16}
-                          alt="search"
-                        />
-                      </form>
-                    </div>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <div className="cart-icon iconspace">
-                      <div className="text-links d-lg-flex d-flex-column align-items-center">
-                        <li className="nav-item gap-2">
-                          <a className="nav-link" href={pagePaths.offers}>
-                            <Image
-                              className="img-fluid mr-4  d-lg-block d-none"
-                              src={badgePercent}
-                              width={20}
-                              height={20}
-                              alt="badge"
-                            />
-                            Offers
-                          </a>
-                        </li>
-                        {!isLoggedIn ? (
-                          <li className="nav-item">
-                            <a
-                              className="nav-link"
-                              data-toggle="modal"
-                              // href="#loginModal"
-                              // data-target="#loginModal"
-                              style={{ cursor: "pointer" }}
-                              onClick={
-                                !isLoggedIn ? handleShowLoginModel : null
-                              }
-                            >
-                              <Image
-                                className="img-fluid mr-2"
-                                src={user}
-                                width={20}
-                                height={20}
-                                alt="badge"
-                              />
-                              Hello, Login
-                            </a>
-                          </li>
-                        ) : (
-                          <div className={style.userDropdown}>
-                            <Image
-                              className="img-fluid mr-2"
-                              src={user}
-                              width={20}
-                              height={20}
-                              alt="badge"
-                            />
-                            <DropdownButton
-                              menuVariant="dark"
-                              title={name}
-                              className={style.userDropdownBtn}
-                            >
-                              <Dropdown.Item
-                                onClick={navigateTo(pagePaths.myAccount)}
-                              >
-                                My Account
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                onClick={navigateTo(pagePaths.myOrders)}
-                              >
-                                My Orders
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                onClick={navigateTo(pagePaths.myWishlist)}
-                              >
-                                My Wishlist
-                              </Dropdown.Item>
-                              <Dropdown.Item onClick={handleLogout}>
-                                Log Out
-                              </Dropdown.Item>
-                            </DropdownButton>
-                          </div>
-                        )}
-
-                        <li className="nav-item">
-                          <Link className="nav-link" href={pagePaths.cart}>
-                            <div className={style.cartItemBadge}>
-                              <Image
-                                className="img-fluid mr-2"
-                                src={shoppingCart}
-                                width={20}
-                                height={20}
-                                alt="user"
-                              />
-                              <div className={style.cartItemBadgeCount}>
-                                {cartProducts?.length}
-                              </div>
-                            </div>
-                            Cart
-                          </Link>
-                        </li>
-
-                        <li className="nav-item mb-3">
-                          <div id="helpdesk">
-                            <DropdownButton title="Help Desk">
-                              <div className="d-flex">
-                                <div className="col-6">
-                                  <h2 className="section">Contact Us</h2>
-                                  <Dropdown.Item
-                                    href="https://api.whatsapp.com/send?phone=917200150536"
-                                    className="d-flex"
-                                  >
-                                    <Image
-                                      className="img-fluid mr-2 d-lg-block d-none"
-                                      src={chat}
-                                      width={20}
-                                      height={20}
-                                      alt="chat"
-                                    />
-                                    Chat with US
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    href="mailto:care@cureka.com"
-                                    className="d-flex"
-                                  >
-                                    <Image
-                                      className="img-fluid mr-2 d-lg-block d-none"
-                                      src={email}
-                                      width={20}
-                                      height={20}
-                                      alt="email"
-                                    />
-                                    Email
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    href="https://api.whatsapp.com/send?phone=917200150536"
-                                    className="d-flex"
-                                  >
-                                    <Image
-                                      className="img-fluid mr-2 d-lg-block d-none"
-                                      src={experts}
-                                      width={20}
-                                      height={20}
-                                      alt="experts"
-                                    />
-                                    Ask our Experts
-                                  </Dropdown.Item>
-                                </div>
-                                <div className="col-6 border-left ml-2">
-                                  <h2 className="section">Helpful Links</h2>
-                                  <Dropdown.Item
-                                    href="/TrackOrder"
-                                    className="d-flex"
-                                  >
-                                    Track your order
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    href="/Privacypolicy"
-                                    className="d-flex"
-                                  >
-                                    Privacy Policy
-                                  </Dropdown.Item>
-                                  <Dropdown.Item href="/Faq" className="d-flex">
-                                    FAQ's
-                                  </Dropdown.Item>
-                                </div>
-                              </div>
-                              <div className="contactus p-3 mx-2 mt-3">
-                                <p className="section mb-2">
-                                  For Support & Order Enquiries
-                                </p>
-                                <a
-                                  className="review-heading"
-                                  href="tel:+91 9655928004"
-                                >
-                                  Call Us at: +91 9655928004
-                                </a>
-                                <p className="review-heading">
-                                  Mon to Sat - 10:00 AM to 06:00 PM
-                                </p>
-                              </div>
-                            </DropdownButton>
-                          </div>
-                        </li>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </ul>
             </div>
           </nav>
           <div className="container px-0 d-block d-lg-none">

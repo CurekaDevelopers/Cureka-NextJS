@@ -504,11 +504,10 @@ export default function ProductList() {
         <div className="container">
           <div className="d-flex home-back-section">
             <Link href={pagePaths.home}>
-              <img
+              <Image
                 className="img-fluid d-block"
                 src={houseChimney}
-                width="16px"
-                height="16px"
+                height={16}
                 alt="home-icon"
               />
             </Link>
@@ -746,11 +745,11 @@ export default function ProductList() {
                                   variant="primary"
                                   onClick={handleShowFilter}
                                 >
-                                  <img
+                                  <Image
                                     className="img-fluid mr-2"
                                     src={filterImage}
-                                    width="20px"
-                                    height="20px"
+                                    width={20}
+                                    height={20}
                                     alt="filter-icon"
                                   />
                                   Filters
@@ -762,11 +761,11 @@ export default function ProductList() {
                                   variant="primary"
                                   onClick={handleShowSortBy}
                                 >
-                                  <img
+                                  <Image
                                     className="img-fluid mr-2"
                                     src={bars_filter}
-                                    width="20px"
-                                    height="20px"
+                                    width={20}
+                                    height={20}
                                     alt="filter-icon"
                                   />
                                   Sort by
@@ -1047,13 +1046,22 @@ export default function ProductList() {
                       <div className="row">
                         {filterProducts && filterProducts.length > 0 ? (
                           filterProducts.map((product, index) => {
-                            let product_front_image;
-                            if (product?.product_images) {
-                              product_front_image =
-                                product?.product_images[0].image;
-                            } else {
-                              product_front_image = noproduct;
-                            }
+                            // let product_front_image;
+                            // if (product?.product_images) {
+                            //   product_front_image =
+                            //     product?.product_images[0].image;
+                            // } else {
+                            //   product_front_image = noproduct;
+                            // }
+                             let rawImage = product?.product_images?.[0]?.image;
+                              let product_front_image =
+                                typeof rawImage === "string"
+                                  ? rawImage.trim()
+                                  : "";
+  
+                              // fallback if no valid image
+                              const finalImageSrc =
+                                product_front_image || noproduct;
                             return (
                               <>
                                 <div className="col-lg-4  col-md-4 col-6 mb-3">
@@ -1093,10 +1101,10 @@ export default function ProductList() {
                                         className=""
                                       >
                                         <div className="product">
-                                          <img
-                                            src={product_front_image?.trim()}
-                                            width="218px"
-                                            height="172px"
+                                          <Image
+                                            src={finalImageSrc}
+                                            width={218}
+                                            height={172}
                                             className="img-fluid"
                                             alt="product-image"
                                           />
@@ -1109,10 +1117,10 @@ export default function ProductList() {
                                             href={generateUrl(product)}
                                             target="_blank"
                                           >
-                                            <img
+                                            <Image
                                               src={eye}
-                                              width="10px"
-                                              height="10px"
+                                              width={10}
+                                              height={10}
                                               className="d-block mx-auto eye"
                                               alt="eye"
                                             />
@@ -1183,8 +1191,69 @@ export default function ProductList() {
                                         </a>
                                       </p>
                                     </div>
-
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                      <div className="price d-flex d-lg-block">
+                                        {product.mrp === product.final_price ? (
+                                          <>
+                                            <p className="product-price">
+                                              &#8377; {product.final_price}
+                                            </p>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <p className="discount">
+                                              &#8377; {product.mrp}
+                                            </p>
+                                            <p className="product-price">
+                                              &#8377; {product.final_price}
+                                            </p>
+                                          </>
+                                        )}
+                                      </div>
+
+                                      <div className="d-flex-column pb-0 pb-lg-5">
+                                        {product?.show_stock === 1 &&
+                                        product?.stock_status ===
+                                          "Out Stock" ? (
+                                          <>
+                                            <p
+                                              className="text-center"
+                                              style={{ color: "red" }}
+                                            >
+                                              Out Of Stock
+                                            </p>
+                                            <button
+                                              className="cart"
+                                              disabled
+                                              style={{ opacity: 0.6 }}
+                                            >
+                                              <FontAwesomeIcon
+                                                icon={faShoppingCart}
+                                                size="lg"
+                                              />
+                                              Add to Cart
+                                            </button>
+                                          </>
+                                        ) : (
+                                          <button
+                                            onClick={(e) =>
+                                              addItemToCart(e, product)
+                                            }
+                                            className="cart"
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faShoppingCart}
+                                              size="lg"
+                                            />
+                                            {isProductPresentInCart(product)
+                                              ? "Checkout"
+                                              : "Add to Cart"}
+                                          </button>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {/* <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
                                       <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
@@ -1226,18 +1295,18 @@ export default function ProductList() {
                                           ? "Checkout"
                                           : "Add to Cart"}
                                       </button>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
 
                                 {filterProducts?.length > 5 && index === 5 && (
                                   <div className="mb-3">
-                                    <img
+                                    <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
                                       src={skinbanner}
-                                      width="880px"
-                                      height="284px"
+                                      width={880}
+                                      height={284}
                                       alt="homebanner"
                                     />
                                   </div>
@@ -1247,13 +1316,22 @@ export default function ProductList() {
                           })
                         ) : products && products.length > 0 ? (
                           products.map((product, index) => {
-                            let product_front_image;
-                            if (product?.product_images) {
-                              product_front_image =
-                                product?.product_images[0].image;
-                            } else {
-                              product_front_image = noproduct;
-                            }
+                            // let product_front_image;
+                            // if (product?.product_images) {
+                            //   product_front_image =
+                            //     product?.product_images[0].image;
+                            // } else {
+                            //   product_front_image = noproduct;
+                            // }
+                            let rawImage = product?.product_images?.[0]?.image;
+                            let product_front_image =
+                              typeof rawImage === "string"
+                                ? rawImage.trim()
+                                : "";
+
+                            // fallback if no valid image
+                            const finalImageSrc =
+                              product_front_image || noproduct;
                             return (
                               <>
                                 <div className="col-lg-4  col-md-4 col-6 mb-3">
@@ -1293,10 +1371,10 @@ export default function ProductList() {
                                         className=""
                                       >
                                         <div className="product">
-                                          <img
-                                            src={product_front_image?.trim()}
-                                            width="218px"
-                                            height="172px"
+                                          <Image
+                                            src={finalImageSrc}
+                                            width={218}
+                                            height={172}
                                             className="img-fluid"
                                             alt="Product"
                                           />
@@ -1309,10 +1387,10 @@ export default function ProductList() {
                                             href={generateUrl(product)}
                                             target="_blank"
                                           >
-                                            <img
+                                            <Image
                                               src={eye}
-                                              width="10px"
-                                              height="10px"
+                                              width={10}
+                                              height={10}
                                               className="d-block mx-auto eye"
                                               alt="eye"
                                             />
@@ -1396,8 +1474,126 @@ export default function ProductList() {
                                         </a>
                                       </p>
                                     </div>
-
-                                    <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                                <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                                                                      <div className="price d-flex d-lg-block">
+                                                                                        {product.mrp == product.final_price ? (
+                                                                                          <>
+                                                                                            <p
+                                                                                              style={{ textDecoration: "none" }}
+                                                                                              className="discount"
+                                                                                            >
+                                                                                              &#8377; {product.mrp}
+                                                                                            </p>
+                                                
+                                                                                            <p className="product-price">
+                                                                                              &#8377; {product.final_price}
+                                                                                            </p>
+                                                                                          </>
+                                                                                        ) : (
+                                                                                          <>
+                                                                                            <p className="discount">
+                                                                                              &#8377; {product.mrp}
+                                                                                            </p>
+                                                
+                                                                                            <p className="product-price">
+                                                                                              &#8377; {product.final_price}
+                                                                                            </p>
+                                                                                          </>
+                                                                                        )}
+                                                                                      </div>
+                                                
+                                                                                      {product?.back_order_quantity == 0 ||
+                                                                                      (product &&
+                                                                                        product.stock_status == "Out Stock") ? (
+                                                                                        <>
+                                                                                          <div className="d-flex-column pb-0 pb-lg-5">
+                                                                                            <p
+                                                                                              className="text-center"
+                                                                                              style={{
+                                                                                                color:
+                                                                                                  product?.back_order_quantity ==
+                                                                                                    0 ||
+                                                                                                  (product &&
+                                                                                                    product.stock_status ==
+                                                                                                      "Out Stock")
+                                                                                                    ? "red"
+                                                                                                    : "",
+                                                                                                fontSize: "10px",
+                                                                                              }}
+                                                                                            >
+                                                                                              {product?.back_order_quantity ==
+                                                                                                0 ||
+                                                                                              (product &&
+                                                                                                product.stock_status ==
+                                                                                                  "Out Stock") ? (
+                                                                                                "Out Of Stock"
+                                                                                              ) : (
+                                                                                                <>&nbsp;</>
+                                                                                              )}
+                                                                                            </p>
+                                                                                            <button
+                                                                                              className="text-decoration-none align-items-center justify-content-center jus w-100 d-flex cart"
+                                                                                              disabled
+                                                                                            >
+                                                                                              <FontAwesomeIcon
+                                                                                                className="mr-2"
+                                                                                                icon={faShoppingCart}
+                                                                                                size="lg"
+                                                                                              />{" "}
+                                                                                              {isProductPresentInCart(product)
+                                                                                                ? "Add to Cart"
+                                                                                                : "Add to Cart"}
+                                                                                            </button>
+                                                                                          </div>
+                                                                                        </>
+                                                                                      ) : (
+                                                                                        <>
+                                                                                          <div className="d-flex-column pb-0 pb-lg-5">
+                                                                                            <p
+                                                                                              className="text-center"
+                                                                                              style={{
+                                                                                                color:
+                                                                                                  product?.back_order_quantity ==
+                                                                                                    0 ||
+                                                                                                  (product &&
+                                                                                                    product.stock_status ==
+                                                                                                      "Out Stock")
+                                                                                                    ? "red"
+                                                                                                    : "",
+                                                                                                fontSize: "10px",
+                                                                                              }}
+                                                                                            >
+                                                                                              {product?.back_order_quantity ==
+                                                                                                0 ||
+                                                                                              (product &&
+                                                                                                product.stock_status ==
+                                                                                                  "Out Stock") ? (
+                                                                                                <>&nbsp;</>
+                                                                                              ) : (
+                                                                                                <>&nbsp;</>
+                                                                                              )}
+                                                                                            </p>
+                                                                                            <button
+                                                                                              onClick={(e) =>
+                                                                                                addItemToCart(e, product)
+                                                                                              }
+                                                                                              className="text-decoration-none align-items-center justify-content-center jus w-100 d-flex cart"
+                                                                                              href="#"
+                                                                                            >
+                                                                                              <FontAwesomeIcon
+                                                                                                className="mr-2"
+                                                                                                icon={faShoppingCart}
+                                                                                                size="lg"
+                                                                                              />{" "}
+                                                                                              {isProductPresentInCart(product)
+                                                                                                ? "Checkout"
+                                                                                                : "Add to Cart"}
+                                                                                            </button>
+                                                                                          </div>
+                                                                                        </>
+                                                                                      )}
+                                                                                    </div>
+                                    {/* <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
                                       <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
@@ -1515,18 +1711,18 @@ export default function ProductList() {
                                           </div>
                                         </>
                                       )}
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
 
                                 {products?.length > 5 && index === 5 && (
                                   <div className="mb-3">
-                                    <img
+                                    <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
                                       src={skinbanner}
-                                      width="880px"
-                                      height="284px"
+                                      width={880}
+                                      height={284}
                                       alt="homebanner"
                                     />
                                   </div>

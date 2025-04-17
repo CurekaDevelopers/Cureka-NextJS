@@ -170,7 +170,8 @@ const ProductManagementPage = () => {
         ...item,
       }));
     }
-
+    console.log(productsList,"Products List");
+    
     return productsList
       .filter((item) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -192,6 +193,8 @@ const ProductManagementPage = () => {
   }, [productsList, searchTerm]);
 
   const exportToExcel = () => {
+    console.log("Export to excel",filteredBrands);
+    
     try {
       const workbook = XLSX.utils.book_new();
       const worksheet = XLSX.utils.json_to_sheet(filteredBrands); // Use filteredBrands here

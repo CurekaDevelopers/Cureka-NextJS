@@ -118,24 +118,28 @@ export default function Footer() {
                   />
 
                   <div className="support">For Support & Order Inquiries</div>
+                  
                   <div className="d-flex">
                     {/* <img
                       className="mr-3 icon-map"
-                      src={map}
-                      width="10px"
-                      height="11px"
-                      alt="map"
+                      src={envelope}
+                      width="12px"
+                      height="12px"
+                      alt="envelope"
                     /> */}
                     <FontAwesomeIcon
                       icon={faMapMarkerAlt}
-                      className="bg-orange-200 p-2 rounded-full text-xl mb-4 mr-2"
-                      style={{ color: "#ff6347" }} // For tomato red color
+                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
+                      style={{ color: "#ff6347" }}
                     />
-
-                    <p className="address text-left">
-                      Wedjat Health Solutions Pvt. Ltd,75/1, Alagar Kovil Main
+                    <a
+                      href=""
+                      className="address text-decoration-none"
+                      style={{cursor: "default"}}
+                    >
+                      Wedjat Health Solutions Pvt. Ltd,<br />75/1, Alagar Kovil Main
                       Rd,Surveyor Colony, Madurai, TamilNadu 625007
-                    </p>
+                    </a>
                   </div>
 
                   <div className="d-flex">
