@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://app.cureka.com
+
+# Sitemaps
+Sitemap: https://app.cureka.com/sitemap.xml

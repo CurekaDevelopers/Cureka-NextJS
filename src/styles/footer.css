@@ -439,6 +439,29 @@
     font-size: 18px;
   }
 }
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: #fff;
+  padding: 10px 15px;
+}
+
+/* Prevent extra space from mx-auto on logo */
+.mobile-header .navbar-brand {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Adjust icon spacing */
+.mobile-header .nav-link {
+  padding: 0 5px;
+}
+
+.mobile-header img {
+  display: block;
+}
 
 #navbarNav .navbar-nav .dropdown,
 .mobile-dropdown .dropdown {
@@ -496,7 +519,7 @@
 
   background: none;
 
-  margin-bottom: 42px;
+  /* margin-bottom: 42px; */
 }
 .sidenav-body {
   width: 290px !important;
@@ -527,7 +550,8 @@
   align-items: center;
   color: #627284 !important;
   font: normal 400 14px / normal Rubik-regular;
-  width: 165px !important;
+  /* width: 165px !important; */
+  width: 97px !important;
   /* height: 28px; */
 }
 

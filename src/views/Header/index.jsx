@@ -411,7 +411,7 @@ export default function Header({ showCategoryNavbar = true }) {
 
         <div className="container" id="header">
           <nav className="navbar navbar-expand-lg navbar-light bg-white justify-content-between align-items-center px-0">
-            <div className="mobilelogo">
+            {/* <div className="mobilelogo">
               <Button
                 className="navbar-toggler"
                 data-target="#mySidenav"
@@ -454,7 +454,7 @@ export default function Header({ showCategoryNavbar = true }) {
                             height={20}
                             alt="badge"
                           />
-                          Hello, Login
+                          Hello, Login1
                         </a>
                       </li>
                     </ul>
@@ -506,7 +506,82 @@ export default function Header({ showCategoryNavbar = true }) {
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
+            <div className="mobile-header d-lg-none d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+  {/* Left: Hamburger Menu */}
+  <Button
+    className="navbar-toggler border-0 p-0"
+    onClick={handleShow}
+    aria-label="Toggle navigation"
+  >
+    <FontAwesomeIcon icon={faBars} size="lg" style={{ color: "#696f72" }} />
+  </Button>
+
+  {/* Center: Logo */}
+  <Link className="navbar-brand mx-auto" href="/">
+    <Image
+      className="img-responsive d-block"
+      src={logo}
+      width={120}
+      height={47}
+      alt="cureka-logo"
+    />
+  </Link>
+
+  {/* Right: User and Cart Icons */}
+  <div className="d-flex align-items-center">
+    {!isLoggedIn ? (
+      <a className="nav-link p-0 mr-3" onClick={handleShowLoginModel}>
+        <Image
+          className="img-fluid"
+          src={user}
+          width={20}
+          height={20}
+          alt="user"
+        />
+      </a>
+    ) : (
+      <Dropdown className={style.userDropdown}>
+        <Dropdown.Toggle
+          variant="link"
+          className={`${style.userDropdownBtn} p-0 border-0`}
+        >
+          <Image
+            className="img-fluid mr-2"
+            src={user}
+            width={20}
+            height={20}
+            alt="user"
+          />
+          {name}
+        </Dropdown.Toggle>
+        <Dropdown.Menu align="end">
+          <Dropdown.Item onClick={navigateTo(pagePaths.myAccount)}>
+            My Account
+          </Dropdown.Item>
+          <Dropdown.Item onClick={navigateTo(pagePaths.myOrders)}>
+            My Orders
+          </Dropdown.Item>
+          <Dropdown.Item onClick={navigateTo(pagePaths.myWishlist)}>
+            My Wishlist
+          </Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    )}
+
+    <Link className="nav-link p-0" href="/cart">
+      <Image
+        className="img-fluid"
+        src={shoppingCart}
+        width={20}
+        height={20}
+        alt="shopping-cart"
+      />
+    </Link>
+  </div>
+</div>
+
             <div className="d-none d-lg-block">
               <ul className="navbar-nav align-items-center">
                 <li>
@@ -1334,198 +1409,72 @@ export default function Header({ showCategoryNavbar = true }) {
                 </Offcanvas>
               </div>
               <li className="nav-item">
+  <div
+    className="d-flex align-items-center"
+    style={{ gap: "10px", flexWrap: "nowrap" }}
+  >
+    {/* Dropdown */}
+    <div className="form-group mb-0">
+      <DropdownButton
+        id="dropdown-toggles"
+        title={category?.name || "All"}
+        style={{
+          border: "1px solid #004a98",
+          minWidth: "120px", // ensure consistent dropdown width
+        }}
+      >
+        <Dropdown.Item onClick={onCategoryChange(null)}>All</Dropdown.Item>
+        {!!nestedCategories?.length &&
+          nestedCategories.map((cat) => (
+            <Dropdown.Item
+              key={cat.id}
+              onClick={onCategoryChange(cat)}
+            >
+              {cat.name}
+            </Dropdown.Item>
+          ))}
+      </DropdownButton>
+    </div>
+
+    {/* Search Bar */}
+    <form
+      onSubmit={onSearchFormSubmit}
+      className="d-flex search"
+      style={{
+        position: "relative",
+        zIndex: "0",
+        flexGrow: 1, // allow it to take remaining width
+      }}
+    >
+      <div ref={autocompleteRef} className="flex-grow-1">
+        <SearchAutocomplete
+          items={items}
+          onSelect={handleSelect}
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <Image
+        onClick={onSearchClicked}
+        className="img-fluid search-icon"
+        src={homeSearch}
+        width={16}
+        height={16}
+        alt="search"
+        style={{ marginLeft: "-30px", cursor: "pointer" }}
+      />
+    </form>
+  </div>
+</li>
+
+              {/* <li className="nav-item">
                 <div className="form-group mb-0">
                   <form
                     onSubmit={onSearchFormSubmit}
                     className="d-flex search"
-                    style={{ position: "relative", zIndex: "9999" }}
+                    style={{ position: "relative", zIndex: "0000" }}
                   >
-                    <div ref={autocompleteRef}>
-                      {/* <Autocomplete
-                        inputProps={{
-                          placeholder: "Search For “Skin Care”",
-                          className: "form-control border-0",
-                        }}
-                        getItemValue={(item) => ""}
-                        items={items}
-                        renderItem={(item, isHighlighted) => {
-                          const [brands, categories, products, concerns] = item;
-
-                          const highlightSearchString = (text) => {
-                            const searchedString = searchTerm;
-                            const regex = new RegExp(
-                              `(${searchedString})`,
-                              "gi"
-                            );
-                            const parts = text.split(regex);
-                            return parts.map((part, index) =>
-                              regex.test(part) ? (
-                                <strong key={index}>{part}</strong>
-                              ) : (
-                                part
-                              )
-                            );
-                          };
-
-                          const renderBrands = () => (
-                            <>
-                              {!!brands?.length && (
-                                <>
-                                  <div className={style.searchLabels}>
-                                    BRANDS
-                                  </div>
-                                  {brands.map((brand, index) => (
-                                    <div
-                                      className={style.brandDetails}
-                                      key={`brand-${brand.name}-${index}`}
-                                    >
-                                      <a
-                                        className={style.brandName}
-                                        href={`/product-brands/${brand.name}`}
-                                      >
-                                        {highlightSearchString(brand.name)}
-                                      </a>
-                                    </div>
-                                  ))}
-                                </>
-                              )}
-                            </>
-                          );
-
-                          const renderConcerns = () => (
-                            <>
-                              {!!concerns?.length && (
-                                <>
-                                  <div className={style.searchLabels}>
-                                    CONCERNS
-                                  </div>
-                                  {concerns.map((concern, index) => (
-                                    <div
-                                      className={style.brandDetails}
-                                      key={`concern-${concern.name}-${index}`}
-                                    >
-                                      <a
-                                        className={style.brandName}
-                                        href={`/concern/${preprocessConcernName(
-                                          concern.name
-                                        )}`}
-                                      >
-                                        {highlightSearchString(concern.name)}
-                                      </a>
-                                    </div>
-                                  ))}
-                                </>
-                              )}
-                            </>
-                          );
-
-                          const renderCategories = () => (
-                            <>
-                              {!!categories?.length && (
-                                <>
-                                  <div className={style.searchLabels}>
-                                    CATEGORIES
-                                  </div>
-                                  {categories.map((category, index) => (
-                                    <div
-                                      className={style.categoryDetails}
-                                      key={`category-${category.slug}-${index}`}
-                                    >
-                                      <a
-                                        className={style.categoryName}
-                                        href={`/product-category/${category.slug}`}
-                                      >
-                                        {highlightSearchString(category.name)}
-                                      </a>
-                                    </div>
-                                  ))}
-                                </>
-                              )}
-                            </>
-                          );
-
-                          const renderProducts = () => (
-                            <>
-                              {!!products?.length && (
-                                <>
-                                  <div className={style.searchLabels}>
-                                    PRODUCTS
-                                  </div>
-                                  <div className={style.productList}>
-                                    {products.map((product, index) => (
-                                      <a
-                                        className={style.productDetails}
-                                        href={generateUrl(product)}
-                                        key={`product-${product.id}-${index}`}
-                                      >
-                                        <div className={style.productImg}>
-                                          {product.product_images?.length >
-                                          0 ? (
-                                            <Image
-                                              src={
-                                                product.product_images[0]?.image
-                                              }
-                                            />
-                                          ) : (
-                                            <div>No Image Available</div>
-                                          )}
-                                        </div>
-                                        <div className={style.productInfo}>
-                                          <div className={style.productName}>
-                                            {highlightSearchString(
-                                              product.vendor_article_name
-                                            )}
-                                          </div>
-                                          <div
-                                            className={
-                                              style.productPriceSection
-                                            }
-                                          >
-                                            {product.mrp ===
-                                            product.final_price ? (
-                                              <p className="product-categorytwo">
-                                                ₹{product.mrp}
-                                              </p>
-                                            ) : (
-                                              <>
-                                                {!!product.mrp && (
-                                                  <div
-                                                    className={style.productMrp}
-                                                  >
-                                                    ₹{product.mrp}
-                                                  </div>
-                                                )}
-                                                <div>
-                                                  ₹{product.final_price}
-                                                </div>
-                                                <div>
-                                                  Inclusive of all taxes
-                                                </div>
-                                              </>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </a>
-                                    ))}
-                                  </div>
-                                </>
-                              )}
-                            </>
-                          );
-
-                          return (
-                            <div className={style.searchResults}>
-                              {renderBrands()}
-                              {renderConcerns()}
-                              {renderCategories()}
-                              {renderProducts()}
-                            </div>
-                          );
-                        }}
-                        value={searchTerm}
-                        onChange={handleInputChange}
-                        onSelect={handleSelect}
-                      /> */}
+                    <div ref={autocompleteRef}>                      
                       <SearchAutocomplete
                         items={items}
                         onSelect={handleSelect}
@@ -1567,7 +1516,7 @@ export default function Header({ showCategoryNavbar = true }) {
                       );
                     })}
                 </DropdownButton>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

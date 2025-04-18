@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import NoImage from "../public/images/noimageavailable.png";
+import { useMediaQuery } from "react-responsive";
 
 const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
     // Ensure items is always an array and not undefined
@@ -44,7 +46,7 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
   };
 
   return (
-    <div style={{ position: "relative", width: "300px" }}>
+    <div style={{ position: "relative", width: isMobile ? "250px" : "300px" }}>
       <input
         type="text"
         value={searchTerm}
@@ -64,9 +66,10 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
             padding: "2px 0px",
             boxShadow: "rgba(0, 0, 0, 0.1) 0px 2px 12px",
             borderRadius: "3px",
-            position: "fixed",
+            position: "absolute",
             fontWeight: "500",
             backgroundColor: "#fff",
+            
           }}
         >
           {items.map((section, index) => (
