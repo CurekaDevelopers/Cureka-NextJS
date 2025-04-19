@@ -1417,7 +1417,7 @@ export default function Header({ showCategoryNavbar = true }) {
     <div className="form-group mb-0">
       <DropdownButton
         id="dropdown-toggles"
-        title={category?.name || "All"}
+        title={category?.name || "All1"}
         style={{
           border: "1px solid #004a98",
           minWidth: "120px", // ensure consistent dropdown width
