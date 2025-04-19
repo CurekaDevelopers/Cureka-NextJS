@@ -602,7 +602,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
   };
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>
           {product?.meta_title == "null"
             ? product?.vendor_article_name
@@ -629,7 +629,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
         <script type="application/ld+json">
           {JSON.stringify(productSchema)}
         </script>
-      </Helmet>
+      </Helmet> */}
       <ShopHeader />
       {product && (
         <div className="container-fluid px-0 navbar-margin mt-5">
