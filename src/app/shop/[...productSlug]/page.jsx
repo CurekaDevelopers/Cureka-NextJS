@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { fetchProductBySlug } from "../../../redux/action";
 import Productdetails from "./Productdetails"; // extract your current code to this file (or keep in same file)
+import '../../../app/globals.css'
 
 export async function generateMetadata({ params }) {
   const hdrs = headers();
@@ -96,14 +97,24 @@ export async function generateMetadata({ params }) {
   };
 }
 export default async function ProductPage({ params }) {
-  
+  function toTitleCase(str) {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+  let isBot = false;
   const slug = params.productSlug;
+  const slugInd = slug.length - 1;
   const headersList = headers();
   const userAgent = headersList.get("user-agent") || "";
 
   let ssrProduct = null;
 
+
   if (/bot|crawl|slurp|spider|mediapartners/i.test(userAgent)) {
+    isBot = true
     try {
       ssrProduct = await fetchProductBySlug(slug);
     } catch (err) {
@@ -111,5 +122,10 @@ export default async function ProductPage({ params }) {
     }
   }
 
-  return <Productdetails productSlug={slug} ssrProduct={ssrProduct} />;
+  return (
+  <>
+  {isBot &&  (<h1 className="seo-only-h1">{toTitleCase(slug[slugInd].replace(/-/g, " "))}</h1>)}
+  <Productdetails productSlug={slug} ssrProduct={ssrProduct} />
+    </>
+  );
 }

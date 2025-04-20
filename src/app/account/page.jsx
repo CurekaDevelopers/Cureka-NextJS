@@ -63,25 +63,65 @@ export default function Orders() {
   return (
     <>
       <Header showCategoryNavbar={false} />
-      <div className="container-fluid px-0 mt-5">
-        <div className="container">
-          <div className="d-flex home-back-section pt-1 ">
-            <a href={pagePaths.home}>
-              <Image
-                className="img-fluid d-flex align-self-center home mt-12"
-                src={houseChimney}
-                width={16}
-                height={16}
-                alt="home-icon"
-              />
-            </a>
-            <p className="section mb-0 ml-3 mt-5">
-              /&nbsp;&nbsp;&nbsp;My Account
-            </p>
-          </div>
-        </div>
-        <div className="bottom-border"></div>
-      </div>
+      <div className="container-fluid  mt-5">
+  <div className="container">
+    {/* Home Back Section */}
+    <div className="d-flex home-back-section pt-1 align-items-center">
+      <a href={pagePaths.home}>
+        <Image
+          className="img-fluid d-flex align-self-center home mt-12"
+          src={houseChimney}
+          width={16}
+          height={16}
+          alt="home-icon"
+        />
+      </a>
+      <p className="section mb-0 ml-3 mt-5">/&nbsp;&nbsp;&nbsp;My Account</p>
+    </div>
+  </div>
+  <div className="bottom-border"></div>
+</div>
+
+{/* Responsive Wrapper */}
+<div className="flex flex-col lg:flex-row gap-6 px-4 sm:px-6 md:px-10 py-6">
+  {/* Sidebar */}
+  <div className="w-full lg:w-64 border rounded-lg p-4 shadow-sm space-y-3">
+    {tabData.map((tab) => (
+      <button
+        key={tab.key}
+        onClick={() => setActiveTab(tab.key)}
+        className={`w-full flex items-center gap-2 px-4 py-2 border rounded-lg transition-all ${
+          activeTab === tab.key
+            ? "bg-blue-50 border-blue-500 text-blue-600"
+            : "hover:bg-gray-50"
+        }`}
+      >
+        <tab.icon size={18} />
+        <span className="text-sm sm:text-base">{tab.label}</span>
+      </button>
+    ))}
+    <button className="w-full flex items-center gap-2 px-4 py-2 text-red-500 border border-red-200 hover:bg-red-50 rounded-lg">
+      <LogOut size={18} />
+      <span className="text-sm sm:text-base">Log Out</span>
+    </button>
+  </div>
+
+  {/* Main Content */}
+  <div className="flex-1 bg-white rounded-lg shadow-sm p-4 sm:p-6">
+    {ActiveComponent && <ActiveComponent />}
+  </div>
+</div>
+
+{/* Scroll To Top */}
+<ScrollToTop isVisible={isVisible} />
+
+{/* Footer */}
+<Footer />
+
+{/* Scroll To Top */}
+<ScrollToTop isVisible={isVisible} />
+<Footer />
+
 
       <div className="flex gap-8 p-6">
         {/* Sidebar */}
