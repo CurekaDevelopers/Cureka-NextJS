@@ -1,31 +1,27 @@
 import { headers } from "next/headers";
+import Script from "next/script";
 import { fetchProductBySlug } from "../../../redux/action";
-import Productdetails from "./Productdetails"; // extract your current code to this file (or keep in same file)
-import '../../../app/globals.css'
+import Productdetails from "./Productdetails";
+import '../../../app/globals.css';
 
 export async function generateMetadata({ params }) {
   const hdrs = headers();
   const host = hdrs.get("x-forwarded-host") || hdrs.get("host") || "";
   const proto = hdrs.get("x-forwarded-proto") || "https";
 
-  // 2. Re‑assemble your path from params
-  const path = Array.isArray(params.productSlug) ? `/shop/${params.productSlug.join("/")}` : `/shop/${params.productSlug}`;
-
-  // 3. Build the full URL
+  const path = Array.isArray(params.productSlug) ? `/shop/${params.productSlug.join("/")}`: `/shop/${params.productSlug}`;
   const fullUrl = `${proto}://${host}${path}`;
   const slug = params.productSlug;
   const slugInd = slug.length - 1;
   let product = null;
 
   try {
-    // Fetch product data based on slug (or use other data fetching methods)
     product = await fetchProductBySlug(slug[slugInd]);
   } catch (err) {
     console.error("Error fetching product:", err);
   }
 
   if (!product) {
-    // Return some default metadata if product doesn't exist
     return {
       title: "Product Not Found",
       description: "Sorry, we couldn't find the product you're looking for.",
@@ -36,13 +32,14 @@ export async function generateMetadata({ params }) {
         type: "website",
         image: "https://app.cureka.com/assets/images/logo.svg",
       },
-      jsonLd: {} // Optional: Empty or default JSON-LD schema
     };
   }
 
-  // Return dynamic metadata
   return {
-    title: product?.meta_title === "null" ? product?.vendor_article_name : product?.meta_title,
+    title:
+      product?.meta_title === "null"
+        ? product?.vendor_article_name
+        : product?.meta_title,
     description: product?.meta_description,
     openGraph: {
       url: fullUrl,
@@ -51,81 +48,98 @@ export async function generateMetadata({ params }) {
       description: product?.meta_description,
       image: "https://app.cureka.com/assets/images/logo.svg",
     },
-    jsonLd: {
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      name: product?.vendor_article_name,
-      image: product?.images,
-      description: product?.meta_description,
-      sku: product?.sku_code,
-      mpn: product?.vendor_sku_code,
-      brand: {
-        "@type": "Brand",
-        name: product?.brand_name,
-      },
-      offers: {
-        "@type": "Offer",
-        url: fullUrl,
-        priceCurrency: "INR",
-        price: product?.final_price,
-        itemCondition: "https://schema.org/NewCondition",
-        availability: product?.stock_status === "In stock" ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        seller: {
-          "@type": "Organization",
-          name: "Cureka",
-        },
-      },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: product?.ratingCount.average,
-        reviewCount: product?.ratingCount.totalReviews,
-      },
-      review: product?.product_reviews?.map((review) => ({
-        "@type": "Review",
-        author: {
-          "@type": "Person",
-          name: review.created_by,
-        },
-        datePublished: review.created_at,
-        description: review.title,
-        reviewRating: {
-          "@type": "Rating",
-          ratingValue: review.rating,
-        },
-      })),
-    },
   };
 }
+
 export default async function ProductPage({ params }) {
   function toTitleCase(str) {
     return str
       .toLowerCase()
       .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
-  let isBot = false;
+
   const slug = params.productSlug;
   const slugInd = slug.length - 1;
   const headersList = headers();
   const userAgent = headersList.get("user-agent") || "";
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "";
+  const proto = headersList.get("x-forwarded-proto") || "https";
 
+  const fullUrl = `${proto}://${host}/shop/${slug.join("/")}`;
+
+  let isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
   let ssrProduct = null;
 
-
-  if (/bot|crawl|slurp|spider|mediapartners/i.test(userAgent)) {
-    isBot = true
+  if (isBot) {
     try {
-      ssrProduct = await fetchProductBySlug(slug);
+      ssrProduct = await fetchProductBySlug(slug[slugInd]);
     } catch (err) {
       console.error("SSR fetch failed for bot:", err);
     }
   }
 
   return (
-  <>
-  {isBot &&  (<h1 className="seo-only-h1">{toTitleCase(slug[slugInd].replace(/-/g, " "))}</h1>)}
-  <Productdetails productSlug={slug} ssrProduct={ssrProduct} />
+    <>
+      {isBot && (
+        <>
+          <h1 className="seo-only-h1">
+            {toTitleCase(slug[slugInd].replace(/-/g, " "))}
+          </h1>
+          {ssrProduct && (
+            <Script id="product-schema" type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                name: ssrProduct?.vendor_article_name,
+                image: ssrProduct?.images,
+                description: ssrProduct?.meta_description,
+                sku: ssrProduct?.sku_code,
+                mpn: ssrProduct?.vendor_sku_code,
+                brand: {
+                  "@type": "Brand",
+                  name: ssrProduct?.brand_name,
+                },
+                offers: {
+                  "@type": "Offer",
+                  url: fullUrl,
+                  priceCurrency: "INR",
+                  price: ssrProduct?.final_price,
+                  itemCondition: "https://schema.org/NewCondition",
+                  availability:
+                    ssrProduct?.stock_status === "In stock"
+                      ? "https://schema.org/InStock"
+                      : "https://schema.org/OutOfStock",
+                  seller: {
+                    "@type": "Organization",
+                    name: "Cureka",
+                  },
+                },
+                aggregateRating: {
+                  "@type": "AggregateRating",
+                  ratingValue: ssrProduct?.ratingCount?.average,
+                  reviewCount: ssrProduct?.ratingCount?.totalReviews,
+                },
+                review: ssrProduct?.product_reviews?.map((review) => ({
+                  "@type": "Review",
+                  author: {
+                    "@type": "Person",
+                    name: review.created_by,
+                  },
+                  datePublished: review.created_at,
+                  description: review.title,
+                  reviewRating: {
+                    "@type": "Rating",
+                    ratingValue: review.rating,
+                  },
+                })),
+              })}
+            </Script>
+          )}
+        </>
+      )}
+      <Productdetails productSlug={slug} ssrProduct={ssrProduct} />
     </>
   );
 }
