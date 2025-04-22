@@ -46,7 +46,8 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
   };
 
   return (
-    <div style={{ position: "relative", width: isMobile ? "250px" : "300px" }}>
+    <div style={{ position: "relative", width: "100%",
+      maxWidth: isMobile ? "100%" : "300px",}}>
       <input
         type="text"
         value={searchTerm}
@@ -59,9 +60,9 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
           ref={dropdownRef}
           className="dropdown-menu show"
           style={{
-            width: "50%",
-            minWidth: "300px",
-            maxHeight: "50%",
+            width: isMobile ? "100%" : "50%",
+            minWidth: isMobile ? "100%" : "600px",
+            maxHeight: "50vh",
             overflow: "auto",
             padding: "2px 0px",
             boxShadow: "rgba(0, 0, 0, 0.1) 0px 2px 12px",
@@ -109,7 +110,8 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
                     )}
                   <span>{highlightSearchString(item.name) || highlightSearchString(item.vendor_article_name)}</span> */}
                   {/* Show product image only if section type is "Products" */}
-                  <div style={{ display: "flex", alignItems: "center",flex:"1" }}>
+                  <div style={{ display: "flex", alignItems: "center",flex:"1" ,flexWrap: "nowrap",
+    overflow: "hidden",}}>
                   {section.type === "Products" ? (
                     item.product_images && item.product_images.length > 0 ? (
                       <img
@@ -133,7 +135,7 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
                   ) : null}
 
                   {/* Display text for all sections */}
-                  <span style={{ fontSize: "15px", maxWidth: "500px", // Adjust width as needed
+                  <span style={{ fontSize: "15px", maxWidth: isMobile ? "350px" : "500px", // Adjust width as needed
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis", }}>
@@ -148,7 +150,7 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
                         <p className="product-categorytwo">₹{item.mrp}</p>
                       ) : (
                         <>
-                          {!!item.mrp && <div style={{ textDecoration: "line-through", color: "#888" }}>₹{item.mrp}</div>}
+                          {!!item.mrp && <div style={{ textDecoration: "line-through", color: "#888" }}>₹{item.mrp}1</div>}
                           <div>₹{item.final_price}</div>
                           <div>Inclusive of all taxes</div>
                         </>
