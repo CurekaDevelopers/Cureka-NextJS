@@ -1,15 +1,15 @@
 import { headers } from "next/headers";
-import Script from "next/script";
 import { fetchProductBySlug } from "../../../redux/action";
 import Productdetails from "./Productdetails";
-import '../../../app/globals.css';
+import "../../../app/globals.css";
 
 export async function generateMetadata({ params }) {
   const hdrs = headers();
   const host = hdrs.get("x-forwarded-host") || hdrs.get("host") || "";
   const proto = hdrs.get("x-forwarded-proto") || "https";
 
-  const path = Array.isArray(params.productSlug) ? `/shop/${params.productSlug.join("/")}`: `/shop/${params.productSlug}`;
+  const path = Array.isArray(params.productSlug)  ? `/shop/${params.productSlug.join("/")}` : `/shop/${params.productSlug}`;
+
   const fullUrl = `${proto}://${host}${path}`;
   const slug = params.productSlug;
   const slugInd = slug.length - 1;
@@ -66,10 +66,9 @@ export default async function ProductPage({ params }) {
   const userAgent = headersList.get("user-agent") || "";
   const host = headersList.get("x-forwarded-host") || headersList.get("host") || "";
   const proto = headersList.get("x-forwarded-proto") || "https";
-
   const fullUrl = `${proto}://${host}/shop/${slug.join("/")}`;
 
-  let isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
+  const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
   let ssrProduct = null;
 
   if (isBot) {
@@ -87,58 +86,63 @@ export default async function ProductPage({ params }) {
           <h1 className="seo-only-h1">
             {toTitleCase(slug[slugInd].replace(/-/g, " "))}
           </h1>
+
           {ssrProduct && (
-            <Script id="product-schema" type="application/ld+json">
-              {JSON.stringify({
-                "@context": "https://schema.org/",
-                "@type": "Product",
-                name: ssrProduct?.vendor_article_name,
-                image: ssrProduct?.images,
-                description: ssrProduct?.meta_description,
-                sku: ssrProduct?.sku_code,
-                mpn: ssrProduct?.vendor_sku_code,
-                brand: {
-                  "@type": "Brand",
-                  name: ssrProduct?.brand_name,
-                },
-                offers: {
-                  "@type": "Offer",
-                  url: fullUrl,
-                  priceCurrency: "INR",
-                  price: ssrProduct?.final_price,
-                  itemCondition: "https://schema.org/NewCondition",
-                  availability:
-                    ssrProduct?.stock_status === "In stock"
-                      ? "https://schema.org/InStock"
-                      : "https://schema.org/OutOfStock",
-                  seller: {
-                    "@type": "Organization",
-                    name: "Cureka",
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org/",
+                  "@type": "Product",
+                  name: ssrProduct?.vendor_article_name,
+                  image: ssrProduct?.images,
+                  description: ssrProduct?.meta_description,
+                  sku: ssrProduct?.sku_code,
+                  mpn: ssrProduct?.vendor_sku_code,
+                  brand: {
+                    "@type": "Brand",
+                    name: ssrProduct?.brand_name,
                   },
-                },
-                aggregateRating: {
-                  "@type": "AggregateRating",
-                  ratingValue: ssrProduct?.ratingCount?.average,
-                  reviewCount: ssrProduct?.ratingCount?.totalReviews,
-                },
-                review: ssrProduct?.product_reviews?.map((review) => ({
-                  "@type": "Review",
-                  author: {
-                    "@type": "Person",
-                    name: review.created_by,
+                  offers: {
+                    "@type": "Offer",
+                    url: fullUrl,
+                    priceCurrency: "INR",
+                    price: ssrProduct?.final_price,
+                    itemCondition: "https://schema.org/NewCondition",
+                    availability:
+                      ssrProduct?.stock_status === "In stock"
+                        ? "https://schema.org/InStock"
+                        : "https://schema.org/OutOfStock",
+                    seller: {
+                      "@type": "Organization",
+                      name: "Cureka",
+                    },
                   },
-                  datePublished: review.created_at,
-                  description: review.title,
-                  reviewRating: {
-                    "@type": "Rating",
-                    ratingValue: review.rating,
+                  aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: ssrProduct?.ratingCount?.average,
+                    reviewCount: ssrProduct?.ratingCount?.totalReviews,
                   },
-                })),
-              })}
-            </Script>
+                  review: ssrProduct?.product_reviews?.map((review) => ({
+                    "@type": "Review",
+                    author: {
+                      "@type": "Person",
+                      name: review.created_by,
+                    },
+                    datePublished: review.created_at,
+                    description: review.title,
+                    reviewRating: {
+                      "@type": "Rating",
+                      ratingValue: review.rating,
+                    },
+                  })),
+                }),
+              }}
+            />
           )}
         </>
       )}
+
       <Productdetails productSlug={slug} ssrProduct={ssrProduct} />
     </>
   );
