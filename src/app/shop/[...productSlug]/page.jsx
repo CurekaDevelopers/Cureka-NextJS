@@ -1,20 +1,13 @@
-import { headers } from "next/headers";
+// app/shop/[...productSlug]/page.js
 import { fetchProductBySlug } from "../../../redux/action";
 import Productdetails from "./Productdetails";
 import "../../../app/globals.css";
 
 export async function generateMetadata({ params }) {
-  const hdrs = headers();
-  const host = hdrs.get("x-forwarded-host") || hdrs.get("host") || "";
-  const proto = hdrs.get("x-forwarded-proto") || "https";
-
-  const path = Array.isArray(params.productSlug) ? `/shop/${params.productSlug.join("/")}` : `/shop/${params.productSlug}`;
-
-  const fullUrl = `${proto}://${host}${path}`;
-  const slug = params.productSlug;
+  const slug = params?.productSlug;
   const slugInd = slug.length - 1;
-  let product = null;
 
+  let product = null;
   try {
     product = await fetchProductBySlug(slug[slugInd]);
   } catch (err) {
@@ -28,7 +21,6 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: "Product Not Found",
         description: "Sorry, we couldn't find the product you're looking for.",
-        url: fullUrl,
         type: "website",
         image: "https://app.cureka.com/assets/images/logo.svg",
       },
@@ -36,16 +28,12 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title:
-      product?.meta_title === "null"
-        ? product?.vendor_article_name
-        : product?.meta_title,
+    title: product?.meta_title === "null" ? product?.vendor_article_name : product?.meta_title,
     description: product?.meta_description,
     openGraph: {
-      url: fullUrl,
-      type: "website",
       title: product?.vendor_article_name || "Cureka",
       description: product?.meta_description,
+      type: "website",
       image: "https://app.cureka.com/assets/images/logo.svg",
     },
   };
@@ -62,13 +50,8 @@ export default async function ProductPage({ params }) {
 
   const slug = params.productSlug;
   const slugInd = slug.length - 1;
-  const headersList = headers();
-  const userAgent = headersList.get("user-agent") || "";
-  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "";
-  const proto = headersList.get("x-forwarded-proto") || "https";
-  const fullUrl = `${proto}://${host}/shop/${slug.join("/")}`;
+  const fullUrl = `https://app.cureka.com/shop/${slug.join("/")}`;
 
-  const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
   let ssrProduct = null;
 
   try {
@@ -105,24 +88,29 @@ export default async function ProductPage({ params }) {
             name: "Cureka",
           },
         },
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: ssrProduct?.ratingCount?.average,
-          reviewCount: ssrProduct?.ratingCount?.totalReviews,
-        },
-        review: ssrProduct?.product_reviews?.map((review) => ({
-          "@type": "Review",
-          author: {
-            "@type": "Person",
-            name: review.created_by,
-          },
-          datePublished: review.created_at,
-          description: review.title,
-          reviewRating: {
-            "@type": "Rating",
-            ratingValue: review.rating,
-          },
-        })),
+        aggregateRating: ssrProduct?.ratingCount
+          ? {
+              "@type": "AggregateRating",
+              ratingValue: ssrProduct?.ratingCount?.average,
+              reviewCount: ssrProduct?.ratingCount?.totalReviews,
+            }
+          : undefined,
+        review:
+          ssrProduct?.product_reviews?.length > 0
+            ? ssrProduct?.product_reviews.map((review) => ({
+                "@type": "Review",
+                author: {
+                  "@type": "Person",
+                  name: review.created_by,
+                },
+                datePublished: review.created_at,
+                description: review.title,
+                reviewRating: {
+                  "@type": "Rating",
+                  ratingValue: review.rating,
+                },
+              }))
+            : undefined,
       }
     : null;
 

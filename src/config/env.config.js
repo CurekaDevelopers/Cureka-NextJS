@@ -16,7 +16,7 @@ const envSchema = z.object({
   REACT_SERVER_BASE_URL: z
     .string()
     .min(1)
-    .default("https://backend.cureka.com"),
+    .default("https://backenddev.cureka.com"),
   // .default("http://localhost:8000"),
 });
 

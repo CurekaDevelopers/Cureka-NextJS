@@ -822,7 +822,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                           <h2 className="highlights">Expert Advice</h2>
                           <div
                             className="dynamic-content"
-                            style={{ width: "200%" }}
+                            style={{ width: "100%" }}
                             dangerouslySetInnerHTML={{
                               __html: product.expert_advice,
                             }}
