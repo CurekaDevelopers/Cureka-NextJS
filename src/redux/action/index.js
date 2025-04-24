@@ -1424,6 +1424,56 @@ export const fetchProductBySlug = async (slug) => {
     return {};
   }
 };
+export const fetchProductsFromSlug = async (slug) => {
+  try {
+    const data = await api.get(apiUrls.getProductsFromSlug(slug)); 
+    console.log("==============================",data.data);
+       
+    return data || {};
+  } catch (error) {
+    console.error(
+      `Something went wrong while fetching product: ${
+        error?.response?.data?.error || error.message
+      }`
+    );
+
+    return {};
+  }
+};
+
+export const fetchProductsFromSubCategorySlug = async (slug) => {
+  try {
+    const data = await api.get(apiUrls.getProductsFromSubCategorySlug(slug)); 
+    // console.log("==============================",data.data);
+       
+    return data || {};
+  } catch (error) {
+    console.error(
+      `Something went wrong while fetching product: ${
+        error?.response?.data?.error || error.message
+      }`
+    );
+
+    return {};
+  }
+};
+
+export const fetchProductsFromSubSubCategory = async (slug) => {
+  try {
+    const data = await api.get(apiUrls.getProductsFromSubSubCategorySlug(slug)); 
+    // console.log("==============================",data.data);
+       
+    return data || {};
+  } catch (error) {
+    console.error(
+      `Something went wrong while fetching product: ${
+        error?.response?.data?.error || error.message
+      }`
+    );
+
+    return {};
+  }
+};
 
 export const updateBlogs =
   (

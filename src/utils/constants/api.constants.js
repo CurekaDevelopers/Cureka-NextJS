@@ -75,6 +75,9 @@ export const apiUrls = {
   shopByAge: "/products-by-group/shop-by-age",
   topPicks: "/products-by-group/top-picks",
   category: "category-products",
+  getProductsFromSlug: (slug) => `category-products/${slug}`,
+  getProductsFromSubCategorySlug: (slug) => `subcategory-products/${slug}`,
+  getProductsFromSubSubCategorySlug: (slug) => `/subsubcategory-products/${slug}`,
   subCategory: "/subcategory-products",
   subSubCategory: "/subsubcategory-products",
   fileUploadUrl: (category) =>

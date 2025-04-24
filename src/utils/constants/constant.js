@@ -157,7 +157,7 @@ export const pagePaths = {
   adminMultipleAddManagement: "/admin/MultipleAddManagementPage",
   adminCreateMultipleAdd:
     "/admin/MultipleAddManagementPage/AdminCreateMultipleAddPage",
-  adminCreateMultipleAddEdit: "/admin/multipleAdd/edit/:id",
+  adminCreateMultipleAddEdit: "/admin/MultipleAddManagementPage/edit/:id",
   adminCuratedAddManagement: "/admin/CuratedAddManagementPage",
   adminCreateCuratedAdd:
     "/admin/CuratedAddManagementPage/AdminCreateCuratedAddPage",
