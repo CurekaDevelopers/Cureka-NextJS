@@ -382,6 +382,8 @@ export const fetchProductsForBrand =
       const concerns = await api.get(
         apiUrls.brandProduct + "/" + queryParams.brandSlug
       );
+      console.log("Concerns",concerns);
+      
       dispatch(setConcernsProduct(concerns.data || []));
       dispatch(setCatdata(concerns.data?.catadata || []));
 
@@ -389,6 +391,7 @@ export const fetchProductsForBrand =
       dispatch(setFilters(concerns.data?.filters || {}));
       dispatch(setProductPaginationData(concerns.data?.pagination || {}));
       // dispatch(setLoading(false));
+      return concerns;
     } catch (error) {
       dispatch(setConcernsProduct([]));
       toast.error(
