@@ -275,14 +275,23 @@ export default function Productdetails({ productSlug, ssrProduct }) {
     return calculated_hmac_base64;
   };
   const handleBuyNowClick = async (event) => {
+    console.log(quantity,"-=-=-=-=-=event-=-=-=-=-=-");
+    
     if (typeof window.HeadlessCheckout !== "undefined") {
-      await addBuynow(event, product, 1);
+      await addBuynow(event, product, quantity);
     } else {
       console.error("Fastrr script not yet loaded");
     }
   };
 
-  const addBuynow = async (event, product, quantity = 1) => {
+  const addBuynow = async (event, product, quantity) => {
+    console.log("Quantity before validation:", quantity);
+
+    if (quantity < 1) {
+        console.error("Quantity must be at least 1.");
+        return;
+    }
+    
     const variant_id = product.product_id.toString();
     const data = {
       cart_data: {
@@ -293,7 +302,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
           },
         ],
       },
-      redirect_url: "http://frontend.cureka.com/faster-order",
+      redirect_url: "http://app.cureka.com/faster-order",
       timestamp: timestamp,
     };
 
@@ -403,13 +412,16 @@ export default function Productdetails({ productSlug, ssrProduct }) {
   };
   const increaseQuantity = () => {
     if (quantity < 20) {
-      setQuantity(quantity + 1);
+      setQuantity((prevQuantity) => prevQuantity + 1);
+      console.log(quantity,"Quantity");
+      
     }
   };
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
+      console.log(quantity,"Quantity");
     }
   };
 
@@ -521,53 +533,53 @@ export default function Productdetails({ productSlug, ssrProduct }) {
   }, []);
   console.log(product,"==prodct");
   
-  const productSchema = product
-  ? {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    name: product?.vendor_article_name,
-    image: product?.images,
-    description: product?.meta_description,
-    sku: product?.sku_code,
-    mpn: product?.vendor_sku_code,
-    brand: {
-      "@type": "Brand",
-      name: product?.brand_name,
-    },
-    offers: {
-      "@type": "Offer",
-      url: window.location.href,
-      priceCurrency: "INR",
-      price: product?.final_price,
-      itemCondition: "https://schema.org/NewCondition",
-      availability:
-        product?.stock_status == "In stock"
-          ? "https://schema.org/InStock"
-          : "https://schema.org/OutOfStock",
-      seller: {
-        "@type": "Organization",
-        name: "Cureka",
-      },
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: product?.ratingCount.average,
-      reviewCount: product?.ratingCount.totalReviews,
-    },
-    review: product?.product_reviews?.map((review) => ({
-      "@type": "Review",
-      author: {
-        "@type": "Person",
-        name: review.created_by,
-      },
-      datePublished: review.created_at,
-      description: review.title,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: review.rating,
-      },
-    })),
-  }:null;
+  // const productSchema = product
+  // ? {
+  //   "@context": "https://schema.org/",
+  //   "@type": "Product",
+  //   name: product?.vendor_article_name,
+  //   image: product?.images,
+  //   description: product?.meta_description,
+  //   sku: product?.sku_code,
+  //   mpn: product?.vendor_sku_code,
+  //   brand: {
+  //     "@type": "Brand",
+  //     name: product?.brand_name,
+  //   },
+  //   offers: {
+  //     "@type": "Offer",
+  //     url: window.location.href,
+  //     priceCurrency: "INR",
+  //     price: product?.final_price,
+  //     itemCondition: "https://schema.org/NewCondition",
+  //     availability:
+  //       product?.stock_status == "In stock"
+  //         ? "https://schema.org/InStock"
+  //         : "https://schema.org/OutOfStock",
+  //     seller: {
+  //       "@type": "Organization",
+  //       name: "Cureka",
+  //     },
+  //   },
+  //   aggregateRating: {
+  //     "@type": "AggregateRating",
+  //     ratingValue: product?.ratingCount.average,
+  //     reviewCount: product?.ratingCount.totalReviews,
+  //   },
+  //   review: product?.product_reviews?.map((review) => ({
+  //     "@type": "Review",
+  //     author: {
+  //       "@type": "Person",
+  //       name: review.created_by,
+  //     },
+  //     datePublished: review.created_at,
+  //     description: review.title,
+  //     reviewRating: {
+  //       "@type": "Rating",
+  //       ratingValue: review.rating,
+  //     },
+  //   })),
+  // }:null;
 
   // State to track when to scroll to the Review section
   const [scrollToReview, setScrollToReview] = useState(false);
@@ -630,7 +642,8 @@ export default function Productdetails({ productSlug, ssrProduct }) {
           {JSON.stringify(productSchema)}
         </script>
       </Helmet> */}
-      <ShopHeader />
+      {/* <ShopHeader /> */}
+       <Header />
       {product && (
         <div className="container-fluid px-0 navbar-margin mt-5">
           <div className="container">
@@ -799,9 +812,12 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                 className="col-lg-8 row position-sticky"
                 style={{ top: "370px" }}
               >
-                <h1 className="product-heading p-0 mt-5">
+                {/* <h1 className="product-heading p-0 mt-5">
                   {product.vendor_article_name}
-                </h1>
+                </h1> */}
+                <div className="product-heading p-0 mt-5">
+                {product.vendor_article_name}
+                </div>
 
                 <div
                   className={`col-lg-6 pl-lg-0 mt-5 
@@ -1309,7 +1325,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                               size="lg"
                               style={{ color: "#ffffff" }}
                             />
-                            Buy Now
+                            Buy Now <br />
                             <span style={{ fontSize: "8px" }}>
                               Power By Shiprocket
                             </span>

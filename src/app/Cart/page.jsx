@@ -223,7 +223,7 @@ export default function Cart() {
 
       const data = {
         cart_data: { items },
-        redirect_url: "http://frontend.cureka.com/faster-order",
+        redirect_url: "https://app.cureka.com/faster-order",
         timestamp,
       };
 
@@ -248,7 +248,8 @@ export default function Cart() {
       );
 
       const token = response?.data?.result?.token;
-
+      console.log("Token=-=-=-=-=-=-=-=--=-=-=-=-=-=-",token);
+      
       if (!token) {
         console.error("No token received:", response.data);
         return;

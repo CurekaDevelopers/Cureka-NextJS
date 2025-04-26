@@ -3,37 +3,69 @@ import "../../../app/globals.css";
 import { fetchProductsFromSlug } from "../../../redux/action";
 
 export async function generateMetadata({ params }) {
-  const slug = params?.categorySlug;
-   let data = null;
-    try {
-      data = await fetchProductsFromSlug(slug);      
-    } catch (err) {
-      console.error("Error fetching product:", err);
-    }
+  // const slug = params?.categorySlug;
+ 
+  let result = null;
+  let products = [];
   
-    if (!data) {
-      return {
-        title: "Product Not Found",
-        description: "Sorry, we couldn't find the product you're looking for.",
-        openGraph: {
-          title: "Product Not Found",
-          description: "Sorry, we couldn't find the product you're looking for.",
-          type: "website",
-          image: "https://app.cureka.com/assets/images/logo.svg",
-        },
-      };
-    }
+  try {
+    result = await fetchProductsFromSlug(slug);
+    products = Array.isArray(result?.data?.products) ? result.data.products : [];
+  } catch (err) {
+    console.error("Error fetching product:", err);
+  }
   
+  // Use the first product's meta
+  const product = products?.[0];
+  
+  if (!product) {
     return {
-      // title: product?.meta_title === "null" ? product?.vendor_article_name : product?.meta_title,
-      // description: product?.meta_description,
-      // openGraph: {
-      //   title: product?.vendor_article_name || "Cureka",
-      //   description: product?.meta_description,
-      //   type: "website",
-      //   image: "https://app.cureka.com/assets/images/logo.svg",
-      // },
+      title: "Products Not Found",
+      description: "Sorry, we couldn't find the products you're looking for.",
+      openGraph: {
+        title: "Products Not Found",
+        description: "Sorry, we couldn't find the products you're looking for.",
+        type: "website",
+        images: [
+          {
+            url: "https://app.cureka.com/assets/images/logo.svg",
+            width: 800,
+            height: 600,
+            alt: "Cureka Logo",
+          },
+        ],
+      },
     };
+  }
+  
+  // Corrected fallback for meta title
+  const metaTitle = product?.meta_title && product.meta_title !== "null"
+    ? product.meta_title
+    : product?.vendor_article_name || "Cureka";
+  
+  const metaDescription = product?.meta_description || "Find great products on Cureka.";
+  
+  return {
+    title: metaTitle,
+    description: metaDescription,
+    openGraph: {
+      title: metaTitle,
+      description: metaDescription,
+      type: "website",
+      url: `https://app.cureka.com/shop/${product?.slug}`,
+      images: [
+        {
+          url: Array.isArray(product?.product_images) && product.product_images.length
+            ? product.product_images[0]
+            : "https://app.cureka.com/assets/images/logo.svg",
+          width: 800,
+          height: 600,
+          alt: product?.vendor_article_name || "Product image",
+        },
+      ],
+    },
+  };
+  
 
 
 }
@@ -55,7 +87,7 @@ export default async function CategoryPage({ params }) {
   let products = [];
   try {
     const result = await fetchProductsFromSlug(slugArr);
-    console.log("The Result is -=-=-=",result.data.products);
+    // console.log("The Result is -=-=-=",result.data.products);
     
     products = Array.isArray(result?.data.products) ? result.data.products : [];
     // console.log("Products",result);
@@ -76,7 +108,7 @@ export default async function CategoryPage({ params }) {
       "@type": "Product",
       name: product?.vendor_article_name,
       url: `https://app.cureka.com/shop/${product?.slug}`,
-      image: product?.images?.[0],
+      image: product?.product_images?.[0],
       price: product?.final_price,
       priceCurrency: "INR",
       aggregateRating: product?.ratingCount

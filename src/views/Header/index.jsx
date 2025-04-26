@@ -326,11 +326,13 @@ export default function Header({ showCategoryNavbar = true }) {
     // Navigate to the home page
     navigate.push(pagePaths.home);
   };
+  const pathname = useSearchParams();
+  const isHomePage = pathname === '/';
 
   return (
     <>
       <div className="container-fluid header-border header-fixed px-0 pl-8 ">
-        {showCurekaAlert && (
+        {isHomePage && showCurekaAlert && (
           <>
             <div className="blue-wrapper" id="cureka-alert">
               <Alert variant="" onClose={handleAlert} dismissible>
