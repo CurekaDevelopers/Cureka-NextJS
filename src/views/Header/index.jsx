@@ -332,7 +332,7 @@ export default function Header({ showCategoryNavbar = true }) {
   return (
     <>
       <div className="container-fluid header-border header-fixed px-0 pl-8 ">
-        {isHomePage && showCurekaAlert && (
+        {showCurekaAlert && (
           <>
             <div className="blue-wrapper" id="cureka-alert">
               <Alert variant="" onClose={handleAlert} dismissible>
@@ -697,7 +697,7 @@ export default function Header({ showCategoryNavbar = true }) {
            </div>
          </nav>
           <div className="container px-0 d-block d-lg-none">
-            <ul className="list-unstyled mobile-dropdown border-0 d-flex-column">
+            <ul style={{marginBottom: "5px"}} className="list-unstyled mobile-dropdown border-0 d-flex-column">
               {/* side scroll bar with dropdown */}
 
               <div
@@ -1030,61 +1030,84 @@ export default function Header({ showCategoryNavbar = true }) {
               </div>
               {/* Mobile Search  */}
               <li className="nav-item" style={{ width: "100%" }}>
-  <div
-    className="d-flex flex-column align-items-center"
-    style={{ width: "100%", gap: "10px" }}
+              <div
+  className="d-flex flex-row align-items-center justify-content-center"
+  style={{ width: "100%", gap: "10px" }}
+>
+  {/* Dropdown */}
+  <div className="form-group mb-0">
+    <DropdownButton
+      id="dropdown-toggles"
+      title={<span style={{
+        display: "inline-block",
+        maxWidth: "100%",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }}>
+        {category?.name || "All"}
+      </span>}
+      style={{
+        border: "1px solid #004a98",
+        minWidth: "105px",
+        padding: "5px 5px",
+        textAlign: "center",
+        fontSize: "13px",
+        borderRadius: "6px",
+      }}
+      variant="primary"
+    >
+      <Dropdown.Item onClick={onCategoryChange(null)} style={{ minWidth: "160px" }}>
+        All
+      </Dropdown.Item>
+      {!!nestedCategories?.length &&
+                     nestedCategories?.map((item) => {
+                       if (item.nav_link?.trim().toLowerCase() !== "active")
+                         return null;
+                       return (
+                         <Dropdown.Item
+                           key={item.id}
+                           onClick={onCategoryChange(item)}
+                         >
+                           {item.name}
+                         </Dropdown.Item>
+                       );
+                     })}
+    </DropdownButton>
+  </div>
+
+  {/* Search Bar */}
+  <form
+    onSubmit={onSearchFormSubmit}
+    className="d-flex search align-items-center"
+    style={{
+      position: "relative",
+      zIndex: "0",
+      width: "100%",
+      maxWidth: "500px",
+      borderRadius: "6px",
+    }}
   >
-    {/* Category Dropdown */}
-    <div className="form-group mb-0">
-      <DropdownButton
-        id="dropdown-toggles"
-        title={category?.name || "All"}
-        style={{
-          border: "1px solid #004a98",
-          minWidth: "170px",
-          textAlign: "center",
-        }}
-      >
-        <Dropdown.Item onClick={onCategoryChange(null)} style={{minWidth: "160px",}}>All</Dropdown.Item>
-        {!!nestedCategories?.length &&
-          nestedCategories.map((cat) => (
-            <Dropdown.Item key={cat.id} onClick={onCategoryChange(cat)}>
-              {cat.name}
-            </Dropdown.Item>
-          ))}
-      </DropdownButton>
+    <div ref={autocompleteRef} className="flex-grow-1">
+      <SearchAutocomplete
+        items={items}
+        onSelect={handleSelect}
+        onChange={handleInputChange}
+      />
     </div>
 
-    {/* Search Bar */}
-    <form
-      onSubmit={onSearchFormSubmit}
-      className="d-flex search justify-content-center"
-      style={{
-        position: "relative",
-        zIndex: "0",
-        width: "100%",
-        maxWidth: "500px",
-      }}
-    >
-      <div ref={autocompleteRef} className="flex-grow-1">
-        <SearchAutocomplete
-          items={items}
-          onSelect={handleSelect}
-          onChange={handleInputChange}
-        />
-      </div>
+    <Image
+      onClick={onSearchClicked}
+      className="img-fluid search-icon"
+      src={homeSearch}
+      width={16}
+      height={16}
+      alt="search"
+      style={{ marginLeft: "-30px", cursor: "pointer" }}
+    />
+  </form>
+</div>
 
-      <Image
-        onClick={onSearchClicked}
-        className="img-fluid search-icon"
-        src={homeSearch}
-        width={16}
-        height={16}
-        alt="search"
-        style={{ marginLeft: "-30px", cursor: "pointer" }}
-      />
-    </form>
-  </div>
 </li>
 
 

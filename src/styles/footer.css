@@ -456,7 +456,7 @@
 
 /* Adjust icon spacing */
 .mobile-header .nav-link {
-  padding: 0 5px;
+  padding: 0 5px !important;
 }
 
 .mobile-header img {
@@ -1740,11 +1740,12 @@ element.style {
 }
 /* Rate product styles end*/
 .cart-icons {
-  position: absolute;
+  /*position: absolute;*/
+  position: unset;
   right: 0;
-  @media (min-width: 992px) {
+  /*@media (min-width: 992px) {
     position: unset;
-  }
+  }*/
 }
 .mobile-items {
   color: #6c6c85;

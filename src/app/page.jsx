@@ -470,7 +470,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <h1 className="doctors-heading mt-2 font-weight-bold text-center mb-5">
+        <h1 className="doctors-heading mt-2 font-weight-bold text-center mb-m-5">
           Cureka: India’s leading Online Healthcare Platform
         </h1>
         <div className="product-carousel">
@@ -489,7 +489,7 @@ export default function Home() {
             <div className="col-lg-12">
               <div className="container-fluid p-0" id="new-arrivals">
                 <CarouselSlider
-                  settings={{ slidesToShow: isPhone ? 2 : isMobile ? 3 : 4 }}
+                  settings={{ slidesToShow: isPhone ? 1 : isMobile ? 3 : 4 }}
                 >
                   {!!newArrivals?.length &&
                     newArrivals?.map((product) => {
@@ -502,7 +502,7 @@ export default function Home() {
                         <div key={product.id} className="item">
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
-                              <div className="sale d-lg-block d-none">
+                              <div className="sale d-lg-block">
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
                                     -{Number(product.discount_percent)} %
@@ -515,7 +515,7 @@ export default function Home() {
                               </div>
 
                               <Link href={generateUrl(product)} target="_blank">
-                                <div className="product">
+                                <div className="product mx-auto">
                                   <Image
                                     src={product_front_na_image}
                                     width={218}
@@ -582,7 +582,7 @@ export default function Home() {
                                 </h3>
                               </Link>
 
-                              <div className="rating d-lg-flex d-none">
+                              <div className="rating d-lg-flex">
                                 <p className="rating-number">
                                   {Array.isArray(product?.product_reviews) &&
                                   product.product_reviews.length > 0
@@ -598,7 +598,7 @@ export default function Home() {
                               </div>
 
                               <div className="d-flex">
-                                <p className="product-author d-lg-block d-none">
+                                <p className="product-author d-lg-block">
                                   By:
                                   <Link
                                     href={`/product-brands/${product.brand_name}`}
@@ -630,7 +630,7 @@ export default function Home() {
                                 )}
                               </div>
 
-                              <div className="d-flex-column pb-0 pb-lg-5">
+                              <div className="d-flex-column pb-0">
                                 {product?.show_stock === 1 &&
                                 product?.stock_status === "Out Stock" ? (
                                   <>
@@ -678,7 +678,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="row">
+        <div style={{padding: "20px 0 10px 0"}} className="row">
           <h2 className="doctors-heading">Curated By Our Doctors</h2>
         </div>
 
@@ -703,7 +703,7 @@ export default function Home() {
           </div>
         )}
 
-        <div className="row mt-5">
+        <div style={{padding: "20px 0 10px 0"}} className="row">
           <h2 className="doctors-heading">Curated by Age</h2>
         </div>
 
@@ -799,7 +799,7 @@ export default function Home() {
             <div className="col-lg-12">
               <div className="container-fluid p-0" id="new-arrivals">
                 <CarouselSlider
-                  settings={{ slidesToShow: isPhone ? 2 : isMobile ? 3 : 4 }}
+                  settings={{ slidesToShow: isPhone ? 1 : isMobile ? 3 : 4 }}
                 >
                   {topArrivals?.length > 0 &&
                     topArrivals.map((product) => {
@@ -819,7 +819,7 @@ export default function Home() {
                         <div key={product.id} className="item">
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
-                              <div className="sale d-lg-block d-none">
+                              <div className="sale d-lg-block">
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
                                     -{product.discount_percent} %
@@ -832,7 +832,7 @@ export default function Home() {
                               </div>
 
                               <Link href={generateUrl(product)} target="_blank">
-                                <div className="product">
+                                <div className="product mx-auto">
                                   <Image
                                     src={productImage}
                                     width={218}
@@ -901,12 +901,12 @@ export default function Home() {
                                 </h3>
                               </Link>
 
-                              <div className="rating d-lg-flex d-none">
+                              <div className="rating d-lg-flex">
                                 <p className="rating-number">{rating}</p>
                               </div>
 
                               <div className="d-flex">
-                                <p className="product-author d-lg-block d-none">
+                                <p className="product-author d-lg-block">
                                   By:
                                   <Link
                                     href={`/product-brands/${product.brand_name}`}
@@ -936,7 +936,7 @@ export default function Home() {
                                 )}
                               </div>
 
-                              <div className="d-flex-column pb-0 pb-lg-5">
+                              <div className="d-flex-column pb-0">
                                 {product?.show_stock === 1 &&
                                 product?.stock_status === "Out Stock" ? (
                                   <>
@@ -986,7 +986,7 @@ export default function Home() {
 
         <br />
         <div className="row">
-          <h2 className="doctors-heading">Tell Us About Your Selves</h2>
+          <h2 className="doctors-heading">Tell Us About Yourself</h2>
 
           {YOURSELF && (
             <div className="row mt-4">
@@ -1017,10 +1017,10 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="row mt-5" id="topbrands">
+          <div style={{padding: "20px 0 10px 0"}} className="row" id="topbrands">
             <div className="col-lg-12">
               <CarouselSlider
-                settings={{ slidesToShow: isMobile ? 2 : isPhone ? 3 : 6 }}
+                settings={{ slidesToShow: isMobile? 5 : 6 }}
               >
                 {!!brands?.length &&
                   brands?.map((brandformat, index) => (
@@ -1028,8 +1028,8 @@ export default function Home() {
                       <div className="item mr-3" key={index}>
                         <p
                           style={{
-                            width: "180px",
-                            height: "180px",
+                            width: isMobile? "60px" : "180px",
+                            height: isMobile? "60px" : "180px",
                             cursor: "pointer",
                           }}
                           className="text-decoration-none"
@@ -1069,7 +1069,7 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="d-flex justify-content-between">
+        <div style={{padding: "20px 0 10px 0"}} className="d-flex justify-content-between">
           <h3 className="doctors-heading">Our Recent Blog</h3>
           <a
             className="text-decoration-none align-self-center"
@@ -1152,7 +1152,7 @@ export default function Home() {
 
         {/* <MyBlogCarousel bitems={blogHome} /> */}
 
-        <div className="row mt-4">
+        <div style={{padding: "20px 0 10px 0"}} className="row">
           <h3 className="doctors-heading">Customer Reviews</h3>
         </div>
 

@@ -5,7 +5,7 @@
 
   background: #fff;
 
-  min-height: 250px;
+  /*min-height: 250px;*/
 
   margin-left: 0;
 
@@ -15,11 +15,15 @@
 
   max-width: 95%;
 
-  @media (min-width: 450px) and (max-width: 991.98px) {
-    min-height: 260px;
-  }
+  margin-left: auto;
 
-  @media (min-width: 992px) {
+    margin-right: auto;
+
+  /*@media (min-width: 450px) and (max-width: 991.98px) {
+    min-height: 260px;
+  }*/
+
+  /*@media (min-width: 992px) { 
     max-width: 310px;
 
     min-height: 350px;
@@ -30,7 +34,7 @@
     margin-right: auto;
 
     padding: 15px;
-  }
+  }*/
 }
 
 .gap {
@@ -46,12 +50,13 @@
 }
 
 .arrivals.card .product {
-  width: 100%;
+  width: 150px;
   height: 150px;
-  @media (min-width: 768px) {
+  text-align: center;
+  /*@media (min-width: 768px) {
     width: 150px;
     height: 150px;
-  }
+  }*/
 }
 
 .arrivals.card .product img {
@@ -208,27 +213,27 @@
 .product-category {
   color: #788fa7;
 
-  font: normal 400 10px / normal Rubik-regular;
+  font: normal 400 12px / normal Rubik-regular;
 
-  margin-bottom: 1px;
+  margin-bottom: 4px;
 
   text-align: left;
 
-  @media (min-width: 992px) {
+  /*@media (min-width: 992px) {
     font: normal 400 12px / normal Rubik-regular;
 
     margin-bottom: 4px;
-  }
+  }*/
 }
 
 .product-name {
   color: #231f20;
 
-  font: normal 400 12px/20px Rubik-regular;
+  font: normal 400 14px/20px Rubik-regular;
 
-  margin-bottom: 2px;
+  margin-bottom: 7px;
   text-align: left;
-  max-width: 165px;
+  max-width: 290px;
   height: 40px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -237,12 +242,12 @@
   text-overflow: ellipsis;
   text-wrap: wrap;
 
-  @media (min-width: 992px) {
+  /*@media (min-width: 992px) {
     font: normal 400 14px/20px Rubik-regular;
 
     margin-bottom: 7px;
     max-width: 290px;
-  }
+  }*/
 }
 
 .rating {
@@ -271,18 +276,27 @@
   background-repeat: no-repeat;
 }
 
+.d-lg-flex {
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.pb-lg-5 {
+  padding-bottom: 3rem !important;
+}
+
 .rating-number {
   color: #004a98;
 
-  font: normal 400 10px / normal Rubik-regular;
+  font: normal 400 12px / normal Rubik-regular;
 
   margin: 0px 0px 0px 10px;
 
   align-self: center;
 
-  @media (min-width: 992px) {
+  /*@media (min-width: 992px) {
     font: normal 400 12px / normal Rubik-regular;
-  }
+  }*/
 }
 
 .product-author {
@@ -290,13 +304,13 @@
 
   font: normal 400 12px / normal Rubik-regular;
 
-  margin-bottom: 2px;
+  margin-bottom: 22px;
 
   text-align: left;
 
-  @media (min-width: 992px) {
+  /*@media (min-width: 992px) {
     margin-bottom: 22px;
-  }
+  }*/
 }
 
 .product-author-className {
@@ -322,25 +336,25 @@
 .product-price {
   color: #000;
 
-  font: normal 400 12px/20px Rubik-regular;
+  font: normal 400 16px/20px Rubik-regular;
 
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 
-  padding-left: 5px;
+  padding-left: 0px;
 
-  @media (min-width: 992px) {
+  /*@media (min-width: 992px) {
     font: normal 400 16px/20px Rubik-regular;
 
     margin-bottom: 16px;
 
     padding-left: 0px;
-  }
+  }*/
 }
 
 .cart {
-  max-width: 130px;
+  max-width: 140px;
 
-  padding: 8px 8px !important;
+  padding: 6px 12px !important;
 
   border-radius: 4px;
 
@@ -348,15 +362,15 @@
 
   background: #ffede3;
 
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 
   color: #e75204;
 
-  font: normal 400 12px/20px Rubik-regular;
+  font: normal 400 14px/20px Rubik-regular;
 
-  margin: auto;
+  margin: unset;
 
-  @media (min-width: 992px) {
+  /*@media (min-width: 992px) {
     max-width: 140px;
 
     font: normal 400 14px/20px Rubik-regular;
@@ -366,7 +380,7 @@
     padding: 6px 12px !important;
 
     margin: unset;
-  }
+  }*/
 }
 
 .cart:hover {
@@ -744,6 +758,22 @@
   color: #231f20;
 
   font: normal 400 28px/30px Rubik-regular;
+  
+}
+
+@media (max-width: 767px) {
+  .doctors-heading {
+    margin: 10px 0px 10px 0px;
+    font: normal 400 18px/22px Rubik-regular; /* smaller font on mobile */
+  }
+
+  .mb-m-5 {
+    margin-bottom: 1rem !important;
+  }
+}
+
+.mb-m-5 {
+  margin-bottom: 1rem !important;
 }
 
 .discounts {
@@ -1089,7 +1119,7 @@
 
   background: #f5faff;
 
-  max-width: 290px;
+  max-width: 260px;
   margin: auto;
   text-align: left;
   min-width: 260px;
@@ -1097,15 +1127,13 @@
   /* min-height: 370px;
   max-height: 370px; */
 
-  /* @media(min-width: 992px) {
+  @media(max-width: 992px) {
 
-    max-width: 270px;
+    max-width: 300px;
 
-  max-height: 350px;
+  min-width: 300px;
 
-  min-height: 350px;
-
-  } */
+  }
 }
 
 .customer-review {
