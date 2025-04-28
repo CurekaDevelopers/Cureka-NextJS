@@ -140,48 +140,96 @@ export default function Cart() {
     });
   };
 
-  const loadScript = (src) => {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.async = true;
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-      document.body.appendChild(script);
-    });
-  };
+  // const loadScript = (src) => {
+  //   return new Promise((resolve, reject) => {
+  //     const script = document.createElement("script");
+  //     script.src = src;
+  //     script.async = true;
+  //     script.onload = () => resolve();
+  //     script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+  //     document.body.appendChild(script);
+  //   });
+  // };
 
-  useEffect(() => {
-    // Load external CSS
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href =
-      // "https://customcheckoutfastrr.netlify.app/assets/styles/shopify.css?v=123";
-      "https://checkout-ui.shiprocket.com/assets/styles/shopify.css";
-    document.head.appendChild(link);
+  // useEffect(() => {
+  //   // Load external CSS
+  //   const link = document.createElement("link");
+  //   link.rel = "stylesheet";
+  //   link.href =
+  //     // "https://customcheckoutfastrr.netlify.app/assets/styles/shopify.css?v=123";
+  //     "https://checkout-ui.shiprocket.com/assets/styles/shopify.css";
+  //   document.head.appendChild(link);
 
-    // Load external JavaScript
-    loadScript(
-      // "https://customcheckoutfastrr.netlify.app/assets/js/channels/shopify.js"
-      "https://checkout-ui.shiprocket.com/assets/js/channels/shopify.js"
-    )
-      .then(() => {
-        // Script loaded successfully, set up event listeners
+  //   // Load external JavaScript
+  //   loadScript(
+  //     // "https://customcheckoutfastrr.netlify.app/assets/js/channels/shopify.js"
+  //     "https://checkout-ui.shiprocket.com/assets/js/channels/shopify.js"
+  //   )
+  //     .then(() => {
+  //       // Script loaded successfully, set up event listeners
+  //       const button = document.getElementById("buyNow");
+  //       if (button) {
+  //         button.addEventListener("click", handleButtonClick);
+  //       }
+  //     })
+  //     .catch((error) => console.error(error));
+
+  //   // Clean up on component unmount
+  //   return () => {
+  //     const button = document.getElementById("buyNow");
+  //     if (button) {
+  //       button.removeEventListener("click", handleButtonClick);
+  //     }
+  //   };
+  // }, []);
+
+   // Function to load external scripts dynamically
+    const loadScript = (src) => {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+        document.body.appendChild(script);
+      });
+    };
+  
+    useEffect(() => {
+      // Load external CSS
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://checkout-ui.shiprocket.com/assets/styles/shopify.css";
+      document.head.appendChild(link);
+  
+      // Load external JavaScript
+      loadScript("https://checkout-ui.shiprocket.com/assets/js/channels/shopify.js")
+        .then(() => {
+          // Ensure the script and HeadlessCheckout are ready
+          if (window.HeadlessCheckout) {
+            console.log("HeadlessCheckout script loaded successfully");
+  
+            // Set up the event listener after the script is loaded
+            const button = document.getElementById("buyNow");
+            if (button) {
+              button.addEventListener("click", handleButtonClick);
+            } else {
+              console.warn("Buy Now button not found!");
+            }
+          } else {
+            console.error("HeadlessCheckout script not available.");
+          }
+        })
+        .catch((error) => console.error(error));
+  
+      // Clean up on component unmount
+      return () => {
         const button = document.getElementById("buyNow");
         if (button) {
-          button.addEventListener("click", handleButtonClick);
+          button.removeEventListener("click", handleButtonClick);
         }
-      })
-      .catch((error) => console.error(error));
-
-    // Clean up on component unmount
-    return () => {
-      const button = document.getElementById("buyNow");
-      if (button) {
-        button.removeEventListener("click", handleButtonClick);
-      }
-    };
-  }, []);
+      };
+    }, []);
 
   const handlePinCode = () => {
     // Validation: Check if pincode is empty or invalid
@@ -211,74 +259,117 @@ export default function Cart() {
   };
 
   const [shiprocketToken, setShiprocketToken] = useState("");
+  const handleBuyNowClick = async (event) => {
+    console.log(event,"-=-=-=-=-=event-=-=-=-=-=-");
+    
+    if (typeof window.HeadlessCheckout !== "undefined") {
+      await addBuynow(event, cartProducts);
+    } else {
+      console.error("Fastrr script not yet loaded");
+    }
+  };
 
   const addBuynow = async (event, cartProducts) => {
-    try {
+  
       const timestamp = Math.floor(Date.now() / 1000);
 
       const items = cartProducts.map((product) => ({
         variant_id: product.product_id?.toString(),
         quantity: product.quantity || 1,
       }));
-
+      console.log(items,"Items");
+      
+      // const data = {
+      //   cart_data: { items },
+      //   redirect_url: "https://app.cureka.com/faster-order",
+      //   timestamp,
+      // };
       const data = {
-        cart_data: { items },
+        cart_data: {
+          items,
+        },
         redirect_url: "https://app.cureka.com/faster-order",
-        timestamp,
+        // redirect_url: "http://localhost:3000/faster-order",
+        timestamp: timestamp,
       };
 
-      const apiSecretKey = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b"; // Secret key
-      const apiPublicKey = "1OXaKLiBm7r3OVKI"; // API key
+      const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
       const payload = JSON.stringify(data);
-
-      const hmac = CryptoJS.HmacSHA256(payload, apiSecretKey).toString(
+      const hmac = CryptoJS.HmacSHA256(payload, key).toString(
         CryptoJS.enc.Base64
       );
+      console.log(payload, "payload");
+      try {
+            const response = await axios.post(
+              "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
+              payload,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-Api-Key": "1OXaKLiBm7r3OVKI",
+                  "X-Api-HMAC-SHA256": hmac,
+                },
+              }
+            );
+            console.log(response.data.result.token, "response");
+            // shiprocketToken = response.data.result.token
+            const token = response.data.result.token;
+            setShiprocketToken(token);
+            if (window.HeadlessCheckout) {
+              // Assuming addToCart accepts product data and token
+              window.HeadlessCheckout.addToCart(event, token);
+            } else {
+              console.error("HeadlessCheckout is not available.");
+            }
+          } catch (error) {
+            console.error("shiprocket error:", error);
+            // toast.error('Something went to wrong');
+          }
 
-      const response = await axios.post(
-        "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-Api-Key": apiPublicKey,
-            "X-Api-HMAC-SHA256": hmac,
-          },
-        }
-      );
+    //   const response = await axios.post(
+    //     "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
+    //     payload,
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         "X-Api-Key": apiPublicKey,
+    //         "X-Api-HMAC-SHA256": hmac,
+    //       },
+    //     }
+    //   );
 
-      const token = response?.data?.result?.token;
-      console.log("Token=-=-=-=-=-=-=-=--=-=-=-=-=-=-",token);
+    //   const token = response?.data?.result?.token;
+    //   console.log("Token=-=-=-=-=-=-=-=--=-=-=-=-=-=-",token);
       
-      if (!token) {
-        console.error("No token received:", response.data);
-        return;
-      }
+    //   if (!token) {
+    //     console.error("No token received:", response.data);
+    //     return;
+    //   }
 
-      console.log("Received token:", token);
-      setShiprocketToken(token);
+    //   console.log("Received token:", token);
+    //   setShiprocketToken(token);
 
-      if (
-        window.HeadlessCheckout &&
-        typeof window.HeadlessCheckout.addToCart === "function"
-      ) {
-        window.HeadlessCheckout.addToCart(event, token);
-      } else {
-        console.error("HeadlessCheckout is not available or not loaded.");
-      }
-    } catch (error) {
-      console.error(
-        "Shiprocket API error:",
-        error.response?.data || error.message || error
-      );
-    }
+    //   if (
+    //     window.HeadlessCheckout &&
+    //     typeof window.HeadlessCheckout.addToCart === "function"
+    //   ) {
+    //     window.HeadlessCheckout.addToCart(event, token);
+    //   } else {
+    //     console.error("HeadlessCheckout is not available or not loaded.");
+    //   }
+    // } catch (error) {
+    //   console.error(
+    //     "Shiprocket API error:",
+    //     error.response?.data || error.message || error
+    //   );
+    // }
   };
 
-  useEffect(() => {
-    if (shiprocketToken) {
-      console.log("Shiprocket token is ready:", shiprocketToken);
-    }
-  }, [shiprocketToken]);
+  // useEffect(() => {
+  //   if (shiprocketToken) {
+  //     console.log("Shiprocket token is ready:", shiprocketToken);
+  //   }
+  // }, [shiprocketToken]);
 
   const handleBillingChange = () => {
     setIsGiftWrappingSelected(!isGiftWrappingSelected);
@@ -360,7 +451,7 @@ export default function Cart() {
       if (isLoggedIn) dispatch(fetchCartProducts());
     });
   };
-
+  
   let finalAmount = subTotalAmount;
 
   if (discountInfo?.final_amount) {
@@ -778,7 +869,7 @@ export default function Cart() {
                   {/* Buy Now Button with Label */}
                   <div className="d-flex flex-column align-items-center justify-content-center w-100 mt-6 position-relative">
                     <button
-                      onClick={(e) => addBuynow(e, cartProducts)}
+                      onClick={(e) => handleBuyNowClick(e, cartProducts)}
                       className="readmore buy-btn w-100 py-3 position-relative mt-2"
                       style={{
                         maxWidth: "400px",

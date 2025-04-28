@@ -302,7 +302,8 @@ export default function Productdetails({ productSlug, ssrProduct }) {
           },
         ],
       },
-      redirect_url: "http://app.cureka.com/faster-order",
+      redirect_url: "https://app.cureka.com/faster-order",
+      // redirect_url: "http://localhost:3000/faster-order",
       timestamp: timestamp,
     };
 

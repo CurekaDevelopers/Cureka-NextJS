@@ -52,6 +52,8 @@ import CategoryPopup from "../../../views/Header/HomePopup";
 import ScrollToTop from "../../../components/ScrollToTop/ScrollToTop";
 import { useRouter } from "next/navigation";
 import ShopHeader from "@/views/Header/ShopHeader";
+import toast from "react-hot-toast";
+
 export default function ProductList() {
   const {
     categorySlug,

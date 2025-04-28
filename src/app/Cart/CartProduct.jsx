@@ -19,6 +19,7 @@ const CartProduct = ({ product, onQuantityChange, onRemoveFromCart }) => {
     } else {
       setShowUpdate(true);
     }
+    updateCartAmount(quantity);
   };
   let product_front_image;
   if (product?.product_images) {
@@ -133,7 +134,8 @@ const CartProduct = ({ product, onQuantityChange, onRemoveFromCart }) => {
             ))}
             id="custom-dropdown-button"
           >
-            {`Quantity: ${product?.qty || 1}`}
+            {/* {`Quantity: ${product?.qty || 1}`} */}
+            {`Quantity: ${productQuantity}`}
           </Dropdown.Toggle>
           <Dropdown.Menu
             style={{
