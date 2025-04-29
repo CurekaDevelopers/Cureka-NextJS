@@ -302,8 +302,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
           },
         ],
       },
-      redirect_url: "https://app.cureka.com/faster-order",
-      // redirect_url: "http://localhost:3000/faster-order",
+      redirect_url: "http://app.cureka.com/faster-order",
       timestamp: timestamp,
     };
 
@@ -312,7 +311,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
     const hmac = CryptoJS.HmacSHA256(payload, key).toString(
       CryptoJS.enc.Base64
     );
-    // console.log(payload, "payload");
+    console.log(payload, "payload");
     try {
       const response = await axios.post(
         "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
@@ -816,7 +815,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                 {/* <h1 className="product-heading p-0 mt-5">
                   {product.vendor_article_name}
                 </h1> */}
-                <div className="product-heading p-0 mt-5">
+                <div className="product-heading-detail p-0 mt-5">
                 {product.vendor_article_name}
                 </div>
 
@@ -1223,9 +1222,9 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                             disabled={quantity <= 1}
                           >
                             -
-                          </button>
+                          </button>&nbsp;&nbsp;
                           <span className="quantity-display">{quantity}</span>
-                          <button
+                          &nbsp;&nbsp;<button
                             className="quantity-button"
                             onClick={increaseQuantity}
                             disabled={quantity >= 20}
@@ -1255,7 +1254,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                       </div>
                     )}
 
-                    <div className="d-flex justify-content-around">
+                    <div className="d-flex">
                       {product && product.stock_status == "Out Stock" ? (
                         <>
                           <button
@@ -1279,7 +1278,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                         <>
                           <button
                             onClick={(e) => addItemToCart(e, product, quantity)}
-                            className="text-decoration-none align-self-center d-flex cart buy-btn mx-0"
+                            className="pd text-decoration-none align-self-center d-flex cart buy-btn mx-0"
                             href="cart"
                           >
                             {/* <FontAwesomeIcon className="mr-2" icon={faShoppingCart} size="lg" />
@@ -1316,7 +1315,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                         <>
                           <button
                             onClick={(e) => handleBuyNowClick(e, product, quantity)}
-                            className="text-decoration-none readmore cart buy-btn w-30px"
+                            className="pdb text-decoration-none readmore cart buy-btn w-30px"
                             href="cart"
                             style={{ height: "48px" }}
                           >
@@ -1336,7 +1335,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                     </div>
 
                     <div className="d-lg-flex d-flex-column justify-content-between">
-                      <p className="delivery">Delivery</p>
+                      {/* <p className="delivery">Delivery</p> */}
 
                       <div className="delivers">
                         <div className="address-three">
@@ -1576,7 +1575,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                     onSelect={(k) => setKey(k)}
                     className="mb-3 nav-tabs"
                   >
-                    <Tab eventKey="details" title={<h3>Details</h3>}>
+                    <Tab eventKey="details" title={<span style={{fontSize: "20px", fontWeight: "Bold"}}>Details</span>}>
                       <div className="tab-pane mt-0" id="details">
                         <h4 className="details-heading">Description</h4>
 
@@ -1821,7 +1820,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                           )}
                       </div>
                     </Tab>
-                    <Tab eventKey="faq" title={<h3>FAQ'S</h3>}>
+                    <Tab eventKey="faq" title={<span style={{fontSize: "20px", fontWeight: "Bold"}}>FAQ'S</span>}>
                       <div className="row">
                         <div className="col-lg-12">
                           <Accordion activeKey={activeKey}>
@@ -1859,7 +1858,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                       </div>
                     </Tab>
 
-                    <Tab eventKey="reviews" title={<h3>Reviews</h3>}>
+                    <Tab eventKey="reviews" title={<span style={{fontSize: "20px", fontWeight: "Bold"}}>Reviews</span>}>
                       <div className="tab-pane" id="reviews">
                         <div>
                           <div className="row">
@@ -1979,7 +1978,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                       </h2>
                       <div className="container-fluid p-0" id="new-arrivals">
                         <CarouselSlider
-                          settings={{ slidesToShow: isMobile ? 2 : 4 }}
+                          settings={{ slidesToShow: isMobile ? 1 : 4 }}
                         >
                           {!!newArrivals?.length &&
                             newArrivals?.map((product) => {
@@ -1998,7 +1997,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                                 >
                                   <div className="arrivals card">
                                     <div className="d-flex flex-nowrap justify-content-between">
-                                      <div className="sale d-lg-block d-none">
+                                      <div className="sale d-lg-block">
                                         {product.discount_percent > 0 ? (
                                           <p className="sale-heading">
                                             -{Number(product.discount_percent)}%
@@ -2017,7 +2016,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                                         target="_blank"
                                         className=""
                                       >
-                                        <div className="product">
+                                        <div className="product mx-auto">
                                           <Image
                                             src={product_front_tp_image}
                                             width={218}
@@ -2101,7 +2100,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                                           {product.vendor_article_name}
                                         </h3>
                                       </a>
-                                      <div className="rating  d-lg-flex d-none">
+                                      <div className="rating  d-lg-flex">
                                         <p className="rating-number">
                                           {product &&
                                           product.product_reviews.length > 0
@@ -2118,7 +2117,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                                         </p>
                                       </div>
 
-                                      <p className="product-author d-lg-block d-none">
+                                      <p className="product-author d-lg-block">
                                         By:
                                         <a
                                           className="product-author-className"

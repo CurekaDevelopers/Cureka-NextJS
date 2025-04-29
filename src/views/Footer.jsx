@@ -386,7 +386,7 @@ export default function Footer() {
 
               <div className="footer-border"></div>
 
-              <div className="d-lg-flex justify-content-between d-flex-column">
+              <div className="d-flex flex-column flex-lg-row justify-content-between d-flex-column">
                 <div className="food-logo">
                   <div className="food">
                     <Image
