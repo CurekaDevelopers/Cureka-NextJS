@@ -19,7 +19,7 @@ const CartProduct = ({ product, onQuantityChange, onRemoveFromCart }) => {
     } else {
       setShowUpdate(true);
     }
-    updateCartAmount(quantity);
+    // updateCartAmount(quantity);
   };
   let product_front_image;
   if (product?.product_images) {
