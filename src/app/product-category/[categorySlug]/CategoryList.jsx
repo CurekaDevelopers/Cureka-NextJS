@@ -494,7 +494,7 @@ export default function CategoryList() {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/assets/images/logo.svg"
+          content="https://beta.cureka.com/assets/images/logo.svg"
         />
         <script type="application/ld+json">{JSON.stringify(cschema)}</script>
       </Helmet> */}

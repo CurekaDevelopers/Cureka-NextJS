@@ -520,7 +520,7 @@ const OrdersTab = () => {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/assets/images/logo.svg"
+          content="https://beta.cureka.com/assets/images/logo.svg"
         />
       </Helmet>
       <div

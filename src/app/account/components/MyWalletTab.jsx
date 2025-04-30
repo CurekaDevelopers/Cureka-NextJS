@@ -73,7 +73,7 @@
 //         const checkoutOptions = {
 //           paymentSessionId: sessionData && sessionData.sessionId,
 //           // returnUrl: urlJoin(env.REACT_FRONTEND_BASE_URL, pagePaths.myWallet),
-//           returnUrl: urlJoin("http://frontend.cureka.com", pagePaths.myWallet),
+//           returnUrl: urlJoin("http://beta.cureka.com", pagePaths.myWallet),
 //           // returnUrl: urlJoin("http://localhost:3000", pagePaths.myWallet),
 //         };
 //         // Call cash free the function
@@ -117,7 +117,7 @@
 //         />
 //         <meta
 //           property="og:image"
-//           content="https://frontend.cureka.com/assets/images/logo.svg"
+//           content="https://beta.cureka.com/assets/images/logo.svg"
 //         />
 //       </Helmet>
 //       <div
@@ -332,7 +332,7 @@ const MyWalletTab = () => {
   //     if (sessionData?.sessionId) {
   //       const checkoutOptions = {
   //         paymentSessionId: sessionData.sessionId,
-  //         returnUrl: urlJoin("http://frontend.cureka.com", pagePaths.myWallet),
+  //         returnUrl: urlJoin("http://beta.cureka.com", pagePaths.myWallet),
   //       };
 
   //       initializeCashfree()
@@ -412,7 +412,7 @@ const MyWalletTab = () => {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/assets/images/logo.svg"
+          content="https://beta.cureka.com/assets/images/logo.svg"
         />
       </Helmet>
 

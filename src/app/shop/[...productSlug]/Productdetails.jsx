@@ -636,7 +636,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
         <meta property="og:description" content={product?.meta_description} />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/assets/images/logo.svg"
+          content="https://beta.cureka.com/assets/images/logo.svg"
         />
         <script type="application/ld+json">
           {JSON.stringify(productSchema)}

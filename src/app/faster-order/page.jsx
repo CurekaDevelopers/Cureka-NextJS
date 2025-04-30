@@ -112,7 +112,7 @@ export default function FasterOrder() {
 
             {!loading && (orderStatus === "FAILED" || !orderStatus) && (
               <a
-                href="http://frontend.cureka.com/"
+                href="http://beta.cureka.com/"
                 className="text-decoration-none track-btn align-center"
                 target="_blank"
                 rel="noopener noreferrer"

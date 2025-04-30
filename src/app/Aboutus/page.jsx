@@ -49,7 +49,7 @@ export default function Aboutus() {
     "@type": "WebPage",
     name: "About Us",
     description: "Learn more about our company and our mission.",
-    url: "https://frontend.cureka.com/aboutus",
+    url: "https://beta.cureka.com/aboutus",
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -65,7 +65,7 @@ export default function Aboutus() {
           "@type": "ListItem",
           position: 2,
           item: {
-            "@id": "https://frontend.cureka.com/aboutus",
+            "@id": "https://beta.cureka.com/aboutus",
             name: "About Us",
           },
         },
@@ -73,7 +73,7 @@ export default function Aboutus() {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://frontend.cureka.com/aboutus",
+      "@id": "https://beta.cureka.com/aboutus",
     },
   };
   return (
@@ -95,7 +95,7 @@ export default function Aboutus() {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/assets/images/logo.svg"
+          content="https://beta.cureka.com/assets/images/logo.svg"
         />
         <script type="application/ld+json"></script>
         <script type="application/ld+json">{JSON.stringify(aschema)}</script>

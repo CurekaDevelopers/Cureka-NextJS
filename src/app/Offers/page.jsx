@@ -84,7 +84,7 @@ export default function Offers() {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/src/assets/images/logo.svg"
+          content="https://beta.cureka.com/src/assets/images/logo.svg"
         />
       </Helmet>
       {/* <h1 style={{ display: 'none' }}>Cureka Offers & Coupon Codes</h1> */}

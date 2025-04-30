@@ -126,7 +126,7 @@ export default function FasterOrder() {
             )}
             {order?.order_placed_status == undefined && (
               <a
-                href="http://frontend.cureka.com/"
+                href="http://beta.cureka.com/"
                 className="text-decoration-none track-btn align-center"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -136,7 +136,7 @@ export default function FasterOrder() {
             )}
             {order?.order_placed_status == "FAILED" && (
               <a
-                href="http://frontend.cureka.com/"
+                href="http://beta.cureka.com/"
                 className="text-decoration-none track-btn align-center"
                 target="_blank"
                 rel="noopener noreferrer"

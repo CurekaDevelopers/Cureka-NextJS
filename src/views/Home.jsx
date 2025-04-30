@@ -290,16 +290,16 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Cureka",
-    url: "https://www.frontend.cureka.com",
+    url: "https://www.beta.cureka.com",
     mainEntity: {
       "@type": "WebPage",
-      "@id": "https://www.frontend.cureka.com",
+      "@id": "https://www.beta.cureka.com",
       name: "Home",
       description:
         "Cureka is one of India's leading online stores for hair, skin, nutrition products, and healthcare devices. We have a wide range of products.",
       image: {
         "@type": "ImageObject",
-        url: "https://frontend.cureka.com/assets/images/logo.svg",
+        url: "https://beta.cureka.com/assets/images/logo.svg",
         width: 1200,
         height: 630,
       },
@@ -310,7 +310,7 @@ export default function Home() {
             "@type": "ListItem",
             position: 1,
             item: {
-              "@id": "https://frontend.cureka.com",
+              "@id": "https://beta.cureka.com",
               name: "Home",
             },
           },
@@ -327,7 +327,7 @@ export default function Home() {
           name="description"
           content="Cureka is one of India's leading online stores for hair, skin, nutrition products, and healthcare devices. We have a wide range of products."
         />
-        <meta property="og:url" content="https://frontend.cureka.com/" />
+        <meta property="og:url" content="https://beta.cureka.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Cureka" />
         <meta
@@ -336,10 +336,10 @@ export default function Home() {
         />
         <meta
           property="og:image"
-          content="https://frontend.cureka.com/images/logo.svg"
+          content="https://beta.cureka.com/images/logo.svg"
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="frontend.cureka.com" />
+        <meta property="twitter:domain" content="beta.cureka.com" />
         <meta name="twitter:title" content="Cureka" />
         <meta
           name="twitter:description"
@@ -347,9 +347,9 @@ export default function Home() {
         />
         <meta
           name="twitter:image"
-          content="https://frontend.cureka.com/images/logo.svg"
+          content="https://beta.cureka.com/images/logo.svg"
         />
-        <link rel="canonical" href="https://frontend.cureka.com/" />
+        <link rel="canonical" href="https://beta.cureka.com/" />
 
         {/* Google Site Verification */}
         <meta
