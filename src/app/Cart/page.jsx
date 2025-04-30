@@ -324,7 +324,7 @@ export default function Cart() {
         cart_data: {
           items,
         },
-        redirect_url: "http://beta.cureka.com/faster-order",
+        redirect_url: "https://beta.cureka.com/faster-order",
         // redirect_url: "http://localhost:3000/faster-order",
         timestamp: timestamp,
       };
