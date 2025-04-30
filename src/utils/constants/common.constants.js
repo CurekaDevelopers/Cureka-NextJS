@@ -318,5 +318,6 @@ export const generateUrl = (product) => {
     console.warn("Product slug is missing.");
   }
 
+  console.log('url: ', url);
   return url;
 };

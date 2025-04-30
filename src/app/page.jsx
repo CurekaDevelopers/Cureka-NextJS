@@ -497,12 +497,7 @@ export default function Home() {
                       product?.product_images?.length > 0
                       ? product?.product_images[0].image
                       : noproduct;
-                      
-                      console.log("product?.product_images: ", product?.product_images);
-                      console.log(
-                        "product_front_na_image",
-                        product_front_na_image
-                      );
+              
 
                       return (
                         <div key={product.id} className="item">
