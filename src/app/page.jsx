@@ -47,7 +47,7 @@ import {
   fetchMultipleAdds,
   fetchSingleAdds,
 } from "../redux/action";
-import { dispatch } from "../redux/store";
+// import { dispatch } from "../redux/store";
 import { pagePaths } from "../utils/constants/constant";
 import api from "../utils/api.utils";
 import { apiUrls, httpCode } from "../utils/constants/api.constants";
@@ -493,6 +493,7 @@ export default function Home() {
                 >
                   {!!newArrivals?.length &&
                     newArrivals?.map((product) => {
+                      console.log('product: ', product);
                       let product_front_na_image =
                         product?.product_images?.length > 0
                           ? product?.product_images[0].image

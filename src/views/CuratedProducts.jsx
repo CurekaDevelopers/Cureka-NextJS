@@ -67,7 +67,7 @@ export default function CuratedProducts() {
     e.preventDefault();
     if (product.id) {
       if (isProductPresentInCart(product)) {
-        navigate.push("/cart");
+        navigate.push("/Cart");
       } else {
         addProductToCart(product.id, 1);
       }

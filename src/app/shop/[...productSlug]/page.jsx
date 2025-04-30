@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
         title: "Product Not Found",
         description: "Sorry, we couldn't find the product you're looking for.",
         type: "website",
-        image: "https://app.cureka.com/assets/images/logo.svg",
+        image: "https://beta.cureka.com/assets/images/logo.svg",
       },
     };
   }
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }) {
       title: product?.vendor_article_name || "Cureka",
       description: product?.meta_description,
       type: "website",
-      image: "https://app.cureka.com/assets/images/logo.svg",
+      image: "https://beta.cureka.com/assets/images/logo.svg",
     },
   };
 }
@@ -50,7 +50,7 @@ export default async function ProductPage({ params }) {
 
   const slug = params.productSlug;
   const slugInd = slug.length - 1;
-  const fullUrl = `https://app.cureka.com/shop/${slug.join("/")}`;
+  const fullUrl = `https://beta.cureka.com/shop/${slug.join("/")}`;
 
   let ssrProduct = null;
 

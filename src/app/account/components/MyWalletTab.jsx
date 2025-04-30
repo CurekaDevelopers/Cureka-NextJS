@@ -369,7 +369,7 @@ const MyWalletTab = () => {
         const checkoutOptions = {
           paymentSessionId: sessionData && sessionData.sessionId,
           // returnUrl: urlJoin(env.REACT_FRONTEND_BASE_URL, pagePaths.myWallet),
-          returnUrl: urlJoin("https://app.cureka.com", pagePaths.myWallet),
+          returnUrl: urlJoin("https://beta.cureka.com", pagePaths.myWallet),
           // returnUrl: urlJoin("http://localhost:3000", pagePaths.myWallet),
         };
         // Call cash free the function

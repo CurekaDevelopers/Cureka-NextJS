@@ -28,7 +28,7 @@ export async function generateMetadata({ params }) {
   //       type: "website",
   //       images: [
   //         {
-  //           url: "https://app.cureka.com/assets/images/logo.svg",
+  //           url: "https://beta.cureka.com/assets/images/logo.svg",
   //           width: 800,
   //           height: 600,
   //           alt: "Cureka Logo",
@@ -45,10 +45,10 @@ export async function generateMetadata({ params }) {
   //     title: product?.vendor_article_name || "Cureka",
   //     description: product?.meta_description,
   //     type: "website",
-  //     url: `https://app.cureka.com/shop/${product?.slug}`,
+  //     url: `https://beta.cureka.com/shop/${product?.slug}`,
   //     images: [
   //       {
-  //         url: product?.product_images?.[0] || "https://app.cureka.com/assets/images/logo.svg",
+  //         url: product?.product_images?.[0] || "https://beta.cureka.com/assets/images/logo.svg",
   //         width: 800,
   //         height: 600,
   //         alt: product?.vendor_article_name,
@@ -71,7 +71,7 @@ export default async function SubCategoryPage({ params }) {
   const pageTitle = formatCategoryName(slugArr)
   // console.log(pageTitle,"pageTitle");
   
-  const fullUrl = `https://app.cureka.com/product-category/${slugArr}`;
+  const fullUrl = `https://beta.cureka.com/product-category/${slugArr}`;
 
   let products = [];
   try {
@@ -96,7 +96,7 @@ export default async function SubCategoryPage({ params }) {
     mainEntity: products.map((product) => ({
       "@type": "Product",
       name: product?.vendor_article_name,
-      url: `https://app.cureka.com/shop/${product?.slug}`,
+      url: `https://beta.cureka.com/shop/${product?.slug}`,
       image: product?.product_images?.[0],
       price: product?.final_price,
       priceCurrency: "INR",

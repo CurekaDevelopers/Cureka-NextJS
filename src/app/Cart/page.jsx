@@ -319,7 +319,7 @@ export default function Cart() {
         cart_data: {
           items,
         },
-        redirect_url: "https://app.cureka.com/faster-order",
+        redirect_url: "https://beta.cureka.com/faster-order",
         // redirect_url: "http://localhost:3000/faster-order",
         timestamp: timestamp,
       };
@@ -446,7 +446,7 @@ export default function Cart() {
         />
         <meta
           property="og:image"
-          content="https://app.cureka.com/assets/images/logo.svg"
+          content="https://beta.cureka.com/assets/images/logo.svg"
         />
       </Helmet>
       <h1 style={{ display: "none" }}>Cureka Cart</h1>

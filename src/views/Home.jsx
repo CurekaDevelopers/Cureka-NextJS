@@ -176,7 +176,7 @@ export default function Home() {
     e.preventDefault();
     if (product.id) {
       if (isProductPresentInCart(product)) {
-        router.push("/cart");
+        router.push("/Cart");
       } else {
         addProductToCart(product.id, 1);
       }

@@ -6,7 +6,7 @@ import api from "@/utils/api.utils";
 
 export async function generateMetadata({ params }) {
   const slugArr = params?.brandSlug;
-  const fullUrl = `https://app.cureka.com/product-brands/${slugArr}`;
+  const fullUrl = `https://beta.cureka.com/product-brands/${slugArr}`;
 
   const fetchProductsForBrandSSR = async (slugArr) => {
     try {
@@ -54,7 +54,7 @@ export default async function BrandPage({ params }) {
   
   console.log(slugArr,"slugArr");
   
-  const fullUrl = `https://app.cureka.com/product-brands/${slugArr}`;
+  const fullUrl = `https://beta.cureka.com/product-brands/${slugArr}`;
 
   const fetchProductsForBrandSSR = async (slugArr) => {
     try {
