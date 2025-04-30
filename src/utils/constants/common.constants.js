@@ -294,6 +294,7 @@ export const exportExcel = [
 ];
 
 export const generateUrl = (product) => {
+  console.log('generateUrl: ', product);
   if (!product) return ""; // Handle null or undefined product
 
   if (product.url && product.url.includes("shop")) {

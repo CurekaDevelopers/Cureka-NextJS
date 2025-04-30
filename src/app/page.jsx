@@ -493,13 +493,21 @@ export default function Home() {
                 >
                   {!!newArrivals?.length &&
                     newArrivals?.map((product) => {
-                      console.log('product: ', product);
+                      console.log("product: ", product);
+                      // let product_front_na_image =
+                      //   product?.product_images?.length > 0
+                      //     ? product?.product_images[0].image
+                      //     : noproduct;
                       let product_front_na_image =
                         product?.product_images?.length > 0
-                          ? product?.product_images[0].image
+                          ? process.env.NEXT_PUBLIC_IMAGE_BASE_URL +
+                            product.product_images[0].image
                           : noproduct;
 
-                          console.log(product_front_na_image);
+                      console.log(
+                        "product_front_na_image",
+                        product_front_na_image
+                      );
 
                       return (
                         <div key={product.id} className="item">
@@ -681,7 +689,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{padding: "20px 0 10px 0"}} className="row">
+        <div style={{ padding: "20px 0 10px 0" }} className="row">
           <h2 className="doctors-heading">Curated By Our Doctors</h2>
         </div>
 
@@ -706,7 +714,7 @@ export default function Home() {
           </div>
         )}
 
-        <div style={{padding: "20px 0 10px 0"}} className="row">
+        <div style={{ padding: "20px 0 10px 0" }} className="row">
           <h2 className="doctors-heading">Curated by Age</h2>
         </div>
 
@@ -1020,19 +1028,21 @@ export default function Home() {
             </h2>
           </div>
 
-          <div style={{padding: "20px 0 10px 0"}} className="row" id="topbrands">
+          <div
+            style={{ padding: "20px 0 10px 0" }}
+            className="row"
+            id="topbrands"
+          >
             <div className="col-lg-12">
-              <CarouselSlider
-                settings={{ slidesToShow: isMobile? 5 : 6 }}
-              >
+              <CarouselSlider settings={{ slidesToShow: isMobile ? 5 : 6 }}>
                 {!!brands?.length &&
                   brands?.map((brandformat, index) => (
                     <div key={brandformat.id}>
                       <div className="item mr-3" key={index}>
                         <p
                           style={{
-                            width: isMobile? "60px" : "180px",
-                            height: isMobile? "60px" : "180px",
+                            width: isMobile ? "60px" : "180px",
+                            height: isMobile ? "60px" : "180px",
                             cursor: "pointer",
                           }}
                           className="text-decoration-none"
@@ -1072,7 +1082,10 @@ export default function Home() {
           </a>
         </div>
 
-        <div style={{padding: "20px 0 10px 0"}} className="d-flex justify-content-between">
+        <div
+          style={{ padding: "20px 0 10px 0" }}
+          className="d-flex justify-content-between"
+        >
           <h3 className="doctors-heading">Our Recent Blog</h3>
           <a
             className="text-decoration-none align-self-center"
@@ -1155,7 +1168,7 @@ export default function Home() {
 
         {/* <MyBlogCarousel bitems={blogHome} /> */}
 
-        <div style={{padding: "20px 0 10px 0"}} className="row">
+        <div style={{ padding: "20px 0 10px 0" }} className="row">
           <h3 className="doctors-heading">Customer Reviews</h3>
         </div>
 
