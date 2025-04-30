@@ -493,17 +493,12 @@ export default function Home() {
                 >
                   {!!newArrivals?.length &&
                     newArrivals?.map((product) => {
-                      console.log("product: ", product);
-                      // let product_front_na_image =
-                      //   product?.product_images?.length > 0
-                      //     ? product?.product_images[0].image
-                      //     : noproduct;
                       let product_front_na_image =
-                        product?.product_images?.length > 0
-                          ? process.env.NEXT_PUBLIC_IMAGE_BASE_URL +
-                            product.product_images[0].image
-                          : noproduct;
-
+                      product?.product_images?.length > 0
+                      ? product?.product_images[0].image
+                      : noproduct;
+                      
+                      console.log("product?.product_images: ", product?.product_images);
                       console.log(
                         "product_front_na_image",
                         product_front_na_image

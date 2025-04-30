@@ -306,10 +306,15 @@ export default function Cart() {
       console.error("Fastrr script not yet loaded");
     }
   };
+  const getCurrentTimestamp = () => {
+    const now = new Date();
+    return now.toISOString(); // Returns the ISO string with 'Z' suffix for UTC
+  };
   const addBuynow = async (event, cartProducts) => {
       console.log(cartProducts,"=-=-=-=-cartProducts");
       
-      const timestamp = Math.floor(Date.now() / 1000);
+      //const timestamp = Math.floor(Date.now() / 1000);
+      const timestamp = getCurrentTimestamp();
       const items = cartProducts.map((product) => ({
         variant_id: product.product_id?.toString(),
         quantity: product.qty || 1,
