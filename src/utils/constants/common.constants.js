@@ -293,31 +293,57 @@ export const exportExcel = [
   },
 ];
 
+// export const generateUrl = (product) => {
+//   console.log('generateUrl: ', product);
+//   if (!product) return ""; // Handle null or undefined product
+
+//   if (product.url && product.url.includes("shop")) {
+//     return `/${product.url}`; // Return the URL directly if it includes "shop"
+//   }
+
+//   let url = "/shop";
+
+//   if (product.category_slug) {
+//     url += `/${product.category_slug}`;
+//   }
+//   if (product.sub_category_slug) {
+//     url += `/${product.sub_category_slug}`;
+//   }
+//   if (product.sub_sub_category_slug) {
+//     url += `/${product.sub_sub_category_slug}`;
+//   }
+//   if (product.slug) {
+//     url += `/${product.slug}`;
+//   } else {
+//     console.warn("Product slug is missing.");
+//   }
+
+//   console.log('url: ', url);
+//   return url;
+// };
+
+
 export const generateUrl = (product) => {
-  console.log('generateUrl: ', product);
-  if (!product) return ""; // Handle null or undefined product
+  if (!product) {
+    console.warn("Product is undefined in generateUrl");
+    return "/shop";
+  }
 
   if (product.url && product.url.includes("shop")) {
-    return `/${product.url}`; // Return the URL directly if it includes "shop"
+    return `/${product.url}`;
   }
 
   let url = "/shop";
 
-  if (product.category_slug) {
-    url += `/${product.category_slug}`;
-  }
-  if (product.sub_category_slug) {
-    url += `/${product.sub_category_slug}`;
-  }
-  if (product.sub_sub_category_slug) {
-    url += `/${product.sub_sub_category_slug}`;
-  }
+  if (product.category_slug) url += `/${product.category_slug}`;
+  if (product.sub_category_slug) url += `/${product.sub_category_slug}`;
+  if (product.sub_sub_category_slug) url += `/${product.sub_sub_category_slug}`;
+
   if (product.slug) {
     url += `/${product.slug}`;
   } else {
-    console.warn("Product slug is missing.");
+    console.warn("Missing slug for product", product);
   }
 
-  console.log('url: ', url);
   return url;
 };
