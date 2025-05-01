@@ -496,7 +496,7 @@ export default function ProductList() {
       <div className="container-fluid px-0">
         <div className="bottom-border"></div>
 
-        <ShopHeader />
+        <Header />
         <div className="container">
           <div className="d-flex home-back-section">
             <Link href={pagePaths.home}>
@@ -1088,7 +1088,7 @@ export default function ProductList() {
                                         target="_blank"
                                         className=""
                                       >
-                                        <div className="product">
+                                        <div className="product-new-arrivals">
                                           <Image
                                             src={product_front_image}
                                             width={218}
@@ -1179,9 +1179,8 @@ export default function ProductList() {
                                         </a>
                                       </p>
                                     </div>
-
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                      <div className="price d-flex d-lg-block">
+                                    <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
                                             <p
@@ -1205,7 +1204,9 @@ export default function ProductList() {
                                           </>
                                         )}
                                       </div>
-
+                                    </div>
+                                    <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                      
                                       <button
                                         onClick={(e) =>
                                           addItemToCart(e, product)
@@ -1288,7 +1289,7 @@ export default function ProductList() {
                                         target="_blank"
                                         className=""
                                       >
-                                        <div className="product">
+                                        <div className="product-new-arrivals">
                                           <Image
                                             src={product_front_image}
                                             width={218}
@@ -1392,9 +1393,8 @@ export default function ProductList() {
                                         </a>
                                       </p>
                                     </div>
-
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                      <div className="price d-flex d-lg-block">
+                                    <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
                                             <p
@@ -1420,12 +1420,13 @@ export default function ProductList() {
                                           </>
                                         )}
                                       </div>
-
+                                    </div>
+                                    <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
                                       {product?.back_order_quantity == 0 ||
                                       (product &&
                                         product.stock_status == "Out Stock") ? (
                                         <>
-                                          <div className="d-flex-column pb-0 pb-lg-5">
+                                          <div className="d-flex-column pb-0">
                                             <p
                                               className="text-center"
                                               style={{
@@ -1467,7 +1468,7 @@ export default function ProductList() {
                                         </>
                                       ) : (
                                         <>
-                                          <div className="d-flex-column pb-0 pb-lg-5">
+                                          <div className="d-flex-column pb-0">
                                             <p
                                               className="text-center"
                                               style={{

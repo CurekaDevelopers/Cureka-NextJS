@@ -512,7 +512,7 @@ export default function ProductList() {
       <div className="container-fluid px-0">
         <div className="bottom-border"></div>
 
-        <ShopHeader />
+        <Header />
         <div className="container">
           <div className="d-flex home-back-section">
             <Link href={pagePaths.home}>
@@ -1116,7 +1116,7 @@ export default function ProductList() {
                                         target="_blank"
                                         className=""
                                       >
-                                        <div className="product">
+                                        <div className="product-sba">
                                           <Image
                                             src={finalImageSrc}
                                             width={218}
@@ -1252,7 +1252,7 @@ export default function ProductList() {
                                       </button>
                                     </div> */}
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                      <div className="price d-flex d-lg-block">
+                                    <div className="price d-flex d-lg-block">
                                         {product.mrp === product.final_price ? (
                                           <>
                                             <p className="product-price">
@@ -1270,8 +1270,11 @@ export default function ProductList() {
                                           </>
                                         )}
                                       </div>
+                                    </div>
+                                    <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                      
 
-                                      <div className="d-flex-column pb-0 pb-lg-5">
+                                      <div className="d-flex-column pb-0">
                                         {product?.show_stock === 1 &&
                                         product?.stock_status ===
                                           "Out Stock" ? (
@@ -1386,7 +1389,7 @@ export default function ProductList() {
                                         target="_blank"
                                         className=""
                                       >
-                                        <div className="product">
+                                        <div className="product-sba">
                                           <Image
                                             src={finalImageSrc}
                                             width={218}
@@ -1490,9 +1493,8 @@ export default function ProductList() {
                                         </a>
                                       </p>
                                     </div>
-
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                      <div className="price d-flex d-lg-block">
+                                    <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
                                             <p
@@ -1518,7 +1520,9 @@ export default function ProductList() {
                                           </>
                                         )}
                                       </div>
-
+                                    </div>
+                                    <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
+                                    
                                       {product?.back_order_quantity == 0 ||
                                       (product &&
                                         product.stock_status == "Out Stock") ? (
