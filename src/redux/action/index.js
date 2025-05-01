@@ -1768,6 +1768,8 @@ export const addProductToCart = async (cartItem, dispatch) => {
       product_id,
       quantity,
     };
+    console.log(data,"Add To Cart");
+    
     const response = await api.post(apiUrls.cart, data);
     if (response.data?.product_id) {
       toast.success("Cart updated successfully");

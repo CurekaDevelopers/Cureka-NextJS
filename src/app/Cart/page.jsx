@@ -160,7 +160,7 @@ export default function Cart() {
       if (rep) {
         const obj = {
           date: addDays(rep.estimated_delivery_days),
-          shipping: "Shippping Charges",
+          shipping: "Shipping Charges",
         };
         setPossibleDeliveryData(obj);
       }
@@ -248,6 +248,8 @@ export default function Cart() {
       if (isProductPresentInCart(product)) {
         navigate.push("/Cart");
       } else {
+        console.log("e, product",product);
+        
         addProductToCart(product.id, 1);
         if (isLoggedIn) dispatch(fetchCartProducts());
       }
@@ -306,62 +308,146 @@ export default function Cart() {
       console.error("Fastrr script not yet loaded");
     }
   };
+  // const getCurrentTimestamp = () => {
+  //   const now = new Date();
+  //   return now.toISOString(); // Returns the ISO string with 'Z' suffix for UTC
+  // };
+  const [timestamp, setTimestamp] = useState("");
+  
+  // Function to get the current timestamp in ISO format with 'Z' suffix
   const getCurrentTimestamp = () => {
     const now = new Date();
     return now.toISOString(); // Returns the ISO string with 'Z' suffix for UTC
   };
-  const addBuynow = async (event, cartProducts) => {
-      console.log(cartProducts,"=-=-=-=-cartProducts");
-      
-      //const timestamp = Math.floor(Date.now() / 1000);
-      const timestamp = getCurrentTimestamp();
-      const items = cartProducts.map((product) => ({
-        variant_id: product.product_id?.toString(),
-        quantity: product.qty || 1,
-      }));
-      console.log(items,"Items")
-      const data = {
-        cart_data: {
-          items,
-        },
-        redirect_url: "https://beta.cureka.com/faster-order",
-        // redirect_url: "http://localhost:3000/faster-order",
-        timestamp: timestamp,
-      };
   
-      const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
-      const payload = JSON.stringify(data);
-      const hmac = CryptoJS.HmacSHA256(payload, key).toString(
-        CryptoJS.enc.Base64
-      );
-      console.log(payload, "payload");
-      try {
-        const response = await axios.post(
-          "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "X-Api-Key": "1OXaKLiBm7r3OVKI",
-              "X-Api-HMAC-SHA256": hmac,
-            },
-          }
-        );
-        console.log(response.data.result.token, "response");
-        // shiprocketToken = response.data.result.token
-        const token = response.data.result.token;
-        setShiprocketToken(token);
-        if (window.HeadlessCheckout) {
-          // Assuming addToCart accepts product data and token
-          window.HeadlessCheckout.addToCart(event, token);
-        } else {
-          console.error("HeadlessCheckout is not available.");
-        }
-      } catch (error) {
-        console.error("shiprocket error:", error);
-        // toast.error('Something went to wrong');
-      }
+  // Use useEffect to update the timestamp when the component mounts
+  useEffect(() => {
+    const currentTimestamp = getCurrentTimestamp();
+    setTimestamp(currentTimestamp);
+  }, []); // Empty dependency array ensures this runs once when component mounts
+
+  // const addBuynow = async (event, cartProducts) => {
+  //     console.log(cartProducts,"=-=-=-=-cartProducts");
+      
+  //     //const timestamp = Math.floor(Date.now() / 1000);
+  //     // const timestamp = timestamp;
+  //     const items = cartProducts.map((product) => ({
+  //       variant_id: product.product_id?.toString(),
+  //       quantity: product.qty || 1,
+  //     }));
+  //     console.log(items,"Items")
+  //     const data = {
+  //       cart_data: {
+  //         items,
+  //       },
+  //       redirect_url: "https://beta.cureka.com/faster-order",
+  //       // redirect_url: "http://localhost:3000/faster-order",
+  //       timestamp: timestamp,
+  //     };
+  
+  //     const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
+  //     const payload = JSON.stringify(data);
+  //     const hmac = CryptoJS.HmacSHA256(payload, key).toString(
+  //       CryptoJS.enc.Base64
+  //     );
+  //     console.log(payload, "payload");
+  //     try {
+  //       const response = await axios.post(
+  //         "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
+  //         payload,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             "X-Api-Key": "1OXaKLiBm7r3OVKI",
+  //             "X-Api-HMAC-SHA256": hmac,
+  //           },
+  //         }
+  //       );
+  //       console.log(response.data.result.token, "response");
+  //       // shiprocketToken = response.data.result.token
+  //       const token = response.data.result.token;
+  //       setShiprocketToken(token);
+  //       if (window.HeadlessCheckout) {
+  //         // Assuming addToCart accepts product data and token
+  //         window.HeadlessCheckout.addToCart(event, token);
+  //       } else {
+  //         console.error("HeadlessCheckout is not available.");
+  //       }
+  //     } catch (error) {
+  //       console.error("shiprocket error:", error);
+  //       // toast.error('Something went to wrong');
+  //     }
+  //   };
+  const addBuynow = async (event, cartProducts) => {
+    console.log("Raw cartProducts:", cartProducts);
+  
+    // Ensure timestamp is available
+    if (!timestamp) {
+      console.error("Timestamp is not set yet. Try again in a moment.");
+      return;
+    }
+  
+    const items = cartProducts.length > 0
+  ? [
+      {
+        variant_id: cartProducts[0].product_id?.toString(),
+        quantity: cartProducts[0].qty || 1,
+      },
+    ]
+  : [];
+  
+    if (items.length === 0) {
+      console.error("No valid items in cart to proceed with checkout.");
+      return;
+    }
+  
+    const data = {
+      cart_data: {
+        items,
+      },
+      redirect_url: "https://beta.cureka.com/faster-order",
+      timestamp: timestamp,
     };
+  
+    const payload = JSON.stringify(data);
+    console.log("Prepared Payload:", JSON.stringify(data, null, 2));
+  
+    const key = "AVaEd0C6xJsgW5PYdL5WPkbSh8GHHE9b";
+    const hmac = CryptoJS.HmacSHA256(payload, key).toString(CryptoJS.enc.Base64);
+  
+    try {
+      const response = await axios.post(
+        "https://checkout-api.shiprocket.com/api/v1/access-token/checkout",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Api-Key": "1OXaKLiBm7r3OVKI",
+            "X-Api-HMAC-SHA256": hmac,
+          },
+        }
+      );
+  
+      const token = response.data?.result?.token;
+  
+      if (!token) {
+        console.error("Token not received in Shiprocket response:", response.data);
+        return;
+      }
+  
+      console.log("Received Shiprocket Token:", token);
+      setShiprocketToken(token);
+  
+      if (window.HeadlessCheckout) {
+        window.HeadlessCheckout.addToCart(event, token);
+      } else {
+        console.error("HeadlessCheckout is not available.");
+      }
+    } catch (error) {
+      console.error("Shiprocket API Error:", error.response?.data || error.message);
+    }
+  };
+  
   
   
   let finalAmount = subTotalAmount;
