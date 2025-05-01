@@ -160,7 +160,7 @@ export default function Cart() {
       if (rep) {
         const obj = {
           date: addDays(rep.estimated_delivery_days),
-          shipping: "Shippping Charges",
+          shipping: "Shipping Charges",
         };
         setPossibleDeliveryData(obj);
       }
