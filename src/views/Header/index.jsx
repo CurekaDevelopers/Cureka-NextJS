@@ -410,7 +410,7 @@ export default function Header({ showCategoryNavbar = true }) {
      <Dropdown className={style.userDropdown}>
        <Dropdown.Toggle
          variant="link"
-         className={`${style.userDropdownBtn} p-0 border-0`}
+         className={`${style.userDropdownBtn} p-0 border-0 mt-3`}
        >
          <Image
            className="img-fluid mr-2"
@@ -436,7 +436,7 @@ export default function Header({ showCategoryNavbar = true }) {
      </Dropdown>
    )}
 
-   <Link className="nav-link p-0" href="/cart">
+   {/* <Link className="nav-link p-0" href="/Cart">
      <Image
        className="img-fluid"
        src={shoppingCart}
@@ -444,7 +444,21 @@ export default function Header({ showCategoryNavbar = true }) {
        height={20}
        alt="shopping-cart"
      />
-   </Link>
+   </Link> */}
+   <Link className="nav-link p-0" href={pagePaths.cart}>
+                           <div className={`${style.cartItemBadge} p-0 border-0 mt-2`}>
+                             <Image
+                               className="img-fluid"
+                               src={shoppingCart}
+                               width={20}
+                               height={20}
+                               alt="shopping-cart"
+                             />
+                             <div className={style.cartItemBadgeCount}>
+                               {cartProducts?.length}
+                             </div>
+                           </div>
+                         </Link>
  </div>
 </div>
 
