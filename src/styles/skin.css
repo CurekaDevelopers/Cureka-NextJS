@@ -246,6 +246,8 @@ label.selectall {
   color: #231f20;
 
   font: normal 400 28px / normal Rubik-regular;
+
+  padding: 0px !important;
 }
 
 .skin-para {

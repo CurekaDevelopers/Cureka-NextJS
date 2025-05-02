@@ -15,6 +15,20 @@
     margin: 5px 0 5px 7px;
   }
 
+  .product-sba {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    /*@media (min-width: 768px) {
+      width: 150px;
+      height: 150px;
+    }*/
+  }
+  
+  .product-sba img {
+    max-height: 100px;
+  }
+
   .brandList,
   .categoryList,
   .productList {

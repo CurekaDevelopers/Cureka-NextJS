@@ -59,6 +59,20 @@
   }*/
 }
 
+.arrivals.card .product-concerns {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  /*@media (min-width: 768px) {
+    width: 150px;
+    height: 150px;
+  }*/
+}
+
+.arrivals.card .product-concerns img {
+  max-height: 100px;
+}
+
 .arrivals.card .product img {
   max-height: 150px;
 }
