@@ -1,6 +1,6 @@
 "use client";
 
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars,faMinus,faPlus  } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useEffect, useState } from "react";
 import Autocomplete from "react-autocomplete";
@@ -338,8 +338,7 @@ export default function Header({ showCategoryNavbar = true }) {
               <Alert variant="" onClose={handleAlert} dismissible>
                 <p className="india-heading mb-0">
                   <strong>Cureka: </strong>
-                  <span className="india-color">{"India's"}</span> leading
-                  Online Healthcare Platform.
+                  <span className="india-color">{"India's"}</span> Preventive Healthcare Curated by Doctor
                 </p>
               </Alert>
             </div>
@@ -748,9 +747,10 @@ export default function Header({ showCategoryNavbar = true }) {
                           aria-expanded={open}
                         >
                           All Categories
-                          <i
+                          {/* <i
                             className={open ? "fas fa-minus" : "fas fa-plus"}
-                          ></i>
+                          ></i> */}
+                          <FontAwesomeIcon icon={open ? faMinus : faPlus} style={{marginLeft: "10px"}}/>
                         </Button>
                         <Collapse in={open}>
                           <div
@@ -785,13 +785,15 @@ export default function Header({ showCategoryNavbar = true }) {
                                               </h2>
                                             </Link>
                                             {cat.sub_categories.length > 0 && (
-                                              <i
-                                                className={
-                                                  isMenuOpen
-                                                    ? "fas fa-minus"
-                                                    : "fas fa-plus"
-                                                }
-                                              ></i>
+                                              // <i
+                                              //   className={
+                                              //     isMenuOpen
+                                              //       ? "fas fa-minus"
+                                              //       : "fas fa-plus"
+                                              //   }
+                                              // ></i>
+                                              <FontAwesomeIcon icon={isMenuOpen ? faMinus : faPlus} />
+
                                             )}
                                           </DropdownItem>
                                         </div>

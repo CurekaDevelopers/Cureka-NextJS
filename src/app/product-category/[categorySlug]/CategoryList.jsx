@@ -1620,22 +1620,27 @@ export default function CategoryList() {
                         )}
                       </div>
                     </div>
-                    <div
+                    {/* <div
                       className="products-pagination"
                       id="products-pagination"
                     >
+                    </div> */}
                       <ReactPaginate
-                        className="pagination justify-content-center"
-                        pageClassName="page-item page-link"
-                        nextClassName="page-item page-link"
-                        breakClassName="page-item page-link"
-                        previousClassName="page-item page-link"
-                        activeClassName="active"
+                        className="pagination"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        activeLinkClassName="active"
                         breakLabel="..."
                         nextLabel=">"
                         onPageChange={handlePageClick}
                         // pageRangeDisplayed={5}
-                        pageRangeDisplayed={2}
+                        pageRangeDisplayed={4}
                         marginPagesDisplayed={1}
                         // pageRangeDisplayed={0} // Set to 0 to not show any pages other than the current one
                         // marginPagesDisplayed={0} // No additional margin pages
@@ -1644,7 +1649,6 @@ export default function CategoryList() {
                         previousLabel="<"
                         renderOnZeroPageCount={null}
                       />
-                    </div>
                   </div>
                   <div className="foot-section order-3">
                     <div className="bottom-border"></div>

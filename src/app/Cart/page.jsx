@@ -244,13 +244,21 @@ export default function Cart() {
 
   const addItemToCart = (e, product) => {
     e.preventDefault();
+    console.log("e, product",product);
+    const productId =  product?.pid;
+    const quantity = 1;
     if (product.id) {
       if (isProductPresentInCart(product)) {
         navigate.push("/Cart");
-      } else {
-        console.log("e, product",product);
+      } else {       
+        const cartItem = {
+          ...product,
+          product_id: productId,
+          quantity: quantity,
+        };
+        console.log(cartItem,"Cart Item");
         
-        addProductToCart(product.id, 1);
+        addProductToCart(cartItem,dispatch);
         if (isLoggedIn) dispatch(fetchCartProducts());
       }
     }

@@ -1762,6 +1762,8 @@ export const fetchNestedCategories = () => async (dispatch) => {
 
 export const addProductToCart = async (cartItem, dispatch) => {
   try {
+    console.log(cartItem,"Cart Item");
+    
     const { product_id, quantity } = cartItem;
 
     const data = {

@@ -1047,13 +1047,22 @@ export default function ProductList() {
                       <div className="row">
                         {filterProducts && filterProducts.length > 0 ? (
                           filterProducts.map((product, index) => {
-                            let product_front_image;
-                            if (product?.product_images) {
-                              product_front_image =
-                                product?.product_images[0].image;
-                            } else {
-                              product_front_image = noproduct;
-                            }
+                            // let product_front_image;
+                            // if (product?.product_images) {
+                            //   product_front_image =
+                            //     product?.product_images[0].image;
+                            // } else {
+                            //   product_front_image = noproduct;
+                            // }
+                            let rawImage = product?.product_images?.[0]?.image;
+                            let product_front_image =
+                              typeof rawImage === "string"
+                                ? rawImage.trim()
+                                : "";
+
+                            // fallback if no valid image
+                            const finalImageSrc =
+                              product_front_image || noproduct;
                             return (
                               <>
                                 <div className="col-lg-4  col-md-4 col-6 mb-3">
@@ -1308,13 +1317,22 @@ export default function ProductList() {
                           })
                         ) : products && products.length > 0 ? (
                           products.map((product, index) => {
-                            let product_front_image;
-                            if (product?.product_images) {
-                              product_front_image =
-                                product?.product_images[0].image;
-                            } else {
-                              product_front_image = noproduct;
-                            }
+                            // let product_front_image;
+                            // if (product?.product_images) {
+                            //   product_front_image =
+                            //     product?.product_images[0].image;
+                            // } else {
+                            //   product_front_image = noproduct;
+                            // }
+                            let rawImage = product?.product_images?.[0]?.image;
+                            let product_front_image =
+                              typeof rawImage === "string"
+                                ? rawImage.trim()
+                                : "";
+
+                            // fallback if no valid image
+                            const finalImageSrc =
+                              product_front_image || noproduct;
                             return (
                               <>
                                 <div className="col-lg-4  col-md-4 col-6 mb-3">
@@ -1615,7 +1633,7 @@ export default function ProductList() {
                         nextLabel=">"
                         onPageChange={handlePageClick}
                         // pageRangeDisplayed={5}
-                        pageRangeDisplayed={2}
+                        pageRangeDisplayed={4}
                         marginPagesDisplayed={1}
                         // pageRangeDisplayed={0} // Set to 0 to not show any pages other than the current one
                         // marginPagesDisplayed={0} // No additional margin pages

@@ -253,7 +253,10 @@ export default function ProductList() {
   ]);
 
   const handleCategorySelect = (categoryName, value) => () => {
+    console.log("handleCategorySelect",categoryName, value);
+    
     const params = new URLSearchParams(searchParams.toString());
+    console.log(params, "params");
     const values = params.get(categoryName);
     const valuesArray = values?.split(",");
     if (valuesArray?.length && valuesArray.includes(value)) {
@@ -275,9 +278,11 @@ export default function ProductList() {
   };
 
   const isFilterSet = (categoryName, value) => {
-    // console.log(categoryName, value);
-    const params = new URLSearchParams(searchParams.toString());
-    const values = params.get(categoryName) || "";
+    console.log(categoryName, value);
+    // const params = new URLSearchParams(searchParams.toString());
+    // const values = params.get(categoryName) || "";
+    // return values.includes(value);
+    const values = searchParams.get(categoryName) || "";
     return values.includes(value);
   };
   const handlePageClick = (event) => {
@@ -333,7 +338,8 @@ export default function ProductList() {
 
   const handlePaginationFilter = (type, filterKey) => {
     let searchData = filter[filterKey] || [];
-
+    console.log("Brand Filter");
+    
     // Filter data based on searchBrand if available
     if (searchBrand) {
       searchData = searchData.filter((val) =>
@@ -672,12 +678,10 @@ export default function ProductList() {
                                                     filterKey,
                                                     value
                                                   )}
-                                                  onChange={() =>
-                                                    handleCategorySelect(
-                                                      filterKey,
-                                                      value
-                                                    )
-                                                  }
+                                                  onClick={handleCategorySelect(
+                                                    filterKey,
+                                                    value
+                                                  )}
                                                   className="select-input"
                                                 />
                                                 <span className="category-input">
@@ -1648,7 +1652,7 @@ export default function ProductList() {
                         nextLabel=">"
                         onPageChange={handlePageClick}
                         // pageRangeDisplayed={5}
-                        pageRangeDisplayed={2}
+                        pageRangeDisplayed={4}
                         marginPagesDisplayed={1}
                         // pageRangeDisplayed={0} // Set to 0 to not show any pages other than the current one
                         // marginPagesDisplayed={0} // No additional margin pages

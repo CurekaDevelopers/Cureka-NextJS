@@ -1205,7 +1205,7 @@ export default function ProductList() {
                                           target="_blank"
                                           rel="noreferrer"
                                         >
-                                          {product.brand_name}
+                                          {product.brand_name}1
                                         </a>
                                       </p>
                                     </div>
@@ -1650,7 +1650,7 @@ export default function ProductList() {
                         nextLabel=">"
                         onPageChange={handlePageClick}
                         // pageRangeDisplayed={5}
-                        pageRangeDisplayed={2}
+                        pageRangeDisplayed={4}
                         marginPagesDisplayed={1}
                         // pageRangeDisplayed={0} // Set to 0 to not show any pages other than the current one
                         // marginPagesDisplayed={0} // No additional margin pages

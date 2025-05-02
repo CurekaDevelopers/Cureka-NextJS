@@ -72,8 +72,8 @@ export default function Home() {
     curatedAdds: { CURATED, YOURSELF },
     healthPage,
   } = useSelector((state) => state.admin);
-  console.log("pagePaths:", pagePaths);
-  console.log("pagePaths.shopByAge:", pagePaths?.shopByAge);
+  // console.log("pagePaths:", pagePaths);
+  // console.log("pagePaths.shopByAge:", pagePaths?.shopByAge);
   const [newArrivals, setNewArrivals] = useState([]);
   const [topArrivals, setTopArrivals] = useState([]);
   const [commonHome, setCommonHome] = useState([]);
@@ -471,7 +471,7 @@ export default function Home() {
           </div>
         </div>
         <h1 className="doctors-heading mt-2 font-weight-bold text-center mb-m-5">
-          Cureka: India’s leading Online Healthcare Platform
+          Cureka:  India's Preventive Healthcare Curated by Doctor
         </h1>
         <div className="product-carousel">
           <div className="d-flex justify-content-between">
@@ -744,7 +744,7 @@ export default function Home() {
           <div className="col-lg-3 col-6">
             <Link
               className="text-decoration-none"
-              href={`${pagePaths.shopByAge}?min=50&max=100`}
+              href={`${pagePaths.shopByAge}?min=18&max=50`}
               target="_blank"
             >
               <Image

@@ -1348,7 +1348,8 @@ export default function ProductList() {
                               typeof rawImage === "string"
                                 ? rawImage.trim()
                                 : "";
-
+                            console.log(product.id,product_front_image,"product_front_image");
+                            
                             // fallback if no valid image
                             const finalImageSrc =
                               product_front_image || noproduct;
