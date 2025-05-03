@@ -362,7 +362,7 @@ export default function Home() {
         />
 
         {/* Google Analytics */}
-        <script
+        {/* <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-TG8R4ZPTTZ"
         ></script>
@@ -373,6 +373,17 @@ export default function Home() {
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-TG8R4ZPTTZ', {'send_page_view': false });
+      `,
+          }}
+        /> */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FW3FFLFBVV"></script>
+        <script          
+          dangerouslySetInnerHTML={{
+            __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FW3FFLFBVV', {'send_page_view': false });
       `,
           }}
         />
