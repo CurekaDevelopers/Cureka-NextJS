@@ -330,7 +330,7 @@ export default function Footer() {
                       <Link href={"/Privacypolicy"}>Privacy Policy</Link>
                     </li>
                     <li className="list-unstyled">
-                      <a href="contactus">Help Center</a>
+                      <a href="Contactus">Help Center</a>
                     </li>
                     <li className="list-unstyled">
                       <a href="Contactus">Submit a Dispute</a>

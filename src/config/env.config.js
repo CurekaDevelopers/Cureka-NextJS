@@ -17,8 +17,8 @@ const envSchema = z.object({
     .string()
     .min(1)
     .default("https://backenddev.cureka.com"),
-    // .default("https://backend.cureka.com"),
-  // .default("http://localhost:8000"),
+    //.default("http://103.177.225.25:8000/"),
+  //.default("http://localhost:8000"),
 });
 
 console.log("Before Validation:", {

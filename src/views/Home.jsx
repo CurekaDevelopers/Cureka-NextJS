@@ -755,8 +755,9 @@ export default function Home() {
 
         {CURATED && (
           <div className="row">
-            {CURATED.map((curatedAdd, i) => (
+            {CURATED?.map((curatedAdd, i) => (
               <div className="col-lg-3 col-6 mb-3 mb-lg-0" key={i}>
+                {console.log(curatedAdd,'curatedAdd')}
                 <a
                   className="text-decoration-none"
                   onClick={() => router.push(`/${curatedAdd?.url}`)}

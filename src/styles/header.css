@@ -209,24 +209,16 @@
   display: flex;
   align-items: center;
   border-radius: 0;
-
   border-right: 1px solid #004a98;
-
   background: #fafbfd;
-
   box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
-
   width: 280px;
-
   height: 42px;
-
+  justify-content: space-between;
   @media (min-width: 1200px) {
     min-width: 350px;
-
     margin-right: 25px;
-
     border: 1px solid #004a98;
-
     border-radius: 6px;
   }
 }
@@ -391,7 +383,7 @@
   @media (min-width: 1200px) {
     padding-left: 0px;
 
-    margin-right: 20px;
+    margin-right: 5px;
   }
 }
 
@@ -1094,4 +1086,14 @@
   flex-wrap: nowrap;
   overflow-y: scroll;
   scrollbar-width: none;
+}
+#header .navbar-nav .nav-item{
+  list-style: none;
+}
+#header .navbar-nav ul li{
+  list-style: none;
+}
+
+#header .navbar-nav ul{
+  padding-left: 1rem;
 }

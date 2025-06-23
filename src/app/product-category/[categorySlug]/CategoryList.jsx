@@ -1621,7 +1621,7 @@ export default function CategoryList() {
                             );
                           })
                         ) : (
-                          <div>No products found.</div>
+                          <div>Loading.....</div>
                         )}
                       </div>
                     </div>

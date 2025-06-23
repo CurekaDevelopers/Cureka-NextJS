@@ -193,6 +193,15 @@
 
   height: 22px;
 }
+.salewhite {
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  width: 42px;
+
+  height: 22px;
+}
 
 .sale-heading {
   color: #fff;

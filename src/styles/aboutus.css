@@ -306,3 +306,20 @@
 
   margin-bottom: 82px;
 }
+
+@media (max-width: 570px) {
+  .banner-image{
+    height: 150px !important;
+  }
+}
+@media (max-width: 570px) { 
+  .client{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+@media (max-width: 570px) { 
+.img-fluid.banner-img{
+  object-fit: scale-down !important;
+}
+}

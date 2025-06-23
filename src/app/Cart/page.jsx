@@ -398,7 +398,7 @@ export default function Cart() {
     const items = cartProducts.length > 0
   ? [
       {
-        variant_id: cartProducts[0].product_id?.toString(),
+        variant_id: cartProducts[0].pid?.toString(),
         quantity: cartProducts[0].qty || 1,
       },
     ]

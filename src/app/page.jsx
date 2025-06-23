@@ -514,7 +514,13 @@ export default function Home() {
                         <div key={product.id} className="item">
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
-                              <div className="sale d-lg-block">
+                              <div
+  className={`d-lg-block ${
+    product.discount_percent > 0 || product.discount_amount !== 0
+      ? 'sale'
+      : ''
+  }`}
+>
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
                                     -{Number(product.discount_percent)} %
@@ -831,7 +837,13 @@ export default function Home() {
                         <div key={product.id} className="item">
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
-                              <div className="sale d-lg-block">
+                                                            <div
+  className={`d-lg-block ${
+    product.discount_percent > 0 || product.discount_amount !== 0
+      ? 'sale'
+      : ''
+  }`}
+>
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
                                     -{product.discount_percent} %

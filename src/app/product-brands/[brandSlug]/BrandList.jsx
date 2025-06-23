@@ -1631,7 +1631,7 @@ export default function ProductList() {
                             );
                           })
                         ) : (
-                          <div>No products found.</div>
+                          <div>Loading...</div>
                         )}
                       </div>
                     </div>
