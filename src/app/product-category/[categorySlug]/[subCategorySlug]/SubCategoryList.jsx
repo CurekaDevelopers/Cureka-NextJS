@@ -1720,7 +1720,7 @@ export default function SubCategoryList() {
                                     <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
-                                      src={skinbanner}
+                                      src={product?.catadata?.bannerImage || skinbanner}
                                       width={880}
                                       height={284}
                                       alt="homebanner"

@@ -831,7 +831,7 @@ export default function Productdetails({ productSlug, ssrProduct }) {
                       __html: product.product_highlights,
                     }}
                   ></div>
-                  <div className="col-lg-6 pl-lg-0 mt-5 ">
+                  <div className="col-lg-12 pl-lg-0 mt-5 ">
                     {product.expert_advice !== "null" &&
                       product.expert_advice !== "undefined" && (
                         <div>

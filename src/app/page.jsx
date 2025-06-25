@@ -244,7 +244,7 @@ export default function Home() {
           >
             {chunk.map((coupon) => (
               <div key={coupon.id} className="item mr-3">
-                <a className="text-decoration-none coupon-img">
+                <a className="text-decoration-none coupon-img" >
                   <Image
                     src={coupon.image !== "" ? coupon.image : discount1}
                     width={480}
@@ -406,8 +406,11 @@ export default function Home() {
       `,
           }}
         /> */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FW3FFLFBVV"></script>
-        <script          
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-FW3FFLFBVV"
+        ></script>
+        <script
           dangerouslySetInnerHTML={{
             __html: `
         window.dataLayer = window.dataLayer || [];
@@ -482,7 +485,7 @@ export default function Home() {
           </div>
         </div>
         <h1 className="doctors-heading mt-2 font-weight-bold text-center mb-m-5">
-          Cureka:  India's Preventive Healthcare Curated by Doctor
+          Cureka: India's Preventive Healthcare Curated by Doctor
         </h1>
         <div className="product-carousel">
           <div className="d-flex justify-content-between">
@@ -505,22 +508,22 @@ export default function Home() {
                   {!!newArrivals?.length &&
                     newArrivals?.map((product) => {
                       let product_front_na_image =
-                      product?.product_images?.length > 0
-                      ? product?.product_images[0].image
-                      : noproduct;
-              
+                        product?.product_images?.length > 0
+                          ? product?.product_images[0].image
+                          : noproduct;
 
                       return (
                         <div key={product.id} className="item">
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
                               <div
-  className={`d-lg-block ${
-    product.discount_percent > 0 || product.discount_amount !== 0
-      ? 'sale'
-      : ''
-  }`}
->
+                                className={`d-lg-block ${
+                                  product.discount_percent > 0 ||
+                                  product.discount_amount !== 0
+                                    ? "sale"
+                                    : ""
+                                }`}
+                              >
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
                                     -{Number(product.discount_percent)} %
@@ -632,6 +635,9 @@ export default function Home() {
                               <div className="price d-flex d-lg-block">
                                 {product.mrp === product.final_price ? (
                                   <>
+                                   <p className="discount">
+                                      {/* &#8377; {product.mrp} */}
+                                    </p>
                                     <p className="product-price">
                                       &#8377; {product.final_price}
                                     </p>
@@ -699,27 +705,37 @@ export default function Home() {
         <div style={{ padding: "20px 0 10px 0" }} className="row">
           <h2 className="doctors-heading">Curated By Our Doctors</h2>
         </div>
-
-        {CURATED && (
-          <div className="row">
-            {CURATED.map((curatedAdd, i) => (
-              <div className="col-lg-3 col-6 mb-3 mb-lg-0" key={i}>
-                <a
-                  className="text-decoration-none"
-                  onClick={() => navigate.push(`/${curatedAdd?.url}`)}
-                >
-                  <Image
-                    src={curatedAdd.image}
-                    width={320}
-                    height={280}
-                    className="img-fluid mx-auto d-block"
-                    alt="monsoon"
-                  />
-                </a>
+          <div id="home-carousel">
+                {multipleAdds?.length > 0 && (
+                 <Carousel
+                 showStatus={false}
+                 showThumbs={false}
+                 autoPlay={true}
+                 infiniteLoop={true}
+               >
+                 {CURATED &&
+                   CURATED.map((curatedAdd, i) => (
+                     <div key={curatedAdd.id || i}>
+                       <div className="col-lg-12 col-12 mb-3 mb-lg-0 text-center">
+                         <a
+                           className="text-decoration-none"
+                           onClick={() => navigate.push(`/${curatedAdd?.url}`)}
+                         >
+                           <Image
+                             src={curatedAdd.image}
+                             width={1220}
+                             height={300}
+                             className="img-fluid mx-auto d-block"
+                             alt="monsoon"
+                           />
+                         </a>
+                       </div>
+                     </div>
+                   ))}
+               </Carousel>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+
 
         <div style={{ padding: "20px 0 10px 0" }} className="row">
           <h2 className="doctors-heading">Curated by Age</h2>
@@ -837,13 +853,14 @@ export default function Home() {
                         <div key={product.id} className="item">
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
-                                                            <div
-  className={`d-lg-block ${
-    product.discount_percent > 0 || product.discount_amount !== 0
-      ? 'sale'
-      : ''
-  }`}
->
+                              <div
+                                className={`d-lg-block ${
+                                  product.discount_percent > 0 ||
+                                  product.discount_amount !== 0
+                                    ? "sale"
+                                    : ""
+                                }`}
+                              >
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
                                     -{product.discount_percent} %
@@ -950,9 +967,16 @@ export default function Home() {
                                   </p>
                                 ) : (
                                   <>
-                                    <p className="discount">
-                                      &#8377; {product.mrp}
-                                    </p>
+                                    {product.mrp ? (
+                                      <p className="discount">
+                                        &#8377; {product.mrp}
+                                      </p>
+                                    ) : (
+                                      <p className="discount hhh">
+                                       000
+                                      </p>
+                                    )}
+
                                     <p className="product-price">
                                       &#8377; {product.final_price}
                                     </p>

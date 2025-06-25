@@ -1603,7 +1603,7 @@ export default function ProductList() {
                                     <Image
                                       className="w-100 d-block image-fluid mx-auto"
                                       itemID={2}
-                                      src={skinbanner}
+                                      src={product?.catadata?.bannerImage || skinbanner}
                                       width="880px"
                                       height="284px"
                                       alt="homebanner"

@@ -354,6 +354,7 @@
   text-decoration-line: line-through;
 
   margin-bottom: 2px;
+  height: 20px;
 }
 
 .product-price {
@@ -2023,7 +2024,7 @@
   align-items: stretch;
   display: flex;
   max-height: 100%;
-  width: auto;
+  /* width: auto; */
   border-radius: 10px;
   position: relative;
 }

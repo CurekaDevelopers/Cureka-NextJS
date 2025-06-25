@@ -1158,13 +1158,13 @@ export default function CategoryList() {
                                     </div>
 
                                     <div className="product-text">
-                                      <p className="product-category">
+                                      {/* <p className="product-category">
                                         <a
                                           className="section"
                                           href={`/product-category/${product?.category_slug}`}
                                           target="_blank"
                                         >{`${product.category_name}`}</a>
-                                      </p>
+                                      </p> */}
                                       <a
                                         className="text-decoration-none"
                                         href={generateUrl(product)}
@@ -1610,7 +1610,7 @@ export default function CategoryList() {
                                     <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
-                                      src={skinbanner}
+                                      src={product?.catadata?.bannerImage || skinbanner}
                                       width={880}
                                       height={284}
                                       alt="homebanner"

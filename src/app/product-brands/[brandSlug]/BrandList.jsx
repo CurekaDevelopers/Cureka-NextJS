@@ -1013,7 +1013,7 @@ export default function ProductList() {
                   id="skin-banners"
                 >
                   <div className="d-flex justify-content-between">
-                    <div className="skin">
+                    <div className="skin ms-3">
                       <h1 className="skin-heading">
                         {capitalizeFirstLetter(catadata?.name) ||
                           "Search result"}
@@ -1048,7 +1048,7 @@ export default function ProductList() {
                     {/* <!--Sort by Accordion End--> */}
                   </div>
 
-                  <div className="product-carousel">
+                  <div className="product-carousel ms-2">
                     <div className="product-carousel">
                       <div className="row text-right">
                         <a
@@ -1620,7 +1620,7 @@ export default function ProductList() {
                                     <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
-                                      src={skinbanner}
+                                      src={product?.catadata?.bannerImage || skinbanner}
                                       width={880}
                                       height={284}
                                       alt="homebanner"

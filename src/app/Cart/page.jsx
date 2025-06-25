@@ -245,7 +245,7 @@ export default function Cart() {
   const addItemToCart = (e, product) => {
     e.preventDefault();
     console.log("e, product",product);
-    const productId =  product?.pid;
+    const productId =  product?.id;
     const quantity = 1;
     if (product.id) {
       if (isProductPresentInCart(product)) {
