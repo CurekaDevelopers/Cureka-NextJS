@@ -32,6 +32,12 @@ import LikeIcon from "../../public/svg-components/LikeIcon";
 
 import { Helmet } from "react-helmet-async";
 import noproduct from "../../public/images/noimageavailable.png";
+
+import age1 from "../../public/images/0-5.png";
+import age2 from "../../public/images/5-18.png";
+import age3 from "../../public/images/18-50.png";
+import age4 from "../../public/images/50+.png";
+
 import "../../styles/skin.css";
 import {
   addProductToCart,
@@ -492,6 +498,17 @@ export default function ProductList() {
       return ""; // Return an empty string if str is empty or undefined
     }
     return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const min = searchParams.get('min');
+  const max = searchParams.get('max');
+
+  const getAgeImage = () => {
+    if (min === '0' && max === '5') return age1;
+    if (min === '5' && max === '18') return age2;
+    if (min === '18' && max === '50') return age3;
+    if (min === '50' && max === '100') return age4;
+    return age1; // default fallback
   };
   return (
     <>
@@ -1327,7 +1344,8 @@ export default function ProductList() {
                                     <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
-                                      src={skinbanner}
+                                      // src={skinbanner}
+                                      src={getAgeImage()}
                                       width={880}
                                       height={284}
                                       alt="homebanner"
@@ -1626,7 +1644,8 @@ export default function ProductList() {
                                     <Image
                                       className="w-100 d-block img-fluid mx-auto"
                                       itemID={2}
-                                      src={skinbanner}
+                                      // src={skinbanner}
+                                      src={getAgeImage()}
                                       width={880}
                                       height={284}
                                       alt="homebanner"

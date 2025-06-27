@@ -28,6 +28,7 @@ const AdminCreateSubCategoryPage = ({ isEditPage = true }) => {
   const formikRef = useRef();
   const dispatch = useDispatch();
   const [previewImage, setPreviewImage] = useState(null);
+  const [previewBrannerImage, setPreviewBrannerImage] = useState(null);
   const navigate = useRouter();
   const { id } = useParams();
   const { categories, subCategories } = useSelector((state) => state.admin);
@@ -49,6 +50,7 @@ const AdminCreateSubCategoryPage = ({ isEditPage = true }) => {
     onSubmit: async (values, { setSubmitting }) => {
       setLoading(true);
       let fileUrl = "";
+      let brandImageFileUrl = "";
       if (typeof values.image === "string") {
         fileUrl = values.image;
       } else {
@@ -61,6 +63,21 @@ const AdminCreateSubCategoryPage = ({ isEditPage = true }) => {
         );
         fileUrl = uploadData.fileUrl;
       }
+        // if (!_.isEmpty(values.brand_image)) {
+          if (typeof values.bannerImage == "string") {
+            brandImageFileUrl = values.bannerImage;
+          } else {
+            const uploadData = await uploadImage(
+              values.bannerImage,
+              "sub-categories",
+              (uploadProgress) => {
+                console.log({ uploadProgress });
+              }
+            );
+            brandImageFileUrl = uploadData.fileUrl;
+          // }
+        }
+
       if (fileUrl) {
         if (isEditPage) {
           dispatch(
@@ -69,6 +86,7 @@ const AdminCreateSubCategoryPage = ({ isEditPage = true }) => {
               {
                 ...values,
                 image: fileUrl,
+                bannerImage: brandImageFileUrl,
               },
               () => {
                 setLoading(false);
@@ -96,6 +114,7 @@ const AdminCreateSubCategoryPage = ({ isEditPage = true }) => {
       }
       formik.setValues(subCategory || {});
       setPreviewImage(subCategory?.image);
+      setPreviewBrannerImage(subCategory?.bannerImage);
     }
   }, [isEditPage, subCategories, id, navigate]);
 
@@ -205,6 +224,39 @@ const AdminCreateSubCategoryPage = ({ isEditPage = true }) => {
             {previewImage && (
               <img
                 src={previewImage}
+                alt="Preview"
+                style={{ maxWidth: "200px", maxHeight: "100%" }}
+              />
+            )}
+             <Form.Group>
+              <Form.Label htmlFor="bannerImage">Brand Banner Image</Form.Label>
+              <Form.Control
+                type="file"
+                id="bannerImage"
+                name="bannerImage"
+                accept="image/*"
+                onChange={(event) => {
+                  const selectedFile = event.currentTarget.files[0];
+                  if (selectedFile) {
+                    const imageUrl = URL.createObjectURL(selectedFile);
+                    setPreviewBrannerImage(imageUrl);
+                    formik.setFieldValue("bannerImage", selectedFile);
+                  } else {
+                    formik.setFieldValue("bannerImage", null);
+                    setPreviewBrannerImage(null);
+                  }
+                }}
+                onBlur={formik.handleBlur}
+              />
+              {/* {formik.errors.bannerImage && formik.touched.bannerImage && (
+                <Form.Text className={styles.errorText} muted>
+                  {formik.errors.bannerImage}
+                </Form.Text>
+              )} */}
+            </Form.Group>
+            {previewBrannerImage && (
+              <img
+                src={previewBrannerImage}
                 alt="Preview"
                 style={{ maxWidth: "200px", maxHeight: "100%" }}
               />

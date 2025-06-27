@@ -63,20 +63,22 @@ const AdminCreateBrandsPage = ({ isEditPage = false }) => {
         fileUrl = uploadData.fileUrl;
       }
 
-      if (!_.isEmpty(values.brand_image)) {
-        if (typeof values.brand_image === "string") {
-          brandImageFileUrl = values.brand_image;
-        } else {
-          const uploadData = await uploadImage(
-            values.brand_image,
-            "brands",
-            (uploadProgress) => {
-              console.log({ uploadProgress });
-            }
-          );
-          brandImageFileUrl = uploadData.fileUrl;
+    
+        // if (!_.isEmpty(values.brand_image)) {
+          if (typeof values.bannerImage == "string") {
+            brandImageFileUrl = values.bannerImage;
+          } else {
+            const uploadData = await uploadImage(
+              values.bannerImage,
+              "brands",
+              (uploadProgress) => {
+                console.log({ uploadProgress });
+              }
+            );
+            brandImageFileUrl = uploadData.fileUrl;
+          // }
         }
-      }
+        console.log(brandImageFileUrl,values)
       if (fileUrl) {
         if (isEditPage) {
           dispatch(
@@ -85,7 +87,7 @@ const AdminCreateBrandsPage = ({ isEditPage = false }) => {
               {
                 ...values,
                 image: fileUrl,
-                brand_image: brandImageFileUrl,
+                bannerImage: brandImageFileUrl,
               },
               () => {
                 setLoading(false);
@@ -99,7 +101,7 @@ const AdminCreateBrandsPage = ({ isEditPage = false }) => {
               {
                 ...values,
                 image: fileUrl,
-                brand_image: brandImageFileUrl,
+                bannerImage: brandImageFileUrl,
               },
               () => {
                 setLoading(false);
@@ -125,7 +127,7 @@ const AdminCreateBrandsPage = ({ isEditPage = false }) => {
       }
       formik.setValues(brand || {});
       setPreviewImage(brand?.image);
-      setPreviewBrandImage(brand?.brand_image);
+      setPreviewBrandImage(brand?.bannerImage);
     }
   }, [isEditPage, brands, id, navigate]);
 
@@ -203,28 +205,28 @@ const AdminCreateBrandsPage = ({ isEditPage = false }) => {
               />
             )}
             <Form.Group>
-              <Form.Label htmlFor="brand_image">Brand Banner Image</Form.Label>
+              <Form.Label htmlFor="bannerImage">Brand Banner Image</Form.Label>
               <Form.Control
                 type="file"
-                id="brand_image"
-                name="brand_image"
+                id="bannerImage"
+                name="bannerImage"
                 accept="image/*"
                 onChange={(event) => {
                   const selectedFile = event.currentTarget.files[0];
                   if (selectedFile) {
                     const imageUrl = URL.createObjectURL(selectedFile);
                     setPreviewBrandImage(imageUrl);
-                    formik.setFieldValue("brand_image", selectedFile);
+                    formik.setFieldValue("bannerImage", selectedFile);
                   } else {
-                    formik.setFieldValue("brand_image", null);
+                    formik.setFieldValue("bannerImage", null);
                     setPreviewBrandImage(null);
                   }
                 }}
                 onBlur={formik.handleBlur}
               />
-              {/* {formik.errors.brand_image && formik.touched.brand_image && (
+              {/* {formik.errors.bannerImage && formik.touched.bannerImage && (
                 <Form.Text className={styles.errorText} muted>
-                  {formik.errors.brand_image}
+                  {formik.errors.bannerImage}
                 </Form.Text>
               )} */}
             </Form.Group>

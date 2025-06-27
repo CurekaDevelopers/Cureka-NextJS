@@ -2,6 +2,7 @@ import * as Yup from "yup";
 import {
   statusm,
   nav_link,
+  status
 } from "../../../../utils/constants/common.constants";
 
 const fileMaxSize = 5 * 1024 * 1024;
@@ -32,6 +33,7 @@ export const initialValues = {
   name: "",
   slug: "",
   image: null,
+  bannerImage: null,
   description: "",
   status: status.active,
   metaTitle: "",

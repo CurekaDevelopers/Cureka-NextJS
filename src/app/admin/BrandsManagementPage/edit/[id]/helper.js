@@ -35,7 +35,7 @@ export const validationSchema = Yup.object().shape({
 export const initialValues = {
   name: "",
   image: null,
-  brand_image: null,
+  bannerImage: null,
   description: "",
   status: status.active,
   metaTitle: "",

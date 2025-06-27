@@ -112,6 +112,8 @@ export const pagePaths = {
   blogs: "/blogs",
   blogDetails: "/blogs/:blogSlug",
   cart: "/Cart",
+  CuratedProducts: "/curated-products",
+  tellUs: "/tell-us",
   contactUs: "/Contactus",
   creams: "/Creams",
   faqs: "/Faq",

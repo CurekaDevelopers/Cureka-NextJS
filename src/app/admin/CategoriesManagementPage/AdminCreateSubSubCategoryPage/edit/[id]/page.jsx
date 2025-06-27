@@ -35,6 +35,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = true }) => {
   const dispatch = useDispatch();
   const navigate = useRouter();
   const [previewImage, setPreviewImage] = useState(null);
+  const [previewBrannerImage, setPreviewBrannerImage] = useState(null);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -50,6 +51,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = true }) => {
     validationSchema: validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       let fileUrl = "";
+      let brandImageFileUrl = "";
       if (typeof values?.image == "string") {
         fileUrl = values?.image;
       } else {
@@ -62,6 +64,20 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = true }) => {
         );
         fileUrl = uploadData.fileUrl;
       }
+        // if (!_.isEmpty(values.brand_image)) {
+          if (typeof values.bannerImage == "string") {
+            brandImageFileUrl = values.bannerImage;
+          } else {
+            const uploadData = await uploadImage(
+              values.bannerImage,
+              "sub-sub-categories",
+              (uploadProgress) => {
+                console.log({ uploadProgress });
+              }
+            );
+            brandImageFileUrl = uploadData.fileUrl;
+          // }
+        }
       console.log("fileUrl", fileUrl);
       if (fileUrl) {
         if (!isEditPage) {
@@ -70,6 +86,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = true }) => {
               {
                 ...values,
                 image: fileUrl,
+                bannerImage: brandImageFileUrl,
               },
               () => {
                 setSubmitting(false);
@@ -84,6 +101,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = true }) => {
               {
                 ...values,
                 image: fileUrl,
+                bannerImage: brandImageFileUrl,
               },
               () => {
                 setSubmitting(false);
@@ -125,6 +143,7 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = true }) => {
         console.log("subSubCategory", subSubCategory);
         formik.setFieldValue("name", subSubCategory?.name);
         formik.setFieldValue("description", subSubCategory?.description);
+        formik.setFieldValue("image", subSubCategory?.image);
         formik.setFieldValue("image", subSubCategory?.image);
         formik.setFieldValue(
           "category_id",
@@ -269,6 +288,39 @@ const AdminCreateSubSubCategoryPage = ({ isEditPage = true }) => {
                 style={{ maxWidth: "200px", maxHeight: "100%" }}
               />
             )}
+                <Form.Group>
+                <Form.Label htmlFor="bannerImage">Brand Banner Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  id="bannerImage"
+                  name="bannerImage"
+                  accept="image/*"
+                  onChange={(event) => {
+                    const selectedFile = event.currentTarget.files[0];
+                    if (selectedFile) {
+                      const imageUrl = URL.createObjectURL(selectedFile);
+                      setPreviewBrannerImage(imageUrl);
+                      formik.setFieldValue("bannerImage", selectedFile);
+                    } else {
+                      formik.setFieldValue("bannerImage", null);
+                      setPreviewBrannerImage(null);
+                    }
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {/* {formik.errors.bannerImage && formik.touched.bannerImage && (
+                  <Form.Text className={styles.errorText} muted>
+                    {formik.errors.bannerImage}
+                  </Form.Text>
+                )} */}
+              </Form.Group>
+              {previewBrannerImage && (
+                <img
+                  src={previewBrannerImage}
+                  alt="Preview"
+                  style={{ maxWidth: "200px", maxHeight: "100%" }}
+                />
+              )}
             <Form.Group>
               <Form.Label htmlFor="description">Description</Form.Label>
               <RichtextEditor

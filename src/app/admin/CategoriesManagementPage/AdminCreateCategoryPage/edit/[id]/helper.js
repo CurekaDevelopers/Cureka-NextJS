@@ -20,7 +20,14 @@ export const validationSchema = Yup.object().shape({
       }
       return value && value.size <= fileMaxSize;
     }),
-
+    bannerImage: Yup.mixed()
+    .required("Image is required")
+    .test("fileSize", "File size must be less than 5MB", function (value) {
+      if (typeof value === "string") {
+        return true;
+      }
+      return value && value.size <= fileMaxSize;
+    }),
   description: Yup.string().required("Description is required"),
   status: Yup.string().required("Status is required"),
   metaTitle: Yup.string().required("Meta Title is required"),
@@ -32,6 +39,7 @@ export const initialValues = {
   name: "",
   slug: "",
   image: null,
+  bannerImage: null,
   description: "",
   status: status.active,
   metaTitle: "",

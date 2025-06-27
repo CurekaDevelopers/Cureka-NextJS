@@ -35,6 +35,7 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
   const { categories } = useSelector((state) => state.admin);
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [previewBrannerImage, setPreviewBrannerImage] = useState(null);
 
   // Fetch categories once when editing
   useEffect(() => {
@@ -51,6 +52,7 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
     onSubmit: async (values, { setSubmitting }) => {
       setLoading(true);
       let fileUrl = values.image;
+      let brandImageFileUrl = values;
 
       if (values.image && typeof values.image !== "string") {
         const uploadData = await uploadImage(
@@ -62,9 +64,25 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
         );
         fileUrl = uploadData?.fileUrl || "";
       }
+         // if (!_.isEmpty(values.brand_image)) {
+          if (typeof values.bannerImage == "string") {
+            brandImageFileUrl = values.bannerImage;
+          } else {
+            const uploadData = await uploadImage(
+              values.bannerImage,
+              "categories",
+              (uploadProgress) => {
+                console.log({ uploadProgress });
+              }
+            );
+            brandImageFileUrl = uploadData.fileUrl;
+          // }
+        }
 
       if (fileUrl) {
-        const categoryData = { ...values, image: fileUrl };
+        const categoryData = { ...values, image: fileUrl,
+          bannerImage: brandImageFileUrl,
+         };
 
         if (isEditPage) {
           dispatch(
@@ -102,6 +120,7 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
       } else {
         formik.setValues(category);
         setPreviewImage(category.image);
+        setPreviewBrannerImage(category?.bannerImage);
       }
     }
   }, [isEditPage, categories, id, router]);
@@ -176,7 +195,39 @@ const AdminCreateCategoryPage = ({ isEditPage = true }) => {
                 style={{ maxWidth: "200px", maxHeight: "100%" }}
               />
             )}
-
+              <Form.Group>
+                <Form.Label htmlFor="bannerImage">Brand Banner Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  id="bannerImage"
+                  name="bannerImage"
+                  accept="image/*"
+                  onChange={(event) => {
+                    const selectedFile = event.currentTarget.files[0];
+                    if (selectedFile) {
+                      const imageUrl = URL.createObjectURL(selectedFile);
+                      setPreviewBrannerImage(imageUrl);
+                      formik.setFieldValue("bannerImage", selectedFile);
+                    } else {
+                      formik.setFieldValue("bannerImage", null);
+                      setPreviewBrannerImage(null);
+                    }
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {/* {formik.errors.bannerImage && formik.touched.bannerImage && (
+                  <Form.Text className={styles.errorText} muted>
+                    {formik.errors.bannerImage}
+                  </Form.Text>
+                )} */}
+              </Form.Group>
+              {previewBrannerImage && (
+                <img
+                  src={previewBrannerImage}
+                  alt="Preview"
+                  style={{ maxWidth: "200px", maxHeight: "100%" }}
+                />
+              )}
             <Form.Group>
               <Form.Label htmlFor="description">Description</Form.Label>
               <RichtextEditor

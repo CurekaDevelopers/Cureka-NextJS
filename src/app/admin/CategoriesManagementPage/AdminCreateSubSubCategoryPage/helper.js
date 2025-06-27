@@ -34,6 +34,7 @@ export const initialValues = {
   name: "",
   slug: "",
   image: null,
+  bannerImage: null,
   description: "",
   status: status.active,
   metaTitle: "",

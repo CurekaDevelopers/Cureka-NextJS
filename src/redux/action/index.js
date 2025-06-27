@@ -245,7 +245,7 @@ export const updateBrand =
       image,
       description,
       status,
-      brand_image,
+      bannerImage,
       metaTitle,
       metaDescription,
     },
@@ -258,7 +258,7 @@ export const updateBrand =
         image,
         description,
         status,
-        brand_image,
+        bannerImage,
         metaTitle,
         metaDescription,
       };
@@ -283,7 +283,7 @@ export const createBrand =
       image,
       description,
       status,
-      brand_image,
+      bannerImage,
       metaTitle,
       metaDescription,
     },
@@ -296,7 +296,7 @@ export const createBrand =
         image,
         description,
         status,
-        brand_image,
+        bannerImage,
         metaTitle,
         metaDescription,
       };
@@ -632,7 +632,7 @@ export const updateConcern =
 //Categories
 export const createCategory =
   (
-    { name, image, description, status, metaTitle, metaDescription },
+    { name, image, bannerImage,description, status, metaTitle, metaDescription },
     successCallback,
     failureCallback
   ) =>
@@ -641,6 +641,7 @@ export const createCategory =
       const payload = {
         name,
         image,
+        bannerImage,
         description,
         status,
         metaTitle,
@@ -989,6 +990,7 @@ export const createSubCategory =
       category_id,
       name,
       image,
+      bannerImage,
       description,
       status,
       metaTitle,
@@ -1003,6 +1005,7 @@ export const createSubCategory =
         category_id,
         name,
         image,
+        bannerImage,
         description,
         status,
         metaTitle,
@@ -1044,6 +1047,7 @@ export const updateSubCategory =
       category_id,
       name,
       image,
+      bannerImage,
       description,
       status,
       metaTitle,
@@ -1058,6 +1062,7 @@ export const updateSubCategory =
         category_id,
         name,
         image,
+        bannerImage,
         description,
         status,
         metaTitle,
@@ -1104,6 +1109,7 @@ export const createSubSubCategory =
       category_name,
       name,
       image,
+      bannerImage,
       description,
       status,
       metaTitle,
@@ -1120,6 +1126,7 @@ export const createSubSubCategory =
         category_name,
         name,
         image,
+        bannerImage,
         description,
         status,
         metaTitle,
@@ -2794,10 +2801,10 @@ export const fetchProductsOptions = () => async (dispatch) => {
   }
 };
 
-export const fetchCuratedProducts = (id) => async (dispatch) => {
+export const fetchCuratedProducts = (url) => async (dispatch) => {
   try {
     dispatch(setLoading(true));
-    const response = await api.get(apiUrls.fetchCuratedProducts(id));
+    const response = await api.get(apiUrls.fetchCuratedProducts(url));
     const { products, pagination = {} } = _.get(response, "data", []);
     dispatch(setCuratedProducts(products[0].products));
     dispatch(setCatdata(products));

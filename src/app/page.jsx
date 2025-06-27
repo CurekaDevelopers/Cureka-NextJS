@@ -517,12 +517,11 @@ export default function Home() {
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
                               <div
-                                className={`d-lg-block ${
-                                  product.discount_percent > 0 ||
-                                  product.discount_amount !== 0
+                                className={`d-lg-block ${product.discount_percent > 0 ||
+                                    product.discount_amount !== 0
                                     ? "sale"
                                     : ""
-                                }`}
+                                  }`}
                               >
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
@@ -606,14 +605,14 @@ export default function Home() {
                               <div className="rating d-lg-flex">
                                 <p className="rating-number">
                                   {Array.isArray(product?.product_reviews) &&
-                                  product.product_reviews.length > 0
+                                    product.product_reviews.length > 0
                                     ? (
-                                        product.product_reviews.reduce(
-                                          (acc, review) =>
-                                            acc + (review.rating || 0),
-                                          0
-                                        ) / product.product_reviews.length
-                                      ).toFixed(1)
+                                      product.product_reviews.reduce(
+                                        (acc, review) =>
+                                          acc + (review.rating || 0),
+                                        0
+                                      ) / product.product_reviews.length
+                                    ).toFixed(1)
                                     : "0"}
                                 </p>
                               </div>
@@ -635,7 +634,7 @@ export default function Home() {
                               <div className="price d-flex d-lg-block">
                                 {product.mrp === product.final_price ? (
                                   <>
-                                   <p className="discount">
+                                    <p className="discount">
                                       {/* &#8377; {product.mrp} */}
                                     </p>
                                     <p className="product-price">
@@ -656,7 +655,7 @@ export default function Home() {
 
                               <div className="d-flex-column pb-0">
                                 {product?.show_stock === 1 &&
-                                product?.stock_status === "Out Stock" ? (
+                                  product?.stock_status === "Out Stock" ? (
                                   <>
                                     <p
                                       className="text-center"
@@ -705,36 +704,41 @@ export default function Home() {
         <div style={{ padding: "20px 0 10px 0" }} className="row">
           <h2 className="doctors-heading">Curated By Our Doctors</h2>
         </div>
-          <div id="home-carousel">
-                {multipleAdds?.length > 0 && (
-                 <Carousel
-                 showStatus={false}
-                 showThumbs={false}
-                 autoPlay={true}
-                 infiniteLoop={true}
-               >
-                 {CURATED &&
-                   CURATED.map((curatedAdd, i) => (
-                     <div key={curatedAdd.id || i}>
-                       <div className="col-lg-12 col-12 mb-3 mb-lg-0 text-center">
-                         <a
-                           className="text-decoration-none"
-                           onClick={() => navigate.push(`/${curatedAdd?.url}`)}
-                         >
-                           <Image
-                             src={curatedAdd.image}
-                             width={1220}
-                             height={300}
-                             className="img-fluid mx-auto d-block"
-                             alt="monsoon"
-                           />
-                         </a>
-                       </div>
-                     </div>
-                   ))}
-               </Carousel>
-                )}
-              </div>
+        <div id="home-carousel">
+          {multipleAdds?.length > 0 && (
+            <Carousel
+              showStatus={false}
+              showThumbs={false}
+              autoPlay={true}
+              infiniteLoop={true}
+            >
+              {CURATED &&
+                CURATED.map((curatedAdd, i) => (
+                  <div key={curatedAdd.id || i}>
+                    <div className="col-lg-12 col-12 mb-3 mb-lg-0 text-center">
+                      <Link
+                        className="text-decoration-none"
+                        //  onClick={() => navigate.push(`/${curatedAdd?.url}`)}
+                        //  href={`${pagePaths.CuratedProducts}/${CuratedProducts?.url}`}
+                        //  href={`${pagePaths.CuratedProducts}/${curatedAdd?.url}`}
+                        href={`${pagePaths.CuratedProducts}/${curatedAdd?.url}`}
+
+
+                      >
+                        <Image
+                          src={curatedAdd.image}
+                          width={1220}
+                          height={300}
+                          className="img-fluid mx-auto d-block"
+                          alt="monsoon"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+            </Carousel>
+          )}
+        </div>
 
 
         <div style={{ padding: "20px 0 10px 0" }} className="row">
@@ -842,11 +846,11 @@ export default function Home() {
 
                       const rating = Array.isArray(product.product_reviews)
                         ? (
-                            product.product_reviews.reduce(
-                              (acc, review) => acc + (review.rating || 0),
-                              0
-                            ) / product.product_reviews.length
-                          ).toFixed(1)
+                          product.product_reviews.reduce(
+                            (acc, review) => acc + (review.rating || 0),
+                            0
+                          ) / product.product_reviews.length
+                        ).toFixed(1)
                         : "0";
 
                       return (
@@ -854,12 +858,11 @@ export default function Home() {
                           <div className="arrivals card mr-3">
                             <div className="d-flex flex-nowrap justify-content-between">
                               <div
-                                className={`d-lg-block ${
-                                  product.discount_percent > 0 ||
-                                  product.discount_amount !== 0
+                                className={`d-lg-block ${product.discount_percent > 0 ||
+                                    product.discount_amount !== 0
                                     ? "sale"
                                     : ""
-                                }`}
+                                  }`}
                               >
                                 {product.discount_percent > 0 ? (
                                   <p className="sale-heading">
@@ -973,7 +976,7 @@ export default function Home() {
                                       </p>
                                     ) : (
                                       <p className="discount hhh">
-                                       000
+                                        000
                                       </p>
                                     )}
 
@@ -986,7 +989,7 @@ export default function Home() {
 
                               <div className="d-flex-column pb-0">
                                 {product?.show_stock === 1 &&
-                                product?.stock_status === "Out Stock" ? (
+                                  product?.stock_status === "Out Stock" ? (
                                   <>
                                     <p
                                       className="text-center"
@@ -1043,7 +1046,11 @@ export default function Home() {
                   className={i > 3 ? "col-lg-4 col-6" : "col-lg-4 col-6"}
                   key={i}
                 >
-                  <Link className="text-decoration-none" href={yourself.url}>
+                  <Link className="text-decoration-none" 
+                  // href={yourself.url}
+                    href={`${pagePaths.tellUs}/${yourself?.url}`}
+
+                  >
                     <img
                       src={yourself.image}
                       width="480px"

@@ -29,6 +29,7 @@ const AdminCreateCategoryPage = ({ isEditPage = false }) => {
   const formikRef = useRef();
   const dispatch = useDispatch();
   const [previewImage, setPreviewImage] = useState(null);
+  const [previewBrannerImage, setPreviewBrannerImage] = useState(null);
   const navigate = useRouter();
   const { id } = useParams();
   const { categories } = useSelector((state) => state.admin);
@@ -46,6 +47,7 @@ const AdminCreateCategoryPage = ({ isEditPage = false }) => {
     onSubmit: async (values, { setSubmitting }) => {
       setLoading(true);
       let fileUrl = "";
+      let brandImageFileUrl = "";
       if (typeof values.image === "string") {
         fileUrl = values.image;
       } else {
@@ -58,6 +60,21 @@ const AdminCreateCategoryPage = ({ isEditPage = false }) => {
         );
         fileUrl = uploadData.fileUrl;
       }
+       // if (!_.isEmpty(values.brand_image)) {
+        if (typeof values.bannerImage == "string") {
+          brandImageFileUrl = values.bannerImage;
+        } else {
+          const uploadData = await uploadImage(
+            values.bannerImage,
+            "categories",
+            (uploadProgress) => {
+              console.log({ uploadProgress });
+            }
+          );
+          brandImageFileUrl = uploadData.fileUrl;
+        // }
+      }
+
       if (fileUrl) {
         if (isEditPage) {
           dispatch(
@@ -66,6 +83,8 @@ const AdminCreateCategoryPage = ({ isEditPage = false }) => {
               {
                 ...values,
                 image: fileUrl,
+                bannerImage: brandImageFileUrl,
+
               },
               () => {
                 setLoading(false);
@@ -79,6 +98,7 @@ const AdminCreateCategoryPage = ({ isEditPage = false }) => {
               {
                 ...values,
                 image: fileUrl,
+                bannerImage: brandImageFileUrl,
               },
               () => {
                 setSubmitting(false);
@@ -194,6 +214,39 @@ const AdminCreateCategoryPage = ({ isEditPage = false }) => {
                 style={{ maxWidth: "200px", maxHeight: "100%" }}
               />
             )}
+              <Form.Group>
+              <Form.Label htmlFor="bannerImage">Brand Banner Image</Form.Label>
+              <Form.Control
+                type="file"
+                id="bannerImage"
+                name="bannerImage"
+                accept="image/*"
+                onChange={(event) => {
+                  const selectedFile = event.currentTarget.files[0];
+                  if (selectedFile) {
+                    const imageUrl = URL.createObjectURL(selectedFile);
+                    setPreviewBrannerImage(imageUrl);
+                    formik.setFieldValue("bannerImage", selectedFile);
+                  } else {
+                    formik.setFieldValue("bannerImage", null);
+                    setPreviewBrannerImage(null);
+                  }
+                }}
+                onBlur={formik.handleBlur}
+              />
+              {/* {formik.errors.bannerImage && formik.touched.bannerImage && (
+                <Form.Text className={styles.errorText} muted>
+                  {formik.errors.bannerImage}
+                </Form.Text>
+              )} */}
+            </Form.Group>
+            {previewBrannerImage && (
+              <img
+                src={previewBrannerImage}
+                alt="Preview"
+                style={{ maxWidth: "200px", maxHeight: "100%" }}
+              />
+            )}
             <Form.Group>
               <Form.Label htmlFor="description">Description</Form.Label>
               <RichtextEditor
@@ -270,11 +323,11 @@ const AdminCreateCategoryPage = ({ isEditPage = false }) => {
               )}
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="navLink">Nav Link</Form.Label>
+              <Form.Label htmlFor="nav_link">Nav Link</Form.Label>
               <Form.Select
                 aria-label="Select Category"
-                id="navLink"
-                name="navLink"
+                id="nav_link"
+                name="nav_link"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.nav_link}
