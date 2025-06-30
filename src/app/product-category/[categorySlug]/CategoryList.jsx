@@ -146,10 +146,10 @@ export default function CategoryList() {
     const filteredProducts =
       priceRange.length > 0
         ? products.filter(
-            (product) =>
-              product.final_price >= priceRange[0] &&
-              product.final_price <= priceRange[1]
-          )
+          (product) =>
+            product.final_price >= priceRange[0] &&
+            product.final_price <= priceRange[1]
+        )
         : products;
 
     // Step 2: Sort filtered products based on the selected sort option
@@ -255,8 +255,8 @@ export default function CategoryList() {
 
   const handleCategorySelect = (categoryName, value) => () => {
     const params = new URLSearchParams(searchParams.toString());
-    console.log(params,"params");
-    
+    console.log(params, "params");
+
     const values = params.get(categoryName);
     const valuesArray = values?.split(",");
     if (valuesArray?.length && valuesArray.includes(value)) {
@@ -558,9 +558,8 @@ export default function CategoryList() {
             <div className="skin-care">
               <div className="d-lg-flex">
                 <div
-                  className={`col-lg-2 px-lg-0 order-2 order-lg-1 d-lg-block d-none ${
-                    isFixed ? "category-section fixed" : "category-section"
-                  }`}
+                  className={`col-lg-2 px-lg-0 order-2 order-lg-1 d-lg-block d-none ${isFixed ? "category-section fixed" : "category-section"
+                    }`}
                   id="category-section"
                 >
                   <div className="price-range-slider px-3 mb-4">
@@ -624,9 +623,10 @@ export default function CategoryList() {
                   {!!Object.keys(filter || {})?.length &&
                     Object.keys(filter)
                       .filter((item) => filter[item]?.length)
-                      .map((filterKey) => {
+                      .map((key) => {
+                        const filterStaging = key === "staging" ? "stages" : key;
                         return (
-                          <div key={filterKey}>
+                          <div key={filterStaging}>
                             <Accordion
                               defaultActiveKey="{null}"
                               className="p-0"
@@ -636,13 +636,13 @@ export default function CategoryList() {
                                   as="div"
                                   className="collapsible-link heading-button"
                                 >
-                                  {snakeCaseToTitleCase(filterKey)}
+                                  {snakeCaseToTitleCase(filterStaging)}
                                 </Accordion.Header>
                                 <Accordion.Body className="p-0">
                                   <ul className="accor-space list-unstyled mt-3">
                                     {filterData &&
-                                    filterData[filterKey]?.length > 0 ? (
-                                      filterData[filterKey]
+                                      filterData[key]?.length > 0 ? (
+                                      filterData[key]
                                         .slice(0, 10)
                                         ?.map(({ value, count }) => {
                                           return (
@@ -658,11 +658,11 @@ export default function CategoryList() {
                                                   <input
                                                     type="checkbox"
                                                     checked={isFilterSet(
-                                                      filterKey,
+                                                      key,
                                                       value
                                                     )}
                                                     onClick={handleCategorySelect(
-                                                      filterKey,
+                                                      key,
                                                       value
                                                     )}
                                                     className="select-input"
@@ -679,12 +679,12 @@ export default function CategoryList() {
                                           );
                                         })
                                     ) : (
-                                      // Render something if filterData[filterKey] has a length of 0
+                                      // Render something if filterData[key] has a length of 0
                                       <p>No data available</p>
                                     )}
                                   </ul>
 
-                                  {filterKey === "brand" && (
+                                  {key === "brand" && (
                                     <div
                                       style={{
                                         display: "flex",
@@ -692,13 +692,13 @@ export default function CategoryList() {
                                         padding: 10,
                                       }}
                                     >
-                                      {filter[filterKey]?.length > 10 &&
+                                      {filter[key]?.length > 10 &&
                                         paginate > 1 && (
                                           <p
                                             onClick={() =>
                                               handlePaginationFilter(
                                                 "prev",
-                                                filterKey
+                                                key
                                               )
                                             }
                                           >
@@ -706,15 +706,15 @@ export default function CategoryList() {
                                           </p>
                                         )}
 
-                                      {filter[filterKey]?.length > 10 &&
+                                      {filter[key]?.length > 10 &&
                                         Math.ceil(
-                                          filter[filterKey].length / 10
+                                          filter[key].length / 10
                                         ) > paginate && (
                                           <p
                                             onClick={() =>
                                               handlePaginationFilter(
                                                 "next",
-                                                filterKey
+                                                key
                                               )
                                             }
                                           >
@@ -735,266 +735,192 @@ export default function CategoryList() {
                   className="col-lg-12 order-2 d-lg-none d-block"
                   id="category-filter"
                 >
-                  {!!Object.keys(filter || {})?.length &&
-                    Object.keys(filter)
-                      .filter((item) => filter[item]?.length)
-                      .map((filterKey) => {
-                        return (
-                          <div key={filterKey}>
-                            <div className="filter-wrapper">
-                              <div className="filter" id="filters">
-                                <Button
-                                  variant="primary"
-                                  onClick={handleShowFilter}
-                                >
-                                  <Image
-                                    className="img-fluid mr-2"
-                                    src={filterImage}
-                                    width={20}
-                                    height={20}
-                                    alt="filter-icon"
-                                  />
-                                  Filters
-                                </Button>
-                              </div>
+               {!!Object.keys(filter || {})?.length &&
+  Object.keys(filter)
+    .filter((item) => filter[item]?.length)
+    .map((filterKey) => {
+      const filterStaging = filterKey === "staging" ? "stages" : filterKey;
 
-                              <div className="filter" id="sortbrands">
-                                <Button
-                                  variant="primary"
-                                  onClick={handleShowSortBy}
-                                >
-                                  <Image
-                                    className="img-fluid mr-2"
-                                    src={bars_filter}
-                                    width={20}
-                                    height={20}
-                                    alt="filter-icon"
-                                  />
-                                  Sort by
-                                </Button>
-                              </div>
-                            </div>
+      return (
+        <div key={filterKey}>
+          <div className="filter-wrapper">
+            <div className="filter" id="filters">
+              <Button variant="primary" onClick={handleShowFilter}>
+                <Image
+                  className="img-fluid mr-2"
+                  src={filterImage}
+                  width={20}
+                  height={20}
+                  alt="filter-icon"
+                />
+                Filters
+              </Button>
+            </div>
 
-                            <div className="modal" id="filtermodal">
-                              <div className="modal-dialog">
-                                <div className="modal-content">
-                                  <Modal
-                                    show={showFilter}
-                                    onHide={handleCloseFilter}
-                                    id="filtermodal"
-                                  >
-                                    <Modal.Header className="filter-text">
-                                      Filters
-                                      {/* <Button className="close">Reset</Button> */}
-                                    </Modal.Header>
-                                    <Tab.Container
-                                      id="filtermodal"
-                                      defaultActiveKey={firstFilterKey}
+            <div className="filter" id="sortbrands">
+              <Button variant="primary" onClick={handleShowSortBy}>
+                <Image
+                  className="img-fluid mr-2"
+                  src={bars_filter}
+                  width={20}
+                  height={20}
+                  alt="filter-icon"
+                />
+                Sort by
+              </Button>
+            </div>
+          </div>
+
+          <div className="modal" id="filtermodal">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <Modal show={showFilter} onHide={handleCloseFilter} id="filtermodal">
+                  <Modal.Header className="filter-text">
+                    Filters
+                  </Modal.Header>
+                  <Tab.Container id="filtermodal" defaultActiveKey={firstFilterKey}>
+                    <div className="tab-vertical p-2">
+                      <Col sm={2} className="pr-0">
+                        <Nav variant="pills" className="flex-column">
+                          {Object.keys(filter)
+                            .filter((item) => filter[item]?.length)
+                            .map((navKey) => {
+                              const navStaging = navKey === "staging" ? "stages" : navKey;
+                              return (
+                                <Nav.Item key={navKey}>
+                                  <Nav.Link eventKey={navKey}>
+                                    {snakeCaseToTitleCase(navStaging)}
+                                  </Nav.Link>
+                                </Nav.Item>
+                              );
+                            })}
+                        </Nav>
+                      </Col>
+
+                      <Col sm={10} className="px-0">
+                        <Tab.Content className="mb-4">
+                          {filterData &&
+                            typeof filterData === "object" &&
+                            Object.keys(filterData).map((paneKey) => {
+                              const paneStaging = paneKey === "staging" ? "stages" : paneKey;
+
+                              return filterData[paneKey]?.length > 0 ? (
+                                <Tab.Pane
+                                  eventKey={paneKey}
+                                  key={paneKey}
+                                  className="mt-0"
+                                >
+                                  <ul className="list-unstyled">
+                                    {filterData[paneKey].slice(0, 10).map(({ value, count }) => (
+                                      <li key={value}>
+                                        <a
+                                          className="row text-decoration-none"
+                                          href="#"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title={value}
+                                        >
+                                          <label className="col px-0 selectall">
+                                            <input
+                                              type="checkbox"
+                                              checked={isFilterSet(paneKey, value)}
+                                              onClick={handleCategorySelect(paneKey, value)}
+                                              className="select-input"
+                                            />
+                                            <span className="category-input">{value}</span>
+                                          </label>
+                                          <div className="col px-0 selectall-num">{count}</div>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+
+                                  {paneKey === "brand" && filter[paneKey]?.length > 10 && (
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        padding: 10,
+                                      }}
                                     >
-                                      <div className="tab-vertical p-2">
-                                        <Col sm={2} className="pr-0">
-                                          <Nav
-                                            variant="pills"
-                                            className="flex-column"
-                                          >
-                                            {!!Object.keys(filter || {})
-                                              ?.length &&
-                                              Object.keys(filter)
-                                                .filter(
-                                                  (item) => filter[item]?.length
-                                                )
-                                                .map((filterKey) => {
-                                                  return (
-                                                    <Nav.Item key={filterKey}>
-                                                      <Nav.Link
-                                                        eventKey={filterKey}
-                                                      >
-                                                        {snakeCaseToTitleCase(
-                                                          filterKey
-                                                        )}
-                                                      </Nav.Link>
-                                                    </Nav.Item>
-                                                  );
-                                                })}
-                                          </Nav>
-                                        </Col>
-                                        <Col sm={10} className="px-0">
-                                          <Tab.Content className="mb-4">
-                                            {filterData &&
-                                              typeof filterData === "object" &&
-                                              Object.keys(filterData).map(
-                                                (filterKey) =>
-                                                  filterData[filterKey]
-                                                    ?.length > 0 ? (
-                                                    <Tab.Pane
-                                                      eventKey={filterKey}
-                                                      key={filterKey}
-                                                      className="mt-0"
-                                                    >
-                                                      <ul className="list-unstyled">
-                                                        {filterData[filterKey]
-                                                          .slice(0, 10)
-                                                          .map(
-                                                            ({
-                                                              value,
-                                                              count,
-                                                            }) => (
-                                                              <li key={value}>
-                                                                <a
-                                                                  className="row text-decoration-none"
-                                                                  href="#"
-                                                                  data-toggle="tooltip"
-                                                                  data-placement="right"
-                                                                  title={value}
-                                                                >
-                                                                  <label className="col px-0 selectall">
-                                                                    <input
-                                                                      type="checkbox"
-                                                                      checked={isFilterSet(
-                                                                        filterKey,
-                                                                        value
-                                                                      )}
-                                                                      onClick={handleCategorySelect(
-                                                                        filterKey,
-                                                                        value
-                                                                      )}
-                                                                      className="select-input"
-                                                                    />
-                                                                    <span className="category-input">
-                                                                      {value}
-                                                                    </span>
-                                                                  </label>
-                                                                  <div className="col px-0 selectall-num">
-                                                                    {count}
-                                                                  </div>
-                                                                </a>
-                                                              </li>
-                                                            )
-                                                          )}
-                                                      </ul>
-
-                                                      {filterKey === "brand" &&
-                                                        filter[filterKey]
-                                                          ?.length > 10 && (
-                                                          <div
-                                                            style={{
-                                                              display: "flex",
-                                                              justifyContent:
-                                                                "space-between",
-                                                              padding: 10,
-                                                            }}
-                                                          >
-                                                            {paginate > 1 && (
-                                                              <p
-                                                                onClick={() =>
-                                                                  handlePaginationFilter(
-                                                                    "prev",
-                                                                    filterKey
-                                                                  )
-                                                                }
-                                                              >
-                                                                Prev
-                                                              </p>
-                                                            )}
-                                                            {Math.ceil(
-                                                              filter[filterKey]
-                                                                .length / 10
-                                                            ) > paginate && (
-                                                              <p
-                                                                onClick={() =>
-                                                                  handlePaginationFilter(
-                                                                    "next",
-                                                                    filterKey
-                                                                  )
-                                                                }
-                                                              >
-                                                                Next
-                                                              </p>
-                                                            )}
-                                                          </div>
-                                                        )}
-                                                    </Tab.Pane>
-                                                  ) : (
-                                                    <Tab.Pane
-                                                      eventKey={filterKey}
-                                                      key={filterKey}
-                                                      className="mt-0"
-                                                    >
-                                                      <p>No data available</p>
-                                                    </Tab.Pane>
-                                                  )
-                                              )}
-                                          </Tab.Content>
-                                        </Col>
-                                      </div>
-                                    </Tab.Container>
-                                    <div className="filter-wrappers-buttons cancel-wrapper d-flex justify-content-end">
-                                      <Button
-                                        className="cancel-btn mr-3"
-                                        onClick={handleCloseFilter}
-                                      >
-                                        Cancel
-                                      </Button>
-                                      <Button
-                                        className="apply-btn"
-                                        onClick={handleCloseFilter}
-                                      >
-                                        Apply
-                                      </Button>
+                                      {paginate > 1 && (
+                                        <p
+                                          onClick={() =>
+                                            handlePaginationFilter("prev", paneKey)
+                                          }
+                                        >
+                                          Prev
+                                        </p>
+                                      )}
+                                      {Math.ceil(filter[paneKey].length / 10) > paginate && (
+                                        <p
+                                          onClick={() =>
+                                            handlePaginationFilter("next", paneKey)
+                                          }
+                                        >
+                                          Next
+                                        </p>
+                                      )}
                                     </div>
-                                  </Modal>
-                                </div>
-                              </div>
-                            </div>
+                                  )}
+                                </Tab.Pane>
+                              ) : (
+                                <Tab.Pane eventKey={paneKey} key={paneKey} className="mt-0">
+                                  <p>No data available</p>
+                                </Tab.Pane>
+                              );
+                            })}
+                        </Tab.Content>
+                      </Col>
+                    </div>
+                  </Tab.Container>
 
-                            <div className="modal" id="sortmodal">
-                              <div className="modal-dialog">
-                                <div className="modal-content">
-                                  <Modal
-                                    show={showSortBy}
-                                    onHide={handleCloseSortBy}
-                                    id="filtermodal"
-                                  >
-                                    <Modal.Header
-                                      closeButton
-                                      className="filter-text"
-                                    >
-                                      Sort by
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                      <div className="modal-body">
-                                        <ul className="list-unstyled">
-                                          <li>
-                                            {sortFilterData?.map((filter) => {
-                                              return (
-                                                <Dropdown.Item
-                                                  onClick={() =>
-                                                    handleSelectFilter(filter)
-                                                  }
-                                                >
-                                                  {filter.sortBy}
-                                                </Dropdown.Item>
-                                              );
-                                            })}
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </Modal.Body>
-                                  </Modal>
-                                </div>
+                  <div className="filter-wrappers-buttons cancel-wrapper d-flex justify-content-end">
+                    <Button className="cancel-btn mr-3" onClick={handleCloseFilter}>
+                      Cancel
+                    </Button>
+                    <Button className="apply-btn" onClick={handleCloseFilter}>
+                      Apply
+                    </Button>
+                  </div>
+                </Modal>
+              </div>
+            </div>
+          </div>
 
-                                {/* <!-- Modal body --> */}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
+          <div className="modal" id="sortmodal">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <Modal show={showSortBy} onHide={handleCloseSortBy} id="filtermodal">
+                  <Modal.Header closeButton className="filter-text">
+                    Sort by
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="modal-body">
+                      <ul className="list-unstyled">
+                        <li>
+                          {sortFilterData?.map((filter) => (
+                            <Dropdown.Item onClick={() => handleSelectFilter(filter)}>
+                              {filter.sortBy}
+                            </Dropdown.Item>
+                          ))}
+                        </li>
+                      </ul>
+                    </div>
+                  </Modal.Body>
+                </Modal>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+
                 </div>
 
                 <div
-                  className={`col-lg-10 skin-banners order-1 order-lg-2 ${
-                    isFixed ? "skin-banners with-margin" : "skin-banners"
-                  }`}
+                  className={`col-lg-10 skin-banners order-1 order-lg-2 ${isFixed ? "skin-banners with-margin" : "skin-banners"
+                    }`}
                   id="skin-banners"
                 >
                   <div className="d-flex justify-content-between">
@@ -1008,8 +934,8 @@ export default function CategoryList() {
                         {filterProducts && filterProducts.length > 0
                           ? `(Showing ${filterProducts.length} Products of ${totalItems})`
                           : products && products.length > 0
-                          ? `(Showing ${products.length} Products of ${totalItems})`
-                          : ""}
+                            ? `(Showing ${products.length} Products of ${totalItems})`
+                            : ""}
                       </p>
                     </div>
                     <div className="d-lg-block d-none">
@@ -1239,7 +1165,7 @@ export default function CategoryList() {
                                       </button>
                                     </div> */}
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                    <div className="price d-flex d-lg-block">
+                                      <div className="price d-flex d-lg-block">
                                         {product.mrp === product.final_price ? (
                                           <>
                                             <p className="product-price">
@@ -1259,11 +1185,11 @@ export default function CategoryList() {
                                       </div>
                                     </div>
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                      
+
 
                                       <div className="d-flex-column pb-0 pb-lg-5">
                                         {product?.show_stock === 1 &&
-                                        product?.stock_status ===
+                                          product?.stock_status ===
                                           "Out Stock" ? (
                                           <>
                                             <p
@@ -1453,16 +1379,16 @@ export default function CategoryList() {
                                       <div className="rating  d-lg-flex d-none">
                                         <p className="rating-number">
                                           {product &&
-                                          product.product_reviews &&
-                                          product.product_reviews.length > 0
+                                            product.product_reviews &&
+                                            product.product_reviews.length > 0
                                             ? product &&
                                               product.product_reviews.length > 0
                                               ? product.product_reviews.reduce(
-                                                  (acc, review) =>
-                                                    acc + (review.rating || 0),
-                                                  0
-                                                ) /
-                                                product.product_reviews.length
+                                                (acc, review) =>
+                                                  acc + (review.rating || 0),
+                                                0
+                                              ) /
+                                              product.product_reviews.length
                                               : "0"
                                             : "0"}
                                         </p>
@@ -1481,7 +1407,7 @@ export default function CategoryList() {
                                       </p>
                                     </div>
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                    <div className="price d-flex d-lg-block">
+                                      <div className="price d-flex d-lg-block">
                                         {product.mrp == product.final_price ? (
                                           <>
                                             <p
@@ -1509,11 +1435,11 @@ export default function CategoryList() {
                                       </div>
                                     </div>
                                     <div className="d-lg-flex d-flex-column justify-content-between align-items-center">
-                                      
+
 
                                       {product?.back_order_quantity == 0 ||
-                                      (product &&
-                                        product.stock_status == "Out Stock") ? (
+                                        (product &&
+                                          product.stock_status == "Out Stock") ? (
                                         <>
                                           <div className="d-flex-column pb-0 pb-lg-5">
                                             <p
@@ -1522,8 +1448,8 @@ export default function CategoryList() {
                                                 color:
                                                   product?.back_order_quantity ==
                                                     0 ||
-                                                  (product &&
-                                                    product.stock_status ==
+                                                    (product &&
+                                                      product.stock_status ==
                                                       "Out Stock")
                                                     ? "red"
                                                     : "",
@@ -1532,8 +1458,8 @@ export default function CategoryList() {
                                             >
                                               {product?.back_order_quantity ==
                                                 0 ||
-                                              (product &&
-                                                product.stock_status ==
+                                                (product &&
+                                                  product.stock_status ==
                                                   "Out Stock") ? (
                                                 "Out Of Stock"
                                               ) : (
@@ -1564,8 +1490,8 @@ export default function CategoryList() {
                                                 color:
                                                   product?.back_order_quantity ==
                                                     0 ||
-                                                  (product &&
-                                                    product.stock_status ==
+                                                    (product &&
+                                                      product.stock_status ==
                                                       "Out Stock")
                                                     ? "red"
                                                     : "",
@@ -1574,8 +1500,8 @@ export default function CategoryList() {
                                             >
                                               {product?.back_order_quantity ==
                                                 0 ||
-                                              (product &&
-                                                product.stock_status ==
+                                                (product &&
+                                                  product.stock_status ==
                                                   "Out Stock") ? (
                                                 <>&nbsp;</>
                                               ) : (
@@ -1630,30 +1556,30 @@ export default function CategoryList() {
                       id="products-pagination"
                     >
                     </div> */}
-                      <ReactPaginate
-                        className="pagination"
-                        pageClassName="page-item"
-                        pageLinkClassName="page-link"
-                        previousClassName="page-item"
-                        previousLinkClassName="page-link"
-                        nextClassName="page-item"
-                        nextLinkClassName="page-link"
-                        breakClassName="page-item"
-                        breakLinkClassName="page-link"
-                        activeLinkClassName="active"
-                        breakLabel="..."
-                        nextLabel=">"
-                        onPageChange={handlePageClick}
-                        // pageRangeDisplayed={5}
-                        pageRangeDisplayed={4}
-                        marginPagesDisplayed={1}
-                        // pageRangeDisplayed={0} // Set to 0 to not show any pages other than the current one
-                        // marginPagesDisplayed={0} // No additional margin pages
-                        pageCount={totalPages}
-                        forcePage={parseInt(searchParams.get("page") || 1) - 1}
-                        previousLabel="<"
-                        renderOnZeroPageCount={null}
-                      />
+                    <ReactPaginate
+                      className="pagination"
+                      pageClassName="page-item"
+                      pageLinkClassName="page-link"
+                      previousClassName="page-item"
+                      previousLinkClassName="page-link"
+                      nextClassName="page-item"
+                      nextLinkClassName="page-link"
+                      breakClassName="page-item"
+                      breakLinkClassName="page-link"
+                      activeLinkClassName="active"
+                      breakLabel="..."
+                      nextLabel=">"
+                      onPageChange={handlePageClick}
+                      // pageRangeDisplayed={5}
+                      pageRangeDisplayed={4}
+                      marginPagesDisplayed={1}
+                      // pageRangeDisplayed={0} // Set to 0 to not show any pages other than the current one
+                      // marginPagesDisplayed={0} // No additional margin pages
+                      pageCount={totalPages}
+                      forcePage={parseInt(searchParams.get("page") || 1) - 1}
+                      previousLabel="<"
+                      renderOnZeroPageCount={null}
+                    />
                   </div>
                   <div className="foot-section order-3">
                     <div className="bottom-border"></div>
