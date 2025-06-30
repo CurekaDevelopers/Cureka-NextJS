@@ -65,9 +65,10 @@ import "../../styles/product_details.css";
 export default function ShopHeader({ showCategoryNavbar = false }) {
   const searchParams = useSearchParams();
   const [category, setCategory] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(
-    searchParams.get("search_term") || ""
-  );
+  // const [searchTerm, setSearchTerm] = useState(searchParams.get("search_term") || "");
+  const initialSearchTerm = searchParams.get("search_term") || "";
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [isUserTyping, setIsUserTyping] = useState(false);
   const [items, setItems] = useState([]);
   const { isLoggedIn, name } = useCustomerLoggedIn();
   const navigate = useRouter();
@@ -76,6 +77,24 @@ export default function ShopHeader({ showCategoryNavbar = false }) {
     (state) => state.customer
   );
 
+  // Prefill but do not show suggestions initially
+  useEffect(() => {
+    if (initialSearchTerm) {
+      setItems([]);           // hide dropdown
+      setIsUserTyping(false); // prevent fetching on load
+    }
+  }, []);
+
+    console.log(isUserTyping ? items : [], 'typing')
+
+  // Trigger suggestions only if user types
+  useEffect(() => {
+    if (searchTerm.length >= 3 && isUserTyping) {
+      fetchItems(searchTerm);
+    } else {
+      setItems([]); // hide dropdown if cleared
+    }
+  }, [searchTerm, isUserTyping]);
   const { showLoginModel } = useSelector((state) => state.auth);
 
   const [openMenus, setOpenMenus] = useState([]);
@@ -198,6 +217,7 @@ export default function ShopHeader({ showCategoryNavbar = false }) {
 
   const handleInputChange = (value) => {
     setSearchTerm(value); // Fix: Accepts the string directly instead of event
+    setIsUserTyping(true); // Now user has interacted
   };
   const handleSelect = (item, type) => {
     console.log(item);
@@ -430,188 +450,190 @@ export default function ShopHeader({ showCategoryNavbar = false }) {
               </ul>
             </div>
             <div className="d-none d-lg-block mt-110">
-            <ul className="navbar-nav d-flex flex-row align-items-center gap-3">
-  <li className="nav-item">
-    <DropdownButton id="dropdown-toggle" title={category?.name || "All"}>
-      <Dropdown.Item onClick={() => onCategoryChange(null)}>All</Dropdown.Item>
-      {!!nestedCategories?.length &&
-        nestedCategories.map((item) => {
-          if (item.nav_link?.trim().toLowerCase() !== "active") return null;
-          return (
-            <Dropdown.Item
-              key={item.id}
-              onClick={() => onCategoryChange(item)}
-            >
-              {item.name}
-            </Dropdown.Item>
-          );
-        })}
-    </DropdownButton>
-  </li>
+              <ul className="navbar-nav d-flex flex-row align-items-center gap-3">
+                <li className="nav-item">
+                  <DropdownButton id="dropdown-toggle" title={category?.name || "All"}>
+                    <Dropdown.Item onClick={() => onCategoryChange(null)}>All</Dropdown.Item>
+                    {!!nestedCategories?.length &&
+                      nestedCategories.map((item) => {
+                        if (item.nav_link?.trim().toLowerCase() !== "active") return null;
+                        return (
+                          <Dropdown.Item
+                            key={item.id}
+                            onClick={() => onCategoryChange(item)}
+                          >
+                            {item.name}
+                          </Dropdown.Item>
+                        );
+                      })}
+                  </DropdownButton>
+                </li>
 
-  <li className="nav-item">
-    <form
-      onSubmit={onSearchFormSubmit}
-      className="d-flex align-items-center"
-      style={{ position: "relative", zIndex: 9999 }}
-    >
-      <div ref={autocompleteRef}>
-        <SearchAutocomplete
-          items={items}
-          onSelect={handleSelect}
-          onChange={handleInputChange}
-        />
-      </div>
-      <Image
-        onClick={onSearchClicked}
-        className="img-fluid search-icon ms-2"
-        src={homeSearch}
-        width={16}
-        alt="search"
-      />
-    </form>
-  </li>
+                <li className="nav-item">
+                  <form
+                    onSubmit={onSearchFormSubmit}
+                    className="d-flex align-items-center"
+                    style={{ position: "relative", zIndex: 9999 }}
+                  >
+                    <div ref={autocompleteRef}>
+                      <SearchAutocomplete
+                        // items={items}
+                        items={isUserTyping ? items : []}
+                        onSelect={handleSelect}
+                        onChange={handleInputChange}
+                        shouldShowDropdown={isUserTyping && items.length > 0} // 🔥 control visibility
+                      />
+                    </div>
+                    <Image
+                      onClick={onSearchClicked}
+                      className="img-fluid search-icon ms-2"
+                      src={homeSearch}
+                      width={16}
+                      alt="search"
+                    />
+                  </form>
+                </li>
 
-  <li className="nav-item">
-    <a className="nav-link" href={pagePaths.offers}>
-      <Image
-        className="img-fluid me-2 d-lg-block d-none"
-        src={badgePercent}
-        width={20}
-        height={20}
-        alt="badge"
-      />
-      Offers
-    </a>
-  </li>
+                <li className="nav-item">
+                  <a className="nav-link" href={pagePaths.offers}>
+                    <Image
+                      className="img-fluid me-2 d-lg-block d-none"
+                      src={badgePercent}
+                      width={20}
+                      height={20}
+                      alt="badge"
+                    />
+                    Offers
+                  </a>
+                </li>
 
-  {!isLoggedIn ? (
-    <li className="nav-item">
-      <a
-        className="nav-link"
-        style={{ cursor: "pointer" }}
-        onClick={handleShowLoginModel}
-      >
-        <Image
-          className="img-fluid me-2"
-          src={user}
-          width={20}
-          height={20}
-          alt="user"
-        />
-        Hello, Login
-      </a>
-    </li>
-  ) : (
-    <li className="nav-item">
-      <div className={style.userDropdown}>
-        <Image
-          className="img-fluid me-2"
-          src={user}
-          width={20}
-          height={20}
-          alt="user"
-        />
-        <DropdownButton
-          menuVariant="dark"
-          title={name}
-          className={style.userDropdownBtn}
-        >
-          <Dropdown.Item onClick={() => navigateTo(pagePaths.myAccount)}>
-            My Account
-          </Dropdown.Item>
-          <Dropdown.Item onClick={() => navigateTo(pagePaths.myOrders)}>
-            My Orders
-          </Dropdown.Item>
-          <Dropdown.Item onClick={() => navigateTo(pagePaths.myWishlist)}>
-            My Wishlist
-          </Dropdown.Item>
-          <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
-        </DropdownButton>
-      </div>
-    </li>
-  )}
+                {!isLoggedIn ? (
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleShowLoginModel}
+                    >
+                      <Image
+                        className="img-fluid me-2"
+                        src={user}
+                        width={20}
+                        height={20}
+                        alt="user"
+                      />
+                      Hello, Login
+                    </a>
+                  </li>
+                ) : (
+                  <li className="nav-item">
+                    <div className={style.userDropdown}>
+                      <Image
+                        className="img-fluid me-2"
+                        src={user}
+                        width={20}
+                        height={20}
+                        alt="user"
+                      />
+                      <DropdownButton
+                        menuVariant="dark"
+                        title={name}
+                        className={style.userDropdownBtn}
+                      >
+                        <Dropdown.Item onClick={() => navigateTo(pagePaths.myAccount)}>
+                          My Account
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => navigateTo(pagePaths.myOrders)}>
+                          My Orders
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => navigateTo(pagePaths.myWishlist)}>
+                          My Wishlist
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
+                      </DropdownButton>
+                    </div>
+                  </li>
+                )}
 
-  <li className="nav-item">
-    <Link className="nav-link d-flex align-items-center" href={pagePaths.cart}>
-      <div className={style.cartItemBadge}>
-        <Image
-          className="img-fluid me-2"
-          src={shoppingCart}
-          width={20}
-          height={20}
-          alt="cart"
-        />
-        <div className={style.cartItemBadgeCount}>
-          {cartProducts?.length}
-        </div>
-      </div>
-      Cart
-    </Link>
-  </li>
+                <li className="nav-item">
+                  <Link className="nav-link d-flex align-items-center" href={pagePaths.cart}>
+                    <div className={style.cartItemBadge}>
+                      <Image
+                        className="img-fluid me-2"
+                        src={shoppingCart}
+                        width={20}
+                        height={20}
+                        alt="cart"
+                      />
+                      <div className={style.cartItemBadgeCount}>
+                        {cartProducts?.length}
+                      </div>
+                    </div>
+                    Cart
+                  </Link>
+                </li>
 
-  <li className="nav-item">
-    <DropdownButton title="Help Desk">
-      <div className="d-flex">
-        <div className="col-6">
-          <h2 className="section">Contact Us</h2>
-          <Dropdown.Item
-            href="https://api.whatsapp.com/send?phone=917200150536"
-            className="d-flex"
-          >
-            <Image
-              className="img-fluid me-2 d-lg-block d-none"
-              src={chat}
-              width={20}
-              height={20}
-              alt="chat"
-            />
-            Chat with US
-          </Dropdown.Item>
-          <Dropdown.Item
-            href="mailto:care@cureka.com"
-            className="d-flex"
-          >
-            <Image
-              className="img-fluid me-2 d-lg-block d-none"
-              src={email}
-              width={20}
-              height={20}
-              alt="email"
-            />
-            Email
-          </Dropdown.Item>
-          <Dropdown.Item
-            href="https://api.whatsapp.com/send?phone=917200150536"
-            className="d-flex"
-          >
-            <Image
-              className="img-fluid me-2 d-lg-block d-none"
-              src={experts}
-              width={20}
-              height={20}
-              alt="experts"
-            />
-            Ask our Experts
-          </Dropdown.Item>
-        </div>
-        <div className="col-6 border-left ms-3">
-          <h2 className="section">Helpful Links</h2>
-          <Dropdown.Item href="/TrackOrder">Track your order</Dropdown.Item>
-          <Dropdown.Item href="/Privacypolicy">Privacy Policy</Dropdown.Item>
-          <Dropdown.Item href="/Faq">FAQ's</Dropdown.Item>
-        </div>
-      </div>
-      <div className="contactus p-3 mx-2 mt-3">
-        <p className="section mb-2">For Support & Order Enquiries</p>
-        <a className="review-heading" href="tel:+91 9655928004">
-          Call Us at: +91 9655928004
-        </a>
-        <p className="review-heading">Mon to Sat - 10:00 AM to 06:00 PM</p>
-      </div>
-    </DropdownButton>
-  </li>
-</ul>
+                <li className="nav-item">
+                  <DropdownButton title="Help Desk">
+                    <div className="d-flex">
+                      <div className="col-6">
+                        <h2 className="section">Contact Us</h2>
+                        <Dropdown.Item
+                          href="https://api.whatsapp.com/send?phone=917200150536"
+                          className="d-flex"
+                        >
+                          <Image
+                            className="img-fluid me-2 d-lg-block d-none"
+                            src={chat}
+                            width={20}
+                            height={20}
+                            alt="chat"
+                          />
+                          Chat with US
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          href="mailto:care@cureka.com"
+                          className="d-flex"
+                        >
+                          <Image
+                            className="img-fluid me-2 d-lg-block d-none"
+                            src={email}
+                            width={20}
+                            height={20}
+                            alt="email"
+                          />
+                          Email
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          href="https://api.whatsapp.com/send?phone=917200150536"
+                          className="d-flex"
+                        >
+                          <Image
+                            className="img-fluid me-2 d-lg-block d-none"
+                            src={experts}
+                            width={20}
+                            height={20}
+                            alt="experts"
+                          />
+                          Ask our Experts
+                        </Dropdown.Item>
+                      </div>
+                      <div className="col-6 border-left ms-3">
+                        <h2 className="section">Helpful Links</h2>
+                        <Dropdown.Item href="/TrackOrder">Track your order</Dropdown.Item>
+                        <Dropdown.Item href="/Privacypolicy">Privacy Policy</Dropdown.Item>
+                        <Dropdown.Item href="/Faq">FAQ's</Dropdown.Item>
+                      </div>
+                    </div>
+                    <div className="contactus p-3 mx-2 mt-3">
+                      <p className="section mb-2">For Support & Order Enquiries</p>
+                      <a className="review-heading" href="tel:+91 9655928004">
+                        Call Us at: +91 9655928004
+                      </a>
+                      <p className="review-heading">Mon to Sat - 10:00 AM to 06:00 PM</p>
+                    </div>
+                  </DropdownButton>
+                </li>
+              </ul>
 
             </div>
           </nav>
@@ -749,14 +771,14 @@ export default function ShopHeader({ showCategoryNavbar = false }) {
                                                               {subcat
                                                                 .sub_sub_categories
                                                                 .length > 0 && (
-                                                                <i
-                                                                  className={
-                                                                    isSubMenuOpen
-                                                                      ? "fas fa-minus"
-                                                                      : "fas fa-plus"
-                                                                  }
-                                                                ></i>
-                                                              )}
+                                                                  <i
+                                                                    className={
+                                                                      isSubMenuOpen
+                                                                        ? "fas fa-minus"
+                                                                        : "fas fa-plus"
+                                                                    }
+                                                                  ></i>
+                                                                )}
                                                             </DropdownItem>
                                                           </div>
 
@@ -1141,9 +1163,11 @@ export default function ShopHeader({ showCategoryNavbar = false }) {
                         onSelect={handleSelect}
                       /> */}
                       <SearchAutocomplete
-                        items={items}
+                        items={isUserTyping ? items : []}
                         onSelect={handleSelect}
                         onChange={handleInputChange}
+                        shouldShowDropdown={isUserTyping && items.length > 0} // 🔥 control visibility
+
                       />
                     </div>
 

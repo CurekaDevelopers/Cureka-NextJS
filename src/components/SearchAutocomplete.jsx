@@ -3,7 +3,7 @@ import Image from "next/image";
 import NoImage from "../public/images/noimageavailable.png";
 import { useMediaQuery } from "react-responsive";
 
-const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
+const SearchAutocomplete = ({ items = [], onSelect, onChange,shouldCloseDropdown }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -44,6 +44,11 @@ const SearchAutocomplete = ({ items = [], onSelect, onChange }) => {
       regex.test(part) ? <strong key={index}>{part}</strong> : part
     );
   };
+useEffect(() => {
+  if (shouldCloseDropdown) {
+    setShowDropdown(false);
+  }
+}, [shouldCloseDropdown]);
 
   return (
     <div style={{ position: "relative", width: "100%",

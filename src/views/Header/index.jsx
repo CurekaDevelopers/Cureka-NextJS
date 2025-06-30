@@ -68,6 +68,7 @@ export default function Header({ showCategoryNavbar = true }) {
     searchParams.get("search_term") || ""
   );
   const [items, setItems] = useState([]);
+  const [isUserTyping, setIsUserTyping] = useState(false); // <-- Add this
   const { isLoggedIn, name } = useCustomerLoggedIn();
   const navigate = useRouter();
   const dispatch = useDispatch();
@@ -184,6 +185,7 @@ export default function Header({ showCategoryNavbar = true }) {
 
   const handleInputChange = (value) => {
     setSearchTerm(value); // Fix: Accepts the string directly instead of event
+      setIsUserTyping(true); // Only trigger fetch if user types
   };
   const handleSelect = (item, type) => {
     console.log(item);
@@ -227,6 +229,8 @@ export default function Header({ showCategoryNavbar = true }) {
     }
 
     navigate.push(`/products?${params.toString()}`);
+      setItems([]);
+  setIsUserTyping(false);  // Prevent dropdown from reappearing on refresh
   };
 
   const onSearchFormSubmit = (e) => {
@@ -328,7 +332,18 @@ export default function Header({ showCategoryNavbar = true }) {
   };
   const pathname = useSearchParams();
   const isHomePage = pathname === '/';
+  
+useEffect(() => {
+  const delayDebounce = setTimeout(() => {
+    if (searchTerm.length >= 3 && isUserTyping) {
+      fetchItems(searchTerm);
+    } else {
+      setItems([]);
+    }
+  }, 300);
 
+  return () => clearTimeout(delayDebounce);
+}, [searchTerm, isUserTyping]);
   return (
     <>
       <div className="container-fluid header-border header-fixed px-0 pl-8 ">
@@ -510,6 +525,8 @@ export default function Header({ showCategoryNavbar = true }) {
                            items={items}
                            onSelect={handleSelect}
                            onChange={handleInputChange}
+                             shouldCloseDropdown={!isUserTyping}
+
                          />
                        </div>
                        <Image
@@ -1109,6 +1126,8 @@ export default function Header({ showCategoryNavbar = true }) {
         items={items}
         onSelect={handleSelect}
         onChange={handleInputChange}
+          shouldCloseDropdown={!isUserTyping}
+
       />
     </div>
 
