@@ -396,12 +396,10 @@ export default function Cart() {
     }
   
     const items = cartProducts.length > 0
-  ? [
-      {
-        variant_id: cartProducts[0].pid?.toString(),
-        quantity: cartProducts[0].qty || 1,
-      },
-    ]
+  ? cartProducts.map(product => ({
+      variant_id: product.pid?.toString(),
+      quantity: product.qty || 1,
+    }))
   : [];
   
     if (items.length === 0) {
