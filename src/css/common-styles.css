@@ -1,0 +1,169 @@
+body {
+  background-color: #fff;
+
+  min-height: 480px;
+
+  min-width: 320px;
+
+}
+
+.container-fluid, .container {
+
+  /* overflow-x: hidden; */
+
+  @media (min-width: 992px) {
+
+  padding: 0px ;
+
+  }
+
+}
+
+.container {
+
+  @media (min-width: 992px) {
+
+    width: 95% !important;
+
+    max-width: 1280px !important;
+
+    margin: 0 auto;
+
+  }
+
+}
+
+.row>*,.col>* {
+
+  margin: 0px;
+
+}
+
+.home-backsection {
+
+  margin-top: 12px;
+
+  margin-bottom: 12px;
+
+}
+
+.bottom-border {
+
+  border-bottom: 1px solid #D7D7D7;
+
+  height: 1px;
+
+}
+
+.banner {
+
+  position: relative;
+
+}
+
+.banner-heading {
+
+  position: absolute;
+
+  top: 50%;
+
+  left: 25%;
+
+  transform: translate(-50%, -50%);
+
+  color: #231F20;
+
+  font: normal 400 32px/normal Rubik-regular;
+
+  @media( min-width:992px) {
+
+    font: normal 400 42px/normal Rubik-regular;
+
+    left: 15%;
+
+  }
+
+}
+
+.required-star {
+
+  color: #E75204;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+}
+
+.section {
+
+  color: #6B6C86;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 16px;
+
+}
+/* privacy page styles */
+
+.privacy-heading {
+
+  color: #231F20;
+
+  font: normal 500 30px/normal Rubik-medium;
+
+  margin-top: 30px;
+
+  text-align: center;
+
+  @media (min-width: 992px) {
+
+    font: normal 500 40px/normal Rubik-medium;
+
+  }
+
+}
+
+.privacy-subheading {
+
+  color: #344251;
+
+  font: normal 400 20px/25px Rubik-regular;
+
+  margin-bottom: 16px;
+
+}
+
+.privacy-para {
+
+  color: #6C6C85;
+
+  font: normal 400 16px/25px Rubik-regular;
+
+  margin-bottom: 30px;
+
+}
+
+.cureka-email {
+
+  color: #E75204;
+
+}
+
+.cureka-email:hover {
+
+  text-decoration: none;
+
+  color: #E75204;
+
+}
+
+.privacy-address {
+
+  color: #6C6C85;
+
+  font: normal 400 16px/25px Rubik-regular;
+
+  max-width: 250px;
+
+  margin-bottom: 46px;
+
+}

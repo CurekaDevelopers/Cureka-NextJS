@@ -1,0 +1,38 @@
+.sidebar {
+  width: 235px;
+  height: calc(100vh - 70px);
+  position: fixed;
+  background: #fff;
+  -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.5s ease-in-out;
+  font-family: "Rubik-regular";
+  overflow-y: scroll;
+
+  .link {
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    padding: 10px 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #303030;
+    white-space: nowrap;
+
+    &.selected,
+    &:hover {
+      background: #004a98;
+      color: white;
+    }
+
+    &:hover {
+      background: #004a98;
+      color: #ffffff;
+    }
+  }
+}

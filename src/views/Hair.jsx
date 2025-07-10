@@ -1,12 +1,9 @@
-import Footer from "./Footer";
-import Header from "./Header";
+import React from 'react'
 
 export default function Hair() {
   return (
-    <>
-      <Header />
-      <div>Hair</div>
-      <Footer />
-    </>
-  );
+    <div>
+      Hair
+    </div>
+  )
 }

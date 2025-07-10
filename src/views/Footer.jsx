@@ -1,619 +1,433 @@
-"use client";
-import { useFormik } from "formik";
-import { useEffect, useState } from "react";
-import Nav from "react-bootstrap/Nav";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import * as Yup from "yup";
-import clock from "../public/images/clock.png";
-import envelope from "../public/images/envelope.png";
-import fb from "../public/images/fb.svg";
-import food from "../public/images/food.png";
-import footerlogo from "../public/images/footerlogo.svg";
-import insta from "../public/images/instagram.svg";
-import linkedin from "../public/images/linkedin.svg";
-import map from "../public/images/map.png";
-import phone from "../public/images/phone.png";
-import pinterest from "../public/images/pinterest.svg";
-import youtube from "../public/images/youtube.svg";
-import { setShowLoginModel } from "../redux/slices/auth.slice";
-import { pagePaths } from "../utils/constants/constant";
-import api from "../utils/api.utils";
-import { apiUrls } from "../utils/constants/api.constants";
-import useCustomerLoggedIn from "../utils/hooks/useCustomerLoggedIn";
-import Modal from "react-bootstrap/Modal";
-import UserLogin from "./UserLogin";
-import newbhmi from "../public/images/newbhmi.svg";
-import newgpay from "../public/images/newgpay.svg";
-import newmaestro from "../public/images/newmaestro.svg";
-import newmastercard from "../public/images/newmastercard.svg";
-import newpaytm from "../public/images/newpaytm.svg";
-import newphonepe from "../public/images/newphonepe.svg";
-import newrupay from "../public/images/newrupay.svg";
-import newvisa from "../public/images/newvisa.svg";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMapMarkerAlt,
-  faPhone,
-  faEnvelope,
-  faClock,
-} from "@fortawesome/free-solid-svg-icons";
-
+import React from "react";
+import Logo from "../assets/images/Logo.png";
+import clock from "../assets/images/clock.png";
+import envelope from "../assets/images/envelope.png";
+import fb from "../assets/images/fb.png";
+import food from "../assets/images/food.png";
+import gpay from "../assets/images/gpay.png";
+import linkedin from "../assets/images/linkedin.png";
+import maestro from "../assets/images/maestro.png";
+import map from "../assets/images/map.png";
+import master from "../assets/images/master.png";
+import paytm from "../assets/images/paytm.png";
+import phone from "../assets/images/phone.png";
+import phonepay from "../assets/images/phonepay.png";
+import pinterest from "../assets/images/pinterest.png";
+import rupay from "../assets/images/rupay.png";
+import twitter from "../assets/images/twitter.png";
+import upi from "../assets/images/upi.png";
+import visa from "../assets/images/visa.png";
+import youtube from "../assets/images/youtube.png";
 export default function Footer() {
-  const navigate = useRouter();
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-  const [msg, setMsg] = useState("");
-  const { nestedCategories } = useSelector((state) => state.customer);
-  const { showLoginModel } = useSelector((state) => state.auth);
-
-  const [hoveredCategory, setHoveredCategory] = useState("");
-
-  useEffect(() => {
-    setHoveredCategory(nestedCategories[0]);
-  }, [nestedCategories]);
-
-  const onChangeHoveredCategory = (category) => () => {
-    setHoveredCategory(category);
-  };
-  const { isLoggedIn } = useCustomerLoggedIn();
-  const handleCloseLoginModel = () => dispatch(setShowLoginModel(false));
-  const handleShowLoginModel = () => dispatch(setShowLoginModel(true));
-
-  const formik = useFormik({
-    initialValues: {
-      new_email: "",
-    },
-    validationSchema: Yup.object({
-      new_email: Yup.string()
-        .email("Invalid email address")
-        .required("Required"),
-    }),
-    onSubmit: async (values) => {
-      console.log("fdf");
-      try {
-        setLoading(true);
-
-        const response = await api.post(apiUrls.addsubscription, {
-          email: values.new_email,
-        });
-        if (response.status === 200) {
-          //setShowOtpInput(true);
-          toast.success(response.data.message);
-          setMsg(response.data.message);
-          setTimeout(() => {
-            navigate.push("/thankYou");
-          }, 1000);
-        } else {
-          //setShowOtpInput(false);
-          toast.success(response.data.message);
-          setMsg(response.data.message);
-        }
-
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setMsg(error.message || "An error occurred");
-      }
-    },
-  });
-
   return (
     <>
       <footer>
+
         <section id="footer-section">
+
           <div className="container-fluid footer">
+
             <div className="container footer-space">
+
               <div className="row">
+
                 <div className="col-lg-3 col-md-6">
-                  <Image
-                    className="d-block mb-3"
-                    src={footerlogo}
-                    width={113}
-                    height={48}
-                    alt="footerlogo"
-                  />
 
-                  <div className="support">For Support & Order Inquiries</div>
-                  
-                  <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={envelope}
-                      width="12px"
-                      height="12px"
-                      alt="envelope"
-                    /> */}
-                    <FontAwesomeIcon
-                      icon={faMapMarkerAlt}
-                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
-                      style={{ color: "#ff6347" }}
-                    />
-                    <a
-                      href=""
-                      className="address text-decoration-none"
-                      style={{cursor: "default"}}
-                    >
-                      Wedjat Health Solutions Pvt. Ltd,<br />75/1, Alagar Kovil Main
-                      Rd,Surveyor Colony, Madurai, TamilNadu 625007
-                    </a>
+                  <img className="d-block mb-3" src={Logo} width="112px" height="47px" alt="footerlogo" />
+
+                  <h2 className="support">For Support & Order Inquiries</h2>
+
+                  <div className='d-flex'>
+
+                    <img className="mr-3 icon-map" src={map} width="10px" height="11px" alt="map" />
+
+                    <p className='address'>Wedjat Health Solutions Pvt. Ltd,75/1, Alagar Kovil Main Rd,Surveyor Colony, Madurai,
+                      TamilNadu 625007</p>
+
                   </div>
 
-                  <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={phone}
-                      width="12px"
-                      height="12px"
-                      alt="phone"
-                    /> */}
-                    <FontAwesomeIcon
-                      icon={faPhone}
-                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
-                      style={{ color: "#ff6347" }}
-                    />
+                  <div className='d-flex'>
 
-                    <a
-                      className="address mr-3 text-decoration-none"
-                      href="tel:+91 9655928004"
-                    >
-                      Call us at: +91 96559 28004
-                    </a>
+                    <img className="mr-3 icon-map" src={phone} width="12px" height="12px" alt="phone" />
+
+                    <p className='address'>Call us at: +91 9655928004</p>
+
                   </div>
 
-                  <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={envelope}
-                      width="12px"
-                      height="12px"
-                      alt="envelope"
-                    /> */}
-                    <FontAwesomeIcon
-                      icon={faEnvelope}
-                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
-                      style={{ color: "#ff6347" }}
-                    />
-                    <a
-                      href="mailto:care@cureka.com"
-                      className="address text-decoration-none"
-                    >
-                      Email: care@cureka.com
-                    </a>
+                  <div className='d-flex'>
+
+                    <img className="mr-3 icon-map" src={envelope} width="12px" height="12px" alt="envelope" />
+
+                    <p className='address'>Email: care@cureka.com</p>
+
                   </div>
 
-                  <div className="d-flex">
-                    {/* <img
-                      className="mr-3 icon-map"
-                      src={clock}
-                      width="12px"
-                      height="12px"
-                      alt="clock"
-                    /> */}
-                    <FontAwesomeIcon
-                      icon={faClock}
-                      className="bg-orange-200  rounded-full text-xl mb-4 mr-3"
-                      style={{ color: "#ff6347" }}
-                    />
+                  <div className='d-flex'>
 
-                    <p className="address">Mon to Sat - 10:00 AM to 6:00 PM</p>
+                    <img className="mr-3 icon-map" src={clock} width="12px" height="12px" alt="clock" />
+
+                    <p className='address'>Mon to Sat - 10:00 AM to 6:00 PM</p>
+
                   </div>
+
                 </div>
 
                 <div className="col-lg-2 col-md-6">
-                  <div className="title">Categories</div>
 
-                  {/* <ul className="category-list">
+                  <h2 className="title">Categories</h2>
+
+                  <ul className="category-list">
+
                     <li className="list-unstyled">
+
                       <a href="#">Nutrition</a>
+
                     </li>
 
                     <li className="list-unstyled">
+
                       <a href="#">Healthcare Devices</a>
+
                     </li>
 
                     <li className="list-unstyled">
+
                       <a href="#">Herbal & Ayurveda</a>
+
                     </li>
 
                     <li className="list-unstyled">
+
                       <a href="#">Wellness</a>
+
                     </li>
 
                     <li className="list-unstyled">
+
                       <a href="#">Pain Relief</a>
+
                     </li>
 
                     <li className="list-unstyled">
+
                       <a href="#">Hair Care</a>
+
                     </li>
 
                     <li className="list-unstyled">
+
                       <a href="skin">Skin Care</a>
+
                     </li>
-                  </ul> */}
-                  {!!nestedCategories?.length &&
-                    nestedCategories?.map((item) => {
-                      if (item.nav_link?.trim().toLowerCase() !== "active")
-                        return null;
-                      return (
-                        <Nav.Item
-                          className="list-unstyled"
-                          key={item.id}
-                          onMouseEnter={onChangeHoveredCategory(item)}
-                        >
-                          <Nav.Link
-                            onClick={() =>
-                              navigate.push(
-                                `/product-category/${hoveredCategory?.slug}`
-                              )
-                            }
-                            eventKey={item.slug}
-                          >
-                            {item.name}
-                          </Nav.Link>
-                        </Nav.Item>
-                      );
-                    })}
+
+                  </ul>
+
                 </div>
 
                 <div className="col-lg-2 col-md-6">
-                  <div className="title">Customer Care</div>
+
+                  <h2 className="title">Customer Care</h2>
 
                   <ul className="category-list">
-                    {isLoggedIn ? (
-                      <li className="list-unstyled">
-                        <Link
-                          href={!isLoggedIn ? "#" : "/account?tab=my-account"}
-                        >
-                          My Account
-                        </Link>
-                      </li>
-                    ) : (
-                      <li className="list-unstyled">
-                        {/* <Link
-                          onClick={!isLoggedIn ? handleShowLoginModel : null}
-                        >
-                          My Account
-                        </Link> */}
-                      </li>
-                    )}
 
                     <li className="list-unstyled">
-                      <Link href={"/blogs"}>Blog</Link>
+
+                      <a href="orders">My Account</a>
+
                     </li>
 
                     <li className="list-unstyled">
-                      {/* <a href="medical-expert">Medical Expert</a> */}
-                      <Link href={"/medical-expert"}>Medical Expert</Link>
+
+                      <a href="blog">Blog</a>
+
                     </li>
 
                     <li className="list-unstyled">
-                      <Link href={"/Faq"}>Faq</Link>
+
+                      <a href="#">Medical Expert</a>
+
                     </li>
 
                     <li className="list-unstyled">
-                      {/* <a href="aboutus">About Us</a> */}
-                      <Link href={"/Aboutus"}>About Us</Link>
+
+                      <a href="faq">FAQ</a>
+
                     </li>
 
                     <li className="list-unstyled">
-                      {/* <a href="contactus">Contact</a> */}
-                      <Link href={"/Contactus"}>Contact</Link>
+
+                      <a href="aboutus">About Us</a>
+
                     </li>
+
+                    <li className="list-unstyled">
+
+                      <a href="contactus">Contact</a>
+
+                    </li>
+
                   </ul>
+
                 </div>
 
                 <div className="col-lg-2 col-md-6">
-                  <div className="title">Our Policies</div>
+
+                  <h2 className="title">Our Policies</h2>
 
                   <ul className="category-list">
+
                     <li className="list-unstyled">
-                      <Link href={"/terms-and-conditions"}>
-                        Terms and Conditions
-                      </Link>
+
+                      <a href="#">Terms and Conditions</a>
+
                     </li>
+
                     <li className="list-unstyled">
-                      <Link href={"/cancellation-refund"}>
-                        Cancellation & Refund
-                      </Link>
+
+                      <a href="#">Cancellation & Refund</a>
+
                     </li>
+
                     <li className="list-unstyled">
-                      <Link href={"/disclaimer-of-warranties"}>
-                        Disclaimer of Warranties
-                      </Link>
+
+                      <a href="#">Disclaimer of Warranties</a>
+
                     </li>
+
                     <li className="list-unstyled">
-                      <Link href={"/Privacypolicy"}>Privacy Policy</Link>
+
+                      <a href="privacypolicy">Privacy Policy</a>
+
                     </li>
+
                     <li className="list-unstyled">
-                      <a href="Contactus">Help Center</a>
+
+                      <a href="#">Help Center</a>
+
                     </li>
+
                     <li className="list-unstyled">
-                      <a href="Contactus">Submit a Dispute</a>
+
+                      <a href="#">Submit a Dispute</a>
+
                     </li>
+
                   </ul>
+
                 </div>
 
                 <div className="col-lg-3 col-md-6 mb-3 mb-lg-0">
+
                   <div className="signup">
+
                     <div className="signup-form">
-                      <div className="signup-heading">
-                        Sign Up for latest Updates & Newsletter
+
+                      <h2 className='signup-heading'>Sign Up for latest Updates & Newsletter</h2>
+
+                      <p className="signup-para ">It is a long established fact that a reader will be distracted</p>
+
+                      <div className="form-group">
+
+                        <input className="form-control" type="text" placeholder="Enter Your Email Id" />
+
                       </div>
 
-                      <p className="signup-para ">
-                        It is a long established fact that a reader will be
-                        distracted
-                      </p>
-                      <form onSubmit={formik.handleSubmit}>
-                        <div className="form-group">
-                          <input
-                            type="email"
-                            id="new_email"
-                            className="form-control p-2 "
-                            placeholder="Enter Your Email Id"
-                            name="new_email"
-                            value={formik.values.new_email}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            required
-                          />
-                          {formik.touched.new_email &&
-                          formik.errors.new_email ? (
-                            <div className="error">
-                              {formik.errors.new_email}
-                            </div>
-                          ) : null}
+                      <a href="#">
+
+                        <div className="send">
+
+                          <button className="send-btn border-0">Send</button>
+
                         </div>
 
-                        <div className="send mb-6 mt-3">
-                          <button
-                            type="submit"
-                            className="send-btn border-0 p-0 mb-9 "
-                          >
-                            Send
-                          </button>
-                        </div>
-                      </form>
+                      </a>
+
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="footer-border"></div>
-
-              <div className="d-flex flex-column flex-lg-row justify-content-between d-flex-column">
-                <div className="food-logo">
-                  <div className="food">
-                    <Image
-                      src={food}
-                      width={320}
-                      height={42}
-                      alt="footer-secondlogo"
-                    />
                   </div>
+
                 </div>
 
-                <div className="social">
-                  <div className="d-flex">
-                    <a
-                      className="text-decoration-none"
-                      href="https://www.facebook.com/CurekaOfficial"
-                      target="_blank"
-                    >
-                      <div
-                        className="img-space fb"
-                        style={{ backgroundColor: "#004a98" }}
-                      >
-                        <Image
-                          src={fb}
-                          className="social-icons"
-                          width={14}
-                          height={14}
-                          alt="fb"
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      className="text-decoration-none"
-                      href="https://www.instagram.com/curekaofficial/"
-                      target="_blank"
-                    >
-                      <div
-                        className="img-space"
-                        style={{ backgroundColor: "#E4405F" }}
-                      >
-                        <Image
-                          src={insta}
-                          className="social-icons"
-                          width={14}
-                          height={14}
-                          alt="insta"
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      className="text-decoration-none"
-                      href="https://in.linkedin.com/company/curekahealthcare"
-                      target="_blank"
-                    >
-                      <div
-                        className="img-space"
-                        style={{ backgroundColor: "#0077B5" }}
-                      >
-                        <Image
-                          src={linkedin}
-                          className="social-icons"
-                          width={14}
-                          height={14}
-                          alt="linkedin"
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      className="text-decoration-none"
-                      href="https://www.youtube.com/channel/UCLwAWxRufwp4qZcDRN1aKyg"
-                      target="_blank"
-                    >
-                      <div
-                        className="img-space"
-                        style={{ backgroundColor: "#FF0000" }}
-                      >
-                        <Image
-                          src={youtube}
-                          className="social-icons"
-                          width={14}
-                          alt="youtube"
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      className="text-decoration-none"
-                      href="https://in.pinterest.com/Curekashop/"
-                      target="_blank"
-                    >
-                      <div
-                        className="img-space"
-                        style={{ backgroundColor: "#E60023" }}
-                      >
-                        <Image
-                          src={pinterest}
-                          className="social-icons"
-                          width={14}
-                          height={14}
-                          alt="pinterest"
-                        />
-                      </div>
-                    </a>
-                  </div>
-                </div>
               </div>
 
               <div className="footer-border"></div>
 
               <div className="d-lg-flex justify-content-between d-flex-column">
+
+                <div className="food-logo">
+
+                  <div className="food">
+
+                    <img src={food} width="320px" height="42px" alt="footer-secondlogo" />
+
+                  </div>
+
+                </div>
+
+                <div className="social">
+
+                  <div className="d-flex">
+
+                    <a className="text-decoration-none" href="#">
+
+                      <div className="img-space">
+
+                        <img src={fb} className="social-icons" width="7px" height="14px" />
+
+                      </div>
+
+                    </a>
+
+                    <a className="text-decoration-none" href="#">
+
+                      <div className="img-space">
+
+                        <img src={twitter} className="social-icons" width="14px" height="11px" />
+
+                      </div>
+
+                    </a>
+
+                    <a className="text-decoration-none" href="#">
+
+                      <div className="img-space">
+
+                        <img src={linkedin} className="social-icons" width="14px" height="11px" />
+
+                      </div>
+
+                    </a>
+
+                    <a className="text-decoration-none" href="#">
+
+                      <div className="img-space">
+
+                        <img src={youtube} className="social-icons" width="14px" height="14px" />
+
+                      </div>
+
+                    </a>
+
+                    <a className="text-decoration-none" href="#">
+
+                      <div className="img-space">
+
+                        <img src={pinterest} className="social-icons" width="11px" height="13px" />
+
+                      </div>
+
+                    </a>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div className="footer-border"></div>
+
+              <div className="d-lg-flex justify-content-between d-flex-column">
+
                 <div className="Copyright">
-                  <p className="copyright-text p-0">
-                    Copyright © 2024 Cureka. All rights reserved.
-                  </p>
+
+                  <p className="copyright-text">Copyright © 2024 Cureka. All rights reserved.</p>
+
                 </div>
 
                 <div className="d-flex flex-wrap justify-content-around">
-                  <div className="payment-logo">
-                    <div className="">
-                      <Image
-                        src={newvisa}
-                        width={50}
-                        height={24}
-                        alt="visa-logo"
-                      />
-                    </div>
-                  </div>
 
                   <div className="payment-logo">
-                    <div className="">
-                      <Image
-                        src={newmastercard}
-                        width={50}
-                        height={24}
-                        alt="master-logo"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="payment-logo">
                     <div className="payment-img">
-                      <Image
-                        src={newmaestro}
-                        width={50}
-                        height={24}
-                        alt="maestro-logo"
-                      />
+
+                      <img src={visa} width="50px" height="24px" alt="visa-logo" />
+
                     </div>
+
                   </div>
 
                   <div className="payment-logo">
+
                     <div className="payment-img">
-                      <Image
-                        src={newrupay}
-                        width={50}
-                        height={24}
-                        alt="rupay-logo"
-                      />
+
+                      <img src={master} width="50px" height="24px" alt="master-logo" />
+
                     </div>
+
                   </div>
 
                   <div className="payment-logo">
+
                     <div className="payment-img">
-                      <Image
-                        src={newbhmi}
-                        width={50}
-                        height={24}
-                        alt="bhmi-logo"
-                      />
+
+                      <img src={maestro} width="50px" height="24px" alt="visa-logo" />
+
                     </div>
+
                   </div>
 
                   <div className="payment-logo">
+
                     <div className="payment-img">
-                      <Image
-                        src={newpaytm}
-                        width={50}
-                        height={24}
-                        alt="paytm-logo"
-                      />
+
+                      <img src={rupay} width="50px" height="24px" alt="visa-logo" />
+
                     </div>
+
                   </div>
 
                   <div className="payment-logo">
+
                     <div className="payment-img">
-                      <Image
-                        src={newgpay}
-                        width={50}
-                        height={24}
-                        alt="gpay-logo"
-                      />
+
+                      <img src={upi} width="50px" height="24px" alt="visa-logo" />
+
                     </div>
+
                   </div>
 
                   <div className="payment-logo">
+
                     <div className="payment-img">
-                      <Image
-                        src={newphonepe}
-                        width={50}
-                        height={24}
-                        alt="phonepe-logo"
-                      />
+
+                      <img src={paytm} width="50px" height="24px" alt="visa-logo" />
+
                     </div>
+
                   </div>
+
+
+                  <div className="payment-logo">
+
+                    <div className="payment-img">
+
+                      <img src={gpay} width="50px" height="24px" alt="visa-logo" />
+
+                    </div>
+
+                  </div>
+
+                  <div className="payment-logo">
+
+                    <div className="payment-img">
+
+                      <img src={phonepay} width="50px" height="24px" alt="visa-logo" />
+
+                    </div>
+
+                  </div>
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
+
         </section>
+
       </footer>
-      <Modal
-        show={showLoginModel}
-        onHide={handleCloseLoginModel}
-        dialogClassName="right_slidemodal-slider"
-        id="loginModal"
-        backdrop="static" // Prevents closing on backdrop click
-        keyboard={false} // Optional: Prevent closing with Esc key
-      >
-        <div className="blue-wrapper" style={{ padding: 15 }}></div>
-        <Modal.Body>
-          <UserLogin handleCloseLoginModel={handleCloseLoginModel} />
-        </Modal.Body>
-        <Modal.Header closeButton></Modal.Header>
-      </Modal>
     </>
   );
 }

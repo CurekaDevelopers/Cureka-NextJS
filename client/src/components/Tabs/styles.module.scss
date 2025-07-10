@@ -1,0 +1,19 @@
+.container {
+    background-color: #fff;
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 25px 0 rgba(0, 0, 0, .1);
+
+    .tab {
+        padding: 12px;
+        outline: none;
+        border: none;
+        background-color: #fff;
+
+        &.selected {
+            background-color: #004a98;
+            color: #fff;
+        }
+    }
+}

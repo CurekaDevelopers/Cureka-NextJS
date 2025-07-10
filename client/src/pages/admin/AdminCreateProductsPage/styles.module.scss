@@ -1,0 +1,46 @@
+.container {
+    padding: 20px;
+}
+
+.card {
+    min-height: 300px;
+    position: relative;
+
+    .cardHeader {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+
+        .title {
+            font-size: 20px;
+            color: #004a98;
+            font-weight: 600;
+        }
+
+        .addButton, .addButton:hover,.addButton:focus{
+            color: #fff;
+            background-color: #004a98;
+            border-color: #004a98;
+            margin-left: 10px;
+
+        } 
+    }
+}
+
+.formItems {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .submitButton {
+        margin: auto;
+        width: 200px;
+        color: #fff;
+        background-color: #004a98;
+        border-color: #004a98;
+    }
+
+    .errorText {
+        color: rgb(255, 58, 58) !important;
+    }
+}

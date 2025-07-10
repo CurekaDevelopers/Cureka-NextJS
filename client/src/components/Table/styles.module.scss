@@ -1,0 +1,60 @@
+.headerSortIcon {
+    width: 20px;
+    margin-left: 10px;
+    display: none;
+}
+
+.tableWrapper {
+    min-height: 300px;
+    margin-top: 20px;
+
+    .table {
+        border: none;
+        outline: none;
+
+        .tableHeader {
+            user-select: none;
+            background: #fff;
+            padding: 12px;
+            font-weight: 600;
+            border: 0px !important;
+            color: #2a639f;
+            text-transform: capitalize;
+        }
+        thead {
+            th {
+                vertical-align: top;
+            }
+         }
+
+        .tableRow {
+            border: 0px !important;
+
+            td {
+                border: 0px !important;
+                padding: 12px;
+            }
+        }
+    }
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    .paginationButton {
+        border-radius: 2px;
+        outline: none;
+        border: none;
+        padding: 4px;
+        cursor: pointer;
+        margin-left: 2px;
+
+        &:hover {
+            background-color: #4679b0;
+            color: white;
+        }
+    }
+}

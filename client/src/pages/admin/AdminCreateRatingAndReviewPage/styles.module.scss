@@ -1,0 +1,38 @@
+.container {
+    padding: 20px;
+}
+
+.card {
+    min-height: 300px;
+    position: relative;
+
+    .cardHeader {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+
+        .title {
+            // font-weight: 600;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+    }
+}
+.formItems {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .submitButton {
+        margin: auto;
+        width: 200px;
+        color: #fff;
+        background-color: #004a98;
+        border-color: #004a98; 
+    }
+
+    .errorText {
+        color: rgb(255, 58, 58) !important;
+    }
+}

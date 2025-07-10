@@ -1,0 +1,48 @@
+ .container {
+     background: rgb(0, 74, 152) none repeat scroll 0% 0% / auto padding-box border-box;
+     box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 10px 0px;
+     position: fixed;
+     top: 0px;
+     right: 0px;
+     left: 0px;
+     z-index: 1030;
+     flex-flow: row nowrap;
+     justify-content: space-between;
+     display: flex;
+     flex-wrap: nowrap;
+     align-items: center;
+     padding: 8px 16px;
+     box-sizing: border-box;
+ }
+
+ .homeLink {
+     padding-top: 0px;
+     transition: all 0.4s ease 0s;
+     display: block;
+     padding-bottom: 5px;
+     margin-right: 16px;
+     font-size: 20px;
+     line-height: 30px;
+     white-space: nowrap;
+     color: rgb(0, 123, 255);
+     text-decoration: none solid rgb(0, 123, 255);
+     background-color: rgba(0, 0, 0, 0);
+     box-sizing: border-box;
+ }
+
+ .logoImage {
+     max-width: 100%;
+     vertical-align: middle;
+     border-style: none;
+     box-sizing: border-box;
+ }
+
+
+ .headerProfileMenu {
+     color: #ffffff;
+ }
+
+ .style-18 {
+     display: inline-block;
+     box-sizing: border-box;
+ }

@@ -1,11 +1,9 @@
-import Footer from "./Footer";
-import Header from "./Header";
+import React from 'react'
+
 export default function Asthma() {
   return (
     <div>
-      <Header />
       Asthma
-      <Footer />
     </div>
-  );
+  )
 }

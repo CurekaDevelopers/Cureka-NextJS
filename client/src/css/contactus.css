@@ -1,0 +1,152 @@
+.contact {
+  color: #231f20;
+
+  font: normal 500 40px / normal Rubik-medium;
+
+  margin-top: 40px;
+
+  margin-bottom: 11px;
+}
+
+.contact-para {
+  color: #6b6c86;
+
+  font: normal 500 14px / normal Rubik-regular;
+
+  margin-bottom: 41px;
+}
+
+.sent-btn {
+  width: 136px !important;
+
+  color: #fff !important;
+
+  text-align: center;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  background-color: #e75204 !important;
+
+  padding: 10px 45px;
+
+  border-radius: 6px;
+
+  height: 36px !important;
+}
+
+.sent-btn:hover {
+  color: black !important;
+}
+
+#contact-form .firstname,
+.email,
+.phoneno,
+.subject,
+.message {
+  color: #344251;
+
+  font: normal 400 14px / normal Rubik-regular;
+}
+
+#contact-form .form-control {
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fafbfd;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  height: 42px;
+
+  color: #8b959f;
+
+  font: normal 400 12px / normal Rubik-regular;
+
+  appearance: auto !important;
+}
+
+#contact-form .form-control:focus {
+  color: #8b959f;
+
+  font: normal 400 12px / normal Rubik-regular;
+}
+
+.map {
+  margin-top: 40px;
+}
+
+#contact-foot .card {
+  border-radius: 8px;
+
+  border: 2px solid #bcc9d7;
+
+  background: #fff;
+
+  margin: auto;
+
+  padding: 19px;
+
+  max-width: 380px;
+
+  min-height: 215px;
+}
+
+.contact-circle {
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  border: 1px solid #004a98;
+
+  position: relative;
+
+  overflow: hidden;
+
+  margin: auto;
+}
+
+.contact-circle img {
+  display: block;
+
+  position: absolute;
+
+  margin: auto;
+
+  top: -100%;
+
+  right: -100%;
+
+  bottom: -100%;
+
+  left: -100%;
+}
+
+.contact-address {
+  color: #000;
+
+  text-align: center;
+
+  font: normal 400 18px / normal Rubik-regular;
+
+  margin-top: 12px;
+
+  margin-bottom: 0px;
+}
+
+.contact-subaddress {
+  color: #6b6c86;
+}
+
+.above-space {
+  margin-top: 56px !important;
+
+  margin-bottom: 46px;
+}
+
+/* New CSS Added for contactus */
+.box-height {
+  height: 129px !important;
+}

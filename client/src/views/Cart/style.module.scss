@@ -1,0 +1,57 @@
+.dropdownBtn {
+    button {
+        border-radius: 6px;
+        border: 1px solid #BCC9D7;
+        background: #FAFBFD;
+        color: #051B31;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+
+        &:active {
+            color: #051B31;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            border-radius: 6px;
+            border: 1px solid #BCC9D7;
+            background: #FAFBFD;
+        }
+
+        &:focus {
+            color: #051B31;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            border-radius: 6px;
+            border: 1px solid #BCC9D7;
+            background: #FAFBFD;
+        }
+
+        &:hover {
+            color: #051B31;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            border-radius: 6px;
+            border: 1px solid #BCC9D7;
+            background: #FAFBFD;
+        }
+
+        .show {
+            color: #051B31;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            border-radius: 6px;
+            border: 1px solid #BCC9D7;
+            background: #FAFBFD;
+        }
+    }
+
+} 

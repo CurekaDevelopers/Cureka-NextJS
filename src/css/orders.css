@@ -1,0 +1,989 @@
+.order-tabs .tab-vertical .nav.nav-tabs {
+
+  float: left;
+
+  display: block;
+
+  margin-top: 30px;
+
+}
+
+.order-tabs .tab-vertical .nav-tabs .nav-link.active {
+
+  display: block !important;
+
+  border-radius: 6px;
+
+  border: 1px solid #004A98;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  color: #284A70 !important;
+
+  background-color: #ECF5FF !important;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  padding: 14px !important;
+
+  text-align: left;
+
+  width: 250px;
+
+}
+
+.order-tabs .tab-vertical .nav-tabs .nav-link {
+
+  display: block !important;
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background-color: #FAFBFD;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  color: #284A70 !important;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  padding: 14px !important;
+
+  text-align: left;
+
+  width: 250px;
+
+}
+
+.order-tabs .tab-vertical .nav-tabs .nav-link.logout {
+
+  color: #F24D4D !important;
+
+}
+
+.order-tabs .tab-vertical .nav.nav-tabs .nav-item {
+
+  margin-bottom: 8px;
+
+}
+
+.order-tabs .tab-vertical .tab-content {
+
+  padding: 30px;
+
+}
+
+.order-space {
+
+  margin-top: 30px;
+
+  margin-bottom: 60px;
+
+}
+
+.myorders {
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FFF;
+
+  padding: 15px;
+
+  max-width: 280px;
+
+  margin-right: 15px !important;
+
+}
+
+.order-heading {
+
+  color: #231F20;
+
+  font: normal 400 22px/normal Rubik-regular;
+
+  margin-top: 15px;
+
+  margin-bottom: 15px !important;
+
+}
+
+.heading-add::before {
+
+  content: '<';
+
+  margin-right: 10px;
+
+}
+
+#edit-address .form-control {
+
+  color: #8B959F;
+
+  font: normal 400 12px/normal Rubik-regular;
+
+  border-radius: 6px;
+
+  height: 42px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FAFBFD;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+}
+
+.firstname,
+.lastname,
+.mobileno,
+.email,
+.address,
+.landmark,
+.pincode {
+
+  color: #344251;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+}
+
+.product-details {
+
+  margin-left: 0px;
+
+  margin-top: 20px;
+
+  @media (min-width: 992px) {
+
+    margin-left: 15px;
+
+    margin-top: 0px;
+
+  }
+
+}
+
+.heading {
+
+  color: #263238;
+
+  font: normal 400 16px/20px Rubik-regular;
+
+  max-width: 290px;
+
+}
+
+.price {
+
+  color: #263238;
+
+  font: normal 400 14px/20px Rubik-regular;
+
+  margin-bottom: 5px;
+
+}
+
+.order-display .order-card {
+
+  border-radius: 6px;
+
+  border: 2px solid #BCC9D7;
+
+  background: #FFF;
+
+  padding: 21px;
+
+  max-width: 680px;
+
+}
+
+#dot .way::before {
+
+  content: "";
+
+  width: 6px;
+
+  height: 6px;
+
+  background-color: #0F8901;
+
+  border-radius: 50%;
+
+  display: inline-block;
+
+  margin-right: 5px;
+
+}
+
+.way {
+
+  color: #000;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+}
+
+.shipped {
+
+  color: #6C6C85;
+
+  font: normal 400 8px/normal Rubik-regular;
+
+}
+
+.reorder-btn {
+
+  max-width: 135px;
+
+  color: #E75204;
+
+  text-align: center;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  background-color: #FFEDE3;
+
+  padding: 10px 12px !important;
+
+  border: 1px solid #E75204;
+
+  border-radius: 6px;
+
+  margin-right: 8px;
+
+  @media(min-width: 992px) {
+
+    padding: 10px 18px !important;
+
+  }
+
+}
+
+.reorder-btn:hover {
+
+  background-color: #FFEDE3;
+
+  color: #E75204;
+
+  text-decoration: none;
+
+}
+
+.rate-btn {
+
+  max-width: 160px;
+
+  color: #FFF;
+
+  text-align: center;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  background-color: #E75204;
+
+  padding: 10px 18px !important;
+
+  border-radius: 6px;
+
+}
+
+.rate-btn:hover {
+
+  color: #FFF;
+
+  background-color: #E75204;
+
+  text-decoration: none;
+
+}
+
+.star-number {
+
+  color: #004A98;
+
+  font: normal 400 13px/normal Rubik-regular;
+
+}
+
+.address-two {
+
+  padding: 25px;
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FFF;
+
+}
+
+#adress-card .card {
+
+  padding: 11px 15px;
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FFF;
+
+}
+
+.pencil {
+
+  width: 30px;
+
+  height: 30px;
+
+  border: 1px solid #BCC9D7;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+}
+
+.home-tab {
+
+  max-width: 100px;
+
+  padding: 0px 6px !important;
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FFF;
+
+}
+
+.location-one {
+
+  color: #000;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 5px !important;
+
+}
+
+.address-one {
+
+  color: #6B6C86;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 12px !important;
+
+}
+
+.office-btn {
+
+  max-width: 135px;
+
+  color: #8B959F;
+
+  border-radius: 5px;
+
+  border: 1px solid #BCC9D7;
+
+  background-color: #FAFBFD;
+
+  text-align: center;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  padding: 10px 12px !important;
+
+  margin-left: 10px;
+
+  @media(min-width: 992px) {
+
+    padding: 10px 18px !important;
+
+  }
+
+}
+
+.office-btn:hover {
+
+  color: #8B959F;
+
+  background-color: #FAFBFD;
+
+  text-decoration: none;
+
+}
+
+.balance {
+
+  color: #788FA7;
+
+  font: normal 400 12px/normal Rubik-regular;
+
+  margin-bottom: 7px;
+
+}
+
+.rupees {
+
+  color: #004A98;
+
+  font: normal 500 24px/20px Rubik-medium;
+
+}
+
+.wallet {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  margin-right: -15px;
+
+  margin-left: -15px;
+
+}
+
+.transaction {
+
+  color: #000;
+
+  font: normal 400 14px/normal Rubik-medium;
+
+  margin-top: 14px;
+
+  margin-bottom: 19px;
+
+}
+
+.productname {
+
+  color: #263238;
+
+  font: normal 500 16px/20px Rubik-medium;
+
+  margin-bottom: 7px;
+
+}
+
+.debit-date {
+
+  color: #6B6C86;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 13px;
+
+}
+
+.debit-price {
+
+  color: #FF1C00;
+
+  font: normal 400 18px/20px Rubik-regular;
+
+  text-align: right;
+
+  margin-top: 13px;
+
+}
+
+.money {
+
+  color: #263238;
+
+  font: normal 500 16px/20px Rubik-medium;
+
+  margin-bottom: 7px;
+
+  margin-top: 13px;
+
+}
+
+.credit-price {
+
+  color: #1D976C;
+
+  font: normal 400 18px/20px Rubik-regular;
+
+  margin-top: 13px;
+
+}
+
+.trash {
+
+  margin-bottom: 30px;
+
+}
+
+.avail-coupons {
+
+  color: #0F8901;
+
+  font: normal 400 16px/20px Rubik-regular;
+
+  margin-bottom: 7px;
+
+}
+
+.valid-date {
+
+  color: #263238;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 10px;
+
+}
+
+.avail-subcoupons {
+
+  color: #6B6C86;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 13px;
+
+}
+
+.view-tc {
+
+  color: #E75204;
+
+  font: normal 400 10px/normal Rubik-regular;
+
+  text-decoration: none;
+
+  margin-bottom: 13px;
+
+}
+
+.view-tc:hover,
+.view-tc:focus {
+
+  color: #E75204;
+
+}
+
+.order-details {
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FFF;
+
+  padding-bottom: 10px;
+
+}
+
+.order-details-space {
+
+  padding: 25px;
+
+  border-bottom: 1px solid #BCC9D7;
+
+}
+
+.filled-circle {
+
+  width: 12px;
+
+  height: 12px;
+
+  background-color: #3DB14B;
+
+  border-radius: 50%;
+
+}
+
+.progressbar-space {
+
+  margin-top: 41px;
+
+  margin-bottom: 11px;
+
+}
+
+.progress {
+
+  height: 0.2rem;
+
+  background: #263238;
+
+}
+
+.order-confirm {
+
+  color: #0F8901;
+
+  font: normal 400 12px/normal Rubik-regular;
+
+  margin-bottom: 3px;
+
+}
+
+.confirm-date {
+
+  color: #6B6C86;
+
+  font: normal 400 10px/normal Rubik-regular;
+
+  margin-bottom: 17px;
+
+}
+
+.bar-space {
+
+  margin-left: 3rem;
+
+  margin-right: 14rem;
+
+}
+
+.delivery-item {
+
+  color: #6C6C85;
+
+  font: normal 400 8px/normal Rubik-regular;
+
+  margin-left: 3rem;
+
+  margin-top: 0.5rem;
+
+}
+
+.delivery-address {
+
+  max-width: 260px;
+
+  padding-left: 25px;
+
+}
+
+.delivery-border {
+
+  border-bottom: 9px solid #BCC9D7;
+
+}
+
+/* modal styles start*/
+
+#moneyModal .modal-content {
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FFF;
+
+}
+
+#moneyModal .modal-header {
+
+  border: 0;
+
+}
+
+#moneyModal .modal-title {
+
+  color: #231F20;
+
+  font: normal 400 22px/normal Rubik-regular;
+
+  margin-top: 10px;
+
+  margin-bottom: 30px;
+
+  text-align: center;
+
+}
+
+.amount {
+
+  color: #344251;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 12px;
+
+}
+
+#moneyModal .modal-dialog {
+
+  max-width: 600px;
+
+}
+
+#moneyModal .form-control,
+#moneyModal .form-control:focus {
+
+  color: #284A70;
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FAFBFD;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  max-width: 311px;
+
+  height: 42px;
+
+  margin-bottom: 26px;
+
+}
+
+.moneycard {
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FAFBFD;
+
+  padding: 8px 14px;
+
+  max-width: 62px;
+
+  text-align: center;
+
+  margin-bottom: 5px;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+  color: #263238;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  @media(min-width: 992px) {
+
+    margin-bottom: 0px;
+
+  }
+
+}
+
+.moneycard.active {
+
+  border-radius: 6px;
+
+  border: 1px solid #E75204;
+
+  color: #E75204;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  background: #FFF6F1;
+
+  text-align: center;
+
+  max-width: 62px;
+
+  padding: 8px 14px;
+
+  margin-bottom: 5px;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+  @media(min-width: 992px) {
+
+    margin-bottom: 0px;
+
+  }
+
+}
+
+.wallet-money {
+
+  color: #263238;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+  margin-bottom: 0px;
+
+}
+
+.load {
+
+  margin: 36px auto 55px auto;
+
+  text-align: center;
+
+}
+
+.modal-space {
+
+  padding-left: 40px;
+
+  padding-right: 40px;
+
+  @media(min-width: 992px) {
+
+    padding-left: 100px;
+
+    padding-right: 100px;
+  }
+
+}
+
+.wallet-border {
+
+  border-bottom: none;
+
+  @media(min-width: 992px) {
+
+    border-bottom: 1px solid #D7D7D7;
+
+  }
+
+
+
+}
+
+/* modal styles end*/
+
+/* popup styles start*/
+
+
+#rateproductModal .modal-content {
+
+  max-width: 570px;
+
+  border-radius: 6px;
+
+  border: 2px solid #BCC9D7;
+
+  background: #FFF;
+
+}
+
+#rateproductModal .modal-title {
+
+  color: #231F20;
+
+  font: normal 400 22px/normal Rubik-regular;
+
+  text-align: center;
+
+  margin-bottom: 35px;
+
+}
+
+#rateproductModal .modal-body {
+
+  border-bottom: 2px solid #BCC9D7;
+
+  padding: 0px 3rem 3rem 3rem;
+
+}
+
+#rateproductModal .modal-header {
+
+  border: none;
+
+}
+
+.yellow-productstar {
+
+  color: #FFC500;
+
+  font-size: 20px;
+
+  margin-bottom: 13px;
+
+}
+
+.productrate {
+
+  color: #004A98;
+
+  font: normal 400 12px/normal Rubik-regular;
+
+  margin-bottom: 13px;
+
+  margin-left: 10px;
+
+}
+
+.reviewrate {
+
+  color: #788EA7;
+
+  font: normal 400 12px/normal Rubik-regular;
+
+  margin-bottom: 13px;
+
+  margin-left: 0px;
+
+  @media(min-width: 380px) {
+
+    margin-left: 10px;
+
+  }
+
+}
+
+.rate-product {
+
+  color: #344251;
+
+  font: normal 400 16px/normal Rubik-regular;
+
+  margin-top: 22px;
+
+  margin-bottom: 11px;
+
+}
+
+.grey-productstar {
+
+  font-size: 20px;
+
+  color: #BCC9D7;
+
+}
+
+.grey-productstar:hover {
+
+  color: #FFC500;
+
+}
+
+.review-products .form-control {
+
+  height: 42px;
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FAFBFD;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  color: #8B959F;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+}
+
+.submit-btn {
+
+  padding-top: 18px;
+  
+  margin-bottom: 20px;
+
+}
+
+/* popup styles end*/

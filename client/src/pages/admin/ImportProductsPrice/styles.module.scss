@@ -1,0 +1,20 @@
+.container {
+    padding: 20px;
+    width: 100%;
+}
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+}
+.title {
+    font-size: 20px;
+    color: #004a98;
+    font-weight: 600;
+    margin-top: 20px;
+}
+.addButton, .addButton:hover,.addButton:focus{
+    color: #fff;
+    background-color: #004a98;
+    border-color: #004a98;
+    margin-top: 20px;
+}

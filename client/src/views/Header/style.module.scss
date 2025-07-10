@@ -1,0 +1,146 @@
+// .searchResults {
+//   background-color: #fff;
+//   font-weight: 500;
+//   &:hover {
+//     scroll-behavior: smooth;
+//     max-height: 300px;
+//     // overflow-y: auto;
+//     scrollbar-width: none;
+//   }
+
+//   .searchLabels {
+//     text-transform: uppercase;
+//     border-bottom: 1px solid #ddd;
+//     margin: 5px 0 5px 7px;
+//   }
+.searchResults {
+  background-color: #fff;
+  font-weight: 500;
+  position: fixed;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+  padding: 2px 0px;
+  overflow: auto;
+  max-height: 50%;
+  min-width: 300px;
+  &:hover {
+    scroll-behavior: smooth;
+    overflow: auto;
+    // max-height: 300px;
+    // scrollbar-width: none;
+  }
+ 
+
+  .brandList,
+  .categoryList,
+  .productList {
+    cursor: pointer;
+
+    a {
+      color: #444;
+    }
+  }
+
+  .brandList {
+    padding: 10px;
+
+    .brandDetails {
+      padding: 5px 0;
+
+      .brandName {}
+    }
+  }
+
+  .categoryList {
+    padding: 10px;
+
+    .categoryDetails {
+      .categoryName {}
+    }
+  }
+
+  .productList {
+    .productDetails {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: #fff;
+      &:hover {
+        background-color: #eee;
+      }
+
+      .productImg {
+        padding-top: 12px;
+
+        img {
+          border: 1px solid #e8e8e8;
+          width: 50px;
+        }
+      }
+
+      .productInfo {
+        display: flex;
+
+        .productName {
+          flex-grow: 1;
+          padding: 27px 7px;
+          margin-right: 20px;
+          width: 410px;
+        }
+
+        .productPriceSection {
+
+          // text-align: right;
+          .productMrp {
+            text-decoration: line-through;
+          }
+        }
+      }
+    }
+  }
+}
+
+.cartItemBadge {
+  position: relative;
+
+  .cartItemBadgeCount {
+    position: absolute;
+    color: #fff;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    background-color: #e75204;
+    top: -5px;
+    z-index: 1;
+    right: 0;
+    padding: 2px 4px;
+    border-radius: 50px;
+  }
+}
+
+.userDropdown {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+
+  .userDropdownBtn {
+    button {
+      font-size: 16px !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      color: #627284 !important;
+      background-color: transparent !important;
+      outline: none !important;
+      padding: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-wrap: wrap;
+      line-clamp: 2;
+      max-width: 150px;
+    }
+  }
+}

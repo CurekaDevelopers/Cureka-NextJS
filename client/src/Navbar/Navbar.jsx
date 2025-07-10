@@ -1,0 +1,183 @@
+import { useEffect, useState } from "react";
+import Col from "react-bootstrap/Col";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Tab from "react-bootstrap/Tab";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import PopupModal from "../../../client/src/views/Header/HomePopup";
+import "../css/header.css";
+import { fetchConcerns, fetchConcernsProducts } from "../redux/action";
+
+export default function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { concerns, concernsProduct } = useSelector((state) => state.admin);
+  const { nestedCategories } = useSelector((state) => state.customer);
+
+  const [hoveredCategory, setHoveredCategory] = useState("");
+  const [modalCategoryPopupShow, setmodalCategoryPopupShow] = useState(false);
+
+  useEffect(() => {
+    setHoveredCategory(nestedCategories[0]);
+  }, [nestedCategories]);
+
+  const onChangeHoveredCategory = (category) => () => {
+    setHoveredCategory(category);
+  };
+
+  const handleConcernsProducts = (item) => {
+    dispatch(fetchConcernsProducts({ item }));
+  }
+  useEffect(() => {
+    dispatch(fetchConcerns());
+  }, [dispatch]);
+
+  const closeCartegoryPopupModal = () => {
+    setmodalCategoryPopupShow(false);
+  }
+
+  return (
+    <>
+      <div className="categories">
+        <div className="border-bottom">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-2 px-lg-0 d-none d-lg-block">
+                <nav className="navbar navbar-expand-lg navbar-dark" id="hover_category_btn">
+                  <div className="container-fluid">
+                    <button
+                      className="navbar-toggler"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#main_nav"
+                    >
+                      <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="main_nav">
+                      <ul className="navbar-nav">
+                        <li className="nav-item dropdown" id="has-megamenu">
+                          <a
+                            className="nav-link dropdown-toggle"
+                            href="#"
+                            data-bs-toggle="dropdown"
+                          >
+                            All Categories{" "}
+                          </a>
+                          <div className="dropdown-menu megamenu" role="menu" id="megamenutabs">
+                            <Tab.Container
+                              id="left-tabs-example"
+                              activeKey={hoveredCategory?.slug}
+                              defaultActiveKey={hoveredCategory?.slug}
+                            >
+                              <Row>
+                                <Col lg={2} className="left-megamenu">
+                                  <Nav variant="pills" className="flex-column megamenutabs">
+                                    {!!nestedCategories?.length &&
+                                      nestedCategories?.map((item) => {
+                                        return (
+                                          <Nav.Item
+                                            key={item.id}
+                                            onMouseEnter={onChangeHoveredCategory(item)}
+                                          >
+                                            <Link to={`/product-category/${hoveredCategory?.slug}`}>
+                                              <Nav.Link
+                                                onClick={() =>
+                                                  navigate(
+                                                    `/product-category/${hoveredCategory?.slug}`,
+                                                  )
+                                                }
+                                                eventKey={item.slug}
+                                              >
+                                                {item.name}
+                                              </Nav.Link>
+                                            </Link>
+                                          </Nav.Item>
+                                        );
+                                      })}
+                                  </Nav>
+                                </Col>
+                                <Col lg={10}>
+                                  <Tab.Content className="p-0">
+                                    <Tab.Pane eventKey={hoveredCategory?.slug} className="m-0">
+                                      <div className="menu-container">
+                                        {!!hoveredCategory?.sub_categories?.length &&
+                                          hoveredCategory?.sub_categories.map((subCategory) => {
+                                            return (
+                                              <div key={subCategory.id} className="menu-column">
+                                                <Link
+                                                  to={`/product-category/${hoveredCategory?.slug}/${subCategory.slug}`}
+                                                >
+                                                  <h2 className="items-title">
+                                                    {subCategory.name}
+                                                  </h2>
+                                                </Link>
+                                                <ul className="category-list">
+                                                  {!!subCategory?.sub_sub_categories?.length &&
+                                                    subCategory?.sub_sub_categories?.map(
+                                                      (subSubCategory) => {
+                                                        return (
+                                                          <li
+                                                            key={subSubCategory.id}
+                                                            className="items"
+                                                          >
+                                                            <Link
+                                                              to={`/product-category/${hoveredCategory?.slug}/${subCategory.slug}/${subSubCategory.slug}`}
+                                                            >
+                                                              {subSubCategory.name}
+                                                            </Link>
+                                                          </li>
+                                                        );
+                                                      },
+                                                    )}
+                                                </ul>
+                                                <div className="end-category"></div>
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
+                                    </Tab.Pane>
+                                  </Tab.Content>
+                                </Col>
+                              </Row>
+                            </Tab.Container>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </nav>
+              </div>
+              <div className="col-lg-10 d-flex justify-content-start justify-content-xl-between category-banners">
+                <Nav defaultActiveKey="/home" as="ul">
+                  {!!concerns?.length &&
+                    concerns.map((item) => {
+                      return (
+                        <Nav.Item as="li" key={item.id} onClick={() => handleConcernsProducts(item.slug)}>
+                          <Link to={`/concern/${item.slug}`}>
+                            <div className="category-images">
+                              <img src={item.image} width="80px" height="80px" alt="skin-logo" />
+                              <Nav.Link className="category-text text-truncate" href="/skin" data-toggle="tooltip" data-placement="right" title={item.name}>
+                                {item.name}
+                              </Nav.Link>
+                            </div>
+                          </Link>
+                        </Nav.Item>
+                      );
+                    })}
+                </Nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {concernsProduct && concernsProduct.popups &&
+        <PopupModal
+          show={modalCategoryPopupShow}
+          onHide={closeCartegoryPopupModal}
+          popupData={concernsProduct.popups}
+        />
+      }
+    </>
+  );
+}

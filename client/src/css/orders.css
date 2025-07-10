@@ -1,0 +1,951 @@
+.order-tabs .tab-vertical .nav.nav-tabs {
+  float: left;
+
+  display: block;
+
+  margin-top: 30px;
+}
+
+.order-tabs .tab-vertical .nav-tabs .nav-link.active {
+  display: block !important;
+
+  border-radius: 6px;
+
+  border: 1px solid #004a98;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  color: #284a70 !important;
+
+  background-color: #ecf5ff !important;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  padding: 14px !important;
+
+  text-align: left;
+
+  width: 250px;
+}
+
+.order-tabs .tab-vertical .nav-tabs .nav-link {
+  display: block !important;
+
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background-color: #fafbfd;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  color: #284a70 !important;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  padding: 14px !important;
+
+  text-align: left;
+
+  width: 250px;
+}
+
+.order-tabs .tab-vertical .nav-tabs .nav-link.logout {
+  color: #f24d4d !important;
+}
+
+.order-tabs .tab-vertical .nav.nav-tabs .nav-item {
+  margin-bottom: 8px;
+}
+
+.order-tabs .tab-vertical .tab-content {
+  padding: 30px;
+}
+
+.order-space {
+  margin-top: 30px;
+
+  margin-bottom: 60px;
+}
+
+.myorders {
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fff;
+
+  padding: 15px;
+
+  max-width: 280px;
+
+  margin-right: 15px !important;
+}
+
+.order-heading {
+  color: #231f20;
+
+  font: normal 400 22px / normal Rubik-regular;
+
+  margin-top: 15px;
+
+  margin-bottom: 15px !important;
+
+  padding: 0px !important;
+  border: none;
+  text-align: left;
+  background-color: #fff;
+}
+
+.heading-add::before {
+  content: "<";
+
+  margin-right: 10px;
+}
+
+#edit-address .form-control {
+  color: #8b959f;
+
+  font: normal 400 12px / normal Rubik-regular;
+
+  border-radius: 6px;
+
+  height: 42px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fafbfd;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+}
+
+.firstname,
+.lastname,
+.mobileno,
+.email,
+.address,
+.landmark,
+.pincode {
+  color: #344251;
+
+  font: normal 400 14px / normal Rubik-regular;
+}
+
+.product-details {
+  margin-left: 0px;
+
+  margin-top: 20px;
+
+  @media (min-width: 992px) {
+    margin-left: 15px;
+
+    margin-top: 0px;
+  }
+}
+
+.heading {
+  color: #263238;
+
+  font: normal 400 16px/20px Rubik-regular;
+
+  max-width: 290px;
+
+  text-align: left;
+}
+
+.price {
+  color: #263238;
+
+  font: normal 400 14px/20px Rubik-regular;
+
+  margin-bottom: 5px;
+
+  text-align: left;
+}
+.order-display {
+  border: 2px solid #bcc9d7;
+  width: 100%;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.order-display .order-card {
+  border-bottom: 2px solid #bcc9d7;
+
+  background: #fff;
+
+  padding: 21px;
+}
+.order-display .order-cards{
+  background: #fff;
+ 
+  padding: 21px;
+}
+.card-border{
+  border-bottom: 2px solid #bcc9d7 !important;
+  /* height: 92px; */
+}
+
+#dot .way::before {
+  content: "";
+
+  width: 6px;
+
+  height: 6px;
+
+  background-color: #0f8901;
+
+  border-radius: 50%;
+
+  display: inline-block;
+
+  margin-right: 5px;
+}
+
+.way {
+  color: #000;
+
+  font: normal 400 14px / normal Rubik-regular;
+}
+
+.shipped {
+  color: #6c6c85;
+
+  font: normal 400 8px / normal Rubik-regular;
+}
+
+.reorder-btn {
+  /* width: 135px !important; */
+  max-width: 100%;
+
+  color: #e75204;
+
+  text-align: center;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  background-color: #ffede3;
+
+  padding: 10px 12px !important;
+
+  border: 1px solid #e75204;
+
+  border-radius: 6px;
+
+  margin-right: 8px;
+
+  @media (min-width: 992px) {
+    padding: 10px 18px !important;
+  }
+}
+
+.reorder-btn:hover {
+  background-color: #ffede3;
+
+  color: #e75204;
+
+  text-decoration: none;
+}
+
+.rate-btn {
+  width: 160px !important;
+
+  color: #fff;
+
+  text-align: center;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  background-color: #e75204;
+
+  padding: 10px 18px !important;
+
+  border-radius: 6px;
+  border: 1px solid #e75204;
+}
+
+.rate-btn:hover {
+  color: #fff;
+
+  background-color: #e75204;
+
+  text-decoration: none;
+}
+
+/*Button.btn-primary {
+  width: 160px !important;
+
+  color: #fff !important;
+
+  text-align: center;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  background-color: #e75204 !important;
+
+  padding: 10px 18px !important;
+
+  border-radius: 6px;
+
+  border: none;
+}*/
+
+Button.btn-primary:hover,
+Button.btn-primary:focus {
+  color: #fff;
+
+  background-color: #e75204;
+
+  text-decoration: none;
+}
+
+.star-number {
+  color: #004a98;
+
+  font: normal 400 13px / normal Rubik-regular;
+}
+
+.address-three {
+  padding: 25px !important;
+
+  border-radius: 6px !important;
+
+  border: 1px solid #bcc9d7 !important;
+
+  background: #fff !important;
+}
+
+#adress-card .card {
+  padding: 11px 15px;
+
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fff;
+}
+
+.pencil {
+  width: 30px;
+
+  height: 30px;
+
+  border: 1px solid #bcc9d7;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.home-tab {
+  max-width: 100px;
+
+  padding: 3px 6px;
+
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fff;
+}
+
+.card-content {
+  margin-top: 10px;
+}
+
+.location-one {
+  color: #000;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 5px !important;
+}
+
+.address-one {
+  color: #6b6c86;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 12px !important;
+}
+
+.office-btn {
+  max-width: 135px;
+
+  color: #8b959f;
+
+  border-radius: 5px;
+
+  border: 1px solid #bcc9d7;
+
+  background-color: #fafbfd;
+
+  text-align: center;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  padding: 10px 12px !important;
+
+  margin-left: 10px;
+
+  @media (min-width: 992px) {
+    padding: 10px 18px !important;
+  }
+}
+
+.office-btn:hover {
+  color: #8b959f;
+
+  background-color: #fafbfd;
+
+  text-decoration: none;
+}
+
+.balance {
+  color: #788fa7;
+
+  font: normal 400 12px / normal Rubik-regular;
+
+  margin-bottom: 7px;
+}
+
+.rupees {
+  color: #004a98;
+
+  font: normal 500 24px/20px Rubik-medium;
+  margin-bottom: 10px;
+}
+
+.wallet {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  margin-right: -15px;
+
+  margin-left: -15px;
+}
+
+.transaction {
+  color: #000;
+
+  font: normal 400 14px / normal Rubik-medium;
+
+  margin-top: 14px;
+}
+
+.productname {
+  color: #263238;
+
+  font: normal 500 16px/20px Rubik-medium;
+
+  margin-bottom: 7px;
+}
+
+.debit-date {
+  color: #6b6c86;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 13px;
+}
+
+.debit-price {
+  color: #ff1c00;
+
+  font: normal 400 18px/20px Rubik-regular;
+
+  text-align: right;
+
+  margin-top: 13px;
+}
+
+.money {
+  color: #263238;
+
+  font: normal 500 16px/20px Rubik-medium;
+
+  margin-bottom: 7px;
+
+  margin-top: 13px;
+}
+
+.credit-price {
+  color: #1d976c;
+
+  font: normal 400 18px/20px Rubik-regular;
+
+  margin-top: 13px;
+}
+
+.trash {
+  margin-bottom: 30px;
+}
+
+.avail-coupons {
+  color: #0f8901;
+
+  font: normal 400 16px/20px Rubik-regular;
+
+  margin-bottom: 7px;
+}
+
+.valid-date {
+  color: #263238;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 10px;
+}
+
+.avail-subcoupons {
+  color: #6b6c86;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 13px;
+}
+
+.view-tc {
+  color: #e75204;
+
+  font: normal 400 10px / normal Rubik-regular;
+
+  text-decoration: none;
+
+  margin-bottom: 13px;
+}
+
+.view-tc:hover,
+.view-tc:focus {
+  color: #e75204;
+}
+
+.order-details {
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fff;
+
+  padding-bottom: 10px;
+}
+
+.order-details-space {
+  padding: 25px;
+
+  border-bottom: 1px solid #bcc9d7;
+}
+
+.filled-circle {
+  width: 12px;
+
+  height: 12px;
+
+  background-color: #3db14b;
+
+  border-radius: 50%;
+}
+
+.progressbar-space {
+  margin-top: 41px;
+
+  margin-bottom: 11px;
+}
+
+.progress {
+  height: 0.2rem !important;
+
+  background: #263238;
+  margin-top: 5px;
+}
+
+.order-confirm {
+  color: #0f8901;
+
+  font: normal 400 12px / normal Rubik-regular;
+
+  margin-bottom: 3px;
+}
+
+.confirm-date {
+  color: #6b6c86;
+
+  font: normal 400 10px / normal Rubik-regular;
+
+  margin-bottom: 17px;
+}
+
+.bar-space {
+  margin-left: 3rem;
+
+  margin-right: 14rem;
+}
+
+.delivery-item {
+  color: #6c6c85;
+
+  font: normal 400 8px / normal Rubik-regular;
+
+  margin-left: 3rem;
+
+  margin-top: 0.5rem;
+}
+
+.delivery-address {
+  max-width: 260px;
+
+  padding-left: 25px;
+}
+
+.delivery-border {
+  border-bottom: 9px solid #bcc9d7;
+}
+
+/* modal styles start*/
+
+#moneyModal .modal-content {
+  border-radius: 6px;
+
+  /* border: 1px solid #bcc9d7; */
+
+  background: #fff;
+}
+
+#moneyModal .modal-header {
+  border: 0;
+}
+
+#moneyModal .modal-title {
+  color: #231f20;
+
+  font: normal 400 22px / normal Rubik-regular;
+
+  margin-top: 10px;
+
+  margin-bottom: 30px;
+
+  text-align: center;
+}
+
+.amount {
+  color: #344251;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 12px;
+}
+
+#moneyModal .modal-dialog {
+  max-width: 600px;
+}
+
+#moneyModal .form-control,
+#moneyModal .form-control:focus {
+  color: #284a70;
+
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fafbfd;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  max-width: 311px;
+
+  height: 42px;
+
+  margin-bottom: 26px;
+}
+
+.moneycard {
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fafbfd;
+
+  padding: 8px 14px;
+
+  max-width: 62px;
+
+  text-align: center;
+
+  margin-bottom: 5px;
+
+  /* margin-left: auto;
+
+  margin-right: auto; */
+
+  color: #263238;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  @media (min-width: 992px) {
+    margin-bottom: 0px;
+  }
+}
+
+.moneycard.active {
+  border-radius: 6px;
+
+  border: 1px solid #e75204;
+
+  color: #e75204;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  background: #fff6f1;
+
+  text-align: center;
+
+  max-width: 62px;
+
+  padding: 8px 14px;
+
+  margin-bottom: 5px;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+  @media (min-width: 992px) {
+    margin-bottom: 0px;
+  }
+}
+
+.wallet-money {
+  color: #263238;
+
+  font: normal 400 14px / normal Rubik-regular;
+
+  margin-bottom: 0px;
+}
+
+.load {
+  margin: 36px auto 55px auto;
+
+  text-align: center;
+}
+
+.modal-space {
+  padding-left: 40px;
+
+  padding-right: 40px;
+
+  @media (min-width: 992px) {
+    padding-left: 100px;
+
+    padding-right: 100px;
+  }
+}
+
+.wallet-border {
+  border-bottom: none;
+
+  @media (min-width: 992px) {
+    border-bottom: 1px solid #d7d7d7;
+  }
+}
+
+/* modal styles end*/
+
+/* popup styles start*/
+
+#rateproductModal .modal-content {
+  max-width: 570px;
+
+  border-radius: 6px;
+
+  /* border: 2px solid #bcc9d7; */
+
+  background: #fff;
+}
+
+#rateproductModal .modal-title {
+  color: #231f20;
+
+  font: normal 400 22px / normal Rubik-regular;
+
+  text-align: center;
+
+  margin-bottom: 35px;
+}
+
+#rateproductModal .modal-body {
+  /* border-bottom: 2px solid #bcc9d7; */
+
+  padding: 0px 3rem 3rem 3rem;
+}
+
+#rateproductModal .modal-header {
+  border: none;
+}
+
+.yellow-productstar {
+  color: #ffc500;
+
+  font-size: 20px;
+
+  margin-bottom: 13px;
+}
+
+.productrate {
+  color: #004a98;
+
+  font: normal 400 12px / normal Rubik-regular;
+
+  margin-bottom: 13px;
+
+  margin-left: 10px;
+}
+
+.reviewrate {
+  color: #788ea7;
+
+  font: normal 400 12px / normal Rubik-regular;
+
+  margin-bottom: 13px;
+
+  margin-left: 0px;
+
+  @media (min-width: 380px) {
+    margin-left: 10px;
+  }
+}
+
+.rate-product {
+  color: #344251;
+
+  font: normal 400 16px / normal Rubik-regular;
+
+  margin-top: 22px;
+
+  margin-bottom: 11px;
+}
+
+.grey-productstar {
+  font-size: 20px;
+
+  color: #bcc9d7;
+}
+
+.grey-productstar:hover {
+  color: #ffc500;
+}
+
+.review-products .form-control {
+  height: 42px;
+
+  border-radius: 6px;
+
+  border: 1px solid #bcc9d7;
+
+  background: #fafbfd;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  color: #8b959f;
+
+  font: normal 400 14px / normal Rubik-regular;
+}
+
+.submit-btn {
+  padding-top: 18px;
+
+  margin-bottom: 20px;
+}
+
+/* popup styles end*/
+
+/* custom order  css */
+.order-tabs .orderpills .nav-link.active {
+  display: block !important;
+  border-radius: 6px !important;
+  border: 1px solid #004a98 !important;
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+  color: #284a70 !important;
+  background-color: #ecf5ff !important;
+  font: normal 400 14px / normal Rubik-regular;
+  padding: 14px !important;
+  text-align: left !important;
+  max-width: 250px !important;
+}
+.order-tabs .orderpills .nav-link {
+  display: block !important;
+  border-radius: 6px;
+  border: 1px solid #bcc9d7;
+  background-color: #fafbfd;
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+  color: #284a70 !important;
+  font: normal 400 14px / normal Rubik-regular;
+  padding: 14px !important;
+  text-align: left;
+  max-width: 250px;
+}
+.order-tabs .orderpills .nav-item {
+  margin-bottom: 8px;
+}
+
+.orderpills {
+  border-radius: 6px;
+  border: 1px solid #bcc9d7;
+  background: #fff;
+  padding: 15px !important;
+  max-width: 280px;
+  margin-right: 15px !important;
+  margin-top: 30px;
+}
+.order-tabs .orderpills .nav-link.logout {
+  color: #f24d4d !important;
+}
+
+.modal-header .btn-close {
+  margin: 0;
+  outline: 0 !important;
+}
+
+.modal-header .btn-close:focus {
+  box-shadow: none;
+}
+
+.cursorPointer {
+  cursor: pointer;
+} 
+/* .nav-link.active{
+  float: right;
+} */
+
+/* #trackingbar::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #3db14b;
+  border-radius: 50%;
+} */
+#trackingbar::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #3db14b;
+  border-radius: 50%;
+  position: absolute;
+  left: 37px;
+}
+.tracking-line {
+  width: 2px; 
+  height: 50px;
+  margin: auto; 
+  border-radius: 10px; 
+  background-color: #000;
+}
+/* .tracking-line:last-child {
+  color: #fff;
+} */

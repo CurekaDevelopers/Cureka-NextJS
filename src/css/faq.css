@@ -1,0 +1,125 @@
+.faq-heading {
+
+  color: #344251;
+
+  font: normal 400 28px/normal Rubik-regular;
+
+  padding: 30px 35px 0px 18px;
+
+}
+
+#faq .card {
+
+  border-radius: 6px;
+
+  border: 1px solid #BCC9D7;
+
+  background: #FAFBFD;
+
+  box-shadow: 0px 1px 8px 0px rgba(0, 74, 152, 0.07);
+
+  margin-bottom: 22px;
+
+}
+
+#faq .card-header {
+
+  background-color: #fff;
+
+  color: #344251;
+
+  font: normal 400 20px/normal Rubik-regular;
+
+  border-bottom: 0px;
+
+}
+
+#faq .card-body {
+
+  color: #6C6C85;
+
+  font: normal 400 14px/normal Rubik-regular;
+
+}
+
+.card-header .btn:focus {
+
+  box-shadow: none;
+
+  outline: 0;
+
+}
+
+#faq .btn.collapsible-link {
+
+  padding: 0px;
+
+  text-decoration: none;
+
+  max-width: 275px;
+
+  @media(min-width: 992px) {
+
+    max-width: 100%;
+
+  }
+
+}
+
+#faq .card-header>a[aria-expanded='true']::before {
+
+  content: '\f0dd';
+
+  float: right !important;
+
+  color: #000000;
+
+  font-family: FontAwesome;
+
+  font-size: 20px;
+
+  padding-right: 8px;
+
+  position: absolute;
+
+  right:0;
+
+  @media(min-width: 992px) {
+
+    padding-right: 18px;
+
+  }
+
+}
+
+#faq .card-header>a[aria-expanded='false']::before {
+
+  content: '\f0de';
+
+  float: right !important;
+
+  color: #000000;
+
+  font-family: FontAwesome;
+
+  font-size: 20px;
+
+  padding-right: 8px;
+
+  position: absolute;
+
+  right:0;
+
+  @media(min-width: 992px) {
+
+    padding-right: 18px;
+
+  }
+
+}
+
+.btn:focus, .btn:hover {
+
+  box-shadow: none;
+
+}
